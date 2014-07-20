@@ -48,7 +48,7 @@
            
            
         ?>
-        <form action="./skillPrefix.php" method="post">
+        <form action="skillPrefix.php" method="post">
             <input type="hidden" name="addPrefix" value="yep">
             <label>Prefix name<input type="text" name="name"></label>
              <br>

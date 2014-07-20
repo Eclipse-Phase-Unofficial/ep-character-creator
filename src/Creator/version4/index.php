@@ -260,7 +260,7 @@
         <div class="popup" id="reset_popup"></div>
         <div class="popup" id="load_popup"></div>
         <div class="popup" id="save_popup"></div>
-        <div class="loadingPopup" id="loading_popup"><center><img src="./img/ajax-loader.gif"></center></div>
+        <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
 
 	
     </body>

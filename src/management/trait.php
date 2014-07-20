@@ -67,7 +67,7 @@
            
            
         ?>
-        <form action="./trait.php" method="post">
+        <form action="trait.php" method="post">
             <input type="hidden" name="addTrait" value="yep">
             <label>Trait name<input type="text" name="name"></label>
             <br>

@@ -89,7 +89,7 @@
            
            
         ?>
-        <form action="./background.php" method="post">
+        <form action="background.php" method="post">
             <input type="hidden" name="addBackground" value="yep">
             <label>Background name<input type="text" name="name"></label>
             <br>

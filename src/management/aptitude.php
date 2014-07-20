@@ -69,7 +69,7 @@
            
            
         ?>
-        <form action="./aptitude.php" method="post">
+        <form action="aptitude.php" method="post">
             <input type="hidden" name="addAptitude" value="yep">
             <label>Aptitude name<input type="text" name="name"></label>
             <br>

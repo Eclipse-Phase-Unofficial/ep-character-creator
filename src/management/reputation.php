@@ -63,7 +63,7 @@
            
            
         ?>
-        <form action="./reputation.php" method="post">
+        <form action="reputation.php" method="post">
             <input type="hidden" name="addRep" value="yep">
             <label>Reputation name<input type="text" name="name"></label>
             <br>

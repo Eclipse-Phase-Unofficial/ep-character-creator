@@ -71,7 +71,7 @@
            
            
         ?>
-        <form action="./skills.php" method="post">
+        <form action="skills.php" method="post">
             <input type="hidden" name="addSkill" value="yep">
             <label>Skill name<input type="text" name="name"></label>
             <br>
