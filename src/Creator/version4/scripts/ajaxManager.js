@@ -2815,6 +2815,21 @@ $(document).ready(function(){
 			$("#load_popup").css('opacity',1);
 			$("#load_popup").css('visibility','visible');
         });
+
+      //click on button about
+      $(".aboutButton").click(function() {
+
+        closeAllPopup();
+        //window.location.href = "/Creator/version4/about.html";
+        $("#about_popup").load("popup-contents/about.php");
+        $("#about_popup").css('opacity',1);
+        $("#about_popup").css('visibility','visible');
+      });
+
+      $(document).on("click",".closeAboutButton",function() {
+        $("#about_popup").css('opacity',0);
+        $("#about_popup").css('visibility','hidden');
+      });
         
         
         //Load file
@@ -2861,6 +2876,9 @@ function closeAllPopup(){
 	
 	$("#validation_popup").css('opacity',0);
 	$("#validation_popup").css('visibility','hidden');
+
+  $("#about_popup").css('opacity',0);
+  $("#about_popup").css('visibility','hidden');
 }
 
 function treatMessageError(response,preferenceDisplay){

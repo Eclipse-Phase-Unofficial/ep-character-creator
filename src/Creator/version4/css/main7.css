@@ -1876,7 +1876,7 @@ ul#implants li:hover{
 
 /*settings buttons*/
 .validateButton{
-  	bottom: 190px;
+  	bottom: 250px;
   	right: 0px;
   	position: absolute;
     height: 55px;
@@ -1901,7 +1901,7 @@ ul#implants li:hover{
 }
 
 .saveButton{
-	bottom: 250px;
+	bottom: 310px;
 	right: 0px;
 	position: absolute;
     height: 55px;
@@ -1926,7 +1926,7 @@ ul#implants li:hover{
 }
 
 .loadButton{
-	bottom: 310px;
+	bottom: 370px;
 	right: 0px;
 	position: absolute;
     height: 55px;
@@ -1951,7 +1951,7 @@ ul#implants li:hover{
 }
 
 .exportButton{
-	bottom: 70px;
+	bottom: 130px;
 	right: 0px;
 	position: absolute;
     height: 55px;
@@ -1976,7 +1976,7 @@ ul#implants li:hover{
 }
 
 .exportTxtButton{
-	bottom: 130px;
+	bottom: 190px;
 	right: 0px;
 	position: absolute;
     height: 55px;
@@ -2002,7 +2002,7 @@ ul#implants li:hover{
 
 
 .settingsButton{
-	bottom: 10px;
+	bottom: 70px;
 	right: 0px;
 	position: absolute;
     height: 55px;
@@ -2024,6 +2024,32 @@ ul#implants li:hover{
 .settingsButton:hover {
   color: rgb(186, 0, 80);
   background-color: rgba(254, 254, 254, .85);
+}
+
+
+.aboutButton{
+    bottom: 10px;
+    right: 0px;
+    position: absolute;
+    height: 55px;
+    width: 100px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.aboutButton:hover {
+    color: rgb(186, 0, 80);
+    background-color: rgba(254, 254, 254, .85);
 }
 
 
@@ -2113,6 +2139,28 @@ ul#implants li:hover{
 .cancelLoadButton:hover {
   color: rgb(186, 0, 80);
   background-color: rgba(254, 254, 254, .85);
+}
+
+.closeAboutButton{
+    height: 55px;
+    width: 150px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.closeAboutButton:hover {
+    color: rgb(186, 0, 80);
+    background-color: rgba(254, 254, 254, .85);
 }
 
 .saveSaveButton{
