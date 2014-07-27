@@ -166,7 +166,7 @@ span.EP{
 	position: relative;
 	float: left;
 	height: 100%;
-	background-color: rgba(242, 242, 242, .2);
+	/*background-color: rgba(242, 242, 242, .2);*/
 	width: 20em;
 	z-index: 2;
 	margin-right: 1px;
@@ -290,7 +290,7 @@ span.EP{
 	position: relative;
 	float: left;
 	height: 100%;
-	background-color: rgba(242, 242, 242, .2);
+	/*background-color: rgba(242, 242, 242, .2);*/
 	overflow: auto;
 }
 
@@ -1200,7 +1200,7 @@ span.EP{
 	position: relative;
 	float: left;
 	height: 100%;
-	background-color: rgba(242, 242, 242, .2);
+	/*background-color: rgba(242, 242, 242, .2);*/
 	margin-left: 1px;
 	overflow: auto;
 }
@@ -1570,7 +1570,7 @@ span.EP{
 	position: relative;
 	float: left;
 	height: 100%;
-	background-color: rgba(242, 242, 242, .2);
+	/*background-color: rgba(242, 242, 242, .2);*/
 	margin-left: 1px;
 	overflow: auto;
 	
