@@ -1,4 +1,15 @@
+<?php
+    require_once '../../../php/EPCharacterCreator.php';
+    session_start();
 
+    $character_name = trim($_SESSION['cc']->character->charName);
+    if('' !== $character_name) {
+        $save_name = $character_name;
+    }
+    else {
+        $save_name = "EPCreatorSave";
+    }
+?>
 	<table id="table_save" align="center">
 		<tr align="center">
 			<td>
@@ -11,7 +22,7 @@
 				Enter a file name
 				<br><br>
 				<form action="other/save.php" id="saveForm" method="POST" enctype="multipart/form-data">
-					<input style="line-height: 1em;" id="saveName" name="saveName" type="text" value="EPCreatorSave">
+					<input style="line-height: 1em;" id="saveName" name="saveName" type="text" value="<?php echo $save_name ?>">
 				</form>
 				<br><br>
 			</td>
