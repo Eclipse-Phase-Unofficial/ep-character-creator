@@ -1,2 +1,6 @@
 # ignore PHP Storm files
 .idea
+
+# Vagrant files
+.vagrant
+
