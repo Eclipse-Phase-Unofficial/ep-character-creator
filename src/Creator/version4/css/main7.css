@@ -1500,11 +1500,11 @@ span.EP{
 		
 }
 
-#implants{
+ul#implants{
 	width: 20em;
 }
 
-#implants label{
+ul#implants label{
 	padding-left: 1em;
 	display: block;
 	line-height:3em;
@@ -1512,7 +1512,7 @@ span.EP{
 	
 }	
 
-#implants li:hover{
+ul#implants li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);	
 }
