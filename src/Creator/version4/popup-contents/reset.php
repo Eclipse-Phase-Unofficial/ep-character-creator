@@ -39,15 +39,15 @@
 		<td>
 			JavaScript and Cookie must be enabled.
 			<br><br>
-			Please visit the <a href="http://eclipsephase.oook.ch/Creator/version4/about.html" target="_blank">about</a> page for more information, download and donation :)
-			<br>
-			For all suggestions or bug report please write to <a href="mailto:game@oook.ch"> game@oook.ch</a>
+			Please submit all suggestions and bug reports to the <br>
+         GitHub <a href="https://github.com/rbewley4/ep-character-creator/issues" target="_blank">Issues</a> page.
+         <br><br>
 		</td>
 	</tr>
 	
 	<tr align="center">
 		<td>
-			<small> Version 1.0 (03.2014) </small>
+			<small> Version 1.0.1 (07.2014) </small>
 			<br><br>
 		</td>
 	</tr>
