@@ -2449,3 +2449,7 @@ ul#implants li:hover{
     *zoom: 1;
 }
 */
+
+input#saveName {
+    width: 296px;
+}

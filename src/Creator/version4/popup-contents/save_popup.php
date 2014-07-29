@@ -9,6 +9,12 @@
     else {
         $save_name = "EPCreatorSave";
     }
+
+    // append date, time and file extension to save name
+    $save_name .= '-' . date('Ymd-His') . '.json';
+
+    // make filename safe for file systems.
+    $save_name = preg_replace('/[^a-zA-Z0-9_.-]/', '', $save_name);
 ?>
 	<table id="table_save" align="center">
 		<tr align="center">
