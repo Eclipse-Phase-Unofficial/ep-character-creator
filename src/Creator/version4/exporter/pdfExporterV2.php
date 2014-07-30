@@ -1,13 +1,14 @@
 <?php
-	header("Content-type: application/pdf");
-	
-	header('Content-Disposition: attachment; filename="EP_'.date('j-m-Y').'.pdf"');
-
-	require_once '../../../php/EPCharacterCreator.php';		
+	require_once '../../../php/EPCharacterCreator.php';
+    require_once '../../../php/EPFileUtility.php';
 	session_start();
 	
 	if(isset($_SESSION['cc']))
-	{ 
+	{
+        $file_util = new EPFileUtility($_SESSION['cc']->character);
+        $filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
+
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
 		
 		//provider for book pages
 		$p = new EPListProvider('../../../php/config.ini');
@@ -631,21 +632,9 @@
 	} 
 	//NO CHARACTER CREATOR ! ================================================
 	else{
-		
-		$errorTxt = "Bad news, something went wrong, we can not print your character, verify your character and try again.";
-	
-		$pdf = PDF_new();
-		PDF_begin_document($pdf,"","");
-		PDF_begin_page_ext($pdf, 595, 842,"");
-		$fontHand = PDF_load_font($pdf,  "Lato-Reg", "iso8859-1", "embedding");
-		if ($fontHand == -1 || $fontHand == 0) die("Cannot found standard font !");
-		PDF_setfont($pdf,$fontHand,12);
-		PDF_show_xy($pdf, $errorTxt, 50, 750);
-		PDF_end_page_ext($pdf,"");
-		PDF_end_document($pdf,"");
-		$data = PDF_get_buffer($pdf);
-			
-		echo $data;
+        header("Status: 500 Internal Server Error", true, 500);
+		echo "Bad news, something went wrong, we can not print your character, verify your character and try again.";
+	    die;
 	}
 	
 	

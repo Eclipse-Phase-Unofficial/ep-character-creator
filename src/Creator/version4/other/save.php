@@ -1,12 +1,13 @@
 <?php
 
 require_once '../../../php/EPCharacterCreator.php';
+require_once '../../../php/EPFileUtility.php';
 session_start();
 
 $filename = $_POST["saveName"];
 
-// make filename safe for file systems.
-$filename = preg_replace('/[^a-zA-Z0-9_.-]/', '', $filename);
+$file_util = new EPFileUtility($_SESSION['cc']->character);
+$filename = $file_util->sanitizeFilename($filename);
 
 // append .json extension if it is missing
 if('.json' !== substr($filename, -5, 5)) {

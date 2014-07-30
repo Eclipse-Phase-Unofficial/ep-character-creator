@@ -1,13 +1,16 @@
 <?php
-	header("Content-type: text/plain");
-	
-	header('Content-Disposition: attachment; filename="EP_'.date('j-m-Y').'.txt"');
 
-	require_once '../../../php/EPCharacterCreator.php';		
+	require_once '../../../php/EPCharacterCreator.php';
+    require_once '../../../php/EPFileUtility.php';
 	session_start();
 	
 	if(isset($_SESSION['cc']))
-	{ 
+	{
+        $file_util = new EPFileUtility($_SESSION['cc']->character);
+        $filename = $file_util->buildExportFilename('EPCharacter', 'txt');
+
+        header("Content-type: text/plain");
+        header('Content-Disposition: attachment; filename="'.$filename.'"');
 		
 		//provider for book pages
 		$p = new EPListProvider('../../../php/config.ini');	
@@ -576,8 +579,9 @@
 	} 
 	//NO CHARACTER CREATOR ! ================================================
 	else{
-		
-		echo "Bad news, something went wrong, we can not print your character, verify your character and try again.";
+        header("Status: 500 Internal Server Error", true, 500);
+        echo "Bad news, something went wrong, we can not print your character, verify your character and try again.";
+        die;
 	}
 	
 	

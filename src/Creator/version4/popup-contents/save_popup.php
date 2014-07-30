@@ -1,20 +1,10 @@
 <?php
     require_once '../../../php/EPCharacterCreator.php';
+    require_once '../../../php/EPFileUtility.php';
     session_start();
 
-    $character_name = trim($_SESSION['cc']->character->charName);
-    if('' !== $character_name) {
-        $save_name = $character_name;
-    }
-    else {
-        $save_name = "EPCreatorSave";
-    }
-
-    // append date, time and file extension to save name
-    $save_name .= '-' . date('Ymd-His') . '.json';
-
-    // make filename safe for file systems.
-    $save_name = preg_replace('/[^a-zA-Z0-9_.-]/', '', $save_name);
+    $file_util = new EPFileUtility($_SESSION['cc']->character);
+    $save_name = $file_util->buildExportFilename('EPCharacterSave', 'json');
 ?>
 	<table id="table_save" align="center">
 		<tr align="center">
