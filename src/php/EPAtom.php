@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * Description of EPAtom
  *

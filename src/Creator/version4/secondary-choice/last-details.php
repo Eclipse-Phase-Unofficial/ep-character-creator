@@ -1,7 +1,9 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <ul class="mainlist" id="lastDetails">
 	  <?php
-        require_once '../../../php/EPCharacterCreator.php';
-		session_start();
 
 		$playerName		= $_SESSION['cc']->character->playerName;
 		$charName		= $_SESSION['cc']->character->charName;
