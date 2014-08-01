@@ -2797,7 +2797,7 @@ $(document).ready(function(){
         
         //click on button export pdf
         $(".exportButton").click(function() {
-        	 window.open("./exporter/pdfExporterV2.php");
+        	 window.open("./exporter/pdfExporterV2_fpdf.php");
         });
         
         //click on button save
