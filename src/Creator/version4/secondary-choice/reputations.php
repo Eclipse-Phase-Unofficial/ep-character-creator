@@ -1,7 +1,9 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <ul class="mainlist" id="reputations">
 	<?php
-		 require_once '../../../php/EPCharacterCreator.php';
-		 session_start();
 		
 		 if($_SESSION['cc']->getReputationPoints() > 0){
 			  echo "<li>";

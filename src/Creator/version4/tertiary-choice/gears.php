@@ -1,8 +1,10 @@
-<ul class="mainlist" id="gears">	
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
+<ul class="mainlist" id="gears">
     <?php
-        require_once '../../../php/EPCharacterCreator.php';
-        include('../other/bookPageLayer.php');
-		session_start();
         $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
         $gears = $_SESSION['cc']->getGears();
         

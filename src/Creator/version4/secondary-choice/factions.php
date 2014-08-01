@@ -1,9 +1,10 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
 <ul class="mainlist" id="factions">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		include('../other/bookPageLayer.php');
-		session_start();
-		
 		$currentFac = $_SESSION['cc']->getCurrentFaction();
          foreach($_SESSION['cc']->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$FACTION){

@@ -1,7 +1,9 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <ul class="mainlist" id="aptitudes">
 	<?php
-		 require_once '../../../php/EPCharacterCreator.php';
-		 session_start();
 		 
 		 if($_SESSION['cc']->getAptitudePoint() > 0){
 			  echo "<li>";

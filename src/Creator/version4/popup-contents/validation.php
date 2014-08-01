@@ -1,7 +1,9 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <table id="table_validation" align="center">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		session_start();
 		
 		$_SESSION['cc']->checkValidation();
 		

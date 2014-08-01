@@ -1,8 +1,10 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
 <ul class="mainlist" id="morphs">
 	<?php
-		 require_once '../../../php/EPCharacterCreator.php';
-		 include('../other/bookPageLayer.php');
-		 session_start();
 		 $listMorphs = $_SESSION['cc']->getMorphs();
 		 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
 		 

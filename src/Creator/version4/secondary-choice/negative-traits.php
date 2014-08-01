@@ -1,8 +1,10 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
 <ul class="mainlist" id="negtraits">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		include('../other/bookPageLayer.php');
-		 session_start();
 		 $currentTraits = $_SESSION['cc']->getCurrentTraits();
 		 $defaultTrait = $_SESSION['cc']->getCurrentDefaultEgoTraits();
          foreach($_SESSION['cc']->getTraits() as $m){

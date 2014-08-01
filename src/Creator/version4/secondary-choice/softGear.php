@@ -1,8 +1,10 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
 <ul class="mainlist" id="soft">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		include('../other/bookPageLayer.php');
-		 session_start();
 		 
 		 //AI GEAR
 		 $currentAis = $_SESSION['cc']->getEgoAi();

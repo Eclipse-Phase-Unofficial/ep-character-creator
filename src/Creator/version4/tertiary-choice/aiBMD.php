@@ -1,12 +1,14 @@
-<ul class="mainlist" id="bmdList">	
+<?php
+require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+include('../other/bonusMalusLayer.php');
+include('../other/aILayer.php');
+include('../other/bookPageLayer.php');
+include('../other/occurencesLayer.php');
+
+session_start();
+?>
+<ul class="mainlist" id="bmdList">
 	<?php
-		  require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-		  include('../other/bonusMalusLayer.php');
-		  include('../other/aILayer.php');
-		  include('../other/bookPageLayer.php');
-		  include('../other/occurencesLayer.php');
-		   
-		  session_start();
 		  $currentAi = $_SESSION['cc']->getAisByName($_SESSION['currentAiName']);
 		  getBPHtml($currentAi->name);
 		  

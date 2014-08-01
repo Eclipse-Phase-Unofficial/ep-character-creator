@@ -1,3 +1,9 @@
+<?php
+require_once '../../../php/EPListProvider.php';
+require_once '../../../php/EPCharacterCreator.php';
+
+session_start();
+?>
 <ul class="mainlist" id="enterSkill">
 	<li>
 		<label class='listSection'> 1 creation points < 60 % < 2 creation points</label>
@@ -6,11 +12,6 @@
 	<li>
 		<select id="actprefix">
 		<?php
-				require_once '../../../php/EPListProvider.php';
-				require_once '../../../php/EPCharacterCreator.php';
-				
-				 session_start();
-				 
 				 $provider = new EPListProvider('../../../php/config.ini'); 
 				 $prefixList =  $provider->getListPrefix(); 
 		         foreach($prefixList as $m){

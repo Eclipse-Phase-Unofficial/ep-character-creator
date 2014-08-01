@@ -1,8 +1,10 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
 <ul class="mainlist" id="psyS">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		include('../other/bookPageLayer.php');
-		 session_start();
 		 $currentPsyS = $_SESSION['cc']->getCurrentPsySleights();
 		 $listPsyS = $_SESSION['cc']->getPsySleights();
 		 

@@ -1,9 +1,9 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <ul class="mainlist" id="motivation">
 	<?php
-			require_once '../../../php/EPCharacterCreator.php';
-				
-			session_start();
-			
 			if(count($_SESSION['cc']->getMotivations()) < 10) {
 			
 				echo "<li>

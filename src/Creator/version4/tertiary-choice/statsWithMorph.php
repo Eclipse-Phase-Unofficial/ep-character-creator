@@ -1,7 +1,9 @@
-<ul class="mainlist" id="statWithMorph">	
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
+<ul class="mainlist" id="statWithMorph">
     <?php
-        require_once '../../../php/EPCharacterCreator.php';
-		session_start();
         $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
         $_SESSION['cc']->activateMorph($morph);
         echo "<li>";

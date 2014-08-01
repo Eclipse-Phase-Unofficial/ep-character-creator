@@ -1,10 +1,12 @@
-<ul class="mainlist" id="bmdList">	
+<?php
+require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+include('../other/bonusMalusLayer.php');
+include('../other/bookPageLayer.php');
+
+session_start();
+?>
+<ul class="mainlist" id="bmdList">
 	<?php
-		  require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-		  include('../other/bonusMalusLayer.php');
-		  include('../other/bookPageLayer.php');
-		  
-		  session_start();
 		  //$hint = "--dubug:morph";
 		  $currentMorphTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
 		  $currentTrait = $_SESSION['cc']->getAtomByName($currentMorphTraits,$_SESSION['currentMorphTraitName']);

@@ -1,12 +1,14 @@
-<ul class="mainlist" id="bmdList">	
+<?php
+require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+include('../other/bonusMalusLayer.php');
+include('../other/armorDegatsLayer.php');
+include('../other/bookPageLayer.php');
+include('../other/occurencesLayer.php');
+
+session_start();
+?>
+<ul class="mainlist" id="bmdList">
 	<?php
-		  require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-		  include('../other/bonusMalusLayer.php');
-		  include('../other/armorDegatsLayer.php');
-		  include('../other/bookPageLayer.php');
-		  include('../other/occurencesLayer.php');
-		  
-		  session_start();
 		  // $hint = "--dubug:morph";
 		  $morphGears = $_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']);
 		  $currentGear = $_SESSION['cc']->getAtomByName($morphGears,$_SESSION['currentMorphGearName']);

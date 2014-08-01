@@ -1,11 +1,13 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+session_start();
+?>
 <ul class="mainlist" id="credits">
 	<li>
 		<label class='listSection'>1 creation point = 1000 credits</label>
 	</li>
 	<li>
 		<?php
-			require_once '../../../php/EPCharacterCreator.php';
-			session_start();
 			$currentCredit = $_SESSION['cc']->getCredit();
 			echo "<label>Current Credit</label><label class='score'>[".$currentCredit."]</label>";
 		?>

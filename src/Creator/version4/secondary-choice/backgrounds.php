@@ -1,9 +1,11 @@
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+
+session_start();
+?>
 <ul class="mainlist" id="backgrounds">
 	<?php
-		 require_once '../../../php/EPCharacterCreator.php';
-		 include('../other/bookPageLayer.php');
-		 
-		 session_start();
 		 $currentBck = $_SESSION['cc']->getCurrentBackground();
 		 
          foreach($_SESSION['cc']->getBackgrounds() as $m){

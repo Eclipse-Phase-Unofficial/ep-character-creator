@@ -1,8 +1,10 @@
-<ul class="mainlist" id="morphPostraits">	
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
+<ul class="mainlist" id="morphPostraits">
 	<?php
-		require_once '../../../php/EPCharacterCreator.php';
-		include('../other/bookPageLayer.php');
-		 session_start();
 		 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 		 $currentTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
 		 $defaultTrait = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);

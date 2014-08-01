@@ -1,10 +1,12 @@
-<ul class="mainlist" id="bmdList">	
+<?php
+require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+include('../other/bonusMalusLayer.php');
+include('../other/bookPageLayer.php');
+
+session_start();
+?>
+<ul class="mainlist" id="bmdList">
 	<?php
-		  require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-		  include('../other/bonusMalusLayer.php');
-		  include('../other/bookPageLayer.php');
-		  
-		  session_start();
 		  $currentTraitsList = $_SESSION['cc']->getCurrentTraits();
 		  $currentTrait = $_SESSION['cc']->getAtomByName($currentTraitsList,$_SESSION['currentTraitName']);
 		  if($currentTrait == null){

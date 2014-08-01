@@ -1,8 +1,10 @@
-<ul class="mainlist" id="implants">	
+<?php
+require_once '../../../php/EPCharacterCreator.php';
+include('../other/bookPageLayer.php');
+session_start();
+?>
+<ul class="mainlist" id="implants">
     <?php
-        require_once '../../../php/EPCharacterCreator.php';
-        include('../other/bookPageLayer.php');
-	session_start();
         $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
         foreach($_SESSION['cc']->getGears() as $m){
             if($m->gearType === EPGear::$IMPLANT_GEAR){
