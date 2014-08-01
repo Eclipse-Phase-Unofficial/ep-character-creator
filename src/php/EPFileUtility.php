@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/EPCharacter.php');
+require_once(dirname(__FILE__) . '/EPCharacter.php');
 
 /**
  * A utility to help convert Eclipse Phase characters to files.
