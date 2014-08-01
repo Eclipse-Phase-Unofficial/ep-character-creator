@@ -47,7 +47,7 @@
 	
 	<tr align="center">
 		<td>
-			<small> Version 1.0.1 (07.2014) </small>
+            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.1.0" target="_blank">Version 1.1.0 (08.2014)<a/></small>
 			<br><br>
 		</td>
 	</tr>
