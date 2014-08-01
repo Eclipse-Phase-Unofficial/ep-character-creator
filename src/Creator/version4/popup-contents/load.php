@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <form action="index.php" id="loadForm" method="POST" enctype="multipart/form-data">
 	<table id="table_load" align="center">
 		<tr align="center">
@@ -33,8 +36,7 @@
 		<tr align="center">
 			<td>
 				<div id="errorLoadMsg">
-					<?php 
-						session_start();
+					<?php
 						if($_SESSION['versioningFault']){
 							echo "<label style='color:red'>Your file version is too old and no more compatible, sorry.</label>";
 						}
