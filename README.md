@@ -38,7 +38,7 @@ The rest of the information (Eclipse Phase content) is stored in the database. T
 ## Development VM
 
 I have configured a development virtual machine, using Vagrant and Puppet, that you can use to quickly get up and running.
-It is a standard LAMP stack running on Ubuntu 13.10, and comes with [PDFlib Lite 7](http://www.pdflib.com/download/free-software/pdflib-lite-7/).
+It is a standard LAMP stack running on Ubuntu 13.10.
 
 
 ### Prerequisites
@@ -59,10 +59,10 @@ cd ep-character-creator/
 vagrant up
 ```
 
-If you installed the vagrant-hostsupdate plugin, you will be prompted for a password at then end of the VM provisioning
+If you installed the vagrant-hostsupdater plugin, you will be prompted for a password at then end of the VM provisioning
 phase, so that Vagrant can update your `/etc/hosts` file.
 
-> FYI: setup typically takes about 30 minutes, a good portion of which is spent downloading and installing PDFlib.
+> FYI: setup typically takes less than 10 minutes.
 
 
 #### VM Configuration

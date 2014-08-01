@@ -39,8 +39,4 @@ class epcc(
     host => 'localhost'
   }
 
-  class { "libpdf":
-    lamp_package => $lamp_package,
-    apache_service => $apache_service
-  }
 }
