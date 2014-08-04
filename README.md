@@ -1,7 +1,8 @@
-# Eclipse Phase Character Creator (EPCC)
+# Eclipse Phase Character Creator
 
 A web-based character creator application for the Eclipse Phase role-playing game.
 
+* [Website](http://bisslickin.com)
 * [Source](https://github.com/rbewley4/ep-character-creator)
 * [Releases](https://github.com/rbewley4/ep-character-creator/releases)
 * [Issues](https://github.com/rbewley4/ep-character-creator/issues)
