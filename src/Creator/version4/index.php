@@ -10,73 +10,25 @@
 	    $_SESSION['repPoints'] = $_POST['repPoints'];
 	    $_SESSION['credPoints'] = $_POST['credPoints'];
 	}
-	
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Eclipse Phase Character Creator</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-	
-    <link rel="stylesheet" href="css/icomoon.css" />
-    <link rel="stylesheet" href="css/normalize.min.css"/>
-    <link rel="stylesheet" href="css/main7.css">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Eclipse Phase Character Creator</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
 
-        <!--scripts import-->
-        
-        <link rel="stylesheet" href="scripts/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css" />
-        
-        <script src="scripts/jquery-1.9.1.js"></script>	
-        <script src="scripts/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
-    	<script src="scripts/jquery.easing.min.js"></script>
-    	<script src="scripts/jquery.mCustomScrollbar.js"></script>
-        <script src="scripts/jquery.mousewheel.js"></script>
-    	<script src="scripts/modernizr.custom.51882.js"></script>
-		<script src="scripts/ajaxManager.js"></script>
-    
-    	<link rel="stylesheet" href="scripts/vegas/jquery.vegas.css">
-    	<script src="scripts/vegas/jquery.vegas.js"></script>
-    
-    	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic'> 
-    	
-    	  
-    	<script>
-    	
-	    	$( function() {
-	        	//NAVIGATION JQUERRY
-		        //class active au menu principal
-		        $("#main-nav li a").click(function(){
-		        		$(".active").removeClass("active");
-		        		$(this).toggleClass("active");
-		        		if($('.help').is(':visible')) {
-		        			$(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-		        		}
-		        		$("#tertiary_infos").css('visibility','hidden');
-		        		return false;
-		        });
-	        
-				$("a.help-btn").hide();
-				$(".mainlist li").hover(function(){
-	        		$(this).find('.help-btn').toggle();
-				});	
-	       
-	       
-				//background fixe
-				$.vegas({
-	    			src:'img/bg/bg1.jpg'
-				})('overlay', {
-	    			src:'scripts/vegas/overlays/13.png'
-				}); 
-	        });
-        
-		</script>
-		
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/1.1.0/normalize.min.css"/>
+        <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:400,700,400italic'>
+        <link rel="stylesheet" href="scripts/vegas/jquery.vegas.css">
+        <link rel="stylesheet" href="css/icomoon.css" />
+        <link rel="stylesheet" href="css/main7.css">
     </head>
     <body>
 
@@ -266,6 +218,43 @@
         <div class="popup" id="about_popup"></div>
         <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
 
-	
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.0.6/jquery.mousewheel.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+        <script src="scripts/jquery.mCustomScrollbar.js"></script>
+        <script src="scripts/vegas/jquery.vegas.js"></script>
+        <script src="scripts/ajaxManager.js"></script>
+        <script>
+
+            $( function() {
+                //NAVIGATION JQUERRY
+                //class active au menu principal
+                $("#main-nav li a").click(function(){
+                    $(".active").removeClass("active");
+                    $(this).toggleClass("active");
+                    if($('.help').is(':visible')) {
+                        $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+                    }
+                    $("#tertiary_infos").css('visibility','hidden');
+                    return false;
+                });
+
+                $("a.help-btn").hide();
+                $(".mainlist li").hover(function(){
+                    $(this).find('.help-btn').toggle();
+                });
+
+
+                //background fixe
+                $.vegas({
+                    src:'img/bg/bg1.jpg'
+                })('overlay', {
+                    src:'scripts/vegas/overlays/13.png'
+                });
+            });
+
+        </script>
     </body>
 </html>
