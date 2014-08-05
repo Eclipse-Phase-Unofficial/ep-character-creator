@@ -13,9 +13,19 @@ node 'epcc.local' {
     install_phpinfo_file => false
   }
 
-class { 'epcc':
+  class { 'epcc':
     lamp_package => $lamp::params::lamp_package,
     apache_service => $lamp::params::apache_service
+  }
+
+  file { ['/etc/php5/apache2/conf.d/01-testing.ini', '/etc/php5/cli/conf.d/01-testing.ini']:
+    ensure => present,
+    owner => root,
+    group => root,
+    mode => 644,
+    source => "puppet:///modules/testing/php/testing.ini",
+    require => $lamp::params::lamp_package,
+    notify => $lamp::params::apache_service
   }
 
 }

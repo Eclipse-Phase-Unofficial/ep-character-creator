@@ -8,6 +8,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "src/", "/mnt/epcc/"
 
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 384
+    vb.cpus = 1
+    vb.customize ["modifyvm", :id, "--cpuexecutioncap", "25"]
+  end
+
   config.vm.provision :puppet do |puppet|
     puppet.hiera_config_path = "devbox/config/hiera.yaml"
     puppet.module_path = "devbox/puppet/modules"
