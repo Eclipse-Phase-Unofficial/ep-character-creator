@@ -486,8 +486,9 @@ if(isset($_POST['remSpeSkillName'])){
 if (isset($_POST['addMorph'])) {
 	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['addMorph']);
 	   if($_SESSION['cc']->addMorph($morph)){
-                $_SESSION['currentMorph'] =  $_POST['addMorph']; 
-		$return['desc'] = $morph->description;
+                $_SESSION['currentMorph'] =  $_POST['addMorph'];
+                $return['title'] = $morph->name;
+		        $return['desc'] = $morph->description;
 	   }
 	   else{
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
@@ -497,6 +498,7 @@ if (isset($_POST['addMorph'])) {
 //HOVER MORPH
 if (isset($_POST['morphHover'])) {
 	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphHover']);
+       $return['title'] = $morph->name;
 	   $return['desc'] = $morph->description;
 }
 
@@ -1119,7 +1121,3 @@ if(isset($_POST['getCrePoint']) && isset($_SESSION['cc'])){
 //error_log(print_r($return,true));
 
 echo json_encode($return);
-
-?>
-
-

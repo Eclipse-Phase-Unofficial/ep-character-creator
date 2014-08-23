@@ -1299,21 +1299,21 @@ $(document).ready(function(){
     	});
     	
     	//hover on morph
-		 $(document).on('mouseover', '.addMorph' ,function () {
+		 $(document).on('click', '.addMorph,.remMorph' ,function () {
 		 	$.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            morphHover : $(this).attr('id'),
+                            morphHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
                             	 treatMessageError(response,DISPLAY_ON_3);
                             }
                     		else {
-                    			displayMessageOnTertiary(response.desc);
+                    			displayMessageOnTertiary(response.desc, response.title);
 							}
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1327,7 +1327,7 @@ $(document).ready(function(){
 
     	
     	//click on add morph
-        $(document).on('click','.addMorph,.addMorphIcone' ,function () {
+        $(document).on('click','.addMorphIcone' ,function () {
         		hideErrorsMsg();
                 $.ajax({
                     type : 'POST',
@@ -1343,7 +1343,7 @@ $(document).ready(function(){
                     			treatMessageError(response,DISPLAY_ON_3);
                     		}
                     		else{
-                    			displayMessageOnTertiary(response.desc);
+                                displayMessageOnTertiary(response.desc, response.title);
 								$("#secondary").load("secondary-choice/morph.php", function(){
 					    			setupFoldingList();
 					    		});
@@ -1358,7 +1358,7 @@ $(document).ready(function(){
         });
         
         //click on remove morph
-        $(document).on('click','.remMorph,.remMorphIcone' ,function () {
+        $(document).on('click','.remMorphIcone' ,function () {
         		hideErrorsMsg();
                 $.ajax({
                     type : 'POST',
@@ -1374,7 +1374,6 @@ $(document).ready(function(){
                     			treatMessageError(response,DISPLAY_ON_3);
                     		}
                     		else{
-                    			displayMessageOnTertiary(response.desc);
 								$("#secondary").load("secondary-choice/morph.php", function(){
 					    			setupFoldingList();
 					    		});
@@ -2909,8 +2908,14 @@ function displayMessageOnTop(msg){
 	$("#base-infos").html(msg);
 }
 
-function displayMessageOnTertiary(msg){
-	$("#tertiary").html(TERTIARY_INFO_HTML);
+function displayMessageOnTertiary(msg,title){
+    var titleHtml = '';
+
+    if (title) {
+        titleHtml = '<label class="descriptionTitle">' + title + '</label>';
+    }
+
+	$("#tertiary").html(titleHtml + TERTIARY_INFO_HTML);
 	$("#tertiary_infos").html(msg);
     $("#tertiary_infos").css('visibility','visible');
 
