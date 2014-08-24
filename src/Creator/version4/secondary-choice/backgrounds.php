@@ -12,7 +12,7 @@ session_start();
             if($m->backgroundType == EPBackground::$ORIGIN){
             	echo "<li>";
             	if(isset($currentBck) && $currentBck->name == $m->name){
-            		echo "		<label class='bck bckSelected' id='".$m->name."'>".$m->name."</label><span class='selectedicone bckSelected' data-icon='&#x2b;'></span>";
+            		echo "		<label class='bck bckSelected' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='selectedicone bckSelected' data-icon='&#x2b;'></span>";
             	}
             	else{
             		echo "		<label class='bck' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label>";

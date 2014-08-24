@@ -4,11 +4,12 @@ include('../other/bonusMalusLayer.php');
 include('../other/bookPageLayer.php');
 
 session_start();
+
+$currentBck = $_SESSION['cc']->getCurrentBackground();
 ?>
+<label class="descriptionTitle"><?php echo $currentBck->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  $currentBck = $_SESSION['cc']->getCurrentBackground();
-		  
 		  getBPHtml($currentBck->name);
 		  
 		  echo "<li>";

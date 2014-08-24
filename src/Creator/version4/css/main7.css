@@ -434,11 +434,6 @@ span.EP{
 	background-color: rgba(254, 254, 254, .85);		
 }
 
-.bckSelected{
-	color: rgb(186, 0, 80);
-    background: rgba(242, 242, 242, .8);
-}
-
 .selectedicone{
 	display: block;
 	line-height: 3em;
