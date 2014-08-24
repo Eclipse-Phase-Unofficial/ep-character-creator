@@ -1200,9 +1200,11 @@ span.EP{
 }
 
 #lastDetails textarea{
-	width: 18em;
-	left: 2em;
+	width: 17em;
 	text-align: left;
+    height: 400px;
+    margin-bottom: 1em;
+    margin-left: 1em;
 }
 
 
