@@ -586,14 +586,14 @@ $(document).ready(function(){
 			return false;
 		});
 		//hover on pos trait
-		 $(document).on('mouseover', '.posTrait' ,function () {
+		 $(document).on('click', '.posTrait' ,function () {
 		 	$.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            posTraitHover : $(this).attr('id'),
+                            posTraitHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
@@ -614,7 +614,7 @@ $(document).ready(function(){
         
         
 		//click on pos trait
-        $(document).on('click', '.posTrait' ,function () {
+        $(document).on('click', '.addPosTraitIcon,.selPosTraitIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -657,7 +657,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            negTraitHover : $(this).attr('id'),
+                            negTraitHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
@@ -720,7 +720,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            negTraitHover : $(this).attr('id'),
+                            negTraitHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
@@ -820,7 +820,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            hoverPsyS : $(this).attr('id'),
+                            hoverPsyS : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
@@ -1649,7 +1649,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            morphTraitHover : $(this).attr('id'),
+                            morphTraitHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error){
@@ -1901,7 +1901,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            morphImplantGearHover : $(this).attr('id'),
+                            morphImplantGearHover : $(this).attr('id')
                     },
                     success : function(response){
                             if(response.error) {
@@ -1969,7 +1969,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            hoverAi : $(this).attr('id'),
+                            hoverAi : $(this).attr('id')
                     },
                     success : function(response){
                     		if(response.error) {
@@ -2026,7 +2026,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            hoverSoftg : $(this).attr('id'),
+                            hoverSoftg : $(this).attr('id')
                     },
                     success : function(response){
                     		if(response.error) {

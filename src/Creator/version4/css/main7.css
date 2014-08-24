@@ -450,7 +450,20 @@ span.EP{
 	top: 0;
 	padding-right: 1em;
 	opacity: 1;
-}	
+}
+
+.addIcon{
+    display: block;
+    line-height: 3em;
+    width: 3em;
+    height:3em;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 1em;
+    opacity: 1;
+}
 
 /*factions*/
 #factions{

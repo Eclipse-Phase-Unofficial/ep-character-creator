@@ -13,13 +13,13 @@ session_start();
                $m->traitEgoMorph == EPTrait::$EGO_TRAIT  && $m->cpCost > 0){
             	echo "<li>";
             	if(isTraitOnlist($defaultTrait,$m)){
-	            	echo "		<label class='posTrait selPosTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selPosTrait' data-icon='&#x2b;'></span>";
-            	}
-            	else if(isTraitOnlist($currentTraits,$m)){
-            		echo "		<label class='posTrait selPosTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selPosTrait' data-icon='&#x2b;'></span>";
+	            	echo "		<label class='posTrait selPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selPosTrait selPosTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+                }
+                else if(isTraitOnlist($currentTraits,$m)){
+                    echo "		<label class='posTrait selPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selPosTrait selPosTraitIcon' id='".$m->name."'' data-icon='&#x2b;'></span>";
             	}
             	else{
-            		echo "		<label class='posTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label>";
+            		echo "		<label class='posTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='addIcon addPosTraitIcon' id='".$m->name."'data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";
