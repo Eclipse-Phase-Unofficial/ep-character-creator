@@ -4,20 +4,22 @@ include('../other/bonusMalusLayer.php');
 include('../other/bookPageLayer.php');
 
 session_start();
+
+$currentFaction = $_SESSION['cc']->getCurrentFaction();
 ?>
+<label class="descriptionTitle"><?php echo $currentFaction->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  $currentBck = $_SESSION['cc']->getCurrentFaction();
 		  
-		  getBPHtml($currentBck->name);
+		  getBPHtml($currentFaction->name);
 		  
 		  echo "<li>";
           echo "		<label class='listSection'>Description</label>";
           echo "</li>"; 
           echo "<li>";
-          echo "		<label class='bmDesc'>".$currentBck->description."</label>";
+          echo "		<label class='bmDesc'>".$currentFaction->description."</label>";
           echo "</li>";
 
-		  getBMHtml($currentBck->bonusMalus,$currentBck->name,'faction');
+		  getBMHtml($currentFaction->bonusMalus,$currentFaction->name,'faction');
 	?>
 </ul>

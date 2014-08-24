@@ -10,7 +10,7 @@ session_start();
             if($m->backgroundType == EPBackground::$FACTION){
             	echo "<li>";
             	if($currentFac != null && $currentFac->name == $m->name){
-            		echo "		<label class='fac facSelected' id='".$m->name."'>".$m->name."</label><span class='selectedicone facSelected' data-icon='&#x2b;'></span>";
+            		echo "		<label class='fac facSelected' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='selectedicone facSelected' data-icon='&#x2b;'></span>";
             	}
             	else{
             		echo "		<label class='fac' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label>";
