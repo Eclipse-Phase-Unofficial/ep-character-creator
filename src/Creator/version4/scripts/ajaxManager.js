@@ -650,7 +650,7 @@ $(document).ready(function(){
    			return false;
 		});
 		//hover on neg trait
-		 $(document).on('mouseover', '.negTrait' ,function () {
+		 $(document).on('click', '.negTrait' ,function () {
 		 	$.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -677,7 +677,7 @@ $(document).ready(function(){
         });
 
 		//click on neg trait
-        $(document).on('click', '.negTrait' ,function () {
+        $(document).on('click', '.addNegTraitIcon,.selNegTraitIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
