@@ -10,7 +10,7 @@ session_start();
 		 
 		 //CHI SECTION
  		echo "<li>";
- 		echo "		<label class='foldingListSection' id='chi'>chi sleight (5 cp)</label>";
+ 		echo "		<label class='foldingListSection' id='chi'>chi sleight</label>";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyChi()){
 	 		$lishtChi = array();
@@ -32,7 +32,7 @@ session_start();
  		
  		//GAMMA SECTION
  		echo "<li>";
- 		echo "		<label class='foldingListSection' id='gamma'>gamma sleight (5 cp)</label>";
+ 		echo "		<label class='foldingListSection' id='gamma'>gamma sleight</label>";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyGamma()){
  			$listGamma = array();
@@ -57,10 +57,10 @@ session_start();
 	         foreach($list as $m){
 	            	$result .=  "<li>";
 	            	if(isPsySOnlist($currentPsyS,$m)){
-	            		$result .= "		<label class='psyS selPsyS' id='".$m->name."'>".$m->name."</label><span class='selectedicone selPsyS' data-icon='&#x2b;'></span>";
+	            		$result .= "		<label class='psyS selPsyS' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(5 cp)</label><span class='selectedicone selPsyS selPsySleightIcon' id='".$m->name."'' data-icon='&#x2b;'></span>";
 	            	}
 	            	else{
-	            		$result .=   "		<label class='psyS' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label>";
+	            		$result .=   "		<label class='psyS' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(5 cp)</label><span class='addIcon addPsySleightIcon' id='".$m->name."'data-icon='&#x3a;'></span>";
 	            	}
 	            	
 	            	$result .=  "</li>";

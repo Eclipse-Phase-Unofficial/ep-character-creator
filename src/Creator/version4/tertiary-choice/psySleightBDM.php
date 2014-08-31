@@ -5,6 +5,7 @@ include('../other/bookPageLayer.php');
 
 session_start();
 ?>
+<label class="descriptionTitle"><?php echo $_SESSION['currentPsiSName']; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
 		  $currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName']);

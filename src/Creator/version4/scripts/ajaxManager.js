@@ -780,7 +780,7 @@ $(document).ready(function(){
 			return false;
 		});
 		//click on psi
-        $(document).on('click', '.psyS' ,function () {
+        $(document).on('click', '.addPsySleightIcon,.selPsySleightIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -813,7 +813,7 @@ $(document).ready(function(){
         });
         
         //hover on psi
-		$(document).on('mouseover', '.psyS' ,function () {
+		$(document).on('click', '.psyS' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
