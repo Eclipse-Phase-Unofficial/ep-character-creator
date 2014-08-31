@@ -16,13 +16,13 @@ session_start();
          foreach($_SESSION['cc']->getAis() as $m){
             	echo "<li>";
             	if(isOnlist($defaultAi,$m)){
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selAi' data-icon='&#x2b;'></span>";
+            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selAi selAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else if(isOnlist($currentAis,$m)){
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selAi' data-icon='&#x2b;'></span>";
+            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selAi selAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else{
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label>";
+            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addAiIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";
@@ -39,10 +39,10 @@ session_start();
          		if($m->gearType == EPGear::$SOFT_GEAR){
 	            	echo "<li>";
 	            	if(isOnlist($currentSoftGear,$m)){
-	            		echo "		<label class='softG' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selSoftG' data-icon='&#x2b;'></span>";
+	            		echo "		<label class='softG' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selSoftG selSoftGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 	            	}
 	            	else{
-	            		echo "		<label class='softG' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label>";
+	            		echo "		<label class='softG' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addSoftGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
 	            	}
 	            	
 	            	echo "</li>";

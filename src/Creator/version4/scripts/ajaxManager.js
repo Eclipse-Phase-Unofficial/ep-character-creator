@@ -1930,7 +1930,7 @@ $(document).ready(function(){
     	});
     	
     	//click on ai
-        $(document).on('click', '.ai' , function () {
+        $(document).on('click', '.addAiIcon,.selAiIcon' , function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1962,7 +1962,7 @@ $(document).ready(function(){
         });
         
         //hover on ai
-         $(document).on('mouseover', '.ai' , function () {
+         $(document).on('click', '.ai' , function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1987,7 +1987,7 @@ $(document).ready(function(){
         });
         
         //click on soft
-        $(document).on('click', '.softG' , function () {
+        $(document).on('click', '.addSoftGearIcon,.selSoftGearIcon' , function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -2019,7 +2019,7 @@ $(document).ready(function(){
         });
         
         //Hover on soft gear
-        $(document).on('mouseover', '.softG' , function () {
+        $(document).on('click', '.softG' , function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',

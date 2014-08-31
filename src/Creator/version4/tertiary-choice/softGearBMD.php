@@ -5,10 +5,11 @@ include('../other/armorDegatsLayer.php');
 include('../other/bookPageLayer.php');
 include('../other/occurencesLayer.php');
 session_start();
+$currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
 ?>
+<label class="descriptionTitle"><?php echo $currentGear->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  $currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
 		  
 		  getBPHtml($currentGear->name);
 		  

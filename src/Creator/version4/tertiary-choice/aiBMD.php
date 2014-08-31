@@ -6,10 +6,11 @@ include('../other/bookPageLayer.php');
 include('../other/occurencesLayer.php');
 
 session_start();
+$currentAi = $_SESSION['cc']->getAisByName($_SESSION['currentAiName']);
 ?>
+<label class="descriptionTitle"><?php echo $currentAi->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  $currentAi = $_SESSION['cc']->getAisByName($_SESSION['currentAiName']);
 		  getBPHtml($currentAi->name);
 		  
 		  getOccurenceHtml($currentAi,"AI");
