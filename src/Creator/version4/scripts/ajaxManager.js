@@ -1758,7 +1758,7 @@ $(document).ready(function(){
         
        
          //click on gears for selection deselection
-        $(document).on('click', '.morphGear' ,function () {
+        $(document).on('click', '.addMorphGearIcon,.selMorphGearIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1894,31 +1894,7 @@ $(document).ready(function(){
 
 		//hover on morph implant or gear
          //click on implants for selection deselection
-        $(document).on('mouseover', '.morphGear' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            morphImplantGearHover : $(this).attr('id')
-                    },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {                    		
-								$("#quaternary").load("quaternary-choice/gearMorphBMD.php");	
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
-				return false;
-        });
-
-        $(document).on('click', '.morphImplant' ,function () {
+        $(document).on('click', '.morphImplant,.morphGear' ,function () {
             $.ajax({
                 type : 'POST',
                 contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',

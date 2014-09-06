@@ -282,13 +282,13 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 		             $htmlResult .= "<li>";
 					 if(isset($morph) && $_SESSION['cc']->haveGearOnMorph($m,$morph)){
 		            	if ($_SESSION['cc']->haveAdditionalGear($m,$morph)){
-		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear' data-icon='&#x2b;'></span>";
+		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 		                }else{
-		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear' data-icon='&#x2b;'></span>";
+		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 		                }
 		
 	            	}else{
-	                    $htmlResult .= "		<label class='morphGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label>";
+	                    $htmlResult .= "		<label class='morphGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addMorphGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
 	            	}
 	            	$htmlResult .= "</li>";
             	}
