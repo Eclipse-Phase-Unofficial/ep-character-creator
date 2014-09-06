@@ -18,14 +18,14 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
             	echo "<li>";
                     
             	if($defaultTrait != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$defaultTrait)){
-	            	echo "		<label class='morphNegTrait selNeuTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selNeuTrait' data-icon='&#x2b;'></span>";
+	            	echo "		<label class='morphNegTrait selNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selNeuTrait selMorphNeuTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 
             	}
             	else if($currentTraits != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$currentTraits)){
-            		echo "		<label class='morphNeuTrait selNeuTrait' id='".$m->name."'>".$m->name."</label><span class='selectedicone selNeuTrait' data-icon='&#x2b;'></span>";
+            		echo "		<label class='morphNeuTrait selNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='selectedicone selNeuTrait selMorphNeuTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else{
-            		echo "		<label class='morphNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label>";
+            		echo "		<label class='morphNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='addIcon addMorphNeuTraitIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";

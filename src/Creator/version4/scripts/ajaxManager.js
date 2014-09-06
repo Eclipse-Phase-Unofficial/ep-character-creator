@@ -1558,7 +1558,7 @@ $(document).ready(function(){
         });
         
         //click on morph neutral trait for selection deselection
-        $(document).on('click', '.morphNeuTrait' ,function () {
+        $(document).on('click', '.addMorphNeuTraitIcon,.selMorphNeuTraitIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1642,33 +1642,7 @@ $(document).ready(function(){
         });
         
         //hover on morph pos or neg or neu trait
-		 $(document).on('mouseover', '.morphNeuTrait' ,function () {
-		 	$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            morphTraitHover : $(this).attr('id')
-                    },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
-                    			$("#quaternary").load("quaternary-choice/traitMorphBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
-
-		 	return false;
-        
-        });
-
-        $(document).on('click', '.morphPosTrait,.morphNegTrait' ,function () {
+        $(document).on('click', '.morphPosTrait,.morphNegTrait,.morphNeuTrait' ,function () {
             $.ajax({
                 type : 'POST',
                 contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
