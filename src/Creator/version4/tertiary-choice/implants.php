@@ -15,13 +15,13 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 	                echo "<li>";
 	            	if(isset($morph) && $_SESSION['cc']->haveGearOnMorph($m,$morph)){
 	                    if ($_SESSION['cc']->haveAdditionalGear($m,$morph)){
-	                        echo "		<label class='morphImplant selGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear' data-icon='&#x2b;'></span>";
+	                        echo "		<label class='morphImplant selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear selMorphImplantIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 	                    }else{
-	                        echo "		<label class='morphImplant selGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear' data-icon='&#x2b;'></span>";
+	                        echo "		<label class='morphImplant selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear selMorphImplantIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 	                    }
 	                    
 	            	}else{
-	                    echo "		<label class='morphImplant' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label>";
+	                    echo "		<label class='morphImplant' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addMorphImplantIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
 	            	}
 	            	echo "</li>";
             	}
