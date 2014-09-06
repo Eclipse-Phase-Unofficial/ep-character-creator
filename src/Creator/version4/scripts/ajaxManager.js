@@ -1502,14 +1502,14 @@ $(document).ready(function(){
         });
         
         //click on morph pos trait for selection deselection
-        $(document).on('click', '.morphPosTrait' ,function () {
+        $(document).on('click', '.addMorphPosTraitIcon,.selMorphPosTraitIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            morphPosTrait : $(this).attr('id'),
+                            morphPosTrait : $(this).attr('id').trim(),
                             getCrePoint : 'get'
                     },
                     success : function(response){
@@ -1642,7 +1642,7 @@ $(document).ready(function(){
         });
         
         //hover on morph pos or neg or neu trait
-		 $(document).on('mouseover', '.morphNegTrait,.morphPosTrait,.morphNeuTrait' ,function () {
+		 $(document).on('mouseover', '.morphNegTrait,.morphNeuTrait' ,function () {
 		 	$.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1666,6 +1666,32 @@ $(document).ready(function(){
 
 		 	return false;
         
+        });
+
+        $(document).on('click', '.morphPosTrait' ,function () {
+            $.ajax({
+                type : 'POST',
+                contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
+                url : dispatcherURL,
+                dataType : 'json',
+                data: {
+                    morphTraitHover : $(this).attr('id')
+                },
+                success : function(response){
+                    if(response.error){
+                        treatMessageError(response,DISPLAY_ON_3);
+                    }
+                    else {
+                        $("#quaternary").load("quaternary-choice/traitMorphBMD.php");
+                    }
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+                }
+            });
+
+            return false;
+
         });
 
         

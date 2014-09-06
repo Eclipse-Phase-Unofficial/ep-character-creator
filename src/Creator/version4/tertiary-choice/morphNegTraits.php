@@ -2,10 +2,12 @@
 require_once '../../../php/EPCharacterCreator.php';
 include('../other/bookPageLayer.php');
 session_start();
+$currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
+<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="morphNegtraits">
+    <li><label class='foldingListSection'>Morph Neg. Traits</label></li>
 	<?php
-		 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 		 $currentTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
 		 $defaultTrait = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);
          foreach($_SESSION['cc']->getTraits() as $m){

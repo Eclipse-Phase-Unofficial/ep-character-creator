@@ -6,20 +6,21 @@ include('../other/bookPageLayer.php');
 include('../other/occurencesLayer.php');
 
 session_start();
+
+// $hint = "--dubug:morph";
+$morphGears = $_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']);
+$currentGear = $_SESSION['cc']->getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
+if($currentGear == null){
+    $currentGear =  $_SESSION['cc']->getGearByName($_SESSION['currentMorphGearName']);
+    // $hint = "--debug:general";
+}
 ?>
+<label class="descriptionTitle"><?php echo $currentGear->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  // $hint = "--dubug:morph";
-		  $morphGears = $_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']);
-		  $currentGear = $_SESSION['cc']->getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
-		  if($currentGear == null){
-			 $currentGear =  $_SESSION['cc']->getGearByName($_SESSION['currentMorphGearName']);
-			// $hint = "--debug:general";
-		  }
-		 
 		  getBPHtml($currentGear->name);
 		 
-		 getOccurenceHtml($currentGear,"MORPH");
+		  getOccurenceHtml($currentGear,"MORPH");
 		 
 		  getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear');
 		  getADHtml($currentGear);

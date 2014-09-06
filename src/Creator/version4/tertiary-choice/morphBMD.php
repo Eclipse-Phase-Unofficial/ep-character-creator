@@ -3,15 +3,15 @@ require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malu
 include('../other/bonusMalusLayer.php');
 include('../other/bookPageLayer.php');
 session_start();
+$currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
+$currentMorph = $_SESSION['cc']->getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
+if($currentMorph == null){
+    $currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
+}
 ?>
+<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  $currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
-		  $currentMorph = $_SESSION['cc']->getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
-		  if($currentMorph == null){
-			  $currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
-		  }
-		  
 		  getBPHtml($currentMorph->name);
 		  
 		  getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph');

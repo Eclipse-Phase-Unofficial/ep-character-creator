@@ -2,10 +2,13 @@
 require_once '../../../php/EPCharacterCreator.php';
 include('../other/bookPageLayer.php');
 session_start();
+$currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
+<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="implants">
+    <li><label class='foldingListSection'>Implants</label></li>
     <?php
-        $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
+        $morph = $currentMorph;
         foreach($_SESSION['cc']->getGears() as $m){
             if($m->gearType === EPGear::$IMPLANT_GEAR){
             	if(isGearLegal($morph,$m)){

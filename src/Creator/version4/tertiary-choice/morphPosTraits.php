@@ -2,10 +2,12 @@
 require_once '../../../php/EPCharacterCreator.php';
 include('../other/bookPageLayer.php');
 session_start();
+$currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
+<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="morphPostraits">
+    <li><label class='foldingListSection'>Morph Pos. Traits</label></li>
 	<?php
-		 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 		 $currentTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
 		 $defaultTrait = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);
          foreach($_SESSION['cc']->getTraits() as $m){
@@ -15,14 +17,14 @@ session_start();
                $m->cpCost > 0){
             	echo "<li>";
             	if($defaultTrait != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$defaultTrait)){
-	            	echo "		<label class='morphPosTrait selPosTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selPosTrait' data-icon='&#x2b;'></span>";
+	            	echo "		<label class='morphPosTrait selPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selPosTrait selMorphPosTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 
             	}
             	else if($currentTraits != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$currentTraits)){
-            		echo "		<label class='morphPosTrait selPosTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selPosTrait' data-icon='&#x2b;'></span>";
+            		echo "		<label class='morphPosTrait selPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selPosTrait selMorphPosTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else{
-            		echo "		<label class='morphPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label>";
+            		echo "		<label class='morphPosTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='addIcon addMorphPosTraitIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";

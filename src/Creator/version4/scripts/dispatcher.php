@@ -35,7 +35,10 @@ function returnMessage(&$data,$msg=""){
 }
 
 function treatCreatorErrors(&$data,$creatorError){
-	if(strcmp($creatorError->typeError, EPCreatorErrors::$SYSTEM_ERROR) == 0){
+    if(is_string($creatorError)) {
+        returnErrors($data,$creatorError);
+    }
+	else if(strcmp($creatorError->typeError, EPCreatorErrors::$SYSTEM_ERROR) == 0){
 		returnErrors($data,$creatorError->textError);
 	}
 	else if(strcmp($creatorError->typeError, EPCreatorErrors::$RULE_ERROR) == 0){
@@ -578,10 +581,10 @@ if(isset($_POST['morphPosTrait'])){
                 }      
             }
         }else{    
-            treatCreatorErrors($return, "Trait do not exist (".$_POST['morphPosTrait'].")");            
+            treatCreatorErrors($return, "Trait does not exist (".$_POST['morphPosTrait'].")");            
         }        
     }else{       
-        treatCreatorErrors($return, "Morph do not exist (".$_SESSION['currentMorph'].")"); 
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
     }
 }
 
@@ -608,10 +611,10 @@ if(isset($_POST['morphNegTrait'])){
                 }      
             }
         }else{    
-            treatCreatorErrors($return, "Trait do not exist (".$_POST['morphNegTrait'].")");            
+            treatCreatorErrors($return, "Trait does not exist (".$_POST['morphNegTrait'].")");            
         }        
     }else{       
-        treatCreatorErrors($return, "Morph do not exist (".$_SESSION['currentMorph'].")"); 
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
     }
 }
 
@@ -650,10 +653,10 @@ if(isset($_POST['morphImplant'])){
     
             }
         }else{    
-            treatCreatorErrors($return, "Implant do not exist (".$_POST['morphImplant'].")");            
+            treatCreatorErrors($return, "Implant does not exist (".$_POST['morphImplant'].")");            
         }        
     }else{       
-        treatCreatorErrors($return, "Morph do not exist (".$_SESSION['currentMorph'].")"); 
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
     }
 }
 
@@ -686,10 +689,10 @@ if(isset($_POST['morphGear'])){
     
             }
         }else{    
-            treatCreatorErrors($return, "Gear do not exist (".$_POST['morphGear'].")");            
+            treatCreatorErrors($return, "Gear does not exist (".$_POST['morphGear'].")");            
         }        
     }else{       
-        treatCreatorErrors($return, "Morph do not exist (".$_SESSION['currentMorph'].")"); 
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
     }
 }
 
@@ -726,7 +729,7 @@ if(isset($_POST['morphFreeGear'])){
 	            treatCreatorErrors($return, "Gear not set (".$_POST['morphFreeGear'].")");            
 	        }        
 	    }else{       
-	        treatCreatorErrors($return, "Morph do not exist (".$_SESSION['currentMorph'].")"); 
+	        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
 	    }
     }
 }
@@ -814,7 +817,7 @@ if(isset($_POST['ai'])){
     
        }       
     }else{       
-        treatCreatorErrors($return, "Ai do not exist (".$_SESSION['ai'].")"); 
+        treatCreatorErrors($return, "Ai does not exist (".$_SESSION['ai'].")"); 
     }
 }
 
@@ -853,7 +856,7 @@ if(isset($_POST['softg'])){
     
        }       
     }else{       
-        treatCreatorErrors($return, "Soft gear do not exist (".$_SESSION['softg'].")"); 
+        treatCreatorErrors($return, "Soft gear does not exist (".$_SESSION['softg'].")"); 
     }
 }
 
