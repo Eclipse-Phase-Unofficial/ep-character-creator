@@ -19,14 +19,14 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
             	echo "<li>";
                     
             	if($defaultTrait != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$defaultTrait)){
-	            	echo "		<label class='morphNegTrait selNegTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selNegTrait' data-icon='&#x2b;'></span>";
+	            	echo "		<label class='morphNegTrait selNegTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selNegTrait selMorphNegTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 
             	}
             	else if($currentTraits != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$currentTraits)){
-            		echo "		<label class='morphNegTrait selNegTrait' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selNegTrait' data-icon='&#x2b;'></span>";
+            		echo "		<label class='morphNegTrait selNegTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='selectedicone selNegTrait selMorphNegTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else{
-            		echo "		<label class='morphNegTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label>";
+            		echo "		<label class='morphNegTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->cpCost." cp)</label><span class='addIcon addMorphNegTraitIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";

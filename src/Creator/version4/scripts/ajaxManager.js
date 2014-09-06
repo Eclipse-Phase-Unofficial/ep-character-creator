@@ -1613,7 +1613,7 @@ $(document).ready(function(){
 				return false;
         });
         //click on morph neg trait for selection deselection
-        $(document).on('click', '.morphNegTrait' ,function () {
+        $(document).on('click', '.addMorphNegTraitIcon,.selMorphNegTraitIcon' ,function () {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1642,7 +1642,7 @@ $(document).ready(function(){
         });
         
         //hover on morph pos or neg or neu trait
-		 $(document).on('mouseover', '.morphNegTrait,.morphNeuTrait' ,function () {
+		 $(document).on('mouseover', '.morphNeuTrait' ,function () {
 		 	$.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -1668,7 +1668,7 @@ $(document).ready(function(){
         
         });
 
-        $(document).on('click', '.morphPosTrait' ,function () {
+        $(document).on('click', '.morphPosTrait,.morphNegTrait' ,function () {
             $.ajax({
                 type : 'POST',
                 contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
