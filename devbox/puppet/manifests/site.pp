@@ -1,4 +1,4 @@
-node 'epcc.local' {
+node 'epcc.local','epcc' {
 
   # apt-get update before any packages are installed/updated
   exec { "apt-update":

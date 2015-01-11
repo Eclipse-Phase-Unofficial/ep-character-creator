@@ -8,7 +8,7 @@ class lamp::apache {
       command  => "/usr/sbin/a2dissite ${site_name}",
       notify => $apache_service,
       require => $lamp_package,
-      onlyif => "/usr/bin/test -f /etc/apache2/sites-enabled/${site_name}.conf"
+      onlyif => "/usr/bin/test -f /etc/apache2/sites-enabled/${site_name}"
     }
   }
 
@@ -21,7 +21,7 @@ class lamp::apache {
   ) {
 
     if $install_conf {
-      file { "/etc/apache2/sites-available/${site_name}.conf":
+      file { "/etc/apache2/sites-available/${site_name}":
         ensure => file,
         source => $conf_source,
         mode   => 0644,
@@ -37,7 +37,7 @@ class lamp::apache {
       command  => "/usr/sbin/a2ensite ${site_name}",
       notify => $apache_service,
       require => $lamp_package,
-      creates => "/etc/apache2/sites-enabled/${site_name}.conf"
+      creates => "/etc/apache2/sites-enabled/${site_name}"
     }
   }
 }

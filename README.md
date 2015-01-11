@@ -41,7 +41,7 @@ The rest of the information (Eclipse Phase content) is stored in the database. T
 ## Development VM
 
 I have configured a development virtual machine, using Vagrant and Puppet, that you can use to quickly get up and running.
-It is a standard LAMP stack running on Ubuntu 13.10.
+It is a standard LAMP stack running on Ubuntu 12.04.
 
 
 ### Prerequisites
