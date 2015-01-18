@@ -16,10 +16,10 @@ function getADHtml($gear){
 			  echo "		<label class='listSection'>Offensive capacity</label>";
 			  echo "</li>"; 
 			  echo "<li>";
-			  echo "		<label class='bmGranted'>Degats <b>".$gear->degat."</b></label>";
+			  echo "		<label class='bmGranted'>Damage: <b>".$gear->degat."</b></label>";
 			  echo "</li>";
 			  echo "<li>";
-			  echo "		<label class='bmGranted'>Armor penetration <b>".$gear->armorPenetration."</b></label>";
+			  echo "		<label class='bmGranted'>Armor penetration: <b>".$gear->armorPenetration."</b></label>";
 			  echo "</li>";
 		  }
 }

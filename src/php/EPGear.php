@@ -21,6 +21,7 @@ class EPGear extends EPAtom{
     static $WEAPON_EXPLOSIVE_GEAR = "WXG";
     static $WEAPON_SEEKER_GEAR = "WSE";
     static $WEAPON_AMMUNITION = "WAM";
+    static $WEAPON_ACCESSORY = "WAC";
     static $ARMOR_GEAR = "ARM";
     static $IMPLANT_GEAR = "IMG";
     static $DRUG_GEAR = "DRG";
@@ -40,6 +41,7 @@ class EPGear extends EPAtom{
     static $CAN_USE_SYNTH_POD = 'SYNTHPOD';
     static $CAN_USE_SYNTH = 'SYNTH';
     static $CAN_USE_POD = 'POD';
+    static $CAN_USE_CREATE_ONLY = 'CREATION';//useful for hiding gear
     
     public $armorEnergy;
     public $armorKinetic;

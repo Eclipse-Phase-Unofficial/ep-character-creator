@@ -181,6 +181,10 @@ span.EP{
  	overflow-y: auto;
 	list-style: none;
 }
+
+#main-nav::-webkit-scrollbar {
+	display: none;
+}
 		
 #main-nav ul{
 	position: relative;
@@ -292,6 +296,10 @@ span.EP{
 	height: 100%;
 	/*background-color: rgba(242, 242, 242, .2);*/
 	overflow: auto;
+}
+
+#secondary::-webkit-scrollbar {
+	display: none;
 }
 
 #secondary .mainlist{
@@ -1210,6 +1218,9 @@ span.EP{
 	overflow: auto;
 }
 
+#tertiary::-webkit-scrollbar {
+	display: none;
+}
 
 #tertiary .mainlist{
 	padding: 0;
@@ -1577,8 +1588,11 @@ ul#implants li:hover{
 	height: 100%;
 	/*background-color: rgba(242, 242, 242, .2);*/
 	margin-left: 1px;
-	overflow: auto;
-	
+	overflow: auto;	
+}
+
+#quaternary::-webkit-scrollbar {
+	display: none;
 }
 
 #quaternary .mainlist{
