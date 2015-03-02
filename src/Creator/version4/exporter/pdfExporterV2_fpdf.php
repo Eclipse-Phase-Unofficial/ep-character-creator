@@ -475,7 +475,7 @@
 									if($i%2 == 0) $pdf->SetFont('Lato-Reg','',$fontsize);
 									else $pdf->SetFont('Lato-Lig','',$fontsize);
 								}
-								$pdf->Text( ($apt_x+53), $apt_y, formatIt($skill->getEgoValue()));//Skill ego value;
+								$pdf->Text( ($apt_x+53), $apt_y, formatIt($skill->getValue()));//Skill ego value;
 								if($hadSpec) $apt_y += ($y_space+8);
 								else $apt_y += $y_space;
 								$i++;
