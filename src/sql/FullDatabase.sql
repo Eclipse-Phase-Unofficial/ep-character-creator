@@ -6507,7 +6507,7 @@ INSERT INTO `TraitBonusMalus` (`traitName`, `bonusMalusName`, `occur`) VALUES
 ('Severe Allergy (Common)', 'Severe Allergy', 1),
 ('Severe Allergy (Uncommon)', 'Severe Allergy', 1),
 ('Shut-in', '-10 Networking', 1),
-('Situational Awereness', 'Focus', 1),
+('Situational Awareness', 'Focus', 1),
 ('Skill Artifact I', 'Skill Artifact I', 1),
 ('Skill Artifact II', 'Skill Artifact II', 1),
 ('Slow Learner', 'Slow Learner', 1),
