@@ -61,41 +61,43 @@
 			        	echo "<tr id='alternateLine'>";
 		        	}
 		        	$replace_char = array('/',' ');
+		        	$id = str_replace($replace_char, '_', $m->name);
+
 		        	if($prefix != null || $prefix != ""){
-			        	echo "		<td class='skName' id='".$m->name."'><div class='spezBox' id='spezBox".str_replace($replace_char,'',$m->name)."'><input class='spezInt' type='text' id='spe_".str_replace($replace_char,'',$m->name)."' /></div> ".$prefix." : ".$m->name;
+			        	echo "		<td class='skName' id='$id'><div class='spezBox' id='spezBox".str_replace($replace_char,'',$m->name)."'><input class='spezInt' type='text' id='spe_".str_replace($replace_char,'',$m->name)."' /></div> ".$prefix." : ".$m->name;
 			        	if($spe != null | $spe != ""){
-		        			echo "<br><label class='speLabel'>spe : ".$spe."</label></td>";
+		        			echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";
 
 		        		}
 		        		else{
-			        		echo "</td>";
+			        		echo "</td>\n";
 		        		}
 		        	}
 		        	else{
-		        		echo "		<td class='skName' id='".$m->name."'><div class='spezBox' id='spezBox".str_replace($replace_char,'',$m->name)."'><input class='spezInt' type='text' id='spe_".str_replace($replace_char,'',$m->name)."' /></div>".$m->name;
+		        		echo "		<td class='skName' id='$id'><div class='spezBox' id='spezBox".str_replace($replace_char,'',$m->name)."'><input class='spezInt' type='text' id='spe_".str_replace($replace_char,'',$m->name)."' /></div>".$m->name;
 		        		if($spe != null | $spe != ""){
-		        			echo "<br><label class='speLabel'>spe : ".$spe."</label></td>";
+		        			echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";
 		        		}
 		        		else{
-			        		echo "</td>";
+			        		echo "</td>\n";
 		        		}
 		        	}
 		        	if($spe != null || $spe != ""){
-		        		echo "		<td align='center'><span class='icone remSpeSkill' id='".$m->name."' data-icon='&#x39;'></span></span></td>";
+		        		echo "		<td align='center'><span class='icone remSpeSkill' id='$id' data-icon='&#x39;'></span></span></td>\n";
 		        	}
 		        	else{
-			        	echo "		<td align='center'><span class='icone addSkillSpec' id='".$m->name."' data-icon='&#x3a;'></span></td>";
+			        	echo "		<td align='center'><span class='icone addSkillSpec' id='$id' data-icon='&#x3a;'></span></td>\n";
 		        	}
-		        	echo "		<td><input class='knoskillbase' type='number' id='".$m->name."' min=0 step=5 value='".$m->baseValue."'/></td>";
-		        	echo "		<td>".$m->linkedApt->abbreviation."</td>";
+		        	echo "		<td><input class='knoskillbase' type='number' id='$id' min=0 step=5 value='".$m->baseValue."'/></td>\n";
+		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
-		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>";
+		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>\n";
 		        	if($m->tempSkill){
-		        		echo "		<td><span class='icone remKnowSkill' id='".$m->name."' data-icon='&#x39;'></span></td>";
+		        		echo "		<td><span class='icone remKnowSkill' id='$id' data-icon='&#x39;'></span></td>\n";
 		        	}
 		        	else{
-			        	echo "		<td></td>";
+			        	echo "		<td></td>\n";
 		        	}
 		        	echo "</tr>";
 		        	$lineNumeber++;

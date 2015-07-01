@@ -458,7 +458,9 @@ if(isset($_POST['remSkill'])){
 
 //CHANGE SKILL VALUE
 if(isset($_POST['changeSkillName'])){
-	if(!$_SESSION['cc']->setSkillValue($_POST['changeSkillName'],intval($_POST['changeSkillValue']))){
+	$changeSkillName = str_replace('_', ' ', $_POST['changeSkillName']);
+
+	if(!$_SESSION['cc']->setSkillValue($changeSkillName,intval($_POST['changeSkillValue']))){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
 }
