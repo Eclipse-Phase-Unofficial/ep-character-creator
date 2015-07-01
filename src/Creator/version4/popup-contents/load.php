@@ -24,11 +24,11 @@ session_start();
 			<td>
 				<input type="checkbox" name="creationMode" value="cre"/> Check if you want to continue on creation mode.
 				<br><br>
-				I have earn <input style="line-height: 1em;" id="rezPoints" name="rezPoints" type="number" min="0" value="0"> Rez points.
+				I have earned <input style="line-height: 1em;" id="rezPoints" name="rezPoints" type="number" min="0" value="0"> Rez points.
 				<br><br>
-				I have earn <input style="line-height: 1em;" id="repPoints" name="repPoints" type="number" min="0" value="0"> Reputation points.
+				I have earned <input style="line-height: 1em;" id="repPoints" name="repPoints" type="number" min="0" value="0"> Reputation points.
 				<br><br>
-				I have earn <input style="line-height: 1em;" id="credPoints" name="credPoints" type="number" min="0" value="0"> Credits.
+				I have earned <input style="line-height: 1em;" id="credPoints" name="credPoints" type="number" min="0" value="0"> Credits.
 				<br><br>
 			</td>
 		</tr>

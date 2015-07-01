@@ -176,7 +176,9 @@
             		AP <span id="aptitude_remain" class="rest"></span><br>
             		RP <span id="reputation_remain" class="rest"></span><br>
             		CR <span id="credit_remain" class="rest"></span><br>
-                    RZ <span id="rez_remain" class="rest"></span><span class="btnhelpPoint" data-icon="&#x2a;"></span><br>
+                    ASR <span id="asr_remain" class="rest"></span><br>
+                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelpPoint" data-icon="&#x2a;"></span><br>
+                    RZ <span id="rez_remain" class="rest"></span><br>
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>
