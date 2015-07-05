@@ -982,7 +982,7 @@ $(document).ready(function(){
 	                        	treatMessageError(response,DISPLAY_ON_3);	                        }
 	                		else {
 	                			var comeFrom = $('.skills').attr('id');
-                    			if(comeFrom == "#actSkills"){
+                    			if(comeFrom == "actSkills"){
                     				$("#secondary").load("secondary-choice/active-skills.php");
                     			}
                     			else{
@@ -1232,7 +1232,7 @@ $(document).ready(function(){
 		                            	treatMessageError(response,DISPLAY_ON_3);		                            }
 		                    		else {
 		                    			var comeFrom = $('.skills').attr('id');
-		                    			if(comeFrom == "#actSkills"){
+		                    			if(comeFrom == "actSkills"){
 		                    				$("#secondary").load("secondary-choice/active-skills.php");
 		                    			}
 		                    			else{
@@ -1272,7 +1272,7 @@ $(document).ready(function(){
 		                            	treatMessageError(response,DISPLAY_ON_3);		                            }
 		                    		else {
 		                    			var comeFrom = $('.skills').attr('id');
-		                    			if(comeFrom == "#actSkills"){
+		                    			if(comeFrom == "actSkills"){
 		                    				$("#secondary").load("secondary-choice/active-skills.php");
 		                    			}
 		                    			else{

@@ -162,13 +162,13 @@
         	</section>
         	
         	<!-- SECONDARY PANNEL - DYNAMIC CONTENT -->
-        	<section id="secondary"></section>	
+        	<section id="secondary" class="panel"></section>	
         	
         	<!-- TERTIARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="tertiary"></section>	
+        	<section id="tertiary" class="panel"></section>	
         	
         	<!-- QUATERNARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="quaternary"></section>	
+        	<section id="quaternary" class="panel"></section>	
         	
         	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
         	<section class="points">

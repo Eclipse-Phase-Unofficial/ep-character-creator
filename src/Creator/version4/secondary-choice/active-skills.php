@@ -26,7 +26,7 @@ session_start();
 	</li>
 </ul>
 <div id="actSklDiv">
-	<table class="skills" id="#actSkills">			    
+	<table class="skills" id="actSkills">			    
 			<thead>
 				<tr>
 					<th></th> 
@@ -49,10 +49,10 @@ session_start();
 		         	if($m->defaultable == EPSkill::$NO_DEFAULTABLE) $skillGuiName = $m->name." *";
 		         	else $skillGuiName = $m->name;
 		         	if($lineNumeber%2 == 0){
-		        		echo "<tr>";
+		        		echo "<tr>\n";
 		        	}
 		        	else{
-			        	echo "<tr id='alternateLine'>";
+			        	echo "<tr id='alternateLine'>\n";
 		        	}
 		        	$replace_char = array('/',' ');
 		         	$id = str_replace($replace_char, '_', $m->name);
@@ -97,7 +97,6 @@ session_start();
 		        	$lineNumeber++;
 		         }
 			?>
-			 
 			</tbody>
 	</table>
 </div>

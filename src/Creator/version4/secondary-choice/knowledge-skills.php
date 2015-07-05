@@ -34,7 +34,7 @@
 	</li>
 </ul>
 <div id="knoSklDiv">
-	<table class="skills" id="#knoSkills">			    
+	<table class="skills" id="knoSkills">			    
 			<thead>
 				<tr>
 					<th></th>	
