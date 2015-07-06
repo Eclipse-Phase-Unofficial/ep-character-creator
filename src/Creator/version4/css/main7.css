@@ -80,7 +80,7 @@ span.SW{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -60px;
+	background-position: 0px -60px;
 }
 
 span.RW{
@@ -93,7 +93,6 @@ span.RW{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -0px;
 }
 
 span.PAN{
@@ -106,7 +105,7 @@ span.PAN{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -30px;
+	background-position: 0px -30px;
 }
 
 span.GC{
@@ -119,7 +118,7 @@ span.GC{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -90px;
+	background-position: 0px -90px;
 }
 
 span.TH{
@@ -132,7 +131,7 @@ span.TH{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -120px;
+	background-position: 0px -120px;
 }
 
 span.EP{
@@ -145,7 +144,7 @@ span.EP{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -150px;
+	background-position: 0px -150px;
 }
 
 /* SECONDAY, TERTIARY and QUATERNARY panels */

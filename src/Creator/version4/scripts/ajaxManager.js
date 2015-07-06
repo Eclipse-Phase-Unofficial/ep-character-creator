@@ -856,36 +856,8 @@ $(document).ready(function(){
 		
 		//change active skill value
 		$(document).on('change ', '.actskillbase' ,function () {
-				var skId = $(this).attr('id');	
-				skId = skId.replace(/\//g,"");
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            changeSkillName : $(this).attr('id'),
-                            changeSkillValue : $(this).val(),
-                            getCrePoint : 'get'
-                    },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            	$("[id="+skId+"]").css("background-color", "#BA0050");
-                            }
-                    		else {
-                    			$("[id="+skId+"]").css("background-color", "#FEFEFE");
-                    			$("#secondary").load("secondary-choice/active-skills.php", function(){
-	                    			$(focusOnSkill).focus();
-                    			});
-                    			setRemainingPoint(response);
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
-				return false;
+            changeSkill($(this), "secondary-choice/active-skills.php");
+            return false;
 		});
 		
 		//add a temp active skill
@@ -943,27 +915,8 @@ $(document).ready(function(){
         
         //remove a temp active skill
         $(document).on('click', '.remActSkill' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            remSkill : $(this).attr('id')
-                    },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
-                    			$("#secondary").load("secondary-choice/active-skills.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
-				return false;
+            removeSkill($(this), "secondary-choice/active-skills.php");
+            return false;
         });
         
 		//remove specialization
@@ -974,7 +927,7 @@ $(document).ready(function(){
 	                url : dispatcherURL,
 	                dataType : 'json',
 	                data: {
-	                        remSpeSkillName : $(this).attr('id'),
+	                        remSpeSkillName : $(this).attr('data-skillname'),
 	                        getCrePoint : 'get'
 	                },
 	                success : function(response){
@@ -1015,36 +968,8 @@ $(document).ready(function(){
 		
 		//change knowlege skill value
 		$(document).on('change ', '.knoskillbase' ,function () {
-				var skId = $(this).attr('id');
-				skId = skId.replace(/\//g,"");
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            changeSkillName : $(this).attr('id'),
-                            changeSkillValue : $(this).val(),
-                            getCrePoint : 'get'
-                    },
-                    success : function(response){
-                            if(response.error) {
-                            	$("[id="+skId+"]").css("background-color", "#BA0050");
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
-                    			$("[id="+skId+"]").css("background-color", "#FEFEFE");
-                    			$("#secondary").load("secondary-choice/knowledge-skills.php", function(){
-	                    			$(focusOnSkill).focus();
-                    			});
-                    			setRemainingPoint(response);
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
-				return false;
+            changeSkill($(this), "secondary-choice/knowledge-skills.php");
+            return false;
 		});
 		//Add the native language
 		$(document).on('click', '#addNativeLanguage' ,function () {
@@ -1154,27 +1079,8 @@ $(document).ready(function(){
         
         //remove a temp knowlege skill
         $(document).on('click', '.remKnowSkill' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            remSkill : $(this).attr('id')
-                    },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
-                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
-				return false;
+            removeSkill($(this), "secondary-choice/knowledge-skills.php");
+            return false;
         });
 		
 		//GENERAL SKILLS
@@ -1186,7 +1092,7 @@ $(document).ready(function(){
                     url : dispatcherURL,
                     dataType : 'json',
                     data: {
-                            skill : $(this).attr('id')
+                            skill : $(this).attr('data-skillname')
 					},
                     success : function(response){
                             if(response.error) {
@@ -1206,16 +1112,16 @@ $(document).ready(function(){
         
         //click + skill specialization
         $(document).on('click', '.addSkillSpec' ,function () {
-        		var id_spez = '#spezBox'+($(this).attr('id').replace(/\s+/g, ''));
-        		id_spez = id_spez.replace(/\//g,"");
+        		var id_spez = '#spezBox'+$(this).attr('data-skillname').replace(/[\/\s_]+/g, '');
+
         		if($(id_spez).css('visibility') == 'hidden'){
-                	$(id_spez).css('visibility', 'visible');
+                	$(id_spez).css('visibility', 'visible').find(".spezInt").focus();
                 }
                 else{
 	               $(id_spez).css('visibility', 'hidden'); 
-	               var speId = '#spe_'+$(this).attr('id').replace(/\s+/g, '');
-	               speId = speId.replace(/\//g,"");
+	               var speId = '#spe_'+$(this).attr('data-skillname').replace(/[\/\s_]+/g, '');
 				   var speVal = $(speId).val();
+
 				   if(speVal != null || speVal != ""){
 		               $.ajax({
 		                    type : 'POST',
@@ -1229,7 +1135,8 @@ $(document).ready(function(){
 		                    },
 		                    success : function(response){
 		                            if(response.error){ 
-		                            	treatMessageError(response,DISPLAY_ON_3);		                            }
+		                            	treatMessageError(response,DISPLAY_ON_3);
+                                    }
 		                    		else {
 		                    			var comeFrom = $('.skills').attr('id');
 		                    			if(comeFrom == "actSkills"){
@@ -1253,9 +1160,9 @@ $(document).ready(function(){
         $(document).on('keypress','.skName',function (e) {
 		  if (e.which == 13) {
 		    	$(this).css('visibility') == 'hidden';
-		    	var speId = '#spe_'+$(this).attr('id').replace(/\s+/g, '');
-		    	speId = speId.replace(/\//g,"");
+		    	var speId = '#spe_'+$(this).attr('id').replace(/[\/\s_]+/g, '');
 		    	var speVal = $(speId).val();
+
 		    	if(speVal != null || speVal != ""){
 	               $.ajax({
 	                    type : 'POST',
@@ -1264,12 +1171,13 @@ $(document).ready(function(){
 	                    dataType : 'json',
 	                    data: {
 	                            addSpe : speVal,
-	                            addSpeSkillName : $(this).attr('id'),
+	                            addSpeSkillName : $(this).attr('data-skillname'),
 	                            getCrePoint : 'get'
 	                    },
 	                    success : function(response){
 	                            if(response.error){ 
-		                            	treatMessageError(response,DISPLAY_ON_3);		                            }
+		                            	treatMessageError(response,DISPLAY_ON_3);
+                                    }
 		                    		else {
 		                    			var comeFrom = $('.skills').attr('id');
 		                    			if(comeFrom == "actSkills"){
@@ -2860,6 +2768,63 @@ $(document).ready(function(){
 	    });	   
 	
 });
+
+function changeSkill(node, after) {
+    //change skill value
+    var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
+
+    $.ajax({
+        type : 'POST',
+        contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
+        url : dispatcherURL,
+        dataType : 'json',
+        data: {
+            changeSkillName : node.attr('data-skillname'),
+            changeSkillValue : node.val(),
+            getCrePoint : 'get'
+        },
+        success : function(response){
+            if(response.error) {
+                treatMessageError(response,DISPLAY_ON_3);
+                $("[id="+skId+"]").css("background-color", "#BA0050");
+            }
+            else {
+                $("[id="+skId+"]").css("background-color", "#FEFEFE");
+                $("#secondary").load(after, function(){
+                    $(focusOnSkill).focus();
+                });
+                setRemainingPoint(response);
+            }
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+            displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
+        }
+    });
+}
+
+function removeSkill(node, after) {
+    //remove a temp active skill
+    $.ajax({
+        type : 'POST',
+        contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
+        url : dispatcherURL,
+        dataType : 'json',
+        data: {
+                remSkill : node.attr('data-skillname')
+        },
+        success : function(response){
+                if(response.error) {
+                    treatMessageError(response,DISPLAY_ON_3);
+                }
+                else {
+                    $("#secondary").load(after);
+                }
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown) {
+                   displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
+        }
+    });
+}
 
 function startLoading(){
 	$("#loading_popup").show();
