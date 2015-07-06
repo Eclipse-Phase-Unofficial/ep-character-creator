@@ -10,7 +10,7 @@
     <tr align="center">
         <td>
             Eclipse Phase Character Creator<br>
-            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.2.0" target="_blank">Version 1.2.0 FullSimplex Branch (07.2015)<a/></small>
+            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.2.0" target="_blank">Version 1.2.1 (07.2015)<a/></small>
             <br><br>
             A character creator for the <a href="http://eclipsephase.com" target="_blank">Eclipse Phase</a> role-playing game.
             <br><br>
