@@ -366,7 +366,7 @@ $(document).ready(function(){
         });
 
     	//apt value change
-        $(document).on('change', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
+        $(document).on('change ', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
                 $.ajax({
                     type : 'POST',
                     contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -855,7 +855,7 @@ $(document).ready(function(){
         });
 		
 		//change active skill value
-		$(document).on('change', '.actskillbase' ,function () {
+		$(document).on('change ', '.actskillbase' ,function () {
 				var skId = $(this).attr('id');	
 				skId = skId.replace(/\//g,"");
 				$.ajax({
@@ -1014,7 +1014,7 @@ $(document).ready(function(){
         });
 		
 		//change knowlege skill value
-		$(document).on('change', '.knoskillbase' ,function () {
+		$(document).on('change ', '.knoskillbase' ,function () {
 				var skId = $(this).attr('id');
 				skId = skId.replace(/\//g,"");
 				$.ajax({
@@ -2966,6 +2966,8 @@ function setRemainingPoint(ajaxData){
      $("#aptitude_remain").html(ajaxData.aptitude_remain);
      $("#reputation_remain").html(ajaxData.reputation_remain);
      $("#rez_remain").html(ajaxData.rez_remain);
+     $("#asr_remain").html(ajaxData.asr_remain);
+     $("#ksr_remain").html(ajaxData.ksr_remain);
 }
 //loading function
 function loaddingReset(){

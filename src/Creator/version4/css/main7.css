@@ -181,6 +181,10 @@ span.EP{
  	overflow-y: auto;
 	list-style: none;
 }
+
+#main-nav::-webkit-scrollbar {
+	display: none;
+}
 		
 #main-nav ul{
 	position: relative;
@@ -292,6 +296,10 @@ span.EP{
 	height: 100%;
 	/*background-color: rgba(242, 242, 242, .2);*/
 	overflow: auto;
+}
+
+#secondary::-webkit-scrollbar {
+	display: none;
 }
 
 #secondary .mainlist{
@@ -1210,6 +1218,9 @@ span.EP{
 	overflow: auto;
 }
 
+#tertiary::-webkit-scrollbar {
+	display: none;
+}
 
 #tertiary .mainlist{
 	padding: 0;
@@ -1577,8 +1588,11 @@ ul#implants li:hover{
 	height: 100%;
 	/*background-color: rgba(242, 242, 242, .2);*/
 	margin-left: 1px;
-	overflow: auto;
-	
+	overflow: auto;	
+}
+
+#quaternary::-webkit-scrollbar {
+	display: none;
 }
 
 #quaternary .mainlist{
@@ -1843,7 +1857,7 @@ ul#implants li:hover{
 	margin:0;
     background-color: rgba(242, 242, 242, .8);
 	width: 120px;
-	height:140px;
+	height:200px;
     border-bottom: 1px solid rgba(148,155,153,.6);
     border-top: 1px solid rgba(245, 245, 245, .6);
 	font-size:1.25em;
