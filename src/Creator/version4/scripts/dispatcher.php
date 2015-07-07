@@ -88,7 +88,7 @@ if (isset($_SESSION['fileToLoad'])) {
                 $_SESSION['cc']->evoCrePoint = $_SESSION['cc']->getCredit(); // we keep credits from creation mode
 				$_SESSION['cc']->evoRezPoint += $_SESSION['rezPoints'];
 				$_SESSION['cc']->evoRepPoint += $_SESSION['repPoints'];
-				$_SESSION['cc']->evoCrePoint += $_SESSION['credPoints'];  
+				$_SESSION['cc']->evoCrePoint += $_SESSION['credPoints'];
             }else{//We stay in creation mode
                 $_SESSION['cc']->creationMode = true;
             }            
@@ -458,7 +458,7 @@ if(isset($_POST['remSkill'])){
 
 //CHANGE SKILL VALUE
 if(isset($_POST['changeSkillName'])){
-	if(!$_SESSION['cc']->setSkillValue($_POST['changeSkillName'],intval($_POST['changeSkillValue']))){
+	if(!$_SESSION['cc']->setSkillValue($_POST['changeSkillName'], intval($_POST['changeSkillValue']))){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
 }
@@ -1119,6 +1119,8 @@ if(isset($_POST['getCrePoint']) && isset($_SESSION['cc'])){
 	$return['aptitude_remain'] = $_SESSION['cc']->getAptitudePoint();
 	$return['reputation_remain'] = $_SESSION['cc']->getReputationPoints();
     $return['rez_remain'] = $_SESSION['cc']->getRezPoints();
+    $return['asr_remain'] = $_SESSION['cc']->getActiveRestNeed();
+    $return['ksr_remain'] = $_SESSION['cc']->getKnowledgeRestNeed();
 }
 
 //error_log(print_r($return,true));

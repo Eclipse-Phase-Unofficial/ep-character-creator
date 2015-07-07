@@ -116,6 +116,21 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		$formatedHtml = getFormatedGearList($listFiltered,$morph);
  		echo $formatedHtml;
  		echo "</ul>";
+
+ 		//WEAPON ACCESSORY SECTION
+ 		echo "<li>";
+ 		echo "		<label class='foldingListSection' id='accW'>Weapon Accessories</label>";
+ 		echo "</li>";
+ 		$listFiltered = array();
+ 		foreach($gears as $m){
+ 			if($m->gearType == EPGear::$WEAPON_ACCESSORY){
+ 				array_push($listFiltered, $m);
+ 			}
+ 		}
+ 		echo "<ul class='mainlist foldingList accW'>";
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		echo $formatedHtml;
+ 		echo "</ul>";
  		
         
         //ARMOR SECTION
@@ -271,22 +286,19 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 				echo "</li>"; 		
  		 	}
  		}
- 		echo "</ul>";
- 			
- 		
+ 		echo "</ul>";	
                
         function getFormatedGearList($listFiltered,$morph){
         	 $htmlResult = "";
 	         foreach($listFiltered as $m){
 	            if(isGearLegal($morph,$m)){
-		             $htmlResult .= "<li>";
-					 if(isset($morph) && $_SESSION['cc']->haveGearOnMorph($m,$morph)){
+		            $htmlResult .= "<li>";
+					if(isset($morph) && $_SESSION['cc']->haveGearOnMorph($m,$morph)){
 		            	if ($_SESSION['cc']->haveAdditionalGear($m,$morph)){
-		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+		                    $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 		                }else{
-		                     $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-		                }
-		
+		                    $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+		                }	
 	            	}else{
 	                    $htmlResult .= "		<label class='morphGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addMorphGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
 	            	}
@@ -297,31 +309,31 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
         }
         
         function isGearLegal($morph,$gear){
-        	if($morph->morphType == EPMorph::$INFOMORPH) return false;
-        
-	         if($gear->gearRestriction == EPGear::$CAN_USE_EVERYBODY) return true;
-	         else if($gear->gearRestriction == EPGear::$CAN_USE_BIO){
-		         if($morph->morphType == EPMorph::$BIOMORPH) return true;
-		         else return false;
-	         }
-	         else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH){
-		         if($morph->morphType == EPMorph::$SYNTHMORPH) return true;
-		         else return false;
-	         }
-	         else if($gear->gearRestriction == EPGear::$CAN_USE_POD){
-		         if($morph->morphType == EPMorph::$PODMORPH) return true;
-		         else return false;
-	         }
-	         else if($gear->gearRestriction == EPGear::$CAN_USE_BIO_POD){
-		         if($morph->morphType == EPMorph::$BIOMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
-		         else return false;
-	         }
-	         else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH_POD){
-		         if($morph->morphType == EPMorph::$SYNTHMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
-		         else return false;
-	         }
-	         return false;
+        	//if($morph->morphType == EPMorph::$INFOMORPH) return false;
+        	//Removed so infomorphs can buy gear
+	        if($gear->gearRestriction == EPGear::$CAN_USE_EVERYBODY) return true;
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_CREATE_ONLY) return false;//this check hides gear that you want to exist, but not render on the list
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_BIO){
+		        if($morph->morphType == EPMorph::$BIOMORPH) return true;
+		        else return false;
+	        }
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH){
+		        if($morph->morphType == EPMorph::$SYNTHMORPH) return true;
+		        else return false;
+	        }
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_POD){
+		        if($morph->morphType == EPMorph::$PODMORPH) return true;
+		        else return false;
+	        }
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_BIO_POD){
+		        if($morph->morphType == EPMorph::$BIOMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
+		        else return false;
+	        }
+	        else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH_POD){
+		        if($morph->morphType == EPMorph::$SYNTHMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
+		        else return false;
+	        }
+	        return false;
 	    }
-
 	?>
 </ul>

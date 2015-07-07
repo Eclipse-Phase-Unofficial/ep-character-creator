@@ -98,6 +98,7 @@
                 <option value="<?php echo EPGear::$WEAPON_SPRAY_GEAR ?>">Weapon Spray</option>
                 <option value="<?php echo EPGear::$WEAPON_EXPLOSIVE_GEAR ?>">Weapon Explosive</option>
                 <option value="<?php echo EPGear::$WEAPON_SEEKER_GEAR ?>">Weapon seeker</option>
+                <option value="<?php echo EPGear::$WEAPON_ACCESSORY ?>">Weapon Accessory</option>
                 <option value="<?php echo EPGear::$ARMOR_GEAR ?>">Armor</option>
                 <option value="<?php echo EPGear::$IMPLANT_GEAR ?>">Implants</option>
                 <option value="<?php echo EPGear::$DRUG_GEAR ?>">Drug</option>
@@ -116,6 +117,7 @@
                 <option value="<?php echo EPGear::$CAN_USE_POD ?>">Pod</option> 
                 <option value="<?php echo EPGear::$CAN_USE_BIO_POD ?>">Biomorph & Pod</option> 
                 <option value="<?php echo EPGear::$CAN_USE_SYNTH_POD ?>">Synthomorph & Pod</option> 
+                <option value="<?php echo EPGear::$CAN_USE_CREATE_ONLY ?>">Reference Only</option>
             </select>
             <br>
             <label>Unique</label>
@@ -185,6 +187,7 @@
                         else if($m->gearType == EPGear::$WEAPON_KINETIC_GEAR) $type = "Weapon Kinetic";
                         else if($m->gearType == EPGear::$WEAPON_MELEE_GEAR) $type = "Weapon Melee";
                         else if($m->gearType == EPGear::$WEAPON_AMMUNITION) $type = "Weapon Ammunition";
+                        else if($m->gearType == EPGear::$WEAPON_ACCESSORY) $type = "Weapon Accessory";
                         else if($m->gearType == EPGear::$IMPLANT_GEAR) $type = "Implants";
                         else if($m->gearType == EPGear::$ARMOR_GEAR) $type = "Armor";
                         else if($m->gearType == EPGear::$DRUG_GEAR) $type = "Drug";
