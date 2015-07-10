@@ -173,10 +173,17 @@
 					$skillCompleteName .= $skill->name;
 					if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) $skillCompleteName .= " *";
 					$skillType = "A";
-					if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) $skillType = "K";
+					if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) {
+						$skillType = "K";
+
+						if($skill->getValue() == 0)
+							continue;
+					}
 					
-					echo formatResultLong($skillType." ".$skillCompleteName)
-					.$tab; 
+					echo formatResult($skillType." ".$skillCompleteName)
+					.$tab
+					.$skill->linkedApt->abbreviation
+					.$tab.$tab;
 					
 					if(!empty($skill->specialization)){
 						echo formatResult($skill->getEgoValue()."  SPE[".$skill->specialization."]");//Skill speci
@@ -415,17 +422,39 @@
 						.$carriageReturn
 						.$carriageReturn;
 						
+						echo formatTitle("") . $tab . "BASE" . $tab . "MORPH" . $tab . "TOTAL" . $carriageReturn;
+
 						$aptitudes = $_SESSION['cc']->getAptitudes();
 						foreach($aptitudes as $apt){
 							echo formatTitle($apt->name)
 							.$tab //Apt Name
+							.$apt->value # base
+							.$tab
+							.$apt->morphMod
+							.$tab
 							.formatResult($apt->getValue())//Apt Value Morph
 							.$carriageReturn;
 						}	
 								
 						echo $line.$carriageReturn;	
 						
-						
+						# MORPH STATS
+						echo formatTitle("Morp Stats")
+						.$tab
+						."   (EP p.121)"
+						.$carriageReturn
+						.$carriageReturn;
+
+						$stats = $_SESSION['cc']->getStats();
+
+						foreach($stats as $stat) {
+							echo formatResult($stat->name)
+							.$tab
+							.$stat->getValue()
+							.$carriageReturn;
+						}
+
+						echo $line.$carriageReturn;
 						
 						//EGO SKILLS
 						echo formatTitle("Morph Skills")
@@ -433,7 +462,17 @@
 						."   (EP p.176)"
 						.$carriageReturn
 						.$carriageReturn;
-						
+
+						echo formatResult("")
+						. $tab
+						. "APT"
+						. $tab
+						. "EGO"
+						. $tab
+						. "MORPH"
+						. $carriageReturn;
+
+
 						$skillList = $_SESSION['cc']->getSkills();
 						foreach($skillList as $skill){
 						
@@ -443,10 +482,21 @@
 							$skillCompleteName .= $skill->name;
 							if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) $skillCompleteName .= " *";
 							$skillType = "A";
-							if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) $skillType = "K";
-							
-							echo formatResultLong($skillType." ".$skillCompleteName)
-							.$tab; 
+
+							# ignore knowledge skills with an empty value as the player didn't pick the skill
+							if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) {
+								$skillType = "K";
+
+								if($skill->getValue() == 0)
+									continue;
+							}
+
+							echo formatResult($skillType." ".$skillCompleteName)
+							. $tab
+							. $skill->linkedApt->abbreviation
+							. $tab
+							. $skill->getEgoValue()
+							. $tab;
 							
 							if(!empty($skill->specialization)){
 								echo formatResult($skill->getValue()."  SPE[".$skill->specialization."]");//Skill speci
@@ -493,9 +543,12 @@
 						//ARMORS		
 						$armor = filterArmorOnly($morphGear);
 						
-						echo formatTitle("Weapons")
+						echo formatTitle("Armor")
 						.$carriageReturn
 						.$carriageReturn;
+
+						$protectionKinetic = 0;
+						$protectionEnergy = 0;
 
 						foreach($armor as $a){
 							if($a->occurence > 1) $occ = "(".$a->occurence.") ";
@@ -505,14 +558,27 @@
 								$protec = "see memo";//No protec, see memeo
 							}
 							else{
-								$protec = "Kin: ".$a->armorKinetic."  "."Ene: ".$a->armorEnergy;
+								$protec = "Kin: ". formatNumber($a->armorKinetic) . "  Ene: " . formatNumber($a->armorEnergy);
+
+								$protectionKinetic += $a->armorKinetic;
+								$protectionEnergy += $a->armorEnergy;
 							}
-							echo formatResultXL($occ.$a->name."  ".$protec)//armor 
+							echo formatResult($occ.$a->name . ($a->gearType == EPGear::$IMPLANT_GEAR ? " (Implant)" : ""))//armor 
 							.$tab
-							.setBookLink($w->name,$p)
+							.$protec
+							.$tab
+							.setBookLink($a->name,$p)
 							.$carriageReturn;
 						}
 						
+						# total protection
+						if($protectionKinetic > 0 || $protectionEnergy > 0) {
+							echo formatResult("")
+							. $tab
+							. "Kin: " . formatNumber($protectionKinetic) . "  Ene: " . formatNumber($protectionEnergy)
+							. $carriageReturn;
+						}
+
 						echo $line.$carriageReturn;
 						
 						//GEARS
@@ -546,7 +612,7 @@
 							if($i->occurence > 1) $occ = "(".$i->occurence.") ";
 							else $occ = "";
 							
-							echo formatResult($occ." ".$i->name)
+							echo formatResult($occ.$i->name)
 							.$tab
 							.setBookLink($i->name,$p)
 							.$carriageReturn;
@@ -589,30 +655,29 @@
 	//HELPERS ===============================================================
 	
 	function formatTitle($string){
-		$res = $string;
-		$res = strtoupper($res);
-		$res = str_pad($res, 12);
-		return $res;
+		return padString($string, 12);
 	}
 	
 	function formatResult($string){
-		$res = $string;
-		if($res == null) $res = " ";
-		$res = str_pad($res, 25);
-		return $res;
+		return padString($string, 25);
 	}
 	
 	function formatResultLong($string){
-		$res = $string;
-		if($res == null) $res = " ";
-		$res = str_pad($res, 40);
-		return $res;
+		return padString($string, 40);
 	}
 	
 	function formatResultXL($string){
+		return padString($string, 60);
+	}
+
+	function formatNumber($string) {
+		return padString($string, 3);
+	}
+
+	function padString($string, $pad) {
 		$res = $string;
 		if($res == null) $res = " ";
-		$res = str_pad($res, 60);
+		$res = str_pad($res, $pad);
 		return $res;
 	}
 	
@@ -711,6 +776,9 @@
 		foreach($gears as $g){
 			if( $g->gearType == EPGear::$ARMOR_GEAR){
 					array_push($result, $g);
+			}
+			else if($g->gearType == EPGear::$IMPLANT_GEAR && ($g->armorKinetic >0 || $g->armorEnergy > 0)) {
+				array_push($result, $g);
 			}
 		}
 		return $result;
