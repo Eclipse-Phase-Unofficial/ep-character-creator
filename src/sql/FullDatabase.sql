@@ -3059,7 +3059,7 @@ INSERT INTO `bonusMalus` (`name`, `desc`, `type`, `target`, `value`, `tragetForC
 ('+5 [Aptitude]', ' +5 to one aptitude of your choice', 'OA', '', 5, 'OA', '', 'false', '0'),
 ('+50 Swimming skill', '+50 Swimming skill', 'OS', 'Swimming', 50, '', '', 'false', '0'),
 ('-1 Moxie', 'Get -1 to your Moxie Stat.', 'OSA', 'Moxie', -1, '', '', 'false', '0'),
-('-1 Trauma treshold', 'get -1 on Trauma threshold.', 'OSA', 'Trauma treshold', -1, '', '', 'false', '0'),
+('-1 Trauma threshold', 'get -1 on Trauma threshold.', 'OSA', 'Trauma threshold', -1, '', '', 'false', '0'),
 ('-10 Integration / Alienation', 'Apply a -10 modifier for Integration Tests and Alienation Tests.	', 'DO', '', 0, '', '', 'false', '0'),
 ('-10 Lucidity', 'Lucidity get -10.', 'OSA', 'Lucidity', -10, '', '', 'false', '0'),
 ('-10 Networking', 'Apply a âˆ’10 modifier to Networking Tests.', 'OSP', 'Networking', -10, '', '', 'false', '0'),
@@ -6334,8 +6334,8 @@ INSERT INTO `stat` (`name`, `description`, `abbreviation`) VALUES
 ('Lucidity', '<b>LUCIDITY (LUC)</b><br>\r\nLucidity is similar to Durability, except that it measures mental health and state of mind rather than physical well-being. Your Lucidity determines how much stress (mental damage) you can take before you are incapacitated or driven insane.\r\nLucidity is unlimited, but generally ranges from 20 to 60 for baseline unmodified humans. <br><br>Lucidity is determined by your Willpower aptitude x 2.', 'LUC'),
 ('Moxie', '<b>MOXIE</b><br>\r\nMoxie represents your character inherent talent at facing down challenges and overcoming obstacles with spirited fervor. More than just luck, Moxie is your character ability to run the edge and do what it takes, no matter the odds. Some people consider it the evolutionary trait that spurred humankind to pick up tools, expand our brains, and face the future head on, leaving other mammals in the dust. When the sky is falling, death is imminent, and no one can help you, Moxie is what saves the day.<br>\r\nThe Moxie stat is rated between 1 and 10, as purchased during character creation (and perhaps raised later). In game play, Moxie is used to influence the odds in your favor. Every game session, your character begins with a number of Moxie points equal to their Moxie stat. Moxie points may be spent for any of the following effects:<br>\r\n\0\0 The character may ignore all negative modifiers that apply to a test. The Moxie point must be spent before dice are rolled.<br>\r\n\0\0 The character may flip-flop a d100 roll result. For example, an 83 would become a 38.<br>\r\n\0\0 The character may upgrade a success, making it a critical success, as if they rolled doubles. The character must succeed in the test before they spend the Moxie point.<br> The character may ignore a critical failure, treat- ing it as a regular failure instead.<br>\r\n\0\0 The character may go first in an Action Phase\r\n', 'MOX'),
 ('Speed', '<b>SPEED (SPD)</b><br>\r\nThe Speed stat determines how often your character gets to act in an Action Turn. <br><br>All characters start with a Speed stat of 1, meaning they act once per turn. Certain implants and other\r\nadvantages may boost this up to a maximum of 4.', 'SPD'),
-('Trauma treshold', '<b>TRAUMA THRESHOLD (TT)</b><br>\r\nThe Trauma Threshold determines if you suffer a trauma (mental wound) each time you take stress. A higher Trauma Threshold means that your mental state is more resilient against experiences that might inflict psychiatric disorders or other serious mental instabilities.<br><br>\r\nTrauma Threshold is calculated by dividing Lucidity by 5 (rounding up).', 'TT'),
-('Wound treshold', '<b>WOUND THRESHOLD (WT)</b><br>\r\nA Wound Threshold is used to determine if you receive a wound each time you take physical damage. The higher the Wound Threshold, the more resistant to serious injury you are.<br><br>\r\nWound Threshold is calculated by dividing Durability by 5 (rounding up).', 'WT');
+('Trauma threshold', '<b>TRAUMA THRESHOLD (TT)</b><br>\r\nThe Trauma Threshold determines if you suffer a trauma (mental wound) each time you take stress. A higher Trauma Threshold means that your mental state is more resilient against experiences that might inflict psychiatric disorders or other serious mental instabilities.<br><br>\r\nTrauma Threshold is calculated by dividing Lucidity by 5 (rounding up).', 'TT'),
+('Wound threshold', '<b>WOUND THRESHOLD (WT)</b><br>\r\nA Wound Threshold is used to determine if you receive a wound each time you take physical damage. The higher the Wound Threshold, the more resistant to serious injury you are.<br><br>\r\nWound Threshold is calculated by dividing Durability by 5 (rounding up).', 'WT');
 
 -- --------------------------------------------------------
 
@@ -6493,11 +6493,11 @@ INSERT INTO `TraitBonusMalus` (`traitName`, `bonusMalusName`, `occur`) VALUES
 ('Psi Defense Ego II', '+20 Psi Defense', 1),
 ('Psi Defense Morph I', '+10 Psi Defense ', 1),
 ('Psi Defense Morph II', '+20 Psi Defense', 1),
-('Psi I', '-1 Trauma treshold', 1),
+('Psi I', '-1 Trauma threshold', 1),
 ('Psi I', 'One Mental Disorder', 1),
 ('Psi I', 'Psi Drawbacks infection', 1),
 ('Psi I', 'Use psi-chi', 1),
-('Psi II', '-1 Trauma treshold', 1),
+('Psi II', '-1 Trauma threshold', 1),
 ('Psi II', 'Psi Drawbacks infection', 1),
 ('Psi II', 'Two Mental Disorder', 1),
 ('Psi II', 'Use psi-chi', 1),
