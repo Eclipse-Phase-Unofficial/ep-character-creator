@@ -26,6 +26,7 @@ session_start();
 				<li>
 					<label>Birth Gender</label>
 					<select id='mBirthGender'>
+						<option value='N' "; if($birthGender == 'N'){echo "selected";} echo " >None</option>
 						<option value='M' "; if($birthGender == 'M'){echo "selected";} echo " >Male</option>
 						<option value='F' "; if($birthGender == 'F'){echo "selected";} echo " >Female</option>
 					</select>

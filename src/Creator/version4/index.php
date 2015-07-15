@@ -162,13 +162,13 @@
         	</section>
         	
         	<!-- SECONDARY PANNEL - DYNAMIC CONTENT -->
-        	<section id="secondary"></section>	
+        	<section id="secondary" class="panel"></section>	
         	
         	<!-- TERTIARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="tertiary"></section>	
+        	<section id="tertiary" class="panel"></section>	
         	
         	<!-- QUATERNARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="quaternary"></section>	
+        	<section id="quaternary" class="panel"></section>	
         	
         	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
         	<section class="points">
@@ -176,7 +176,9 @@
             		AP <span id="aptitude_remain" class="rest"></span><br>
             		RP <span id="reputation_remain" class="rest"></span><br>
             		CR <span id="credit_remain" class="rest"></span><br>
-                    RZ <span id="rez_remain" class="rest"></span><span class="btnhelpPoint" data-icon="&#x2a;"></span><br>
+                    ASR <span id="asr_remain" class="rest"></span><br>
+                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelpPoint" data-icon="&#x2a;"></span><br>
+                    RZ <span id="rez_remain" class="rest"></span><br>
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>

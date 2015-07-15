@@ -16,18 +16,6 @@ body {
     line-height: 1.4;
 }
 
-::-moz-selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-
-/*
-::selection {
-    background: #b3d4fc;
-    text-shadow: none;
-}
-*/
-
 hr {
     display: block;
     height: 1px;
@@ -92,7 +80,7 @@ span.SW{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -60px;
+	background-position: 0px -60px;
 }
 
 span.RW{
@@ -105,7 +93,6 @@ span.RW{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -0px;
 }
 
 span.PAN{
@@ -118,7 +105,7 @@ span.PAN{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -30px;
+	background-position: 0px -30px;
 }
 
 span.GC{
@@ -131,7 +118,7 @@ span.GC{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -90px;
+	background-position: 0px -90px;
 }
 
 span.TH{
@@ -144,7 +131,7 @@ span.TH{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -120px;
+	background-position: 0px -120px;
 }
 
 span.EP{
@@ -157,19 +144,27 @@ span.EP{
 	top: 1em;
 	padding-right: 1em;
 	opacity: 1;
-	background-position-y: -150px;
+	background-position: 0px -150px;
 }
 
+/* SECONDAY, TERTIARY and QUATERNARY panels */
+section.panel {
+	position: relative;
+	float: left;
+	height: 100%;
+	/*background-color: rgba(242, 242, 242, .2);*/
+	overflow: auto;
+	margin-left: 1px;
+	width: 21em;
+}
 
 /*PRIMARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 #primary{
 	position: relative;
 	float: left;
 	height: 100%;
-	/*background-color: rgba(242, 242, 242, .2);*/
 	width: 20em;
 	z-index: 2;
-	margin-right: 1px;
 }
 	
 
@@ -178,10 +173,10 @@ span.EP{
 	width: 20em;
 	min-width: 20em;
 	height:100%;
- 	overflow-y: auto;
+	overflow-y: auto;
 	list-style: none;
 }
-		
+
 #main-nav ul{
 	position: relative;
 	margin: 0;
@@ -285,15 +280,6 @@ span.EP{
 
 
 /*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-#secondary{
-	position: relative;
-	float: left;
-	height: 100%;
-	/*background-color: rgba(242, 242, 242, .2);*/
-	overflow: auto;
-}
-
 #secondary .mainlist{
 	padding: 0;
 	margin: 0;
@@ -382,10 +368,6 @@ span.EP{
 }
 
 /*aptitudes*/
-#aptitudes{
-	width: 20em;
-}
-
 #aptitudes label{
 	padding-left: 1em;
 	display: block;
@@ -418,10 +400,6 @@ span.EP{
 
 
 /*backgrounds*/
-#backgrounds{
-	width: 20em;
-}
-
 #backgrounds label{
 	padding-left: 1em;
 	display: block;
@@ -461,10 +439,6 @@ span.EP{
 }
 
 /*factions*/
-#factions{
-	width: 20em;
-}
-
 #factions label{
 	padding-left: 1em;
 	display: block;
@@ -480,10 +454,6 @@ span.EP{
 }	
 
 /* motivations */
-#motivation{
-	width: 20em;
-}
-
 #motivation label{
 	padding-left: 1em;
 	display: block;
@@ -550,10 +520,6 @@ span.EP{
 
 
 /*reputations*/
-#reputations{
-	width: 20em;
-}
-
 #reputations label{
 	padding-left: 1em;
 	display: block;
@@ -579,10 +545,6 @@ span.EP{
 
 
 /*positive traits*/
-#postraits{
-	width: 20em;
-}
-
 #postraits label{
 	padding-left: 1em;
 	display: block;
@@ -598,10 +560,6 @@ span.EP{
 }
 
 /*negative traits*/
-#negtraits{
-	width: 20em;
-}
-
 #negtraits label{
 	padding-left: 1em;
 	display: block;
@@ -617,10 +575,6 @@ span.EP{
 }
 
 /*psy sleigths*/
-#psyS{
-	width: 20em;
-}
-
 #psyS label{
 	padding-left: 1em;
 	display: block;
@@ -636,11 +590,6 @@ span.EP{
 }
 
 /*active and knowledge skill*/
-
-#enterSkill{
-	width: 21em;/*Jige*/
-}
-
 #enterSkill input{
 	width: 9em;
 }
@@ -671,7 +620,6 @@ span.EP{
 	
 #knoSklDiv {  
 	font-family: 'Lato', sans-serif;	
-	width: 21em; /*Jige*/
 } 
 
 #knoSklDiv .icone{
@@ -699,9 +647,7 @@ span.EP{
 	
 #actSklDiv {  
 	font-family: 'Lato', sans-serif;	
-	width: 21em;
-} 
-
+}
 
 #actSklDiv .icone{
 	display: block;
@@ -818,6 +764,10 @@ span.EP{
     z-index: 1000;
 }
 
+.spezInt {
+	width: 97%;
+}
+
 .costInfo {
 	font-size: x-small;
 	display: block;
@@ -862,10 +812,6 @@ span.EP{
 
 
 /*morphs*/
-#morphs{
-	width: 20em;
-}
-
 #morphs label{
 	padding-left: 1em;
 	display: block;
@@ -996,10 +942,6 @@ span.EP{
 
 
 /* credits */
-#credits{
-	width: 20em;
-}
-
 #credits label{
 	padding-left: 1em;
 	display: block;
@@ -1056,10 +998,6 @@ span.EP{
 }
 
 /* stats */
-#stats{
-	width: 20em;
-}
-
 #stats label{
 	padding-left: 1em;
 	display: block;
@@ -1129,10 +1067,6 @@ span.EP{
 
 
 /*Ai and softgear*/
-#soft{
-	width: 20em;
-}
-
 #soft label{
 	padding-left: 1em;
 	display: block;
@@ -1201,16 +1135,6 @@ span.EP{
 
 
 /*TERTIARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-#tertiary{
-	position: relative;
-	float: left;
-	height: 100%;
-	/*background-color: rgba(242, 242, 242, .2);*/
-	margin-left: 1px;
-	overflow: auto;
-}
-
-
 #tertiary .mainlist{
 	padding: 0;
 	margin: 0;
@@ -1228,10 +1152,6 @@ span.EP{
 	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-#bmdList{
-	width: 20em;
 }
 
 .listSection{
@@ -1435,16 +1355,11 @@ span.EP{
 
 #tertiary_infos{
 	visibility: hidden;
-	width: 20em;
 	color: hsl(200,10%,40%);
 	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
 	padding: 1em;
-}
-
-#morph-settings{
-	width: 20em;
 }
 
 #morph-settings label{
@@ -1471,10 +1386,6 @@ span.EP{
 	text-align: left;
 }
 
-#morphPostraits{
-	width: 20em;
-}
-
 #morphPostraits label{
 	padding-left: 1em;
 	display: block;
@@ -1487,16 +1398,11 @@ span.EP{
 	background-color: rgba(254, 254, 254, .85);	
 }
 
-#morphNegtraits{
-	width: 20em;
-}
-
 #morphNegtraits label{
 	padding-left: 1em;
 	display: block;
 	line-height:3em;
 	padding-right: 1em;
-	
 }	
 
 #morphNegtraits li:hover{
@@ -1505,25 +1411,16 @@ span.EP{
 		
 }
 
-ul#implants{
-	width: 20em;
-}
-
 ul#implants label{
 	padding-left: 1em;
 	display: block;
 	line-height:3em;
 	padding-right: 1em;
-	
 }	
 
 ul#implants li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);	
-}
-
-#gears{
-	width: 20em;
 }
 
 #gears label{
@@ -1539,16 +1436,11 @@ ul#implants li:hover{
 	background-color: rgba(254, 254, 254, .85);	
 }
 
-#statWithMorph{
-	width: 20em;
-}
-
 #statWithMorph label{
 	padding-left: 1em;
 	display: block;
 	line-height:3em;
 	padding-right: 1em;
-	
 }
 
 #statWithMorph li:hover{
@@ -1556,31 +1448,14 @@ ul#implants li:hover{
 	background-color: rgba(254, 254, 254, .85);		
 }
 
-#aptsWithMorph{
-	width: 20em;
-}
-
 #aptsWithMorph label{
 	padding-left: 1em;
 	display: block;
 	line-height:3em;
 	padding-right: 1em;
-	
-}		
-
-
-/*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-
-#quaternary{
-	position: relative;
-	float: left;
-	height: 100%;
-	/*background-color: rgba(242, 242, 242, .2);*/
-	margin-left: 1px;
-	overflow: auto;
-	
 }
 
+/*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 #quaternary .mainlist{
 	padding: 0;
 	margin: 0;
@@ -1602,16 +1477,11 @@ ul#implants li:hover{
 
 #quaternary_infos{
 	visibility: hidden;
-	width: 20em;
 	color: hsl(200,10%,40%);
 	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
 	padding: 1em;
-}
-
-#bmdList{
-	width: 20em;
 }
 
 .listSection{
@@ -1655,7 +1525,6 @@ ul#implants li:hover{
 	padding-bottom: 1em;
 }
 
-
 .bmChoice{
 	font-size: x-small;
 	color: hsl(200,10%,40%);
@@ -1665,6 +1534,7 @@ ul#implants li:hover{
 	line-height:3em;
 	padding-right: 1em;
 }
+
 .bmChoiceInput{
 	font-size: x-small;
 	color: hsl(200,10%,40%);
@@ -1724,7 +1594,6 @@ ul#implants li:hover{
 	    -ms-transition: opacity .3s ease .2s;
 	     -o-transition: opacity .3s ease .2s;
 	        transition: opacity .3s ease .2s;
-	
 }
 
 .iconebmSimpleRemChoice:hover{
@@ -1748,7 +1617,6 @@ ul#implants li:hover{
 	    -ms-transition: opacity .3s ease .2s;
 	     -o-transition: opacity .3s ease .2s;
 	        transition: opacity .3s ease .2s;
-	
 }
 
 .iconebmChoice:hover{
@@ -1772,7 +1640,6 @@ ul#implants li:hover{
 	    -ms-transition: opacity .3s ease .2s;
 	     -o-transition: opacity .3s ease .2s;
 	        transition: opacity .3s ease .2s;
-	
 }
 
 .iconebmRemChoice:hover{
@@ -1843,7 +1710,7 @@ ul#implants li:hover{
 	margin:0;
     background-color: rgba(242, 242, 242, .8);
 	width: 120px;
-	height:140px;
+	height:200px;
     border-bottom: 1px solid rgba(148,155,153,.6);
     border-top: 1px solid rgba(245, 245, 245, .6);
 	font-size:1.25em;
@@ -2448,12 +2315,6 @@ ul#implants li:hover{
 .clearfix:after {
     clear: both;
 }
-
-/*
-.clearfix {
-    *zoom: 1;
-}
-*/
 
 input#saveName {
     width: 296px;

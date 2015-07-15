@@ -27,7 +27,7 @@
 		<td>
 			<br><br>
 			<button class="startButton">
-		       			Begin !
+		       			Begin!
 	        </button>
 	        <button class="cancelButton">
 		       			Cancel
@@ -47,7 +47,7 @@
 	
 	<tr align="center">
 		<td>
-            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.2.0" target="_blank">Version 1.2.0 (09.2014)<a/></small>
+            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.2.0" target="_blank">Version 1.2.1 (07.2015)<a/></small>
 			<br><br>
 		</td>
 	</tr>
