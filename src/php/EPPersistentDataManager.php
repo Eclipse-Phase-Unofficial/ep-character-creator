@@ -27,7 +27,7 @@ require_once 'EPPsySleight.php';
 class EPPersistentDataManager {
 
     public $errors;
-    private $mysqli;
+    private $database;
     
     function __construct($configPath) {
         $this->errors = array();
@@ -39,10 +39,10 @@ class EPPersistentDataManager {
         $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
         $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
 
-        $this->mysqli = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
+        $this->database = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
         
-        if ($this->mysqli->connect_errno) {
-             $this->addError("Failed to connect to MySQL: (" . $this->mysqli->connect_errno . ") " . $this->mysqli->connect_error);
+        if ($this->database->connect_errno) {
+             $this->addError("Failed to connect to MySQL: (" . $this->database->connect_errno . ") " . $this->database->connect_error);
         };
     }
     
@@ -67,7 +67,7 @@ class EPPersistentDataManager {
                                                 .$epSkill->defaultable
                                                 ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
             $groups = $epSkill->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -77,8 +77,8 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epSkill->name)
                                                    ."')";
 
-                   if(!$this->mysqli->query($insertGroupTargetQuerry)){
-                       $this->addError("Skill groups list ".$epSkill->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                   if(!$this->database->query($insertGroupTargetQuerry)){
+                       $this->addError("Skill groups list ".$epSkill->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                        return false;
                    }
                 }
@@ -86,7 +86,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Skill core ".$epSkill->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Skill core ".$epSkill->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -111,7 +111,7 @@ class EPPersistentDataManager {
                                                         .$epBonusMalus->onCost."','"
                                                         .$epBonusMalus->multi_occurence
                                                         ."')";
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                $groups = $epBonusMalus->groups;
                if($groups != null){
                     foreach($groups as $gr){
@@ -121,8 +121,8 @@ class EPPersistentDataManager {
                                                         .$this->adjustForSQL($epBonusMalus->name)
                                                         ."')";
 
-                        if(!$this->mysqli->query($insertGroupTargetQuerry)){
-                            $this->addError("Bonnus Malus groups list ".$epBonusMalus->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertGroupTargetQuerry)){
+                            $this->addError("Bonnus Malus groups list ".$epBonusMalus->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                      }
@@ -136,8 +136,8 @@ class EPPersistentDataManager {
                                                         .$this->adjustForSQL($mc->name)
                                                         ."')";
 
-                        if(!$this->mysqli->query($insertMultiChoiceQuerry)){
-                            $this->addError("Bonnus Malus multi choice list ".$epBonusMalus->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertMultiChoiceQuerry)){
+                            $this->addError("Bonnus Malus multi choice list ".$epBonusMalus->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                      }
@@ -145,7 +145,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("BonusMalus ".$epBonusMalus->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("BonusMalus ".$epBonusMalus->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -158,11 +158,11 @@ class EPPersistentDataManager {
     //====== INFO ===========
     function persistInfos($id,$data){
         $insertQuerry = "INSERT INTO `infos`(`id`, `data`) VALUES ('".$id."','".$data."')";
-        if($this->mysqli->query($insertQuerry)){
+        if($this->database->query($insertQuerry)){
             return true;
         }
         else{
-           $this->addError("Info ".$id."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+           $this->addError("Info ".$id."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
            return false;
         }
     }
@@ -182,7 +182,7 @@ class EPPersistentDataManager {
                                                         .$epTrait->canUse
                                                         ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                $bmTrait = $epTrait->bonusMalus;
                foreach($bmTrait as $bmt){
                    
@@ -195,8 +195,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertBMtraitQuerry)){
-                            $this->addError("Trait bonnus malus table ".$epTrait->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertBMtraitQuerry)){
+                            $this->addError("Trait bonnus malus table ".$epTrait->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -204,7 +204,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Trait core ".$epTrait->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Trait core ".$epTrait->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -224,8 +224,8 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusTraitCoupleAllreadyExist($bmName, $traitName){
-        if($this->mysqli->real_query("SELECT `traitName`, `bonusMalusName`, `occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitName)."' AND `bonusMalusName` ='".$this->adjustForSQL($bmName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `traitName`, `bonusMalusName`, `occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitName)."' AND `bonusMalusName` ='".$this->adjustForSQL($bmName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -243,7 +243,7 @@ class EPPersistentDataManager {
                                                 .$epAptitude->abbreviation
                                                 ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
             $groups = $epAptitude->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -253,8 +253,8 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epAptitude->name)
                                                    ."')";
 
-                   if(!$this->mysqli->query($insertGroupTargetQuerry)){
-                       $this->addError("Aptitude groups list ".$epAptitude->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                   if(!$this->database->query($insertGroupTargetQuerry)){
+                       $this->addError("Aptitude groups list ".$epAptitude->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                        return false;
                    }
                 }
@@ -262,7 +262,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Aptitude core ".$epAptitude->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Aptitude core ".$epAptitude->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -283,7 +283,7 @@ class EPPersistentDataManager {
                                                 .$epStat->abbreviation
                                                 ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
             $groups = $epStat->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -293,8 +293,8 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epStat->name)
                                                    ."')";
 
-                   if(!$this->mysqli->query($insertGroupTargetQuerry)){
-                       $this->addError("Stat groups list ".$epStat->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                   if(!$this->database->query($insertGroupTargetQuerry)){
+                       $this->addError("Stat groups list ".$epStat->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                        return false;
                    }
                 }
@@ -302,7 +302,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Stat core ".$epStat->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Stat core ".$epStat->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -323,11 +323,11 @@ class EPPersistentDataManager {
                                             .$this->adjustForSQL($desc)
                                             ."')";
 
-       if($this->mysqli->query($insertQuerry)){
+       if($this->database->query($insertQuerry)){
             return true;      
        }
        else {
-           $this->addError("Prefix : ".$epPrefix."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+           $this->addError("Prefix : ".$epPrefix."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
            return false;
        }
     }
@@ -341,7 +341,7 @@ class EPPersistentDataManager {
                                                 .$this->adjustForSQL($epReputation->description)
                                                 ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
             $groups = $epReputation->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -351,8 +351,8 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epReputation->name)
                                                    ."')";
 
-                   if(!$this->mysqli->query($insertGroupTargetQuerry)){
-                       $this->addError("Reputation groups list ".$epReputation->atomUid." and ".$gr."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                   if(!$this->database->query($insertGroupTargetQuerry)){
+                       $this->addError("Reputation groups list ".$epReputation->atomUid." and ".$gr."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                        return false;
                    }
                 }
@@ -360,7 +360,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Reputation core ".$epReputation->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Reputation core ".$epReputation->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -380,7 +380,7 @@ class EPPersistentDataManager {
                                                         .$epBackground->backgroundType
                                                         ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                //--- Bonusmalus
                $bmBkg = $epBackground->bonusMalus;
                foreach($bmBkg as $bmt){
@@ -394,8 +394,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertBMbkgQuerry)){
-                            $this->addError("Background bonnus malus table ".$epBackground->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertBMbkgQuerry)){
+                            $this->addError("Background bonnus malus table ".$epBackground->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -410,8 +410,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($trait->name)
                                                          ."')";
 
-                    if(!$this->mysqli->query($insertTraitBkgQuerry)){
-                        $this->addError("Background trait table ".$epBackground->atomUid." and ".$trait->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertTraitBkgQuerry)){
+                        $this->addError("Background trait table ".$epBackground->atomUid." and ".$trait->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -425,8 +425,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($limit)
                                                          ."')";
 
-                    if(!$this->mysqli->query($insertLimitationBkgQuerry)){
-                        $this->addError("Background Limitation table ".$epBackground->atomUid." and ".$limit->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertLimitationBkgQuerry)){
+                        $this->addError("Background Limitation table ".$epBackground->atomUid." and ".$limit->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -440,8 +440,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($oblig)
                                                          ."')";
 
-                    if(!$this->mysqli->query($insertObligationBkgQuerry)){
-                        $this->addError("Background Obligation table ".$epBackground->atomUid." and ".$oblig->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertObligationBkgQuerry)){
+                        $this->addError("Background Obligation table ".$epBackground->atomUid." and ".$oblig->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -449,7 +449,7 @@ class EPPersistentDataManager {
                return true;  
            }
            else {
-               $this->addError("Background core ".$epBackground->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Background core ".$epBackground->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -460,8 +460,8 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusBackgroundCoupleAllreadyExist($bmName, $backgroundName){
-        if($this->mysqli->real_query("SELECT `background`, `bonusMalus` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($backgroundName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `background`, `bonusMalus` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($backgroundName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -485,7 +485,7 @@ class EPPersistentDataManager {
                                                         .$epMorph->cost
                                                         ."')";
            //error_log($insertQuerry);
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                //--- Bonusmalus
                $bmMorph = $epMorph->bonusMalus;
                foreach($bmMorph as $bmt){
@@ -499,8 +499,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertBMMorphQuerry)){
-                            $this->addError("Morph bonnus malus table ".$epMorph->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertBMMorphQuerry)){
+                            $this->addError("Morph bonnus malus table ".$epMorph->atomUid." and ".$bmt->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -515,8 +515,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($trait->name)
                                                          ."')";
 
-                    if(!$this->mysqli->query($insertTraitMorphQuerry)){
-                        $this->addError("Morph trait table ".$epMorph->atomUid." and ".$trait->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertTraitMorphQuerry)){
+                        $this->addError("Morph trait table ".$epMorph->atomUid." and ".$trait->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -533,8 +533,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertGearMorphQuerry)){
-                            $this->addError("Morph Gear table ".$epMorph->atomUid." and ".$gear->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertGearMorphQuerry)){
+                            $this->addError("Morph Gear table ".$epMorph->atomUid." and ".$gear->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -543,7 +543,7 @@ class EPPersistentDataManager {
                return true;  
            }
            else {
-               $this->addError("Morph core ".$epMorph->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Morph core ".$epMorph->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -554,8 +554,8 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusMorphCoupleAllreadyExist($bmName, $morphName){
-        if($this->mysqli->real_query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -564,8 +564,8 @@ class EPPersistentDataManager {
     }
     
     function gearMorphCoupleAllreadyExist($gearName, $morphName){
-        if($this->mysqli->real_query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `gear` ='".$this->adjustForSQL($gearName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `gear` ='".$this->adjustForSQL($gearName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -585,7 +585,7 @@ class EPPersistentDataManager {
                                                         .$unik
                                                         ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                $aptGear = $epAi->aptitudes;
                foreach($aptGear as $apt){
                    
@@ -595,8 +595,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($apt->value)
                                                          .")";
 
-                    if(!$this->mysqli->query($insertAptQuerry)){
-                        $this->addError("Ai Aptitude table ".$epAi->atomUid." and ".$apt->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertAptQuerry)){
+                        $this->addError("Ai Aptitude table ".$epAi->atomUid." and ".$apt->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -610,8 +610,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($stat->value)
                                                          .")";
 
-                    if(!$this->mysqli->query($insertStatQuerry)){
-                        $this->addError("Ai Stat table ".$epAi->atomUid." and ".$stat->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertStatQuerry)){
+                        $this->addError("Ai Stat table ".$epAi->atomUid." and ".$stat->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -626,8 +626,8 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($skill->baseValue)
                                                          .")";
 
-                    if(!$this->mysqli->query($insertSkillQuerry)){
-                        $this->addError("Ai Skill table ".$epAi->atomUid." and ".$skill->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    if(!$this->database->query($insertSkillQuerry)){
+                        $this->addError("Ai Skill table ".$epAi->atomUid." and ".$skill->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                         return false;
                     }
                }
@@ -635,7 +635,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Ai core ".$epAi->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Ai core ".$epAi->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -664,7 +664,7 @@ class EPPersistentDataManager {
                                                         .$uni
                                                         ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                $bmGear = $epGear->bonusMalus;
                foreach($bmGear as $bmg){
                    
@@ -677,8 +677,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertBMGearQuerry)){
-                            $this->addError("Gear bonnus malus table ".$bmGear->atomUid." and ".$bmg->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertBMGearQuerry)){
+                            $this->addError("Gear bonnus malus table ".$bmGear->atomUid." and ".$bmg->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -686,7 +686,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Grear core ".$epGear->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Grear core ".$epGear->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -698,8 +698,8 @@ class EPPersistentDataManager {
     
     
     function bonusMalusGearCoupleAllreadyExist($bmName, $gearName){
-        if($this->mysqli->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -731,7 +731,7 @@ class EPPersistentDataManager {
                                                         .$epPsyS->skillNeeded
                                                         ."')";
            
-           if($this->mysqli->query($insertQuerry)){
+           if($this->database->query($insertQuerry)){
                $bmPsy = $epPsyS->bonusMalus;
                foreach($bmPsy as $bmp){
                    
@@ -744,8 +744,8 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->mysqli->query($insertBMGearQuerry)){
-                            $this->addError("PsySleight bonnus malus table ".$bmPsy->atomUid." and ".$bmp->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                        if(!$this->database->query($insertBMGearQuerry)){
+                            $this->addError("PsySleight bonnus malus table ".$bmPsy->atomUid." and ".$bmp->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                             return false;
                         }
                    }
@@ -753,7 +753,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("PsySleight core ".$epPsyS->atomUid."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("PsySleight core ".$epPsyS->atomUid."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
         }
@@ -764,8 +764,8 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusPsyCoupleAllreadyExist($bmName, $psyName){
-        if($this->mysqli->real_query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
-            $sqlRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';")){
+            $sqlRes = $this->database->store_result();
             $res = $sqlRes->fetch_assoc();
             if(count($res) > 0) return true;
             else return false;
@@ -784,11 +784,11 @@ class EPPersistentDataManager {
     //Book
     function persistAtomeBook($name,$book){
 	     $insertQuerry = "INSERT INTO `AtomBook`(`name`, `book`) VALUES ('".$this->adjustForSQL($name)."','".$this->adjustForSQL($book)."')";
-		 if($this->mysqli->query($insertQuerry)){
+		 if($this->database->query($insertQuerry)){
 	        return true;
 		 }
 		 else{
-	       $this->addError("Atome Book ".$name."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+	       $this->addError("Atome Book ".$name."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
 	       return false;
 	     }
      }
@@ -797,11 +797,11 @@ class EPPersistentDataManager {
     //Page
     function persistAtomePage($name,$page){
 	     $insertQuerry = "INSERT INTO `AtomPage`(`name`, `page`) VALUES ('".$this->adjustForSQL($name)."','".$this->adjustForSQL($page)."')";
-		 if($this->mysqli->query($insertQuerry)){
+		 if($this->database->query($insertQuerry)){
 	        return true;
 		 }
 		 else{
-	       $this->addError("Atome Page ".$name."  persistance failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+	       $this->addError("Atome Page ".$name."  persistance failed: (" . $this->database->errno . ") " . $this->database->error);
 	       return false;
 	     }
      }
@@ -812,11 +812,11 @@ class EPPersistentDataManager {
         
          $deleteQuerry = "DELETE FROM `".$tableName."` WHERE `".$entryKeyColumnName."` = '".$this->adjustForSQL($entryKey)."'";
                     
-           if($this->mysqli->query($deleteQuerry)){
+           if($this->database->query($deleteQuerry)){
                return true;
            }
            else {
-               $this->addError("Delete error on ".$tableName." for ".$entryKey."  DELETE failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+               $this->addError("Delete error on ".$tableName." for ".$entryKey."  DELETE failed: (" . $this->database->errno . ") " . $this->database->error);
                return false;
            }
     }

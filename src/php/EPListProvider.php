@@ -26,7 +26,7 @@ class EPListProvider {
     
     
     public $errors;
-    private $mysqli;
+    private $database;
     private $configValues;
     
     function __construct($configPath) {
@@ -39,9 +39,9 @@ class EPListProvider {
         $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
         $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
 
-        $this->mysqli = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
-        if ($this->mysqli->connect_errno) {
-             $this->addError("Failed to connect to MySQL: (" . $this->mysqli->connect_errno . ") " . $this->mysqli->connect_error);
+        $this->database = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
+        if ($this->database->connect_errno) {
+             $this->addError("Failed to connect to MySQL: (" . $this->database->connect_errno . ") " . $this->database->connect_error);
         };
     }
     
@@ -52,9 +52,9 @@ class EPListProvider {
         $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
         $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
 
-        $this->mysqli = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
-        if ($this->mysqli->connect_errno) {
-             $this->addError("Failed to connect to MySQL: (" . $this->mysqli->connect_errno . ") " . $this->mysqli->connect_error);
+        $this->database = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
+        if ($this->database->connect_errno) {
+             $this->addError("Failed to connect to MySQL: (" . $this->database->connect_errno . ") " . $this->database->connect_error);
         };
     }
     
@@ -78,8 +78,8 @@ class EPListProvider {
     function getListBonusMalus(){
          $bmList = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus`;")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus`;")){
+            $res = $this->database->store_result();
 
             while ($row = $res->fetch_assoc()) {
                 
@@ -95,14 +95,14 @@ class EPListProvider {
             return $bmList;
         }
         else{
-            $this->addError("Get Bonus Malus failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Bonus Malus failed: (" . $this->database->errno . ") " . $this->database->error);
            return null; 
         }
     }
     
     function getBonusMalusByName($name){   
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $bmRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $bmRes = $this->database->store_result();
             $row = $bmRes->fetch_array();
 			$groups = $this->getListGroups($row['name']);
               
@@ -112,15 +112,15 @@ class EPListProvider {
             return $epBonMal;
         }
         else{
-            $this->addError("Get Bonus Malus by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Bonus Malus by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getBonusMalusTypes($bmName){
 	    $bmTypeArray = array();
-	    if($this->mysqli->real_query("SELECT `bmChoices` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';")){
-	    	$res = $this->mysqli->store_result();
+	    if($this->database->real_query("SELECT `bmChoices` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';")){
+	    	$res = $this->database->store_result();
 
             while ($row = $res->fetch_assoc()) {
             	$assocBm = $this->getBonusMalusByName($row['bmChoices']);
@@ -130,21 +130,21 @@ class EPListProvider {
             return $bmTypeArray;
 	    }
 	    else{
-            $this->addError("Get Bonus Malus multi Types by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Bonus Malus multi Types by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     // ===== INFOS ======
     function getInfosById($id){   
-        if($this->mysqli->real_query("SELECT `id`, `data` FROM `infos` WHERE `id` = '".$this->adjustForSQL($id)."';")){
-            $infoRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `id`, `data` FROM `infos` WHERE `id` = '".$this->adjustForSQL($id)."';")){
+            $infoRes = $this->database->store_result();
             $row = $infoRes->fetch_array();
             $info = $row['data'];
             return $info;
         }
         else{
-            $this->addError("Get Info by id failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Info by id failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -155,19 +155,19 @@ class EPListProvider {
         $traitList = array();
         
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost` , `level` , `JustFor` FROM `traits`")){
-            $traitRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost` , `level` , `JustFor` FROM `traits`")){
+            $traitRes = $this->database->store_result();
             while ($traitRow = $traitRes->fetch_assoc()) {
 
-                if($this->mysqli->real_query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     
                     $bonusMalusTraitList = array();
                         
                     while ($bmRow = $bonusMalus->fetch_assoc()) {
                          $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']); 
                          if($epBonMal == null){
-                             $this->addError("Get Trait getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Trait getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -179,7 +179,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Trait BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Trait BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
 
@@ -190,25 +190,25 @@ class EPListProvider {
             return $traitList;
         }
         else{
-            $this->addError("Get Trait failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Trait failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getTraitByName($traitName){
         $bonusMalusTraitList = array();
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';")){
-            $traitRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';")){
+            $traitRes = $this->database->store_result();
             $traitRow = $traitRes->fetch_array();
 
-            if($this->mysqli->real_query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';")){
-                $bonusMalus = $this->mysqli->store_result();
+            if($this->database->real_query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';")){
+                $bonusMalus = $this->database->store_result();
 
 
                 while ($bmRow = $bonusMalus->fetch_assoc()) {
                      $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']); 
                      if($epBonMal == null){
-                         $this->addError("Get Trait by name getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                         $this->addError("Get Trait by name getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                          return null; 
                      }
                      else{
@@ -220,7 +220,7 @@ class EPListProvider {
                 }
             }
             else{
-                $this->addError("Get Trait by name BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                $this->addError("Get Trait by name BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                 return null; 
             }
 
@@ -230,7 +230,7 @@ class EPListProvider {
             return $trait;
         }
         else{
-            $this->addError("Get Trait failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Trait failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
         
@@ -248,8 +248,8 @@ class EPListProvider {
        }      
        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
        
-        if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $groups = $this->getListGroups($row['name']);
@@ -261,7 +261,7 @@ class EPListProvider {
             return $apt;
         }
         else{
-            $this->addError("Get Aptitude failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Aptitude failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -278,8 +278,8 @@ class EPListProvider {
        
        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
        
-        if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $groups = $this->getListGroups($row['name']);
@@ -290,7 +290,7 @@ class EPListProvider {
             return $apt;
         }
         else{
-            $this->addError("Get Complete Aptitude failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Complete Aptitude failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -305,8 +305,8 @@ class EPListProvider {
        
        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
        
-        if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `name` = '".$this->adjustForSQL($aptName)."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `name` = '".$this->adjustForSQL($aptName)."';")){
+            $res = $this->database->store_result();
             $row = $res->fetch_array();
 
             $groups = $this->getListGroups($row['name']);
@@ -315,7 +315,7 @@ class EPListProvider {
             return $epAppt;
         }
         else{
-            $this->addError("Get Aptitude by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Aptitude by name failed: (" . $this->database->errno . ") " . $this->database->error);
         }      
     }
     function getAptitudeByAbbreviation($abbrev,$minValue=0,$maxValue=0){
@@ -328,8 +328,8 @@ class EPListProvider {
        
        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
        
-        if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `abbreviation` = '".$abbrev."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `abbreviation` = '".$abbrev."';")){
+            $res = $this->database->store_result();
             $row = $res->fetch_array();
 
             $groups = $this->getListGroups($row['name']);
@@ -338,7 +338,7 @@ class EPListProvider {
             return $epAppt;
         }
         else{
-            $this->addError("Get Aptitude by abbreviation failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Aptitude by abbreviation failed: (" . $this->database->errno . ") " . $this->database->error);
         }        
     }
     
@@ -347,8 +347,8 @@ class EPListProvider {
     function getListStats($configValues,&$cc=null){
         $stats = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `stat`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `stat`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $groups = $this->getListGroups($row['name']);
@@ -366,14 +366,14 @@ class EPListProvider {
             return $stats;
         }
         else{
-            $this->addError("Get Stats failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Stats failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getStatByName($statName){
-         if($this->mysqli->real_query("SELECT `name`, `description`, `abbreviation` FROM `stat` WHERE `name`='".$this->adjustForSQL($statName)."';")){
-            $res = $this->mysqli->store_result();
+         if($this->database->real_query("SELECT `name`, `description`, `abbreviation` FROM `stat` WHERE `name`='".$this->adjustForSQL($statName)."';")){
+            $res = $this->database->store_result();
             $row = $res->fetch_array();
 
             $groups = $this->getListGroups($row['name']);
@@ -382,7 +382,7 @@ class EPListProvider {
             return $epStats;
         }
         else{
-            $this->addError("Get Stats by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Stats by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -392,8 +392,8 @@ class EPListProvider {
     function getListPrefix(){
          $prefixes = array();
         
-        if($this->mysqli->real_query("SELECT `prefix` FROM `skillPrefixes`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `prefix` FROM `skillPrefixes`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 array_push($prefixes, $row['prefix']);
@@ -402,7 +402,7 @@ class EPListProvider {
             return $prefixes;
         }
         else{
-            $this->addError("Get Prefixes failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Prefixes failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -410,45 +410,45 @@ class EPListProvider {
     
     function getAptForPrefix($prefixName){
                 
-        if($this->mysqli->real_query("SELECT `linkedApt` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `linkedApt` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
+            $res = $this->database->store_result();
             
            $row = $res->fetch_array();
 
             return $row['linkedApt'];
         }
         else{
-            $this->addError("Get Apt for prefix failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Apt for prefix failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getTypeForPrefix($prefixName){
                 
-        if($this->mysqli->real_query("SELECT `skillType` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `skillType` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
+            $res = $this->database->store_result();
             
            $row = $res->fetch_array();
 
             return $row['skillType'];
         }
         else{
-            $this->addError("Get type for prefix failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get type for prefix failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getPrefixDescription($prefixName){
                 
-        if($this->mysqli->real_query("SELECT `desc` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `desc` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';")){
+            $res = $this->database->store_result();
             
            $row = $res->fetch_array();
 
             return $row['desc'];
         }
         else{
-            $this->addError("Get prefix description failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get prefix description failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -468,8 +468,8 @@ class EPListProvider {
     function getListSkills($listApt){        
         $skills = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $groups = $this->getListGroups($row['name']);
@@ -479,15 +479,15 @@ class EPListProvider {
             return $skills;
         }
         else{
-            $this->addError("Get Skill failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Skill failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getSkillByNamePrefix($name,$prefix,$listApt){
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';")){
+            $res = $this->database->store_result();
             $row = $res->fetch_array();
            
             $groups = $this->getListGroups($row['name']);
@@ -497,15 +497,15 @@ class EPListProvider {
             return $epSkills;
         }
         else{
-            $this->addError("Get Skill by name and prefix failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Skill by name and prefix failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getSkillByName($name,$listApt){
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $res = $this->database->store_result();
             $row = $res->fetch_array();
            
             $groups = $this->getListGroups($row['name']);
@@ -520,7 +520,7 @@ class EPListProvider {
             return $epSkills;
         }
         else{
-            $this->addError("Get Skill by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Skill by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -531,12 +531,12 @@ class EPListProvider {
         if(!empty($targetName)){
             $groupsList = array();
           
-            if($this->mysqli->real_query("SELECT `groupName`, `targetName` FROM `GroupName` WHERE `targetName` = '".$this->adjustForSQL($targetName)."';")){
-                $groups = $this->mysqli->store_result();
+            if($this->database->real_query("SELECT `groupName`, `targetName` FROM `GroupName` WHERE `targetName` = '".$this->adjustForSQL($targetName)."';")){
+                $groups = $this->database->store_result();
 
                 while ($groupRow = $groups->fetch_assoc()) {
                      if($groupRow == null){
-                         $this->addError("Get group list  failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                         $this->addError("Get group list  failed: (" . $this->database->errno . ") " . $this->database->error);
                          //error_log($this->getLastError());
                          return null; 
                      }
@@ -546,7 +546,7 @@ class EPListProvider {
                 }
             }
             else{
-                $this->addError("Get Skill GroupsList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                $this->addError("Get Skill GroupsList failed: (" . $this->database->errno . ") " . $this->database->error);
                 //error_log($this->getLastError());
                 return null; 
             }
@@ -555,12 +555,12 @@ class EPListProvider {
         else{
              $groupsList = array();
           
-            if($this->mysqli->real_query("SELECT DISTINCT `groupName` FROM `GroupName`;")){
-                $groups = $this->mysqli->store_result();
+            if($this->database->real_query("SELECT DISTINCT `groupName` FROM `GroupName`;")){
+                $groups = $this->database->store_result();
 
                 while ($groupRow = $groups->fetch_assoc()) {
                      if($groupRow == null){
-                         $this->addError("Get group list for Skill  failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                         $this->addError("Get group list for Skill  failed: (" . $this->database->errno . ") " . $this->database->error);
                          // error_log($this->getLastError());
                          return null; 
                      }
@@ -570,7 +570,7 @@ class EPListProvider {
                 }
             }
             else{
-                $this->addError("Get Skill GroupsList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                $this->addError("Get Skill GroupsList failed: (" . $this->database->errno . ") " . $this->database->error);
                  //error_log($this->getLastError());
                 return null; 
             }
@@ -585,8 +585,8 @@ class EPListProvider {
     function getListReputation(){
          $reputations = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `description` FROM `reputation`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description` FROM `reputation`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $groups = $this->getListGroups($row['name']);
@@ -598,7 +598,7 @@ class EPListProvider {
             return $reputations;
         }
         else{
-            $this->addError("Get Reputation failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Reputation failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
         
@@ -611,12 +611,12 @@ class EPListProvider {
         $backgroundList = array();
         
         
-        if($this->mysqli->real_query("SELECT `name`, `description`, `type` FROM `background`")){
-            $bckRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `type` FROM `background`")){
+            $bckRes = $this->database->store_result();
             while ($bckRow = $bckRes->fetch_assoc()) {
                 //Bonus Malus
-                if($this->mysqli->real_query("SELECT `background`, `bonusMalus`, `occurrence` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `background`, `bonusMalus`, `occurrence` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     $backgroundBonusMalusList = array();
         
                     
@@ -625,7 +625,7 @@ class EPListProvider {
                         for($i = 0; $i < $bmRow['occurrence']; $i++ ){ 
                         	$epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']); 
 	                         if($epBonMal == null){
-	                             $this->addError("Get Background getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+	                             $this->addError("Get Background getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
 	                             return null; 
 	                         }
                             array_push($backgroundBonusMalusList, $epBonMal);
@@ -634,18 +634,18 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Background BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Background BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 //Traits
-                if($this->mysqli->real_query("SELECT `background`, `trait` FROM `BackgroundTrait` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
-                    $traits = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `background`, `trait` FROM `BackgroundTrait` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
+                    $traits = $this->database->store_result();
                     $backgroundTraitList = array();
                     
                     while ($traitRow = $traits->fetch_assoc()) {
                          $epTraits = $this->getTraitByName($traitRow['trait']); 
                          if($epTraits == null){
-                             $this->addError("Get Background getTraitByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error );
+                             $this->addError("Get Background getTraitByName function call failed: (" . $this->database->errno . ") " . $this->database->error );
                              return null; 
                          }
                          else{
@@ -654,12 +654,12 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Background Traits failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Background Traits failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 //limitations
-                if($this->mysqli->real_query("SELECT `background`, `limitationGroup` FROM `BackgroundLimitation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
-                    $limit = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `background`, `limitationGroup` FROM `BackgroundLimitation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
+                    $limit = $this->database->store_result();
                     
                      $bckLimitation = array();
                     
@@ -668,13 +668,13 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Background limitations failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Background limitations failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 
                 //obligations
-                if($this->mysqli->real_query("SELECT `background`, `obligationGroup` FROM `BackgroundObligation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
-                    $obl = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `background`, `obligationGroup` FROM `BackgroundObligation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';")){
+                    $obl = $this->database->store_result();
                     
                     $bckObligation = array();
                     
@@ -683,7 +683,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Background obligation failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Background obligation failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }               
                 $bck = new EPBackground($bckRow['name'],$bckRow['description'],$bckRow['type'],$backgroundBonusMalusList,$backgroundTraitList,$bckLimitation,$bckObligation);
@@ -694,7 +694,7 @@ class EPListProvider {
             return $backgroundList;
         }
         else{
-            $this->addError("Get Bckground failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Bckground failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -703,20 +703,20 @@ class EPListProvider {
     function getListAi(){
         $aiList = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `cost`, `unique` FROM `ai`")){
-            $aiRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `cost`, `unique` FROM `ai`")){
+            $aiRes = $this->database->store_result();
             while ($aiRow = $aiRes->fetch_assoc()) {
                 
                 //aptitudes
-                if($this->mysqli->real_query("SELECT `ai`, `aptitude`, `value` FROM `AiAptitude` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
-                    $aptRes = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `ai`, `aptitude`, `value` FROM `AiAptitude` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
+                    $aptRes = $this->database->store_result();
                     $aptitudeList = array();
 
                     while ($aptRow = $aptRes->fetch_assoc()) {
                          $epApt = $this->getAptitudeByName($aptRow['aptitude']);
                          $epApt->value = $aptRow['value'];
                          if($epApt == null){
-                             $this->addError("Get Ai getAptitudeByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Ai getAptitudeByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -726,20 +726,20 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Ai Aptitude List failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Ai Aptitude List failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
 
                 //skills
-                if($this->mysqli->real_query("SELECT `ai`, `skillName`, `skillPrefix`, `value` FROM `AiSkill` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
-                    $skillRes = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `ai`, `skillName`, `skillPrefix`, `value` FROM `AiSkill` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
+                    $skillRes = $this->database->store_result();
                     $skillList = array();
 
                     while ($skillRow = $skillRes->fetch_assoc()) {
                          $epSkill = $this->getSkillByNamePrefix($skillRow['skillName'],$skillRow['skillPrefix'],$aptitudeList);
                          $epSkill->baseValue = $skillRow['value'];
                          if($epSkill == null){
-                             $this->addError("Get Ai getSkillByNamePrefix function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Ai getSkillByNamePrefix function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -749,20 +749,20 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Ai Skill List failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Ai Skill List failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 
                 //stats
-                if($this->mysqli->real_query("SELECT `ai`, `stat`, `value` FROM `AiStat` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
-                    $statRes = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `ai`, `stat`, `value` FROM `AiStat` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';")){
+                    $statRes = $this->database->store_result();
                     $statList = array();
 
                     while ($statRow = $statRes->fetch_assoc()) {
                          $epStat = $this->getStatByName($statRow['stat']); 
                          $epStat->value = $statRow['value'];
                          if($epApt == null){
-                             $this->addError("Get Ai getStatByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Ai getStatByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -772,7 +772,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Ai Stat List failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Ai Stat List failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 
@@ -787,7 +787,7 @@ class EPListProvider {
             return $aiList;
         }
         else{
-            $this->addError("Get Ai failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Ai failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -798,18 +798,18 @@ class EPListProvider {
     function getListGears(){
         $gearList = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear`")){
-            $gearRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear`")){
+            $gearRes = $this->database->store_result();
             while ($gearRow = $gearRes->fetch_assoc()) {
 
-                if($this->mysqli->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     $bonusMalusGearList = array();
 
                     while ($bmRow = $bonusMalus->fetch_assoc()) {
                          $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']); 
                          if($epBonMal == null){
-                             $this->addError("Get Gear getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Gear getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -820,7 +820,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Gear BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Gear BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
 
@@ -833,23 +833,23 @@ class EPListProvider {
             return $gearList;
         }
         else{
-            $this->addError("Get Gear failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Gear failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function getGearByName($name){   
-        if($this->mysqli->real_query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $gRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $gRes = $this->database->store_result();
             $gearRow = $gRes->fetch_array();
-            if($this->mysqli->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+            if($this->database->real_query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     $bonusMalusGearList = array();
 
                     while ($bmRow = $bonusMalus->fetch_assoc()) {
                          $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']); 
                          if($epBonMal == null){
-                             $this->addError("Get Gear getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Gear getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -860,7 +860,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Gear BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Gear BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
 
@@ -869,7 +869,7 @@ class EPListProvider {
                 return $gear;
         }
         else{
-            $this->addError("Get Gear by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Gear by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -880,12 +880,12 @@ class EPListProvider {
        $morphList = array();
         
         
-        if($this->mysqli->real_query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morph`")){
-            $morphRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morph`")){
+            $morphRes = $this->database->store_result();
             while ($morphRow = $morphRes->fetch_assoc()) {
                 //Bonus Malus
-                if($this->mysqli->real_query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     $morphBonusMalusList = array();
         
                     
@@ -893,7 +893,7 @@ class EPListProvider {
                         for($i = 0; $i < $bmRow['occur']; $i++ ){ 
                         	$epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']); 
 	                         if($epBonMal == null){
-	                             $this->addError("Get Morph getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+	                             $this->addError("Get Morph getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
 	                             return null; 
 	                         }
                             array_push($morphBonusMalusList, $epBonMal);
@@ -901,19 +901,19 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Morph BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Morph BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 //Gear
-                if($this->mysqli->real_query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
-                    $gears = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
+                    $gears = $this->database->store_result();
                     $morphGearsList = array();
         
                     
                     while ($gRow = $gears->fetch_assoc()) {
                          $epGear = $this->getGearByName($gRow['gear']); 
                          if($epGear == null){
-                             $this->addError("Get Morph getGearByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Morph getGearByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -924,19 +924,19 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Morph BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Morph BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                 //Traits
-                if($this->mysqli->real_query("SELECT `morph`, `trait` FROM `MorphTrait` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
+                if($this->database->real_query("SELECT `morph`, `trait` FROM `MorphTrait` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';")){
                 	
-                    $traits = $this->mysqli->store_result();
+                    $traits = $this->database->store_result();
                     $morphTraitList = array();
                     
                     while ($traitRow = $traits->fetch_assoc()) {
                          $epTraits = $this->getTraitByName($traitRow['trait']); 
                          if($epTraits == null){
-                             $this->addError("Get Background getTraitByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error );
+                             $this->addError("Get Background getTraitByName function call failed: (" . $this->database->errno . ") " . $this->database->error );
                              return null; 
                          }
                          else{
@@ -945,7 +945,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Background Traits failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Background Traits failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
                
@@ -958,7 +958,7 @@ class EPListProvider {
             return $morphList;
         }
         else{
-            $this->addError("Get Morph failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Morph failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -968,18 +968,18 @@ class EPListProvider {
      function getListPsySleights(){
         $psyList = array();
         
-        if($this->mysqli->real_query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleight`")){
-            $psyRes = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleight`")){
+            $psyRes = $this->database->store_result();
             while ($psyRow = $psyRes->fetch_assoc()) {
 
-                if($this->mysqli->real_query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyRow['name'])."';")){
-                    $bonusMalus = $this->mysqli->store_result();
+                if($this->database->real_query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyRow['name'])."';")){
+                    $bonusMalus = $this->database->store_result();
                     $bonusMalusPsyList = array();
 
                     while ($bmRow = $bonusMalus->fetch_assoc()) {
                          $epBonMal = $this->getBonusMalusByName($bmRow['bonusmalus']); 
                          if($epBonMal == null){
-                             $this->addError("Get Psy getBonusByName function call failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                             $this->addError("Get Psy getBonusByName function call failed: (" . $this->database->errno . ") " . $this->database->error);
                              return null; 
                          }
                          else{
@@ -990,7 +990,7 @@ class EPListProvider {
                     }
                 }
                 else{
-                    $this->addError("Get Psy BonusmalusList failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+                    $this->addError("Get Psy BonusmalusList failed: (" . $this->database->errno . ") " . $this->database->error);
                     return null; 
                 }
 
@@ -1001,7 +1001,7 @@ class EPListProvider {
             return $psyList;
         }
         else{
-            $this->addError("Get Psy failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Psy failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -1018,15 +1018,15 @@ class EPListProvider {
     
     //BOOK 
     function getBookForName($name){
-	    if($this->mysqli->real_query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $bookRes = $this->mysqli->store_result();
+	    if($this->database->real_query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $bookRes = $this->database->store_result();
             $row = $bookRes->fetch_array();
             if(empty($row)) return null;
             $book = $row['book'];
             return $book;
         }
         else{
-            $this->addError("Get Book by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Book by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -1034,8 +1034,8 @@ class EPListProvider {
     function getListBook(){
          $nameBook = array();
         
-        if($this->mysqli->real_query("SELECT `name`,`book` FROM `AtomBook`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`,`book` FROM `AtomBook`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $nameBook[$row['name']] = $row['book'];
@@ -1044,14 +1044,14 @@ class EPListProvider {
             return $nameBook;
         }
         else{
-            $this->addError("Get Namebook list failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Namebook list failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function isNameOnBookList($name){
-    	if($this->mysqli->real_query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $bookRes = $this->mysqli->store_result();
+    	if($this->database->real_query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $bookRes = $this->database->store_result();
             $row = $bookRes->fetch_array();
             if(empty($row)) return false;
             $book = $row['book'];
@@ -1059,22 +1059,22 @@ class EPListProvider {
             else return true;
         }
         else{
-            $this->addError("Get Book by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Book by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return false;
         }
     }
     
     //PAGE
     function getPageForName($name){
-	    if($this->mysqli->real_query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $pageRes = $this->mysqli->store_result();
+	    if($this->database->real_query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $pageRes = $this->database->store_result();
             $row = $pageRes->fetch_array();
             if(empty($row)) return null;
             $page = $row['page'];
             return $page;
         }
         else{
-            $this->addError("Get Page by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Page by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
@@ -1082,8 +1082,8 @@ class EPListProvider {
     function getListPage(){
          $namePage = array();
         
-        if($this->mysqli->real_query("SELECT `name`,`page` FROM `AtomPage`")){
-            $res = $this->mysqli->store_result();
+        if($this->database->real_query("SELECT `name`,`page` FROM `AtomPage`")){
+            $res = $this->database->store_result();
             
             while ($row = $res->fetch_assoc()) {
                 $namePage[$row['name']] = $row['page'];
@@ -1092,14 +1092,14 @@ class EPListProvider {
             return $namePage;
         }
         else{
-            $this->addError("Get Namepagelist failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Namepagelist failed: (" . $this->database->errno . ") " . $this->database->error);
             return null;
         }
     }
     
     function isNameOnPageList($name){
-    	if($this->mysqli->real_query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';")){
-            $pageRes = $this->mysqli->store_result();
+    	if($this->database->real_query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';")){
+            $pageRes = $this->database->store_result();
             $row = $pageRes->fetch_array();
             if(empty($row)) return false;
             $page = $row['page'];
@@ -1107,7 +1107,7 @@ class EPListProvider {
             else return true;
         }
         else{
-            $this->addError("Get Page by name failed: (" . $this->mysqli->errno . ") " . $this->mysqli->error);
+            $this->addError("Get Page by name failed: (" . $this->database->errno . ") " . $this->database->error);
             return false;
         }
     }
