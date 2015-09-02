@@ -2075,13 +2075,13 @@ class EPCharacterCreator {
 	    return false;
     }
     function getCanPsyGamma(){
-	    foreach($this->character->ego->traits as $t){
-    		if($t->name ==  EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
-    	}
-    	foreach($this->character->ego->additionalTraits as $t){
-    		if($t->name ==  EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
-    	}
-	    return false;
+        foreach($this->character->ego->traits as $t){
+            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+        }
+        foreach($this->character->ego->additionalTraits as $t){
+            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+        }
+        return false;
     }
     private function init($pathToConfig,$amountCP){
         $this->listProvider = new EPListProvider($pathToConfig);
