@@ -489,11 +489,11 @@ and open the template in the editor.
                 echo "<br><br>ADDING STATS------------------------------------- <br><br>";
                 $st = array();
                 $st[0] =  new EPStat('Moxie', "", EPStat::$MOXIE,array("stat test group 1","stat test group 2"));
-                $st[1] =  new EPStat('Trauma treshold',"",  EPStat::$TRAUMATHRESHOLD);
+                $st[1] =  new EPStat('Trauma threshold',"",  EPStat::$TRAUMATHRESHOLD);
                 $st[2] =  new EPStat('Insanity rating',"",  EPStat::$INSANITYRATING);
                 $st[3] =  new EPStat('Lucidity',"",  EPStat::$LUCIDITY);
                 $st[4] =  new EPStat('Death rating', "", EPStat::$DEATHRATING);
-                $st[5] =  new EPStat('Wound treshold', "", EPStat::$WOUNDTHRESHOLD);
+                $st[5] =  new EPStat('Wound threshold', "", EPStat::$WOUNDTHRESHOLD);
                 $st[6] =  new EPStat('Durability',"",  EPStat::$DURABILITY);
                 $st[7] =  new EPStat('Speed',"",  EPStat::$SPEED);
                 $st[8] =  new EPStat('Initiative', "", EPStat::$INITIATIVE);
