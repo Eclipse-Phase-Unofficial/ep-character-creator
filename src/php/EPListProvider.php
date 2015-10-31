@@ -28,34 +28,24 @@ class EPListProvider {
     public $errors;
     private $database;
     private $configValues;
-    
-    function __construct($configPath) {
-        $this->errors = array();
-        
-        $this->configValues = new EPConfigFile($configPath);
+
+    function connect(){
         $serverName = $this->configValues->getValue('SQLValues','serverName');
         $databaseName = $this->configValues->getValue('SQLValues','databaseName');
         $databaseUser = $this->configValues->getValue('SQLValues','databaseUser');
-        $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
-        $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
+        $databasePassword = $this->configValues->getValue('SQLValues','databasePassword');
+        $databasePort = $this->configValues->getValue('SQLValues','databasePort');
 
         $this->database = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
         if ($this->database->connect_errno) {
              $this->addError("Failed to connect to MySQL: (" . $this->database->connect_errno . ") " . $this->database->connect_error);
         };
     }
-    
-    function reconnect(){
-	    $serverName = $this->configValues->getValue('SQLValues','serverName');
-        $databaseName = $this->configValues->getValue('SQLValues','databaseName');
-        $databaseUser = $this->configValues->getValue('SQLValues','databaseUser');
-        $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
-        $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
 
-        $this->database = new mysqli($serverName, $databaseUser, $databasePassword, $databaseName, $databasePort);
-        if ($this->database->connect_errno) {
-             $this->addError("Failed to connect to MySQL: (" . $this->database->connect_errno . ") " . $this->database->connect_error);
-        };
+    function __construct($configPath) {
+        $this->errors = array();
+        $this->configValues = new EPConfigFile($configPath);
+        $this->connect();
     }
     
     function addError($error){
