@@ -599,20 +599,12 @@
 						}
 							
 						//NOTES 
-						$y_space = 3;
-						$apt_x = 83;
-						$apt_y = 83;
+						$apt_x = 81;
+						$apt_y = 81;
 						$pdf->SetFont('Lato-Lig', '', 5);
-						$note = explode("\n",$character->note);
-// 						$note = array('line 1', 'line 2', 'line 3');
-						$paddle = 0;
-						foreach($note as $line)
-						{
-							//check the math on this
-							$pdf->Text($apt_x, ($apt_y - $paddle), formatIt($line));//Bm desc
-							$paddle -= 2;
-						} 
-					
+						$pdf->SetXY($apt_x,$apt_y);
+						$pdf->MultiCell(95,2,$character->note,0,'l');
+
 						//WEAPONS
 						$morphGear = $_SESSION['cc']->getGearForCurrentMorph();		
 						$weapons = filterWeaponOnly($morphGear);
