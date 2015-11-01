@@ -344,57 +344,11 @@
 					
 					$apt_y += $y_space + $paddle;
 				}	
-					
-					
-				//Bonus/Malus means good/bad in Latin
-				//MEMO (all ego bonus malus descriptive only)
+
+				//MEMO (all ego bonus malus)
 				$egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
-				$filteredBM = getDescOnlyBM($egoBonusMalus);
-				$apt_x = 80;
-				
-				//if more than 10 Bonus/Malus, resize
-				if(count($filteredBM) <= 10)
-				{ //default
-					$fontsize = 9;
-					$y_space = 2;
-					$apt_y = 229;
-					$fontsizetxt = 7;
-					$rectlength = 50;
-					$paddleIncrement = 2.5;
-				}
-				else
-				{ //overflow resize
-					$fontsize = 7;
-					$y_space = 1; //vertical spacing for the BM group
-					$apt_y = 229;
-					$fontsizetxt = 5;
-					$rectlength = 80;	
-					$paddleIncrement = 2; //vertical spacing for description
-				}
-				
-				foreach($filteredBM as $bm)
-				{
-					//test for name length drops the font size //best length guess is 28 chars
-					if(strlen($bm->name) > 27)
-						$pdf->SetFont('Lato-Lig', '', 6);	
-					else
-						$pdf->SetFont('Lato-Lig', '', $fontsize);
-					
-					$pdf->Text($apt_x, $apt_y, formatIt($bm->name));//bm name
-					
-					$paddle = 0;
-					$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
-					$bmdescs = formatItForRect($bm->description, $rectlength);
-					
-					foreach($bmdescs as $line) 
-					{
-						//writes each line of the segmented destiption
-						$pdf->Text(($apt_x + 48), ($apt_y + $paddle), formatIt($line));//Bm desc
-						$paddle += $paddleIncrement;
-					} 
-					
-					$apt_y += $y_space + $paddle;
-				}	
+// 				writeMemo($pdf,getDescOnlyBM($egoBonusMalus));
+				writeMemo($pdf,$egoBonusMalus);
 				
 				//END EGO PAGE
 					
@@ -766,52 +720,7 @@
 						
 						//MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
 						$morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
-						$filteredBM = getMorphMemoBM($morphBonusMalus);
-						
-						$apt_x = 80;
-
-						//limit the normal size to 10 or fewer
-						if(count($filteredBM) <= 10)
-						{ //default
-							$fontsize = 9;
-							$y_space = 2;
-							$apt_y = 233;
-							$fontsizetxt = 7;
-							$rectlength = 50;
-							$paddleIncrement = 2.5;
-						}
-						else
-						{ //overflow resize
-							$fontsize = 7;
-							$y_space = 1;
-							$apt_y = 232;
-							$fontsizetxt = 5;
-							$rectlength = 80;	
-							$paddleIncrement = 2;
-						} 
-						
-						foreach($filteredBM as $bm)
-						{
-							//checks the name length for overlap drops the font size accordingly
-							if(strlen($bm->name) > 27)
-								$pdf->SetFont('Lato-Lig', '', 6);
-							else
-								$pdf->SetFont('Lato-Lig', '', $fontsize);
-							
-							$pdf->Text($apt_x, $apt_y, formatIt($bm->name));//bm name 
-							
-							$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
-							$bmdescs = formatItForRect($bm->description, $rectlength);
-							$paddle = 0;
-							
-							foreach($bmdescs as $line)
-							{
-								$pdf->Text(($apt_x + 46), ($apt_y + $paddle), formatIt($line));//Bm desc
-								$paddle += $paddleIncrement;
-							} 
-							
-							$apt_y += $y_space + $paddle;
-						}	
+						writeMemo($pdf,getMorphMemoBM($morphBonusMalus));
 						
 					}
 				
@@ -829,8 +738,64 @@
 		die;	
 	}
 	
+	//Block Writers ===============================================================
+
+	//Bonus/Malus means good/bad in Latin
+	//MEMO (all bonus malus descriptive only)
+	function writeMemo($pdf,$filteredBM)
+	{
+		$apt_x = 80;
+
+		//if more than 10 Bonus/Malus, resize
+		if(count($filteredBM) <= 10)
+		{ //default
+			$fontsize = 9;
+			$y_space = 2;
+// 			$apt_y = 229;
+			$apt_y = 233;
+			$fontsizetxt = 7;
+			$rectlength = 50;
+			$paddleIncrement = 2.5;
+		}
+		else
+		{ //overflow resize
+			$fontsize = 7;
+			$y_space = 1; //vertical spacing for the BM group
+// 			$apt_y = 229;
+			$apt_y = 232;
+			$fontsizetxt = 5;
+			$rectlength = 80;
+			$paddleIncrement = 2; //vertical spacing for description
+		}
+
+		foreach($filteredBM as $bm)
+		{
+			$pdf->SetFont('Lato-Lig', '', $fontsize);
+			//If the name is too long, drop the font size accordingly so it fits
+			while($pdf->GetStringWidth($bm->name) > 35)
+			{
+				$fontsize-=1;
+				$pdf->SetFontSize($fontsize);
+// 				error_log($fontsize."->".$bm->name.":  ".$pdf->GetStringWidth($bm->name));
+			}
+
+			$pdf->Text($apt_x, $apt_y, formatIt($bm->name));//bm name
+
+			$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
+			$bmdescs = formatItForRect($bm->description, $rectlength);
+			$paddle = 0;
+
+			foreach($bmdescs as $line)
+			{
+				//writes each line of the segmented destiption
+				$pdf->Text(($apt_x + 48), ($apt_y + $paddle), formatIt($line));//Bm desc
+				$paddle += $paddleIncrement;
+			}
+			$apt_y += $y_space + $paddle;
+		}
+	}
 	//HELPERS ===============================================================
-	
+
 	function formatIt($string)
 	{
 		if($string == null) 
