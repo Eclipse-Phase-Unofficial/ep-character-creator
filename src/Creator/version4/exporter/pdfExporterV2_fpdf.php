@@ -375,7 +375,7 @@
 				foreach($filteredBM as $bm)
 				{
 					//test for name length drops the font size //best length guess is 28 chars
-					if($bm->name.strlen() > 27)
+					if(strlen($bm->name) > 27)
 						$pdf->SetFont('Lato-Lig', '', 6);	
 					else
 						$pdf->SetFont('Lato-Lig', '', $fontsize);
@@ -601,15 +601,16 @@
 						//NOTES 
 						$y_space = 3;
 						$apt_x = 83;
-						$apt_y = 90	;
-						$pdf->SetFont('Lato-Lig', '', 7);	
-						$note = formatItForRect($character->note, 68);
+						$apt_y = 83;
+						$pdf->SetFont('Lato-Lig', '', 5);
+						$note = explode("\n",$character->note);
+// 						$note = array('line 1', 'line 2', 'line 3');
 						$paddle = 0;
 						foreach($note as $line)
 						{
 							//check the math on this
 							$pdf->Text($apt_x, ($apt_y - $paddle), formatIt($line));//Bm desc
-							$paddle += 3;
+							$paddle -= 2;
 						} 
 					
 						//WEAPONS
@@ -800,7 +801,7 @@
 						foreach($filteredBM as $bm)
 						{
 							//checks the name length for overlap drops the font size accordingly
-							if($bm->name.strlen() > 27)
+							if(strlen($bm->name) > 27)
 								$pdf->SetFont('Lato-Lig', '', 6);
 							else
 								$pdf->SetFont('Lato-Lig', '', $fontsize);
