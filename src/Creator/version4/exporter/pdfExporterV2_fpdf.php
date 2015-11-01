@@ -740,58 +740,52 @@
 	
 	//Block Writers ===============================================================
 
+
+	$apt_x = 81;
+	$apt_y = 81;
+	$pdf->SetFont('Lato-Lig', '', 5);
+	$pdf->SetXY($apt_x,$apt_y);
+	$pdf->MultiCell(95,2,$character->note,0,'l');
+
 	//Bonus/Malus means good/bad in Latin
 	//MEMO (all bonus malus descriptive only)
 	function writeMemo($pdf,$filteredBM)
 	{
 		$apt_x = 80;
+		$apt_y = 230;
+		$y_space = 4;	//vertical spacing for the BM group
+		$fontsize = 9;
+		$fontsizetxt = 7;
 
 		//if more than 10 Bonus/Malus, resize
-		if(count($filteredBM) <= 10)
-		{ //default
-			$fontsize = 9;
-			$y_space = 2;
-// 			$apt_y = 229;
-			$apt_y = 233;
-			$fontsizetxt = 7;
-			$rectlength = 50;
-			$paddleIncrement = 2.5;
-		}
-		else
-		{ //overflow resize
+		if(count($filteredBM) > 10)
+		{
 			$fontsize = 7;
-			$y_space = 1; //vertical spacing for the BM group
-// 			$apt_y = 229;
-			$apt_y = 232;
 			$fontsizetxt = 5;
-			$rectlength = 80;
-			$paddleIncrement = 2; //vertical spacing for description
+			$y_space = 3;
 		}
 
+		$pdf->SetXY($apt_x,$apt_y);
 		foreach($filteredBM as $bm)
 		{
+			$name = formatIt($bm->name);
 			$pdf->SetFont('Lato-Lig', '', $fontsize);
 			//If the name is too long, drop the font size accordingly so it fits
-			while($pdf->GetStringWidth($bm->name) > 35)
+			while($pdf->GetStringWidth($name) > 35)
 			{
 				$fontsize-=1;
 				$pdf->SetFontSize($fontsize);
 // 				error_log($fontsize."->".$bm->name.":  ".$pdf->GetStringWidth($bm->name));
 			}
-
-			$pdf->Text($apt_x, $apt_y, formatIt($bm->name));//bm name
+			$pdf->Cell(45,$y_space,$name,0,0,'l');
 
 			$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
-			$bmdescs = formatItForRect($bm->description, $rectlength);
-			$paddle = 0;
 
-			foreach($bmdescs as $line)
-			{
-				//writes each line of the segmented destiption
-				$pdf->Text(($apt_x + 48), ($apt_y + $paddle), formatIt($line));//Bm desc
-				$paddle += $paddleIncrement;
-			}
-			$apt_y += $y_space + $paddle;
+			$pdf->SetX($pdf->GetX()+2);
+			$pdf->MultiCell(80,$y_space,$bm->description,0,'l');
+
+			$pdf->Line($apt_x,$pdf->GetY(),$apt_x+45+2+80,$pdf->GetY());
+			$pdf->SetX($apt_x);
 		}
 	}
 	//HELPERS ===============================================================
