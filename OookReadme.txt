@@ -35,6 +35,10 @@ Deployment
 ----------
 
 1) create a MySql database
+    a) CREATE USER 'epcc_www'@'localhost' IDENTIFIED BY '0928sdGdsfa8#_+';
+    b) GRANT ALL PRIVILEGES ON *.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
+    c) CREATE DATABASE EclipsePhaseData;
+    d) USE EclipsePhaseData;
 2) run the script sql/FullDatabase.sql or FullDatabaseBig.sql
 3) copy the package content on your web site or if you run it locally on your web-server folder.
 4) IMPORTANT : Remove the "management" and sql folder if you are on a web server, if run locally, no need.

@@ -33,15 +33,13 @@ class EPPersistentDataManager {
         $this->errors = array();
         
         $this->configValues = new EPConfigFile($configPath);
-        $serverName = $this->configValues->getValue('SQLValues','serverName');
-        $databaseName = $this->configValues->getValue('SQLValues','databaseName');
+        $databasePDO = $this->configValues->getValue('SQLValues','databasePDO');
         $databaseUser = $this->configValues->getValue('SQLValues','databaseUser');
         $databasePassword = $this->configValues->getValue('SQLValues','databasePassword'); 
-        $databasePort = $this->configValues->getValue('SQLValues','databasePort');        
 
         try
         {
-            $this->database = new PDO("mysql:dbname=".$databaseName.";host=".$serverName.";port=".$databasePort, $databaseUser, $databasePassword);
+            $this->database = new PDO($databasePDO, $databaseUser, $databasePassword);
         }
         catch (PDOException $e)
         {
