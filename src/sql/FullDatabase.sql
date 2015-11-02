@@ -7,8 +7,8 @@
 -- Server version: 5.0.67-log
 -- PHP Version: 5.3.27
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+-- SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+-- SET time_zone = "+00:00";
 
 --
 -- Database: `EPCC`
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `ai` (
   `cost` smallint(6) NOT NULL,
   `unique` varchar(1) NOT NULL default 'N',
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `ai`
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `AiAptitude` (
   `aptitude` varchar(100) NOT NULL,
   `value` smallint(6) NOT NULL,
   PRIMARY KEY  (`ai`,`aptitude`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `AiAptitude`
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `AiSkill` (
   `skillPrefix` varchar(100) NOT NULL default '',
   `value` smallint(6) NOT NULL,
   PRIMARY KEY  (`ai`,`skillName`,`skillPrefix`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `AiSkill`
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `AiStat` (
   `stat` varchar(100) NOT NULL,
   `value` smallint(6) NOT NULL,
   PRIMARY KEY  (`ai`,`stat`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `aptitude` (
   `description` text NOT NULL,
   `abbreviation` varchar(3) NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `aptitude`
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `AtomBook` (
   `name` varchar(100) NOT NULL,
   `book` varchar(100) NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `AtomBook`
@@ -1343,7 +1343,7 @@ CREATE TABLE IF NOT EXISTS `AtomPage` (
   `name` varchar(100) NOT NULL,
   `page` varchar(100) NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `AtomPage`
@@ -2477,9 +2477,8 @@ CREATE TABLE IF NOT EXISTS `background` (
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
   `type` varchar(3) NOT NULL,
-  PRIMARY KEY  (`name`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`name`)
+);
 
 --
 -- Dumping data for table `background`
@@ -2557,9 +2556,8 @@ CREATE TABLE IF NOT EXISTS `BackgroundBonusMalus` (
   `background` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occurrence` smallint(6) NOT NULL,
-  PRIMARY KEY  (`background`,`bonusMalus`),
-  KEY `background` (`background`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`background`,`bonusMalus`)
+);
 
 --
 -- Dumping data for table `BackgroundBonusMalus`
@@ -2784,9 +2782,8 @@ DROP TABLE IF EXISTS `BackgroundLimitation`;
 CREATE TABLE IF NOT EXISTS `BackgroundLimitation` (
   `background` varchar(100) NOT NULL,
   `limitationGroup` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`limitationGroup`),
-  KEY `background` (`background`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`background`,`limitationGroup`)
+);
 
 --
 -- Dumping data for table `BackgroundLimitation`
@@ -2806,9 +2803,8 @@ DROP TABLE IF EXISTS `BackgroundObligation`;
 CREATE TABLE IF NOT EXISTS `BackgroundObligation` (
   `background` varchar(100) NOT NULL,
   `obligationGroup` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`obligationGroup`),
-  KEY `background` (`background`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`background`,`obligationGroup`)
+);
 
 -- --------------------------------------------------------
 
@@ -2820,9 +2816,8 @@ DROP TABLE IF EXISTS `BackgroundTrait`;
 CREATE TABLE IF NOT EXISTS `BackgroundTrait` (
   `background` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`trait`),
-  KEY `background` (`background`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`background`,`trait`)
+);
 
 --
 -- Dumping data for table `BackgroundTrait`
@@ -2893,11 +2888,8 @@ CREATE TABLE IF NOT EXISTS `bonusMalus` (
   `typeTarget` varchar(20) NOT NULL,
   `onCost` varchar(20) NOT NULL,
   `multiOccur` varchar(20) NOT NULL,
-  PRIMARY KEY  (`name`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `name_3` (`name`),
-  KEY `name_2` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`name`)
+);
 
 --
 -- Dumping data for table `bonusMalus`
@@ -3338,7 +3330,7 @@ DROP TABLE IF EXISTS `BonusMalusTypes`;
 CREATE TABLE IF NOT EXISTS `BonusMalusTypes` (
   `bmNameMain` varchar(60) NOT NULL,
   `bmChoices` varchar(60) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `BonusMalusTypes`
@@ -3411,9 +3403,8 @@ CREATE TABLE IF NOT EXISTS `Gear` (
   `armorPene` smallint(6) NOT NULL,
   `JustFor` varchar(100) NOT NULL,
   `unique` varchar(1) NOT NULL default 'Y',
-  PRIMARY KEY  (`name`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`name`)
+);
 
 --
 -- Dumping data for table `Gear`
@@ -4110,9 +4101,8 @@ CREATE TABLE IF NOT EXISTS `GearBonusMalus` (
   `gear` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`gear`,`bonusMalus`),
-  KEY `gear` (`gear`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`gear`,`bonusMalus`)
+);
 
 --
 -- Dumping data for table `GearBonusMalus`
@@ -4239,7 +4229,7 @@ CREATE TABLE IF NOT EXISTS `GroupName` (
   `groupName` varchar(100) NOT NULL,
   `targetName` varchar(100) NOT NULL,
   PRIMARY KEY  (`groupName`,`targetName`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `GroupName`
@@ -4330,7 +4320,7 @@ CREATE TABLE IF NOT EXISTS `infos` (
   `id` varchar(100) NOT NULL,
   `data` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `infos`
@@ -4374,9 +4364,8 @@ CREATE TABLE IF NOT EXISTS `morph` (
   `durablility` smallint(6) NOT NULL,
   `cpCost` smallint(6) NOT NULL,
   `creditCost` varchar(100) NOT NULL,
-  PRIMARY KEY  (`name`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`name`)
+);
 
 --
 -- Dumping data for table `morph`
@@ -4511,9 +4500,8 @@ CREATE TABLE IF NOT EXISTS `MorphBonusMalus` (
   `morph` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`bonusMalus`),
-  KEY `morph` (`morph`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`morph`,`bonusMalus`)
+);
 
 --
 -- Dumping data for table `MorphBonusMalus`
@@ -4917,9 +4905,8 @@ CREATE TABLE IF NOT EXISTS `MorphGears` (
   `morph` varchar(100) NOT NULL,
   `gear` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`gear`),
-  KEY `morph` (`morph`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`morph`,`gear`)
+);
 
 --
 -- Dumping data for table `MorphGears`
@@ -5971,10 +5958,8 @@ DROP TABLE IF EXISTS `MorphTrait`;
 CREATE TABLE IF NOT EXISTS `MorphTrait` (
   `morph` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`morph`,`trait`),
-  KEY `morph` (`morph`),
-  KEY `morph_2` (`morph`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`morph`,`trait`)
+);
 
 --
 -- Dumping data for table `MorphTrait`
@@ -6076,7 +6061,7 @@ CREATE TABLE IF NOT EXISTS `psySleight` (
   `strainMod` varchar(100) NOT NULL,
   `skillNeeded` varchar(100) NOT NULL default 'none',
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `psySleight`
@@ -6140,7 +6125,7 @@ CREATE TABLE IF NOT EXISTS `PsySleightBonusMalus` (
   `bonusmalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
   PRIMARY KEY  (`psy`,`bonusmalus`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `PsySleightBonusMalus`
@@ -6179,7 +6164,7 @@ CREATE TABLE IF NOT EXISTS `reputation` (
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `reputation`
@@ -6207,7 +6192,7 @@ CREATE TABLE IF NOT EXISTS `skillPrefixes` (
   `skillType` varchar(3) NOT NULL,
   `desc` text NOT NULL,
   PRIMARY KEY  (`prefix`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `skillPrefixes`
@@ -6240,9 +6225,8 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `prefix` varchar(60) NOT NULL default '',
   `skillType` varchar(3) NOT NULL,
   `defaultable` varchar(1) NOT NULL,
-  PRIMARY KEY  (`name`,`prefix`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Ep skills list';
+  PRIMARY KEY  (`name`,`prefix`)
+);
 
 --
 -- Dumping data for table `skills`
@@ -6322,7 +6306,7 @@ CREATE TABLE IF NOT EXISTS `stat` (
   `description` text NOT NULL,
   `abbreviation` varchar(3) NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 --
 -- Dumping data for table `stat`
@@ -6351,10 +6335,8 @@ CREATE TABLE IF NOT EXISTS `TraitBonusMalus` (
   `traitName` varchar(60) NOT NULL,
   `bonusMalusName` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`traitName`,`bonusMalusName`),
-  KEY `traitName` (`traitName`),
-  KEY `bonusMalusName` (`bonusMalusName`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`traitName`,`bonusMalusName`)
+);
 
 --
 -- Dumping data for table `TraitBonusMalus`
@@ -6578,10 +6560,8 @@ CREATE TABLE IF NOT EXISTS `traits` (
   `cpCost` smallint(6) default NULL,
   `level` smallint(6) NOT NULL,
   `JustFor` varchar(30) NOT NULL default 'EVERY',
-  PRIMARY KEY  (`name`),
-  UNIQUE KEY `name` (`name`),
-  KEY `name_2` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY  (`name`)
+);
 
 --
 -- Dumping data for table `traits`

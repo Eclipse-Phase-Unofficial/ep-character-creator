@@ -38,11 +38,14 @@ class EPListProvider {
         {
             self::$database = new PDO($databasePDO, $databaseUser, $databasePassword);
             if(!self::$database->query("SELECT * FROM `aptitude`"))
-                error_log('Aptitude table in Database is empty!  Database connection Error?');
+                throw new PDOException('Aptitude table in Database is empty!  Database connection Error?');
         }
         catch (PDOException $e)
         {
-            error_log('Database connection failed: ' . $e->getMessage());
+            error_log('Database connection failed: ');
+            error_log('  '.$databasePDO);
+            error_log('  '.$e->getMessage());
+            error_log('  Current Dir:  '.getcwd());
         }
     }
 

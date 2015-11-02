@@ -40,10 +40,15 @@ class EPPersistentDataManager {
         try
         {
             $this->database = new PDO($databasePDO, $databaseUser, $databasePassword);
+            if(!self::$database->query("SELECT * FROM `aptitude`"))
+                throw new PDOException('Aptitude table in Database is empty!  Database connection Error?');
         }
         catch (PDOException $e)
         {
-            echo 'Database connection failed: ' . $e->getMessage();
+            error_log('Database connection failed: ');
+            error_log('  '.$databasePDO);
+            error_log('  '.$e->getMessage());
+            error_log('  Current Dir:  '.getcwd());
         }
     }
     
