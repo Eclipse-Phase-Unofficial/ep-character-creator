@@ -27,7 +27,7 @@ require_once 'EPPsySleight.php';
 class EPPersistentDataManager {
 
     public $errors;
-    private $database;
+    private static $database;
     
     function __construct($configPath) {
         $this->errors = array();
@@ -39,7 +39,7 @@ class EPPersistentDataManager {
 
         try
         {
-            $this->database = new PDO($databasePDO, $databaseUser, $databasePassword);
+            self::$database = new PDO($databasePDO, $databaseUser, $databasePassword);
             if(!self::$database->query("SELECT * FROM `aptitude`"))
                 throw new PDOException('Aptitude table in Database is empty!  Database connection Error?');
         }
@@ -72,14 +72,14 @@ class EPPersistentDataManager {
                                                 .$epSkill->skillType."','"
                                                 .$epSkill->defaultable
                                                 ."')";
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
             $groups = $epSkill->groups;
             foreach($groups as $gr){
                 $insertGroupTargetQuerry = "INSERT INTO `GroupName`(`groupName`, `targetName`) VALUES ('"
                                                 .$this->adjustForSQL($gr)."','"
                                                 .$this->adjustForSQL($epSkill->name)
                                                 ."')";
-                if(!$this->database->exec($insertGroupTargetQuerry)){
+                if(!self::$database->exec($insertGroupTargetQuerry)){
                     $this->addError("Skill groups list ".$epSkill->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
                     return false;
                 }
@@ -101,7 +101,7 @@ class EPPersistentDataManager {
     
     function persistBonusMalus($epBonusMalus){
         if($epBonusMalus->type == EPAtom::$BONUSMALUS){
-        $insertQuerry = $this->database->prepare("INSERT INTO `bonusMalus`(`name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur`)  VALUES (:name,:desc,:type,:target,:value,:tragetForCh,:typeTarget,:onCost,:multiOccur)");
+        $insertQuerry = self::$database->prepare("INSERT INTO `bonusMalus`(`name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur`)  VALUES (:name,:desc,:type,:target,:value,:tragetForCh,:typeTarget,:onCost,:multiOccur)");
                 $insertQuerry->bindParam(':name', $epBonusMalus->name);
                 $insertQuerry->bindParam(':desc', $epBonusMalus->description);
                 $insertQuerry->bindParam(':type', $epBonusMalus->bonusMalusType);
@@ -122,7 +122,7 @@ class EPPersistentDataManager {
                                 .$this->adjustForSQL($gr)."','"
                                 .$this->adjustForSQL($epBonusMalus->name)
                                 ."')";
-                        if(!$this->database->exec($insertGroupTargetQuerry))
+                        if(!self::$database->exec($insertGroupTargetQuerry))
                         {
                             $this->addError("Bonnus Malus groups list  ".$epBonusMalus->atomUid." and ".$gr." persistance failed:  No rows were modified.");
                             return false;
@@ -135,7 +135,7 @@ class EPPersistentDataManager {
                                 .$this->adjustForSQL($epBonusMalus->name)."','"
                                 .$this->adjustForSQL($mc->name)
                                 ."')";
-                        if(!$this->database->exec($insertMultiChoiceQuerry))
+                        if(!self::$database->exec($insertMultiChoiceQuerry))
                         {
                             $this->addError("Bonnus Malus multi choice list  ".$epBonusMalus->atomUid." and ".$gr." persistance failed:  No rows were modified.");
                             return false;
@@ -165,7 +165,7 @@ class EPPersistentDataManager {
     //====== INFO ===========
     function persistInfos($id,$data){
         $insertQuerry = "INSERT INTO `infos`(`id`, `data`) VALUES ('".$id."','".$data."')";
-        if($this->database->exec($insertQuerry)){
+        if(self::$database->exec($insertQuerry)){
             return true;
         }
         else{
@@ -189,7 +189,7 @@ class EPPersistentDataManager {
                                                         .$epTrait->canUse
                                                         ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                $bmTrait = $epTrait->bonusMalus;
                foreach($bmTrait as $bmt){
                    
@@ -202,7 +202,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertBMtraitQuerry)){
+                        if(!self::$database->exec($insertBMtraitQuerry)){
                             $this->addError("Trait bonnus malus table ".$epTrait->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -231,7 +231,7 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusTraitCoupleAllreadyExist($bmName, $traitName){
-        $res = $this->database->query("SELECT `traitName`, `bonusMalusName`, `occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitName)."' AND `bonusMalusName` ='".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `traitName`, `bonusMalusName`, `occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitName)."' AND `bonusMalusName` ='".$this->adjustForSQL($bmName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -248,7 +248,7 @@ class EPPersistentDataManager {
                                                 .$epAptitude->abbreviation
                                                 ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
             $groups = $epAptitude->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -258,7 +258,7 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epAptitude->name)
                                                    ."')";
 
-                   if(!$this->database->exec($insertGroupTargetQuerry)){
+                   if(!self::$database->exec($insertGroupTargetQuerry)){
                        $this->addError("Aptitude groups list ".$epAptitude->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
@@ -288,7 +288,7 @@ class EPPersistentDataManager {
                                                 .$epStat->abbreviation
                                                 ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
             $groups = $epStat->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -298,7 +298,7 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epStat->name)
                                                    ."')";
 
-                   if(!$this->database->exec($insertGroupTargetQuerry)){
+                   if(!self::$database->exec($insertGroupTargetQuerry)){
                        $this->addError("Stat groups list ".$epStat->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
@@ -328,7 +328,7 @@ class EPPersistentDataManager {
                                             .$this->adjustForSQL($desc)
                                             ."')";
 
-       if($this->database->exec($insertQuerry)){
+       if(self::$database->exec($insertQuerry)){
             return true;      
        }
        else {
@@ -346,7 +346,7 @@ class EPPersistentDataManager {
                                                 .$this->adjustForSQL($epReputation->description)
                                                 ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
             $groups = $epReputation->groups;
             if($groups  != null){
                 foreach($groups as $gr){
@@ -356,7 +356,7 @@ class EPPersistentDataManager {
                                                    .$this->adjustForSQL($epReputation->name)
                                                    ."')";
 
-                   if(!$this->database->exec($insertGroupTargetQuerry)){
+                   if(!self::$database->exec($insertGroupTargetQuerry)){
                        $this->addError("Reputation groups list ".$epReputation->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
@@ -385,7 +385,7 @@ class EPPersistentDataManager {
                                                         .$epBackground->backgroundType
                                                         ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                //--- Bonusmalus
                $bmBkg = $epBackground->bonusMalus;
                foreach($bmBkg as $bmt){
@@ -399,7 +399,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertBMbkgQuerry)){
+                        if(!self::$database->exec($insertBMbkgQuerry)){
                             $this->addError("Background bonnus malus table ".$epBackground->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -415,7 +415,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($trait->name)
                                                          ."')";
 
-                    if(!$this->database->exec($insertTraitBkgQuerry)){
+                    if(!self::$database->exec($insertTraitBkgQuerry)){
                         $this->addError("Background trait table ".$epBackground->atomUid." and ".$trait->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -430,7 +430,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($limit)
                                                          ."')";
 
-                    if(!$this->database->exec($insertLimitationBkgQuerry)){
+                    if(!self::$database->exec($insertLimitationBkgQuerry)){
                         $this->addError("Background Limitation table ".$epBackground->atomUid." and ".$limit->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -445,7 +445,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($oblig)
                                                          ."')";
 
-                    if(!$this->database->exec($insertObligationBkgQuerry)){
+                    if(!self::$database->exec($insertObligationBkgQuerry)){
                         $this->addError("Background Obligation table ".$epBackground->atomUid." and ".$oblig->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -465,7 +465,7 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusBackgroundCoupleAllreadyExist($bmName, $backgroundName){
-        $res = $this->database->query("SELECT `background`, `bonusMalus` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($backgroundName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `background`, `bonusMalus` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($backgroundName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -488,7 +488,7 @@ class EPPersistentDataManager {
                                                         .$epMorph->cost
                                                         ."')";
            //error_log($insertQuerry);
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                //--- Bonusmalus
                $bmMorph = $epMorph->bonusMalus;
                foreach($bmMorph as $bmt){
@@ -502,7 +502,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertBMMorphQuerry)){
+                        if(!self::$database->exec($insertBMMorphQuerry)){
                             $this->addError("Morph bonnus malus table ".$epMorph->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -518,7 +518,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($trait->name)
                                                          ."')";
 
-                    if(!$this->database->exec($insertTraitMorphQuerry)){
+                    if(!self::$database->exec($insertTraitMorphQuerry)){
                         $this->addError("Morph trait table ".$epMorph->atomUid." and ".$trait->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -536,7 +536,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertGearMorphQuerry)){
+                        if(!self::$database->exec($insertGearMorphQuerry)){
                             $this->addError("Morph Gear table ".$epMorph->atomUid." and ".$gear->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -557,7 +557,7 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusMorphCoupleAllreadyExist($bmName, $morphName){
-        $res = $this->database->query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -565,7 +565,7 @@ class EPPersistentDataManager {
     }
     
     function gearMorphCoupleAllreadyExist($gearName, $morphName){
-        $res = $this->database->query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `gear` ='".$this->adjustForSQL($gearName)."';");
+        $res = self::$database->query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphName)."' AND `gear` ='".$this->adjustForSQL($gearName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -584,7 +584,7 @@ class EPPersistentDataManager {
                                                         .$unik
                                                         ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                $aptGear = $epAi->aptitudes;
                foreach($aptGear as $apt){
                    
@@ -594,7 +594,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($apt->value)
                                                          .")";
 
-                    if(!$this->database->exec($insertAptQuerry)){
+                    if(!self::$database->exec($insertAptQuerry)){
                         $this->addError("Ai Aptitude table ".$epAi->atomUid." and ".$apt->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -609,7 +609,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($stat->value)
                                                          .")";
 
-                    if(!$this->database->exec($insertStatQuerry)){
+                    if(!self::$database->exec($insertStatQuerry)){
                         $this->addError("Ai Stat table ".$epAi->atomUid." and ".$stat->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -625,7 +625,7 @@ class EPPersistentDataManager {
                                                          .$this->adjustForSQL($skill->baseValue)
                                                          .")";
 
-                    if(!$this->database->exec($insertSkillQuerry)){
+                    if(!self::$database->exec($insertSkillQuerry)){
                         $this->addError("Ai Skill table ".$epAi->atomUid." and ".$skill->atomUid."  persistance failed:  No rows were modified.");
                         return false;
                     }
@@ -663,7 +663,7 @@ class EPPersistentDataManager {
                                                         .$uni
                                                         ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                $bmGear = $epGear->bonusMalus;
                foreach($bmGear as $bmg){
                    
@@ -676,7 +676,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertBMGearQuerry)){
+                        if(!self::$database->exec($insertBMGearQuerry)){
                             $this->addError("Gear bonnus malus table ".$bmGear->atomUid." and ".$bmg->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -697,7 +697,7 @@ class EPPersistentDataManager {
     
     
     function bonusMalusGearCoupleAllreadyExist($bmName, $gearName){
-        $res = $this->database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -728,7 +728,7 @@ class EPPersistentDataManager {
                                                         .$epPsyS->skillNeeded
                                                         ."')";
            
-           if($this->database->exec($insertQuerry)){
+           if(self::$database->exec($insertQuerry)){
                $bmPsy = $epPsyS->bonusMalus;
                foreach($bmPsy as $bmp){
                    
@@ -741,7 +741,7 @@ class EPPersistentDataManager {
                                                              .$occur
                                                              ."')";
 
-                        if(!$this->database->exec($insertBMGearQuerry)){
+                        if(!self::$database->exec($insertBMGearQuerry)){
                             $this->addError("PsySleight bonnus malus table ".$bmPsy->atomUid." and ".$bmp->atomUid."  persistance failed:  No rows were modified.");
                             return false;
                         }
@@ -761,7 +761,7 @@ class EPPersistentDataManager {
     }
     
     function bonusMalusPsyCoupleAllreadyExist($bmName, $psyName){
-        $res = $this->database->query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyName)."' AND `bonusMalus` ='".$this->adjustForSQL($bmName)."';");
         if($res->rowCount() > 0)
             return true;
         else
@@ -779,7 +779,7 @@ class EPPersistentDataManager {
     //Book
     function persistAtomeBook($name,$book){
 	     $insertQuerry = "INSERT INTO `AtomBook`(`name`, `book`) VALUES ('".$this->adjustForSQL($name)."','".$this->adjustForSQL($book)."')";
-		 if($this->database->exec($insertQuerry)){
+		 if(self::$database->exec($insertQuerry)){
 	        return true;
 		 }
 		 else{
@@ -792,7 +792,7 @@ class EPPersistentDataManager {
     //Page
     function persistAtomePage($name,$page){
 	     $insertQuerry = "INSERT INTO `AtomPage`(`name`, `page`) VALUES ('".$this->adjustForSQL($name)."','".$this->adjustForSQL($page)."')";
-		 if($this->database->exec($insertQuerry)){
+		 if(self::$database->exec($insertQuerry)){
 	        return true;
 		 }
 		 else{
@@ -807,11 +807,11 @@ class EPPersistentDataManager {
         
          $deleteQuerry = "DELETE FROM `".$tableName."` WHERE `".$entryKeyColumnName."` = '".$this->adjustForSQL($entryKey)."'";
                     
-           if($this->database->exec($deleteQuerry)){
+           if(self::$database->exec($deleteQuerry)){
                return true;
            }
            else {
-               $this->addError("Delete error on ".$tableName." for ".$entryKey."  DELETE failed: (" . $this->database->errorCode() . ") " . $this->database->errorInfo());
+               $this->addError("Delete error on ".$tableName." for ".$entryKey."  DELETE failed: (" . self::$database->errorCode() . ") " . self::$database->errorInfo());
                return false;
            }
     }
