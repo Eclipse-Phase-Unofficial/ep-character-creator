@@ -452,7 +452,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            $this->listProvider->reconnect();
+            $this->listProvider->connect();
             $gearToAdd = $this->listProvider->getGearByName($gear->name);   
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
@@ -472,7 +472,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            $this->listProvider->reconnect();
+            $this->listProvider->connect();
             $gearToAdd = $this->listProvider->getGearByName($gear->name);  
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
@@ -868,7 +868,7 @@ class EPCharacterCreator {
                 }
             }
             if (isset($morph)){
-                $this->listProvider->reconnect();
+                $this->listProvider->connect();
                 $traitToAdd = $this->listProvider->getTraitByName($trait->name);
                 $this->addAtomInArray($morph->additionalTraits,$traitToAdd);
             }else{
@@ -922,7 +922,7 @@ class EPCharacterCreator {
                 }
             }
             if (isset($morph)){
-                $this->listProvider->reconnect();
+                $this->listProvider->connect();
                 $traitToAdd = $this->listProvider->getTraitByName($trait->name);  
                 $this->addAtomInArray($morph->additionalTraits,$traitToAdd);
             }else{
@@ -2075,13 +2075,13 @@ class EPCharacterCreator {
 	    return false;
     }
     function getCanPsyGamma(){
-	    foreach($this->character->ego->traits as $t){
-    		if($t->name ==  EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
-    	}
-    	foreach($this->character->ego->additionalTraits as $t){
-    		if($t->name ==  EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
-    	}
-	    return false;
+        foreach($this->character->ego->traits as $t){
+            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+        }
+        foreach($this->character->ego->additionalTraits as $t){
+            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+        }
+        return false;
     }
     private function init($pathToConfig,$amountCP){
         $this->listProvider = new EPListProvider($pathToConfig);
