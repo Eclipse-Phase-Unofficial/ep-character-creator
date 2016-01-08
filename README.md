@@ -3,8 +3,9 @@
 A web-based character creator application for the Eclipse Phase role-playing game.
 
 * Websites that Host EPCC
-    * [bisslickin.com](http://bisslickin.com/Creator/version4/index.php)
     * [oook.ch](http://eclipsephase.oook.ch/Creator/version4/index.php)
+    * [next-loop.com](http://eclipsephase.next-loop.com/)
+         The oook.ch creator is scheduled for termination soon, can you test the new instance on next-loop please ? :)
 * [Source](https://github.com/rbewley4/ep-character-creator)
 * [Releases](https://github.com/rbewley4/ep-character-creator/releases)
 * [Issues](https://github.com/rbewley4/ep-character-creator/issues)
