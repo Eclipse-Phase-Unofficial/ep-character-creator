@@ -17,12 +17,8 @@ You can read the full license description [here](https://github.com/rbewley4/ep-
 
 ### Derivative Work
 
-This is a derivative work of the original
-[Eclipse Phase Character Creator](http://eclipsephase.oook.ch/Creator/version4/about.html) by Oook Game.
-
 You can download the original source code for EPCC V 1.0 (03.2014) from
-[GitHub](https://github.com/rbewley4/ep-character-creator/releases/tag/v1.0.0) or
-[Oook](http://eclipsephase.oook.ch/EPCC_sources.zip).
+[GitHub](https://github.com/rbewley4/ep-character-creator/releases/tag/v1.0.0).
 
 You may also view the README file that came with the original work
 [here](https://github.com/rbewley4/ep-character-creator/blob/master/OookReadme.txt).
