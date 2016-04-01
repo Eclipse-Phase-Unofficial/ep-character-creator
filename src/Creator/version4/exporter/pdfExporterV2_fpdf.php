@@ -262,37 +262,34 @@
 				
 				//SOFT GEAR
 				$softGears = $_SESSION['cc']->getEgoSoftGears();
-				$apt_x = 86;
-				
+
 				if(count($softGears) <= 18)
 				{
 					$fontsize = 8;
 					$y_space = 3.5;
-					$apt_y = 155;
 				}
 				else
 				{
 					$fontsize = 6;
 					$y_space = 3;
-					$apt_y = 155;	
 				}
 				
+				$formatedSoftGears = array();
 				foreach($softGears as $gear)
-				{
-					if($gear->occurence > 1) 
-						$occ = "(" . $gear->occurence . ") ";
-					else 
-						$occ = "";
-					
-					$pdf->SetFont('Lato-Lig', '', $fontsize);
-					$pdf->Text($apt_x, $apt_y, formatIt($occ . $gear->name));//soft gear name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($gear->name, ($apt_x - 11), $apt_y, $p, $pdf);//soft gear bookLink
-					
-					$apt_y += $y_space;
-				}
-				
+                {
+                    $occ = "";
+                    if($gear->occurence > 1)
+                    {
+                        $occ = "(" . $gear->occurence . ") ";
+                    }
+
+                    $item[0] = getBookLink($gear->name,$p);
+                    $item[1] = formatIt($occ . $gear->name);
+                    array_push($formatedSoftGears,$item);
+                }
+                $pdf->SetXY(70,152);
+                writeTwoColumns($pdf,$formatedSoftGears,13,40,2,$y_space,$fontsize,$fontsize,0);
+
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
 				$y_space = 1;
