@@ -730,6 +730,8 @@
     //
     // @param $pdf              The pdf to write to
     // @param $data             The data to be written
+    //  This is an array containing touples of columns
+    //  If the third column is set, then seperator functions will treat the next row as a continuation of the previous one
     // @param $col1_width       How wide column 1 is
     // @param $col1_width       How wide column 2 is
     // @param $col_spacing      Spacing between columns
@@ -751,6 +753,25 @@
         $useFill = false;
         foreach($data as $item)
         {
+            if($seperator_type == 1 && !isset($item[2]))
+            {
+                $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+            }
+            if($seperator_type == 2  && !isset($item[2]))
+            {
+                if($i%2 == 0)
+                    $useFill = false;
+                else
+                    $useFill = true;
+            }
+            if($seperator_type == 3  && !isset($item[2]))
+            {
+                if($i%2 == 0)
+                    $fontName = 'Lato-Lig';
+                else
+                    $fontName = 'Lato-Reg';
+            }
+
             $pdf->SetFont($fontName, '', $col1_font_size);
             //If the first column is too long, drop the font size accordingly so it fits in a single line
             while($pdf->GetStringWidth($item[0]) > $col1_width)
@@ -766,26 +787,9 @@
             $pdf->Cell($col_spacing,$row_height,"",0,0,'l',$useFill);
             $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
 
-            if($seperator_type == 1)
-            {
-                $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
-            }
-            if($seperator_type == 2)
-            {
-                if($i%2 == 0)
-                    $useFill = true;
-                else
-                    $useFill = false;
-            }
-            if($seperator_type == 3)
-            {
-                if($i%2 == 0)
-                    $fontName = 'Lato-Reg';
-                else
-                    $fontName = 'Lato-Lig';
-            }
             $pdf->SetX($x_position);
-            $i++;
+            if(!isset($item[2]))
+                $i++;
         }
     }
 
