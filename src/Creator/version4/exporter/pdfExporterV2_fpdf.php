@@ -789,13 +789,6 @@
 	//MEMO (all bonus malus descriptive only)
 	function writeMemo($pdf,$filteredBM)
 	{
-		$apt_x = 80;
-		$apt_y = 230;
-
-		$col1_width = 45;
-		$col2_width = 80;
-		$col_spacing = 2;
-
 		$col1_font_size = 9;
 		$col2_font_size = 7;
 		$row_height = 4;
@@ -817,8 +810,8 @@
             array_push($data,$item);
 		}
 
-		$pdf->SetXY($apt_x,$apt_y);
-		writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,1);
+		$pdf->SetXY(80,230);
+		writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,1);
 	}
 
 	//HELPERS ===============================================================
