@@ -263,17 +263,6 @@
 				//SOFT GEAR
 				$softGears = $_SESSION['cc']->getEgoSoftGears();
 
-				if(count($softGears) <= 18)
-				{
-					$fontsize = 8;
-					$y_space = 3.5;
-				}
-				else
-				{
-					$fontsize = 6;
-					$y_space = 3;
-				}
-				
 				$formatedSoftGears = array();
 				foreach($softGears as $gear)
                 {
@@ -283,12 +272,12 @@
                         $occ = "(" . $gear->occurence . ") ";
                     }
 
-                    $item[0] = getBookLink($gear->name,$p);
-                    $item[1] = formatIt($occ . $gear->name);
+                    $item[0] = formatIt($occ . $gear->name);
+                    $item[1] = getBookLink($gear->name,$p);
                     array_push($formatedSoftGears,$item);
                 }
-                $pdf->SetXY(70,152);
-                writeTwoColumns($pdf,$formatedSoftGears,13,40,2,$y_space,$fontsize,$fontsize,0);
+                $pdf->SetXY(85,152);
+                writeTwoColumns($pdf,$formatedSoftGears,30,18,1,3,7,7,0);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
@@ -791,7 +780,7 @@
 	{
 		$col1_font_size = 9;
 		$col2_font_size = 7;
-		$row_height = 4;
+		$row_height = 4.5;
 
 		//if more than 10 Items, change to a smaller font size
 		if(count($filteredBM) > 10)
