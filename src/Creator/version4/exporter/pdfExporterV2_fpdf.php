@@ -24,6 +24,7 @@
 		$p = new EPListProvider('../../../php/config.ini');
 		
 		$pdf = new FPDF();
+		$ovf = new Overflow();
 		
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
 
@@ -132,31 +133,10 @@
 				
 				$skillList = $_SESSION['cc']->getSkills();
 
-				//Count skills and specializations
-				$printedSkills = 0;
-				foreach($skillList as $skill)
-				{
-					if($skill->getValue() > 0)
-						$printedSkills++;
-					
-					if(!empty($skill->specialization))
-						$printedSkills++;
-				}
-				//if more than 60 skills, reduce the font and spaces
-				if($printedSkills <= 60)
-				{
-					$fontsize = 9;
-					$y_space = 3.5;
-				}
-				else
-				{
-					$fontsize = 6;
-					$y_space = 3;
-				} 
-				
-				$formattedSkills = array();
-				foreach($skillList as $skill)
-				{
+
+                $formattedSkills = array();
+                foreach($skillList as $skill)
+                {
                     $item = array();
                     if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
                     {
@@ -190,10 +170,10 @@
                     }
                 }
                 $pdf->setXY(8,84);
-                writeTwoColumns($pdf,$formattedSkills,55,7,1,$y_space,$fontsize,$fontsize,2);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,55,7,1,3.5,9,9,2,60,"Ego Skills Overflow");
 
-				//EGO NEG TRAIT
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
+                //EGO NEG TRAIT
+                $egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
 
                 $formattedNegTraits = array();
                 foreach($egoNegTraits as $trait)
@@ -695,6 +675,7 @@
 					}
 				
 			//===================
+        $ovf->printOverflowPages($pdf);
 		$file_util = new EPFileUtility($_SESSION['cc']->character);
 		$filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
 		$pdf->Output($filename, 'D');
@@ -709,6 +690,36 @@
 	}
 	
 	//Block Writers ===============================================================
+
+    //There are some cases where there is more information than can fit in the appropriate spot on a page
+    //To deal with this, we save the data, and print extra pages at the end if needed
+    class Overflow
+    {
+        var $page_data;  //A page's worth of data that's overflowed
+        function Overflow()
+        {
+            $this->page_data = array();
+        }
+        function generateOverflowPage($pageName,$data)
+        {
+            $item = array();
+            $item['name'] = $pageName;
+            $item['data'] = $data;
+            array_push($this->page_data,$item);
+        }
+        function printOverflowPages($pdf)
+        {
+            foreach($this->page_data as $page)
+            {
+                $pdf->AddPage('P', 'A4');
+                $pdf->SetFont('Lato-Reg', '', 30);
+                $pdf->Text(5, 15, formatIt($page['name']));
+                $pdf->SetXY(5,20);
+                writeTwoColumns($pdf,$page['data'],60,90,2,4,8,8,2);
+            }
+
+        }
+    }
 
     // Writes out multi-column data
     //
@@ -778,6 +789,25 @@
 
             $pdf->SetX($x_position);
         }
+    }
+
+    //Wrapper that allows for the creation of overflow pages if too many elements are entered
+    //
+    // @param $ovf                  The overflow object to store extra items in
+    // @param $overflow_number      The max number of items before overflow occurs
+    // @param $overflow_message     The message to put on the overflow page
+    function writeTwoColumnsOvf($ovf,$pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
+    {
+        if($overflow_number != 0)
+        {
+            $chunks = array_chunk($data,$overflow_number);
+            if(isset($chunks[1]))
+                $ovf->generateOverflowPage($overflow_message,$chunks[1]);
+            writeTwoColumns($pdf,$chunks[0],$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type);
+
+        }
+        else
+            writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type);
     }
 
 	//Bonus/Malus means good/bad in Latin
