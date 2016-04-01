@@ -81,36 +81,34 @@
 				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
 				
 				$aptitudes = $_SESSION['cc']->getAptitudes();
-				$y_space = 3.5;
-				$apt_x = 55;
-				$apt_y = 53;
-				
-				$pdf->SetFont('Lato-Lig', '', 10);
-				foreach($aptitudes as $apt)
-				{
-					$pdf->Text($apt_x, $apt_y, formatIt($apt->name));//Apt Name
-					$pdf->Text(($apt_x + 37), $apt_y, formatIt($apt->value));//Apt Value Ego
-					
-					$apt_y += $y_space;
-				}
+
+                $formattedSkills = array();
+                foreach($aptitudes as $apt)
+                {
+                    $item = array();
+                    $item[0] = formatIt($apt->name);
+                    $item[1] = formatIt($apt->getvalue());
+                    array_push($formattedSkills,$item);
+                }
+                $pdf->SetXY(58,50);
+                writeTwoColumns($pdf,$formattedSkills,30,10,2,3.5,10,10,2);
 				
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(138, 49, "(EP p.285)");//Reputation bookLink
 				
 				$reputations = $_SESSION['cc']->getReputations();
-				$y_space = 3.5;
-				$apt_x = 108;
-				$apt_y = 53;
-				
-				$pdf->SetFont('Lato-Lig', '', 10);
-				foreach($reputations as $rep)
-				{
-					$pdf->Text($apt_x, $apt_y, formatIt($rep->name));//Rep name
-					$pdf->Text(($apt_x + 33), $apt_y, formatIt($rep->getvalue()));//Rep value
-					
-					$apt_y += $y_space;
-				}
+
+                $formattedReputations = array();
+                foreach($reputations as $rep)
+                {
+                    $item = array();
+                    $item[0] = formatIt($rep->name);
+                    $item[1] = formatIt($rep->getvalue());
+                    array_push($formattedReputations,$item);
+                }
+                $pdf->SetXY(111,50);
+                writeTwoColumns($pdf,$formattedReputations,25,10,2,3.5,10,10,2);
 				
 				//MOTIVATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -798,18 +796,18 @@
 			$row_height = 3;
 		}
 
-		//Convert data to display into the correct format
-		$data = array();
-		foreach($filteredBM as $bm)
-		{
+        //Convert data to display into the correct format
+        $data = array();
+        foreach($filteredBM as $bm)
+        {
+            $item = array();
             $item[0] = formatIt($bm->name);
             $item[1] = $bm->description;
             array_push($data,$item);
-		}
-
-		$pdf->SetXY(80,230);
-		writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,2);
-	}
+        }
+        $pdf->SetXY(80,230);
+        writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,2);
+    }
 
 	//HELPERS ===============================================================
 
