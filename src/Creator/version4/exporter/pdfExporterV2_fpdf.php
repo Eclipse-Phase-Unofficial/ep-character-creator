@@ -174,29 +174,13 @@
 
                 //EGO NEG TRAIT
                 $egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
-
-                $formattedNegTraits = array();
-                foreach($egoNegTraits as $trait)
-                {
-                    $item = array();
-                    $item[0] = formatIt($trait->name);
-                    $item[1] = getBookLink($trait->name,$p);
-                    array_push($formattedNegTraits,$item);
-                }
+                $formattedNegTraits = formatGearData($egoNegTraits,$p);
                 $pdf->setXY(80,102);
                 writeTwoColumns($pdf,$formattedNegTraits,18,15,1,3,8,7);
 
-				//EGO POS TRAIT
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
-
-                $formattedPosTraits = array();
-                foreach($egoNegTraits as $trait)
-                {
-                    $item = array();
-                    $item[0] = formatIt($trait->name);
-                    $item[1] = getBookLink($trait->name,$p);
-                    array_push($formattedPosTraits,$item);
-                }
+                //EGO POS TRAIT
+                $egoPosTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
+                $formattedPosTraits = formatGearData($egoPosTraits,$p);
                 $pdf->setXY(116,102);
                 writeTwoColumns($pdf,$formattedPosTraits,25,15,1,3,8,7);
 
@@ -224,24 +208,10 @@
 					$apt_y += $y_space;
 				}	
 				
-				//SOFT GEAR
-				$softGears = $_SESSION['cc']->getEgoSoftGears();
-
-				$formatedSoftGears = array();
-				foreach($softGears as $gear)
-                {
-                    $occ = "";
-                    if($gear->occurence > 1)
-                    {
-                        $occ = "(" . $gear->occurence . ") ";
-                    }
-
-                    $item[0] = formatIt($occ . $gear->name);
-                    $item[1] = getBookLink($gear->name,$p);
-                    array_push($formatedSoftGears,$item);
-                }
+                //SOFT GEAR
+                $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
                 $pdf->SetXY(85,152);
-                writeTwoColumns($pdf,$formatedSoftGears,30,15,1,3,7,7);
+                writeTwoColumns($pdf,$softGears,30,15,1,3,7,7);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
@@ -344,33 +314,17 @@
 							$morphGender = 'none';
 						
 						$pdf->Text(140, 26, formatIt($morphGender));//morph gender
-						
+
                         //MORPH NEG TRAIT
                         $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
-
-                        $formattedNegTraits = array();
-                        foreach($morphNegTraits as $trait)
-                        {
-                            $item = array();
-                            $item[0] = formatIt($trait->name);
-                            $item[1] = getBookLink($trait->name,$p);
-                            array_push($formattedNegTraits,$item);
-                        }
+                        $formattedNegTraits = formatGearData($morphNegTraits,$p);
                         $pdf->setXY(5,43);
                         writeTwoColumns($pdf,$formattedNegTraits,29,15,1,4,8,7);
 
 
                         //MORPH POS TRAIT
                         $morphPosTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
-
-                        $formattedPosTraits = array();
-                        foreach($morphPosTraits as $trait)
-                        {
-                            $item = array();
-                            $item[0] = formatIt($trait->name);
-                            $item[1] = getBookLink($trait->name,$p);
-                            array_push($formattedPosTraits,$item);
-                        }
+                        $formattedPosTraits = formatGearData($morphPosTraits,$p);
                         $pdf->setXY(52,43);
                         writeTwoColumns($pdf,$formattedPosTraits,29,15,1,4,8,7);
 
@@ -550,37 +504,13 @@
 							
                         //GEAR
                         $gear = filterGeneralOnly($morphGear);
-
-                        $formattedGear = array();
-                        foreach($gear as $g)
-                        {
-                            $occ = "";
-                            if($g->occurence > 1)
-                                $occ = "(" . $g->occurence . ") ";
-
-                            $item = array();
-                            $item[0] = formatIt($occ . $g->name);
-                            $item[1] = getBookLink($g->name,$p);
-                            array_push($formattedGear,$item);
-                        }
+                        $formattedGear = formatGearData($gear,$p);
                         $pdf->SetXY(83,168);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedGear,35,18,1,3,7,7,0,15,"Gear Overflow");
 
                         //IMPLANTS
                         $implants = filterImplantOnly($morphGear);
-
-                        $formattedImplants = array();
-                        foreach($implants as $i)
-                        {
-                            $occ = "";
-                            if($i->occurence > 1)
-                                $occ = "(" . $i->occurence . ") ";
-
-                            $item = array();
-                            $item[0] = formatIt($occ . $i->name);
-                            $item[1] = getBookLink($i->name,$p);
-                            array_push($formattedImplants,$item);
-                        }
+                        $formattedImplants = formatGearData($implants,$p);
                         $pdf->SetXY(140,168);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,40,20,1,3,7,7,0,18,"Implant Overflow");
 
@@ -595,7 +525,8 @@
         $ovf->printOverflowPages($pdf);
 		$file_util = new EPFileUtility($_SESSION['cc']->character);
 		$filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
-		$pdf->Output($filename, 'D');
+// 		$pdf->Output($filename, 'D');
+		$pdf->Output($filename, 'I');
 	}
 	
 	//NO CHARACTER CREATOR ! ================================================
@@ -636,6 +567,24 @@
             }
 
         }
+    }
+
+    //Prepare gear/item/trait data for printing
+    function formatGearData($gears,$provider)
+    {
+        $data = array();
+        foreach($gears as $g)
+        {
+            $item = array();
+            $occ = "";
+            if($g->occurence > 1)
+                $occ = "(" . $g->occurence . ") ";
+
+            $item[0] = formatIt($occ . $g->name);
+            $item[1] = getBookLink($g->name,$provider);
+            array_push($data,$item);
+        }
+        return $data;
     }
 
     // Writes out multi-column data
