@@ -691,11 +691,12 @@
 
             $pdf->SetFont($fontName, '', $col1_font_size);
             //If the first column is too long, drop the font size accordingly so it fits in a single line
+            $tmp_font_size = $col1_font_size;
             while($pdf->GetStringWidth($item[0]) > $col1_width)
             {
-                $col1_font_size-=1;
-                $pdf->SetFontSize($col1_font_size);
-                error_log($col1_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
+                $tmp_font_size-=1;
+                $pdf->SetFontSize($tmp_font_size);
+//                 error_log($tmp_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
             }
             $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',$useFill);
 
