@@ -209,7 +209,7 @@
 						$occ = "";
 					
 					$pdf->SetFont('Lato-Lig', '', 8);
-					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name 
+					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name
 					
 					$pdf->SetFont('Lato-LigIta', '', 6);
 					writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
@@ -218,7 +218,7 @@
 					foreach($ai->aptitudes as $aiApt)
 					{
 						$skillAptNonformated .= $aiApt->abbreviation . "[";
-						$skillAptNonformated .= $aiApt->value . "]   ";
+						$skillAptNonformated .= $aiApt->value . "]\n";
 					}
 					
 					//construct a skill string for each skill
@@ -230,21 +230,15 @@
 						
 						$skillCompleteName .= $aiSkill->name;
 						$skillAptNonformated .= $skillCompleteName . "(";
-						$skillAptNonformated .= $aiSkill->baseValue . ")  ";
+						$skillAptNonformated .= $aiSkill->baseValue . ")\n";
 					}
 					
-					
-					$aiSkillsApt = formatItForRect($skillAptNonformated, 35);
-					$paddle = 0;
-					
 					$pdf->SetFont('Lato-LigIta', '', 7);
-					foreach($aiSkillsApt as $line)
-					{
-						$pdf->Text(($apt_x + 27), ($apt_y + $paddle), formatIt($line));//ai skill apt
-						$paddle += 3;
-					} 
-					
-					$apt_y += $y_space + $paddle;
+					$pdf->setXY($apt_x + 27,$apt_y);
+					$pdf->MultiCell(30,3,$skillAptNonformated);
+					$pdf->Line($apt_x+27,$pdf->getY(),$apt_x+57,$pdf->getY());
+
+					$apt_y = $pdf->getY();
 				}	
 
 				//MEMO (all ego bonus malus)
