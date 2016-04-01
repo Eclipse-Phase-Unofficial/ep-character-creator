@@ -277,7 +277,7 @@
                     array_push($formatedSoftGears,$item);
                 }
                 $pdf->SetXY(85,152);
-                writeTwoColumns($pdf,$formatedSoftGears,30,18,1,3,7,7,2);
+                writeTwoColumns($pdf,$formatedSoftGears,30,15,1,3,7,7,2);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
@@ -751,8 +751,9 @@
     function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type)
     {
         $x_position = $pdf->GetX();
-        $pdf->SetFillColor(255);    //White (transparent)
+        $pdf->SetFillColor(175);    //Fill color for seperating items
         $i=0;
+        $useFill = false;
         foreach($data as $item)
         {
             $pdf->SetFont('Lato-Lig', '', $col1_font_size);
@@ -763,11 +764,11 @@
                 $pdf->SetFontSize($col1_font_size);
                 error_log($col1_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
             }
-            $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',true);
+            $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',$useFill);
 
             $pdf->SetFont('Lato-Lig', '', $col2_font_size);
             $pdf->SetX($pdf->GetX()+$col_spacing);
-            $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',true);
+            $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
 
             if($seperator_type == 1)
             {
@@ -776,13 +777,9 @@
             if($seperator_type == 2)
             {
                 if($i%2 == 0)
-                {
-                    $pdf->SetFillColor(175);
-                }
+                    $useFill = true;
                 else
-                {
-                    $pdf->SetFillColor(255);
-                }
+                    $useFill = false;
                 $i++;
             }
             $pdf->SetX($x_position);
@@ -815,7 +812,7 @@
 		}
 
 		$pdf->SetXY(80,230);
-		writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,1);
+		writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,2);
 	}
 
 	//HELPERS ===============================================================
