@@ -747,6 +747,41 @@
 	$pdf->SetXY($apt_x,$apt_y);
 	$pdf->MultiCell(95,2,$character->note,0,'l');
 
+
+    // Writes out multi-column data
+    //
+    // @param $pdf              The pdf to write to
+    // @param $data             The data to be written
+    // @param $col1_width       How wide column 1 is
+    // @param $col1_width       How wide column 2 is
+    // @param $col_spacing      Spacing between columns
+    // @param $row_height       How high each row is
+    // @param $col1_font_size   The font size for column 1
+    // @param $col2_font_size   The font size for column 2
+    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size)
+    {
+        $x_position = $pdf->GetX();
+        foreach($data as $item)
+        {
+            $pdf->SetFont('Lato-Lig', '', $col1_font_size);
+            //If the first column is too long, drop the font size accordingly so it fits in a single line
+            while($pdf->GetStringWidth($item[0]) > $col1_width)
+            {
+                $col1_font_size-=1;
+                $pdf->SetFontSize($col1_font_size);
+                error_log($col1_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
+            }
+            $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l');
+
+            $pdf->SetFont('Lato-Lig', '', $col2_font_size);
+            $pdf->SetX($pdf->GetX()+$col_spacing);
+            $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l');
+
+            $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+            $pdf->SetX($x_position);
+        }
+    }
+
 	//Bonus/Malus means good/bad in Latin
 	//MEMO (all bonus malus descriptive only)
 	function writeMemo($pdf,$filteredBM)
@@ -770,6 +805,7 @@
 			$row_height = 3;
 		}
 
+		//Convert data to display into the correct format
 		$data = array();
 		foreach($filteredBM as $bm)
 		{
@@ -777,30 +813,11 @@
             $item[1] = $bm->description;
             array_push($data,$item);
 		}
-// 		var_dump($data);
-//         echo '<p>';
 
 		$pdf->SetXY($apt_x,$apt_y);
-		foreach($data as $item)
-		{
-			$pdf->SetFont('Lato-Lig', '', $col1_font_size);
-			//If the first column is too long, drop the font size accordingly so it fits in a single line
-			while($pdf->GetStringWidth($item[0]) > $col1_width)
-			{
-				$col1_font_size-=1;
-				$pdf->SetFontSize($col1_font_size);
-				error_log($col1_font_size."->".$bm->name.":  ".$pdf->GetStringWidth($item[0]));
-			}
-			$pdf->Cell($col1_width,$row_height,$item[0],0,0,'l');
-
-			$pdf->SetFont('Lato-Lig', '', $col2_font_size);
-			$pdf->SetX($pdf->GetX()+$col_spacing);
-			$pdf->MultiCell($col2_width,$row_height,$item[1],0,'l');
-
-			$pdf->Line($apt_x,$pdf->GetY(),$apt_x+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
-			$pdf->SetX($apt_x);
-		}
+		writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size);
 	}
+
 	//HELPERS ===============================================================
 
 	function formatIt($string)
