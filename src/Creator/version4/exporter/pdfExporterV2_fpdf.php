@@ -56,8 +56,8 @@
 				$pdf->Text(37, 33, formatIt($_SESSION['cc']->getCurrentFaction()->name)); //Faction
 				
 				$pdf->SetFont('Lato-LigIta', '', 7);
-				setBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $p, $pdf);//Background bookLink
-				setBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
+				writeBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $p, $pdf);//Background bookLink
+				writeBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
 				
 				//AGE - SEX
 				$birthGender = " ";
@@ -213,7 +213,7 @@
 					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
 					
 					$pdf->SetFont('Lato-LigIta', '', 5);
-					setBookLink($trait->name, ($apt_x - 8), $apt_y, $p, $pdf);//Trait Neg bookLink
+					writeBookLink($trait->name, ($apt_x - 8), $apt_y, $p, $pdf);//Trait Neg bookLink
 					
 					$apt_y += $y_space;
 				}
@@ -231,7 +231,7 @@
 					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
 					
 					$pdf->SetFont('Lato-LigIta', '', 5);
-					setBookLink($trait->name, ($apt_x + 30), $apt_y, $p, $pdf);//Trait Neg bookLink
+					writeBookLink($trait->name, ($apt_x + 30), $apt_y, $p, $pdf);//Trait Neg bookLink
 					
 					$apt_y += $y_space;
 				}
@@ -255,7 +255,7 @@
 					$pdf->Text(($apt_x + 4), $apt_y, formatIt($sleight->name));//PsySleight name 
 					
 					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($sleight->name, ($apt_x + 36), $apt_y, $p, $pdf);//PsySleight bookLink
+					writeBookLink($sleight->name, ($apt_x + 36), $apt_y, $p, $pdf);//PsySleight bookLink
 					
 					$apt_y += $y_space;
 				}	
@@ -310,7 +310,7 @@
 					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name 
 					
 					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
+					writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
 					
 					$skillAptNonformated = "";
 					foreach($ai->aptitudes as $aiApt)
@@ -377,7 +377,7 @@
 						$pdf->Text(55, 11.5, formatIt($morph->name . " " . $type));//morph Name type
 						
 						$pdf->SetFont('Lato-LigIta', '', 5);
-						setBookLink($morph->name, 105, 11.5, $p, $pdf);//morph bookLink
+						writeBookLink($morph->name, 105, 11.5, $p, $pdf);//morph bookLink
 						
 						$pdf->SetFont('Lato-Lig', '', 8);
 						$pdf->Text(140, 12, formatIt($morph->nickname));//morph nickname
@@ -407,7 +407,7 @@
 							$pdf->Text( $apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
 							
 							$pdf->SetFont('Lato-LigIta', '', 5);
-							setBookLink($trait->name, ($apt_x - 9), $apt_y, $p, $pdf);//Trait Neg bookLink
+							writeBookLink($trait->name, ($apt_x - 9), $apt_y, $p, $pdf);//Trait Neg bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -424,7 +424,7 @@
 							$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
 							
 							$pdf->SetFont('Lato-LigIta', '', 5);
-							setBookLink($trait->name, ($apt_x + 41), $apt_y, $p, $pdf);//Trait Neg bookLink
+							writeBookLink($trait->name, ($apt_x + 41), $apt_y, $p, $pdf);//Trait Neg bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -601,7 +601,7 @@
 							$pdf->Text(($apt_x + 97), $apt_y, formatIt("AP : " . $w->armorPenetration));//Weapon Armor penetration 
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($w->name, ($apt_x + 108), $apt_y, $p, $pdf);//Weapon bookLink
+							writeBookLink($w->name, ($apt_x + 108), $apt_y, $p, $pdf);//Weapon bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -645,7 +645,7 @@
 							}
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x + 108), $apt_y, $p, $pdf);//Armor bookLink
+							writeBookLink($a->name, ($apt_x + 108), $apt_y, $p, $pdf);//Armor bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -679,7 +679,7 @@
 							$pdf->Text($apt_x, $apt_y, formatIt($occ . $a->name));//Gear name 
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x - 12.5), $apt_y, $p, $pdf);//Gear bookLink
+							writeBookLink($a->name, ($apt_x - 12.5), $apt_y, $p, $pdf);//Gear bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -713,7 +713,7 @@
 							$pdf->Text($apt_x, $apt_y, formatIt($occ . $a->name));//Implant name 
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x + 52), $apt_y, $p, $pdf);//Implant bookLink
+							writeBookLink($a->name, ($apt_x + 52), $apt_y, $p, $pdf);//Implant bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -979,8 +979,8 @@
 		}
 		return $result;
 	}
-	
-	function setBookLink($atomeName, $x, $y, $provider, $pdf)
+
+	function getBookLink($atomeName, $provider)
 	{
 		$bookFullName = $provider->getBookForName($atomeName);
 		if($bookFullName == EPListProvider::$BOOK_ECLIPSEPHASE) $book = "EP";
@@ -990,8 +990,13 @@
 		else if($bookFullName == EPListProvider::$BOOK_PANOPTICON) $book = "PAN";
 		else if($bookFullName == EPListProvider::$BOOK_RIMWARD) $book = "RW";
 		else $book = "??";
-		
+
 		$page = $provider->getPageForName($atomeName);
-		$pdf->Text($x, $y, "(" . $book . " p." . $page . ")");
+		return "(" . $book . " p." . $page . ")";
+	}
+
+	function writeBookLink($atomeName, $x, $y, $provider, $pdf)
+	{
+		$pdf->Text($x, $y, getBookLink($atomeName,$provider));
 	}
 ?>
