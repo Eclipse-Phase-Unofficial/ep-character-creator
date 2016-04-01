@@ -758,7 +758,10 @@
     // @param $row_height       How high each row is
     // @param $col1_font_size   The font size for column 1
     // @param $col2_font_size   The font size for column 2
-    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size)
+    // @param $seperator_type   The type of seperator between items
+    //  0 is not seperator
+    //  1 is a line
+    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type)
     {
         $x_position = $pdf->GetX();
         foreach($data as $item)
@@ -777,7 +780,10 @@
             $pdf->SetX($pdf->GetX()+$col_spacing);
             $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l');
 
-            $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+            if($seperator_type == 1)
+            {
+                $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+                }
             $pdf->SetX($x_position);
         }
     }
@@ -815,7 +821,7 @@
 		}
 
 		$pdf->SetXY($apt_x,$apt_y);
-		writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size);
+		writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,1);
 	}
 
 	//HELPERS ===============================================================
