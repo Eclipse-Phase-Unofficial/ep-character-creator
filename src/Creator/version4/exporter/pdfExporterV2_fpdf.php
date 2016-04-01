@@ -183,6 +183,7 @@
 
                         if(!empty($skill->specialization))
                         {
+                            $item = array();
                             $item[0] = formatIt("     spec[" . $skill->specialization . "]");
                             $item[1] = "";
                             $item[2] = "Set!";
@@ -191,43 +192,36 @@
                     }
                 }
                 $pdf->setXY(8,84);
-                writeTwoColumns($pdf,$formattedSkills,55,7,2,$y_space,$fontsize,$fontsize,3);
-				
+                writeTwoColumns($pdf,$formattedSkills,55,7,1,$y_space,$fontsize,$fontsize,2);
+
 				//EGO NEG TRAIT
 				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
-				$y_space = 3;
-				$apt_x = 83;
-				$apt_y = 105;
-				
-				foreach($egoNegTraits as $trait)
-				{
-					$pdf->SetFont('Lato-Lig', '', 6);
-					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 5);
-					writeBookLink($trait->name, ($apt_x - 8), $apt_y, $p, $pdf);//Trait Neg bookLink
-					
-					$apt_y += $y_space;
-				}
-				
+
+                $formattedNegTraits = array();
+                foreach($egoNegTraits as $trait)
+                {
+                    $item = array();
+                    $item[0] = formatIt($trait->name);
+                    $item[1] = getBookLink($trait->name,$p);
+                    array_push($formattedNegTraits,$item);
+                }
+                $pdf->setXY(80,102);
+                writeTwoColumns($pdf,$formattedNegTraits,18,15,1,3,6,5);
+
 				//EGO POS TRAIT
 				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
-				$y_space = 3;
-				$apt_x = 116;
-				$apt_y = 105;
-				
-				//need to either add some additional spacing or test book name length PAN p100+ causes issues
-				foreach($egoNegTraits as $trait)
-				{
-					$pdf->SetFont('Lato-Lig', '', 6);
-					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 5);
-					writeBookLink($trait->name, ($apt_x + 30), $apt_y, $p, $pdf);//Trait Neg bookLink
-					
-					$apt_y += $y_space;
-				}
-				
+
+                $formattedPosTraits = array();
+                foreach($egoNegTraits as $trait)
+                {
+                    $item = array();
+                    $item[0] = formatIt($trait->name);
+                    $item[1] = getBookLink($trait->name,$p);
+                    array_push($formattedPosTraits,$item);
+                }
+                $pdf->setXY(116,102);
+                writeTwoColumns($pdf,$formattedPosTraits,25,15,1,3,6,5);
+
 				//PSI SLEIGHTS
 				$psySleights = $_SESSION['cc']->getCurrentPsySleights();
 				$y_space = 3;
@@ -269,7 +263,7 @@
                     array_push($formatedSoftGears,$item);
                 }
                 $pdf->SetXY(85,152);
-                writeTwoColumns($pdf,$formatedSoftGears,30,15,1,3,7,7,2);
+                writeTwoColumns($pdf,$formatedSoftGears,30,15,1,3,7,7);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
