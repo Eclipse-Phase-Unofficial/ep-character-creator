@@ -745,23 +745,28 @@
         $useFill = false;
         foreach($data as $item)
         {
-            if($seperator_type == 1 && !isset($item[2]))
+            //Handle seperators between items
+            if(!isset($item[2]))
             {
-                $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
-            }
-            if($seperator_type == 2  && !isset($item[2]))
-            {
-                if($i%2 == 0)
-                    $useFill = false;
-                else
-                    $useFill = true;
-            }
-            if($seperator_type == 3  && !isset($item[2]))
-            {
-                if($i%2 == 0)
-                    $fontName = 'Lato-Lig';
-                else
-                    $fontName = 'Lato-Reg';
+                if($seperator_type == 1)
+                {
+                    $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+                }
+                if($seperator_type == 2)
+                {
+                    if($i%2 == 0)
+                        $useFill = false;
+                    else
+                        $useFill = true;
+                }
+                if($seperator_type == 3)
+                {
+                    if($i%2 == 0)
+                        $fontName = 'Lato-Lig';
+                    else
+                        $fontName = 'Lato-Reg';
+                }
+                $i++;
             }
 
             $pdf->SetFont($fontName, '', $col1_font_size);
@@ -780,8 +785,6 @@
             $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
 
             $pdf->SetX($x_position);
-            if(!isset($item[2]))
-                $i++;
         }
     }
 
