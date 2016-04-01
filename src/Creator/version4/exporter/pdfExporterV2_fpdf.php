@@ -741,7 +741,7 @@
     //  1 line seperator
     //  2 every other row has a gray background
     //  3 every other row is bolded
-    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type)
+    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0)
     {
         $x_position = $pdf->GetX();
         $pdf->SetFillColor(175);    //Fill color for separating items
@@ -762,7 +762,8 @@
             $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',$useFill);
 
             $pdf->SetFont($fontName, '', $col2_font_size);
-            $pdf->SetX($pdf->GetX()+$col_spacing);
+//             $pdf->SetX($pdf->GetX()+$col_spacing);
+            $pdf->Cell($col_spacing,$row_height,"",0,0,'l',$useFill);
             $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
 
             if($seperator_type == 1)
