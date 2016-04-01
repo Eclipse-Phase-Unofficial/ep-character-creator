@@ -726,14 +726,6 @@
 	
 	//Block Writers ===============================================================
 
-
-	$apt_x = 81;
-	$apt_y = 81;
-	$pdf->SetFont('Lato-Lig', '', 5);
-	$pdf->SetXY($apt_x,$apt_y);
-	$pdf->MultiCell(95,2,$character->note,0,'l');
-
-
     // Writes out multi-column data
     //
     // @param $pdf              The pdf to write to
@@ -744,19 +736,22 @@
     // @param $row_height       How high each row is
     // @param $col1_font_size   The font size for column 1
     // @param $col2_font_size   The font size for column 2
-    // @param $seperator_type   The type of seperator between items
+    // @param $seperator_type   The type of separator between items
     //  0 no seperator
     //  1 line seperator
-    //  2 every other column is has a gray background
+    //  2 every other row has a gray background
+    //  3 every other row is bolded
     function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type)
     {
         $x_position = $pdf->GetX();
-        $pdf->SetFillColor(175);    //Fill color for seperating items
+        $pdf->SetFillColor(175);    //Fill color for separating items
+
+        $fontName = 'Lato-Lig';
         $i=0;
         $useFill = false;
         foreach($data as $item)
         {
-            $pdf->SetFont('Lato-Lig', '', $col1_font_size);
+            $pdf->SetFont($fontName, '', $col1_font_size);
             //If the first column is too long, drop the font size accordingly so it fits in a single line
             while($pdf->GetStringWidth($item[0]) > $col1_width)
             {
@@ -766,7 +761,7 @@
             }
             $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',$useFill);
 
-            $pdf->SetFont('Lato-Lig', '', $col2_font_size);
+            $pdf->SetFont($fontName, '', $col2_font_size);
             $pdf->SetX($pdf->GetX()+$col_spacing);
             $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
 
@@ -780,9 +775,16 @@
                     $useFill = true;
                 else
                     $useFill = false;
-                $i++;
+            }
+            if($seperator_type == 3)
+            {
+                if($i%2 == 0)
+                    $fontName = 'Lato-Reg';
+                else
+                    $fontName = 'Lato-Lig';
             }
             $pdf->SetX($x_position);
+            $i++;
         }
     }
 
