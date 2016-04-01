@@ -91,3 +91,46 @@ You can find web server logs (Apache and PHP) on the VM in `/var/log/apache2/`:
 
 * `epcc_access.log`
 * `epcc_error.log`
+
+Deployment
+----
+You will need:
+
+* php 5.3 or greater (php.net)
+* mySql 14.14 or greater (dev.mysql.com/downloads/)
+
+
+1. Ensure that the webserver is pointing to the src directory.
+2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessable!
+
+#### MySql Database Setup (For publicly accessable websites)
+1. create a MySql database
+
+    ```mySql
+    CREATE USER 'epcc_www'@'localhost' IDENTIFIED BY '0928sdGdsfa8#_+';
+    GRANT ALL PRIVILEGES ON *.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
+    CREATE DATABASE EclipsePhaseData;
+    USE EclipsePhaseData;
+    ```
+
+2. run the script sql/FullDatabase.sql
+3. configure database access in php/config.ini
+
+    ```ini
+    databaseUser = "DATABASE USER NAME"
+    databasePassword = "DATABASE USER PASSWORD"
+    databasePDO = "mysql:dbname=<Database Name>;host=<DATABASE SERVER>("localhost" for local server);port=<Database Port> (for my sql generaly : 3306)"
+    ```
+
+#### Sqlite Database Setup (For local testing)
+1. Create a sqlite database
+
+    ```bash
+    cat FullDatabase.sql | sed 's/\\n/ /g' | sqlite3 FullDatabase.sqlite3
+    ```
+
+3. configure database access in php/config.ini
+
+    ```ini
+    databasePDO = 'sqlite:../../../sql/FullDatabase.sqlite3'
+    ````
