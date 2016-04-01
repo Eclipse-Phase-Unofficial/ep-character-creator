@@ -347,7 +347,7 @@
                                     $skillCompleteName .= " *";
 
                                 $item[0] = formatIt($skillType."   ".$skillCompleteName);
-                                $item[1] = formatIt($skill->getEgoValue());
+                                $item[1] = formatIt($skill->getValue());
                                 array_push($formattedSkills,$item);
 
                                 if(!empty($skill->specialization))
