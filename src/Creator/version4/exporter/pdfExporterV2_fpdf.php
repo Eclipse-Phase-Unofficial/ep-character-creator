@@ -753,38 +753,51 @@
 	{
 		$apt_x = 80;
 		$apt_y = 230;
-		$y_space = 4;	//vertical spacing for the BM group
-		$fontsize = 9;
-		$fontsizetxt = 7;
 
-		//if more than 10 Bonus/Malus, resize
+		$col1_width = 45;
+		$col2_width = 80;
+		$col_spacing = 2;
+
+		$col1_font_size = 9;
+		$col2_font_size = 7;
+		$row_height = 4;
+
+		//if more than 10 Items, change to a smaller font size
 		if(count($filteredBM) > 10)
 		{
-			$fontsize = 7;
-			$fontsizetxt = 5;
-			$y_space = 3;
+			$col1_font_size = 7;
+			$col2_font_size = 5;
+			$row_height = 3;
 		}
 
-		$pdf->SetXY($apt_x,$apt_y);
+		$data = array();
 		foreach($filteredBM as $bm)
 		{
-			$name = formatIt($bm->name);
-			$pdf->SetFont('Lato-Lig', '', $fontsize);
-			//If the name is too long, drop the font size accordingly so it fits
-			while($pdf->GetStringWidth($name) > 35)
+            $item[0] = formatIt($bm->name);
+            $item[1] = $bm->description;
+            array_push($data,$item);
+		}
+// 		var_dump($data);
+//         echo '<p>';
+
+		$pdf->SetXY($apt_x,$apt_y);
+		foreach($data as $item)
+		{
+			$pdf->SetFont('Lato-Lig', '', $col1_font_size);
+			//If the first column is too long, drop the font size accordingly so it fits in a single line
+			while($pdf->GetStringWidth($item[0]) > $col1_width)
 			{
-				$fontsize-=1;
-				$pdf->SetFontSize($fontsize);
-// 				error_log($fontsize."->".$bm->name.":  ".$pdf->GetStringWidth($bm->name));
+				$col1_font_size-=1;
+				$pdf->SetFontSize($col1_font_size);
+				error_log($col1_font_size."->".$bm->name.":  ".$pdf->GetStringWidth($item[0]));
 			}
-			$pdf->Cell(45,$y_space,$name,0,0,'l');
+			$pdf->Cell($col1_width,$row_height,$item[0],0,0,'l');
 
-			$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
+			$pdf->SetFont('Lato-Lig', '', $col2_font_size);
+			$pdf->SetX($pdf->GetX()+$col_spacing);
+			$pdf->MultiCell($col2_width,$row_height,$item[1],0,'l');
 
-			$pdf->SetX($pdf->GetX()+2);
-			$pdf->MultiCell(80,$y_space,$bm->description,0,'l');
-
-			$pdf->Line($apt_x,$pdf->GetY(),$apt_x+45+2+80,$pdf->GetY());
+			$pdf->Line($apt_x,$pdf->GetY(),$apt_x+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
 			$pdf->SetX($apt_x);
 		}
 	}
