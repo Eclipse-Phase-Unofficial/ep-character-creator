@@ -297,8 +297,8 @@
 
 				//MEMO (all ego bonus malus)
 				$egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
-// 				writeMemo($pdf,getDescOnlyBM($egoBonusMalus));
-				writeMemo($pdf,$egoBonusMalus);
+// 				writeMemo($ovf,$pdf,getDescOnlyBM($egoBonusMalus));
+				writeMemo($ovf,$pdf,$egoBonusMalus);
 				
 				//END EGO PAGE
 					
@@ -670,7 +670,7 @@
 						
 						//MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
 						$morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
-						writeMemo($pdf,getMorphMemoBM($morphBonusMalus));
+						writeMemo($ovf,$pdf,getMorphMemoBM($morphBonusMalus));
 						
 					}
 				
@@ -812,20 +812,8 @@
 
 	//Bonus/Malus means good/bad in Latin
 	//MEMO (all bonus malus descriptive only)
-	function writeMemo($pdf,$filteredBM)
+	function writeMemo($ovf,$pdf,$filteredBM)
 	{
-		$col1_font_size = 9;
-		$col2_font_size = 7;
-		$row_height = 4.5;
-
-		//if more than 10 Items, change to a smaller font size
-		if(count($filteredBM) > 10)
-		{
-			$col1_font_size = 7;
-			$col2_font_size = 5;
-			$row_height = 3;
-		}
-
         //Convert data to display into the correct format
         $data = array();
         foreach($filteredBM as $bm)
@@ -836,7 +824,7 @@
             array_push($data,$item);
         }
         $pdf->SetXY(80,230);
-        writeTwoColumns($pdf,$data,45,80,2,$row_height,$col1_font_size,$col2_font_size,2);
+        writeTwoColumnsOvf($ovf,$pdf,$data,45,80,2,3,7,5,2,14,"Memo Overflow");
     }
 
 	//HELPERS ===============================================================
