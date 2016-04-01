@@ -133,8 +133,7 @@
 				$pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
 				
 				$skillList = $_SESSION['cc']->getSkills();
-				$apt_x = 12;
-				
+
 				//Count skills and specializations
 				$printedSkills = 0;
 				foreach($skillList as $skill)
@@ -150,56 +149,49 @@
 				{
 					$fontsize = 9;
 					$y_space = 3.5;
-					$apt_y = 86;
 				}
 				else
 				{
 					$fontsize = 6;
 					$y_space = 3;
-					$apt_y = 86;	
 				} 
 				
-				$i = 1;
+				$formattedSkills = array();
 				foreach($skillList as $skill)
 				{
-					if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
-					{
-						//set the bold or normal font
-						if($i%2 == 0) 
-							$pdf->SetFont('Lato-Reg', '', $fontsize);
-						else 
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-						
-						//set the active or knowledge skill token
-						if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) 
-							$skillType = "K";
-						else
-							$skillType = "A";
-						
-						$skillCompleteName = "";
-						if(!empty($skill->prefix)) 
-							$skillCompleteName = $skill->prefix . " : ";
-						
-						$skillCompleteName .= $skill->name;
-						
-						if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) 
-							$skillCompleteName .= " *";
-						
-						$pdf->Text(($apt_x -4), $apt_y, formatIt($skillType));//Skill Type
-						$pdf->Text($apt_x, $apt_y, formatIt($skillCompleteName));//Skill complete name
-						$pdf->Text(($apt_x + 53), $apt_y, formatIt($skill->getEgoValue()));//Skill ego value;
-						
-						if(!empty($skill->specialization))
-						{
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$apt_y += $y_space;
-							$pdf->Text($apt_x, $apt_y, formatIt("spec[" . $skill->specialization . "]"));//Skill specialization
-						}
-						
-						$apt_y += $y_space;
-						$i++;
-					}
-				}
+                    $item = array();
+                    if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
+                    {
+                        //set the active or knowledge skill token
+                        if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
+                            $skillType = "K";
+                        else
+                            $skillType = "A";
+
+                        $skillCompleteName = "";
+                        if(!empty($skill->prefix))
+                            $skillCompleteName = $skill->prefix . " : ";
+
+                        $skillCompleteName .= $skill->name;
+
+                        if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
+                            $skillCompleteName .= " *";
+
+                        $item[0] = formatIt($skillType."   ".$skillCompleteName);
+                        $item[1] = formatIt($skill->getEgoValue());
+                        array_push($formattedSkills,$item);
+
+                        if(!empty($skill->specialization))
+                        {
+                            $item[0] = formatIt("     spec[" . $skill->specialization . "]");
+                            $item[1] = "";
+                            $item[2] = "Set!";
+                            array_push($formattedSkills,$item);
+                        }
+                    }
+                }
+                $pdf->setXY(8,84);
+                writeTwoColumns($pdf,$formattedSkills,55,7,2,$y_space,$fontsize,$fontsize,3);
 				
 				//EGO NEG TRAIT
 				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
