@@ -81,35 +81,17 @@
 				//EGO APTITUDES
 				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
 				
-				$aptitudes = $_SESSION['cc']->getAptitudes();
-
-                $formattedAptitudes = array();
-                foreach($aptitudes as $apt)
-                {
-                    $item = array();
-                    $item[0] = formatIt($apt->name);
-                    $item[1] = formatIt($apt->getvalue());
-                    array_push($formattedAptitudes,$item);
-                }
+                $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
                 $pdf->SetXY(58,50);
-                writeTwoColumns($pdf,$formattedAptitudes,30,10,2,3.5,10,10,2);
+                writeTwoColumns($pdf,$aptitudes,30,10,2,3.5,10,10,2);
 
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(138, 49, "(EP p.285)");//Reputation bookLink
 				
-				$reputations = $_SESSION['cc']->getReputations();
-
-                $formattedReputations = array();
-                foreach($reputations as $rep)
-                {
-                    $item = array();
-                    $item[0] = formatIt($rep->name);
-                    $item[1] = formatIt($rep->getvalue());
-                    array_push($formattedReputations,$item);
-                }
+                $reputations = formatStats($_SESSION['cc']->getReputations());
                 $pdf->SetXY(111,50);
-                writeTwoColumns($pdf,$formattedReputations,25,10,2,3.5,10,10,2);
+                writeTwoColumns($pdf,$reputations,25,10,2,3.5,10,10,2);
 				
 				//MOTIVATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -331,35 +313,18 @@
 						//MORPH STATS
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(118, 40, "(EP p.121)");//Stats bookLink
-						$stats = $_SESSION['cc']->getStats();
 
-                        $formattedStats = array();
-                        foreach($stats as $s)
-                        {
-                            $item = array();
-                            $item[0] = formatIt($s->name);
-                            $item[1] = formatIt($s->getValue());
-                            array_push($formattedStats,$item);
-                        }
+                        $stats = formatStats($_SESSION['cc']->getStats());
                         $pdf->SetXY(102,43);
-                        writeTwoColumns($pdf,$formattedStats,28,7,1,3.5,7,7,2);
+                        writeTwoColumns($pdf,$stats,28,7,1,3.5,7,7,2);
 
-						
 						//MORPH APTITUDES
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(173, 40, "(EP p.122)");//Aptitude bookLink
-						$aptitudes = $_SESSION['cc']->getAptitudes();
 
-                        $formattedAptitudes = array();
-                        foreach($aptitudes as $apt)
-                        {
-                            $item = array();
-                            $item[0] = formatIt($apt->name);
-                            $item[1] = formatIt($apt->getvalue());
-                            array_push($formattedAptitudes,$item);
-                        }
+                        $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
                         $pdf->SetXY(142,43);
-                        writeTwoColumns($pdf,$formattedAptitudes,30,10,2,3.5,10,10,2);
+                        writeTwoColumns($pdf,$aptitudes,30,10,2,3.5,10,10,2);
 					
 						//MORPH SKILLS
 						$pdf->SetFont('Lato-LigIta', '', 7);
@@ -567,6 +532,20 @@
             }
 
         }
+    }
+
+    //Prepare aptitude/stats/rep data for printing
+    function formatStats($stats)
+    {
+        $data = array();
+        foreach($stats as $stat)
+        {
+            $item = array();
+            $item[0] = formatIt($stat->name);
+            $item[1] = formatIt($stat->getvalue());
+            array_push($data,$item);
+        }
+        return $data;
     }
 
     //Prepare gear/item/trait data for printing
