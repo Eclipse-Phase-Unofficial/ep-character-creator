@@ -663,12 +663,6 @@
 		return strtoupper($string);
 	}
 	
-	function formatItForRect($string, $length)
-	{
-		$final_result = str_split(formatIt($string), $length);
-		return $final_result;
-	}
-	
 	function getImplants($objArray)
 	{
 		$final = "*";
