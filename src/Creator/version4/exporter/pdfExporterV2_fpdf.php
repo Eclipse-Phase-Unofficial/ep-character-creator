@@ -83,19 +83,11 @@
 				
 				//EGO APTITUDES
 				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
-				
+
                 $aptitudes = $_SESSION['cc']->getAptitudes();
-                $data = array();
-                foreach($aptitudes as $stat)
-                {
-                    $item = array();
-                    $item[0] = formatIt($stat->name);
-                    //NOTE:  Not using the getValue() Function!!!
-                    $item[1] = formatIt($stat->value);
-                    array_push($data,$item);
-                }
+                $formattedStats = formatStats($aptitudes,'getEgoValue');
                 $pdf->SetXY(58,50);
-                writeTwoColumns($pdf,$data,30,10,2,3.5,10,10,2);
+                writeTwoColumns($pdf,$formattedStats,30,10,2,3.5,10,10,2);
 
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -124,45 +116,9 @@
 				//EGO SKILLS
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
-				
-				$skillList = $_SESSION['cc']->getSkills();
 
-
-                $formattedSkills = array();
-                foreach($skillList as $skill)
-                {
-                    $item = array();
-                    if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
-                    {
-                        //set the active or knowledge skill token
-                        if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
-                            $skillType = "K";
-                        else
-                            $skillType = "A";
-
-                        $skillCompleteName = "";
-                        if(!empty($skill->prefix))
-                            $skillCompleteName = $skill->prefix . " : ";
-
-                        $skillCompleteName .= $skill->name;
-
-                        if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
-                            $skillCompleteName .= " *";
-
-                        $item[0] = formatIt($skillType."   ".$skillCompleteName);
-                        $item[1] = formatIt($skill->getEgoValue());
-                        array_push($formattedSkills,$item);
-
-                        if(!empty($skill->specialization))
-                        {
-                            $item = array();
-                            $item[0] = formatIt("     spec[" . $skill->specialization . "]");
-                            $item[1] = "";
-                            $item[2] = "Set!";
-                            array_push($formattedSkills,$item);
-                        }
-                    }
-                }
+                $skillList = $_SESSION['cc']->getSkills();
+                $formattedSkills = formatSkills($skillList,'getEgoValue');
                 $pdf->setXY(8,84);
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,55,7,1,3.5,9,9,2,60,"Ego Skills Overflow");
 
@@ -276,7 +232,7 @@
 						
 						$pdf->SetFont('Lato-Lig', '', 8);
 	
-						//DETAILS DATA
+						//DETAILS DATA$skillList
 						if($morph->morphType == EPMorph::$BIOMORPH) $type = "[bio]";
 						else if($morph->morphType == EPMorph::$SYNTHMORPH) $type = "[synth]";
 						else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
@@ -336,42 +292,7 @@
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
 						$skillList = $_SESSION['cc']->getSkills();
-
-                        $formattedSkills = array();
-                        foreach($skillList as $skill)
-                        {
-                            $item = array();
-                            if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
-                            {
-                                //set the active or knowledge skill token
-                                if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
-                                    $skillType = "K";
-                                else
-                                    $skillType = "A";
-
-                                $skillCompleteName = "";
-                                if(!empty($skill->prefix))
-                                    $skillCompleteName = $skill->prefix . " : ";
-
-                                $skillCompleteName .= $skill->name;
-
-                                if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
-                                    $skillCompleteName .= " *";
-
-                                $item[0] = formatIt($skillType."   ".$skillCompleteName);
-                                $item[1] = formatIt($skill->getValue());
-                                array_push($formattedSkills,$item);
-
-                                if(!empty($skill->specialization))
-                                {
-                                    $item = array();
-                                    $item[0] = formatIt("     spec[" . $skill->specialization . "]");
-                                    $item[1] = "";
-                                    $item[2] = "Set!";
-                                    array_push($formattedSkills,$item);
-                                }
-                            }
-                        }
+                        $formattedSkills = formatSkills($skillList,'getValue');
                         $pdf->setXY(8,84);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,55,7,1,3.5,9,9,2,60,"Morph Skills Overflow");
 							
@@ -540,16 +461,63 @@
         }
     }
 
+    //Prepare skill data for printing
+    //
+    // @param $functionName The Name of the function used to get the skills value
+    // 'getEgoValue' for ego skills
+    // 'getValue' for morph skills
+    function formatSkills($skillList,$functionName)
+    {
+        $formattedSkills = array();
+        foreach($skillList as $skill)
+        {
+            $item = array();
+            if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
+            {
+                //set the active or knowledge skill token
+                if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
+                    $skillType = "K";
+                else
+                    $skillType = "A";
+
+                $skillCompleteName = "";
+                if(!empty($skill->prefix))
+                    $skillCompleteName = $skill->prefix . " : ";
+
+                $skillCompleteName .= $skill->name;
+
+                if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
+                    $skillCompleteName .= " *";
+
+                $item[0] = formatIt($skillType."   ".$skillCompleteName);
+                $item[1] = formatIt($skill->$functionName());
+                array_push($formattedSkills,$item);
+
+                if(!empty($skill->specialization))
+                {
+                    $item = array();
+                    $item[0] = formatIt("     spec[" . $skill->specialization . "]");
+                    $item[1] = "";
+                    $item[2] = "Set!";
+                    array_push($formattedSkills,$item);
+                }
+            }
+        }
+        return $formattedSkills;
+    }
+
     //Prepare aptitude/stats/rep data for printing
-    //WARNING:  Doesn't work for ego aptitudes.
-    function formatStats($stats)
+    // @param $functionName The Name of the function used to get the skills value
+    // 'getEgoValue' for ego aptitudes
+    // 'getValue' for morph aptitudes and everything else
+    function formatStats($stats,$functionName = 'getValue')
     {
         $data = array();
         foreach($stats as $stat)
         {
             $item = array();
             $item[0] = formatIt($stat->name);
-            $item[1] = formatIt($stat->getvalue());
+            $item[1] = formatIt($stat->$functionName());
             array_push($data,$item);
         }
         return $data;
@@ -651,7 +619,12 @@
     // @param $overflow_message     The message to put on the overflow page
     function writeTwoColumnsOvf($ovf,$pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
     {
-        if($overflow_number != 0)
+        //Don't bother when not given input data
+        if(count($data) == 0)
+            return;
+
+        //If overflow number is unset, fall back to normal writeTwoColumns
+        if($overflow_number > 0)
         {
             $chunks = array_chunk($data,$overflow_number);
             if(isset($chunks[1]))
