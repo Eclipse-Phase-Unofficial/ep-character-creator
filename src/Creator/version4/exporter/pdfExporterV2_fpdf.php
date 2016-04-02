@@ -561,7 +561,7 @@
     function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0)
     {
         $x_position = $pdf->GetX();
-        $pdf->SetFillColor(175);    //Fill color for separating items
+        $pdf->SetFillColor(200);    //Fill color for separating items
 
         $fontName = 'Lato-Lig';
         $i=0;
