@@ -60,14 +60,8 @@
 				setBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
 				
 				//AGE - SEX
-				$birthGender = " ";
-				if($character->birthGender == 'M') 
-					$birthGender = 'male';
-				else 
-					$birthGender = 'female';
-				
 				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->Text(143, 26, formatIt($birthGender)); //Birth gender
+				$pdf->Text(143, 26, formatIt($character->birthGender)); //Birth gender
 				$pdf->Text(143, 33, formatIt($character->realAge)); //Real age
 				
 				//CREDIT

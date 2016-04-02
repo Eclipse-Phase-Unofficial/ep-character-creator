@@ -67,14 +67,10 @@
 				.$line.$carriageReturn;
 				
 				//AGE - SEX
-				$birthGender = " ";
-				if($character->birthGender == 'M') $birthGender= 'male';
-				else $birthGender = 'female';
-				
 				echo formatTitle("Birth Gender")
 				.$tab
 				.": "
-				.formatResult($birthGender)
+				.formatResult($character->birthGender)
 				.$carriageReturn
 				.formatTitle("Real Age")
 				.$tab
