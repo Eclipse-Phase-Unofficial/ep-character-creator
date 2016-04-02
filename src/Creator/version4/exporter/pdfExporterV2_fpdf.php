@@ -96,21 +96,19 @@
                 $reputations = formatStats($_SESSION['cc']->getReputations());
                 $pdf->SetXY(111,50);
                 writeTwoColumns($pdf,$reputations,25,10,2,3.5,10,10,2);
-				
+
 				//MOTIVATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(192, 49, "(EP p.120)");//Motivation bookLink
 				
 				$motivations = $_SESSION['cc']->getMotivations();
-				$y_space = 3.5;
-				$apt_x = 161;
-				$apt_y = 53;
-				
+				$apt_x = 158;
 				$pdf->SetFont('Lato-Lig', '', 10);
+				$pdf->setXY($apt_x,51);
 				foreach($motivations as $mot)
 				{
-					$pdf->Text($apt_x, $apt_y, formatIt($mot));//Motivations 
-					$apt_y += $y_space;
+					$pdf->MultiCell(50, 3.5, formatIt($mot));//Motivations
+					$pdf->setX($apt_x);
 				}
 				
 				//EGO SKILLS
@@ -134,30 +132,25 @@
                 $pdf->setXY(116,102);
                 writeTwoColumns($pdf,$formattedPosTraits,25,15,1,3,8,7);
 
-				//PSI SLEIGHTS
-				$psySleights = $_SESSION['cc']->getCurrentPsySleights();
-				$y_space = 3;
-				$apt_x = 160;
-				$apt_y = 105;
-				
-				foreach($psySleights as $sleight)
-				{
-					//set the slight token to active or passive
-					if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) 
-						$type = "(A)";
-					else
-						$type = "(P)";
+                //PSI SLEIGHTS
+                $psySleights = $_SESSION['cc']->getCurrentPsySleights();
+                $formattedPsi = array();
+                foreach($psySleights as $sleight)
+                {
+                    $item = array();
+                    //set the slight token to active or passive
+                    if($sleight->psyType == EPPsySleight::$ACTIVE_PSY)
+                        $type = "(A) ";
+                    else
+                        $type = "(P) ";
 
-					$pdf->SetFont('Lato-Lig', '', 7);
-					$pdf->Text($apt_x, $apt_y, formatIt($type));//PsySleight type 
-					$pdf->Text(($apt_x + 4), $apt_y, formatIt($sleight->name));//PsySleight name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 6);
-					writeBookLink($sleight->name, ($apt_x + 36), $apt_y, $p, $pdf);//PsySleight bookLink
-					
-					$apt_y += $y_space;
-				}	
-				
+                    $item[0] = formatIt($type . $sleight->name);
+                    $item[1] = getBookLink($sleight->name,$p);
+                    array_push($formattedPsi,$item);
+                }
+                $pdf->setXY(158,102);
+                writeTwoColumns($pdf,$formattedPsi,30,15,1,3,7,6);
+
                 //SOFT GEAR
                 $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
                 $pdf->SetXY(85,152);
