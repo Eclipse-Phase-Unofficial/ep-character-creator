@@ -340,11 +340,6 @@
 						if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
 						if($morph->morphType == EPMorph::$PODMORPH) $type = "[pod]";
 						
-						$morphGender = " ";
-						if($character->birthGender == 'M') $morphGender= 'male';
-						else if($character->birthGender == 'F') $morphGender= 'female';
-						else $morphGender = 'none';
-						
 						//NAMES
 						echo formatTitle("Morph Name")
 						.$tab
@@ -365,7 +360,7 @@
 						.formatTitle("Morph Gender")
 						.$tab
 						.": "
-						.formatResult($morphGender)
+						.formatResult($morph->gender)
 						.$carriageReturn
 						.formatTitle("Location")
 						.$tab

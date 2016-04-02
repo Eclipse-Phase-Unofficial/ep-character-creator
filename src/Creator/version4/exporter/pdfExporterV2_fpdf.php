@@ -378,16 +378,7 @@
 						$pdf->Text(50, 19, formatIt($morph->age));//morph apparent age
 						$pdf->Text(140, 19, formatIt($morph->location));//morph Location
 						$pdf->Text(50, 26, formatIt($character->playerName));//morph player
-						
-						$morphGender = " ";
-						if($character->birthGender == 'M') 
-							$morphGender = 'male';
-						else if($character->birthGender == 'F') 
-							$morphGender = 'female';
-						else 
-							$morphGender = 'none';
-						
-						$pdf->Text(140, 26, formatIt($morphGender));//morph gender
+						$pdf->Text(140, 26, formatIt($morph->gender));//morph gender
 						
 						//MORPH NEG TRAIT
 						
