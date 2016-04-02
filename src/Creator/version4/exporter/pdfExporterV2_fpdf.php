@@ -25,6 +25,9 @@
 		
 		$pdf = new FPDF();
 		$ovf = new Overflow();
+
+		//Disable automatic page breaks
+		$pdf->AutoPageBreak = false;
 		
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
 
@@ -81,9 +84,18 @@
 				//EGO APTITUDES
 				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
 				
-                $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
+                $aptitudes = $_SESSION['cc']->getAptitudes();
+                $data = array();
+                foreach($aptitudes as $stat)
+                {
+                    $item = array();
+                    $item[0] = formatIt($stat->name);
+                    //NOTE:  Not using the getValue() Function!!!
+                    $item[1] = formatIt($stat->value);
+                    array_push($data,$item);
+                }
                 $pdf->SetXY(58,50);
-                writeTwoColumns($pdf,$aptitudes,30,10,2,3.5,10,10,2);
+                writeTwoColumns($pdf,$data,30,10,2,3.5,10,10,2);
 
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -319,7 +331,7 @@
                         $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
                         $pdf->SetXY(142,43);
                         writeTwoColumns($pdf,$aptitudes,30,10,2,3.5,10,10,2);
-					
+
 						//MORPH SKILLS
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
@@ -529,6 +541,7 @@
     }
 
     //Prepare aptitude/stats/rep data for printing
+    //WARNING:  Doesn't work for ego aptitudes.
     function formatStats($stats)
     {
         $data = array();
