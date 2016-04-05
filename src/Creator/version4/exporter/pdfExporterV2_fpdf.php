@@ -494,7 +494,7 @@
                     $item = array();
                     $item[0] = formatIt("     spec[" . $skill->specialization . "]");
                     $item[1] = "";
-                    $item[2] = "Set!";
+                    $item['isContinuation'] = "Set!";
                     array_push($formattedSkills,$item);
                 }
             }
@@ -556,8 +556,8 @@
     //
     // @param $pdf              The pdf to write to
     // @param $data             The data to be written
-    //  This is an array containing touples of columns
-    //  If the third column is set, then seperator functions will treat the next row as a continuation of the previous one
+    //  This is an array containing row data.  Each row consists of multiple columns, sequentially numbered from '0'
+    //  If 'isContinuation' is set for a row, then a seperator is not placed between it and the previous row
     // @param $col1_width       How wide column 1 is
     // @param $col1_width       How wide column 2 is
     // @param $col_spacing      Spacing between columns
@@ -579,8 +579,8 @@
         $useFill = false;
         foreach($data as $item)
         {
-            //Handle seperators between items
-            if(!isset($item[2]))
+            //Handle separators between items
+            if(!isset($item['isContinuation']))
             {
                 if($seperator_type == 1)
                 {
