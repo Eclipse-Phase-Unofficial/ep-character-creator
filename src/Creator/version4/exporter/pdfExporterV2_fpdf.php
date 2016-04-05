@@ -202,10 +202,12 @@
 					$apt_y = $pdf->getY();
 				}	
 
-				//MEMO (all ego bonus malus)
-				$egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
-// 				writeMemo($ovf,$pdf,getDescOnlyBM($egoBonusMalus));
-				writeMemo($ovf,$pdf,$egoBonusMalus);
+                //MEMO (all ego bonus malus)
+                $egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
+//                 $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
+                $formattedMemo = formatMemoData($egoBonusMalus);
+                $pdf->SetXY(80,230);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,45,80,2,3,7,5,2,14,"Ego Memo Overflow");
 				
 				//END EGO PAGE
 					
@@ -399,12 +401,13 @@
                         $pdf->SetXY(140,168);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,40,20,1,3,7,7,0,18,"Implant Overflow");
 
-						
-						//MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
-						$morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
-						writeMemo($ovf,$pdf,getMorphMemoBM($morphBonusMalus));
-						
-					}
+                        //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
+                        $morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
+                        $formattedMemo = formatMemoData($morphBonusMalus);
+                        $pdf->SetXY(80,230);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,45,80,2,3,7,5,2,14,$morph->name . " Memo Overflow");
+
+                    }
 				
 			//===================
         $ovf->printOverflowPages($pdf);
@@ -534,6 +537,21 @@
         return $data;
     }
 
+    //Prepare memo data for printing
+    //Bonus/Malus means good/bad in Latin
+    function formatMemoData($filteredBM)
+    {
+        $data = array();
+        foreach($filteredBM as $bm)
+        {
+            $item = array();
+            $item[0] = formatIt($bm->name);
+            $item[1] = $bm->description;
+            array_push($data,$item);
+        }
+        return $data;
+    }
+
     // Writes out multi-column data
     //
     // @param $pdf              The pdf to write to
@@ -627,23 +645,6 @@
         }
         else
             writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type);
-    }
-
-	//Bonus/Malus means good/bad in Latin
-	//MEMO (all bonus malus descriptive only)
-	function writeMemo($ovf,$pdf,$filteredBM)
-	{
-        //Convert data to display into the correct format
-        $data = array();
-        foreach($filteredBM as $bm)
-        {
-            $item = array();
-            $item[0] = formatIt($bm->name);
-            $item[1] = $bm->description;
-            array_push($data,$item);
-        }
-        $pdf->SetXY(80,230);
-        writeTwoColumnsOvf($ovf,$pdf,$data,45,80,2,3,7,5,2,14,"Memo Overflow");
     }
 
 	//HELPERS ===============================================================
