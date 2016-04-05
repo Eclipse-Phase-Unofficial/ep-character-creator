@@ -30,6 +30,10 @@
 		
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
 
+        //Set some formatting to be used later
+        $traitFormat = setTwoColFormat(30,15,1,8,7);        //For traits, and psi
+        $skillFormat = setTwoColFormat(55,7,1,9,9);         //For skills
+
 		//PDF EXPORT ================================================================
 	
 				
@@ -119,8 +123,7 @@
                 $skillList = $_SESSION['cc']->getSkills();
                 $formattedSkills = formatSkills($skillList,'getEgoValue');
                 $pdf->setXY(8,84);
-                $format = setTwoColFormat(55,7,1,9,9);
-                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$format,3.5,2,60,"Ego Skills Overflow");
+                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
                 $egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
@@ -153,14 +156,12 @@
                     array_push($formattedPsi,$item);
                 }
                 $pdf->setXY(158,102);
-                $format = setTwoColFormat(30,15,1,7,6);
-                writeTwoColumns($pdf,$formattedPsi,$format,3);
+                writeTwoColumns($pdf,$formattedPsi,$traitFormat,3);
 
                 //SOFT GEAR
                 $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
                 $pdf->SetXY(85,152);
-                $format = setTwoColFormat(30,15,1,7,7);
-                writeTwoColumns($pdf,$softGears,$format,3);
+                writeTwoColumns($pdf,$softGears,$traitFormat,3);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
@@ -265,16 +266,14 @@
                         $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
                         $formattedNegTraits = formatGearData($morphNegTraits,$p);
                         $pdf->setXY(5,43);
-                        $format = setTwoColFormat(29,15,1,8,7);
-                        writeTwoColumns($pdf,$formattedNegTraits,$format,4);
+                        writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
 
                         //MORPH POS TRAIT
                         $morphPosTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
                         $formattedPosTraits = formatGearData($morphPosTraits,$p);
                         $pdf->setXY(52,43);
-                        $format = setTwoColFormat(29,15,1,8,7);
-                        writeTwoColumns($pdf,$formattedPosTraits,$format,4);
+                        writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
 
 						//MORPH STATS
 						$pdf->SetFont('Lato-LigIta', '', 7);
@@ -300,8 +299,7 @@
 						$skillList = $_SESSION['cc']->getSkills();
                         $formattedSkills = formatSkills($skillList,'getValue');
                         $pdf->setXY(8,84);
-                        $format = setTwoColFormat(55,7,1,9,9);
-                        writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$format,3.5,2,60,"Morph Skills Overflow");
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Morph Skills Overflow");
 							
 						//NOTES 
 						$apt_x = 81;
