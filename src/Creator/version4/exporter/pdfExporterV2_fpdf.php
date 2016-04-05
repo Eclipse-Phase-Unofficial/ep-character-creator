@@ -19,7 +19,6 @@
 	
 	if(isset($_SESSION['cc']))
 	{ 
-		
 		//provider for book pages
 		$p = new EPListProvider('../../../php/config.ini');
 		
@@ -87,7 +86,8 @@
                 $aptitudes = $_SESSION['cc']->getAptitudes();
                 $formattedStats = formatStats($aptitudes,'getEgoValue');
                 $pdf->SetXY(58,50);
-                writeTwoColumns($pdf,$formattedStats,30,10,2,3.5,10,10,2);
+                $format = setTwoColFormat(30,10,2,10,10);
+                writeTwoColumns($pdf,$formattedStats,$format,3.5,2);
 
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -95,7 +95,8 @@
 				
                 $reputations = formatStats($_SESSION['cc']->getReputations());
                 $pdf->SetXY(111,50);
-                writeTwoColumns($pdf,$reputations,25,10,2,3.5,10,10,2);
+                $format = setTwoColFormat(25,10,2,10,10);
+                writeTwoColumns($pdf,$reputations,$format,3.5,2);
 
 				//MOTIVATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
@@ -118,19 +119,22 @@
                 $skillList = $_SESSION['cc']->getSkills();
                 $formattedSkills = formatSkills($skillList,'getEgoValue');
                 $pdf->setXY(8,84);
-                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,55,7,1,3.5,9,9,2,60,"Ego Skills Overflow");
+                $format = setTwoColFormat(55,7,1,9,9);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$format,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
                 $egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
                 $formattedNegTraits = formatGearData($egoNegTraits,$p);
                 $pdf->setXY(80,102);
-                writeTwoColumns($pdf,$formattedNegTraits,18,15,1,3,8,7);
+                $format = setTwoColFormat(18,15,1,8,7);
+                writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
                 $egoPosTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
                 $formattedPosTraits = formatGearData($egoPosTraits,$p);
                 $pdf->setXY(116,102);
-                writeTwoColumns($pdf,$formattedPosTraits,25,15,1,3,8,7);
+                $format = setTwoColFormat(25,15,1,8,7);
+                writeTwoColumns($pdf,$formattedPosTraits,$format,3);
 
                 //PSI SLEIGHTS
                 $psySleights = $_SESSION['cc']->getCurrentPsySleights();
@@ -145,16 +149,18 @@
                         $type = "(P) ";
 
                     $item[0] = formatIt($type . $sleight->name);
-                    $item[1] = getBookLink($sleight->name,$p);
+                    $item[2] = getBookLink($sleight->name,$p);
                     array_push($formattedPsi,$item);
                 }
                 $pdf->setXY(158,102);
-                writeTwoColumns($pdf,$formattedPsi,30,15,1,3,7,6);
+                $format = setTwoColFormat(30,15,1,7,6);
+                writeTwoColumns($pdf,$formattedPsi,$format,3);
 
                 //SOFT GEAR
                 $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
                 $pdf->SetXY(85,152);
-                writeTwoColumns($pdf,$softGears,30,15,1,3,7,7);
+                $format = setTwoColFormat(30,15,1,7,7);
+                writeTwoColumns($pdf,$softGears,$format,3);
 
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
@@ -207,7 +213,8 @@
 //                 $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
                 $formattedMemo = formatMemoData($egoBonusMalus);
                 $pdf->SetXY(80,230);
-                writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,45,80,2,3,7,5,2,14,"Ego Memo Overflow");
+                $format = setTwoColFormat(45,80,2,7,5);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,"Ego Memo Overflow");
 				
 				//END EGO PAGE
 					
@@ -258,14 +265,16 @@
                         $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
                         $formattedNegTraits = formatGearData($morphNegTraits,$p);
                         $pdf->setXY(5,43);
-                        writeTwoColumns($pdf,$formattedNegTraits,29,15,1,4,8,7);
+                        $format = setTwoColFormat(29,15,1,8,7);
+                        writeTwoColumns($pdf,$formattedNegTraits,$format,4);
 
 
                         //MORPH POS TRAIT
                         $morphPosTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
                         $formattedPosTraits = formatGearData($morphPosTraits,$p);
                         $pdf->setXY(52,43);
-                        writeTwoColumns($pdf,$formattedPosTraits,29,15,1,4,8,7);
+                        $format = setTwoColFormat(29,15,1,8,7);
+                        writeTwoColumns($pdf,$formattedPosTraits,$format,4);
 
 						//MORPH STATS
 						$pdf->SetFont('Lato-LigIta', '', 7);
@@ -273,7 +282,8 @@
 
                         $stats = formatStats($_SESSION['cc']->getStats());
                         $pdf->SetXY(102,43);
-                        writeTwoColumns($pdf,$stats,28,7,1,3.5,7,7,2);
+                        $format = setTwoColFormat(28,7,1,7,7);
+                        writeTwoColumns($pdf,$stats,$format,3.5,2);
 
 						//MORPH APTITUDES
 						$pdf->SetFont('Lato-LigIta', '', 7);
@@ -281,7 +291,8 @@
 
                         $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
                         $pdf->SetXY(142,43);
-                        writeTwoColumns($pdf,$aptitudes,30,10,2,3.5,10,10,2);
+                        $format = setTwoColFormat(30,10,2,10,10);
+                        writeTwoColumns($pdf,$aptitudes,$format,3.5,2);
 
 						//MORPH SKILLS
 						$pdf->SetFont('Lato-LigIta', '', 7);
@@ -289,7 +300,8 @@
 						$skillList = $_SESSION['cc']->getSkills();
                         $formattedSkills = formatSkills($skillList,'getValue');
                         $pdf->setXY(8,84);
-                        writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,55,7,1,3.5,9,9,2,60,"Morph Skills Overflow");
+                        $format = setTwoColFormat(55,7,1,9,9);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$format,3.5,2,60,"Morph Skills Overflow");
 							
 						//NOTES 
 						$apt_x = 81;
@@ -393,22 +405,24 @@
                         $gear = filterGeneralOnly($morphGear);
                         $formattedGear = formatGearData($gear,$p);
                         $pdf->SetXY(83,168);
-                        writeTwoColumnsOvf($ovf,$pdf,$formattedGear,35,18,1,3,7,7,0,15,"Gear Overflow");
+                        $format = setTwoColFormat(35,18,1,7,7);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
 
                         //IMPLANTS
                         $implants = filterImplantOnly($morphGear);
                         $formattedImplants = formatGearData($implants,$p);
                         $pdf->SetXY(140,168);
-                        writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,40,20,1,3,7,7,0,18,"Implant Overflow");
+                        $format = setTwoColFormat(40,20,1,7,7);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
 
                         //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
                         $morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
                         $formattedMemo = formatMemoData($morphBonusMalus);
                         $pdf->SetXY(80,230);
-                        writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,45,80,2,3,7,5,2,14,$morph->name . " Memo Overflow");
-
+                        $format = setTwoColFormat(45,80,2,7,5);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->name . " Memo Overflow");
                     }
-				
+
 			//===================
         $ovf->printOverflowPages($pdf);
 		$file_util = new EPFileUtility($_SESSION['cc']->character);
@@ -451,7 +465,8 @@
                 $pdf->SetFont('Lato-Reg', '', 30);
                 $pdf->Text(5, 15, formatIt($page['name']));
                 $pdf->SetXY(5,20);
-                writeTwoColumns($pdf,$page['data'],60,90,2,4,8,8,2);
+                $format = setTwoColFormat(60,90,2,8,8);
+                writeTwoColumns($pdf,$page['data'],$format,4,2);
             }
 
         }
@@ -486,14 +501,14 @@
                     $skillCompleteName .= " *";
 
                 $item[0] = formatIt($skillType."   ".$skillCompleteName);
-                $item[1] = formatIt($skill->$functionName());
+                $item[2] = formatIt($skill->$functionName());
                 array_push($formattedSkills,$item);
 
                 if(!empty($skill->specialization))
                 {
                     $item = array();
                     $item[0] = formatIt("     spec[" . $skill->specialization . "]");
-                    $item[1] = "";
+                    $item[2] = "";
                     $item['isContinuation'] = "Set!";
                     array_push($formattedSkills,$item);
                 }
@@ -513,7 +528,7 @@
         {
             $item = array();
             $item[0] = formatIt($stat->name);
-            $item[1] = formatIt($stat->$functionName());
+            $item[2] = formatIt($stat->$functionName());
             array_push($data,$item);
         }
         return $data;
@@ -531,7 +546,7 @@
                 $occ = "(" . $g->occurence . ") ";
 
             $item[0] = formatIt($occ . $g->name);
-            $item[1] = getBookLink($g->name,$provider);
+            $item[2] = getBookLink($g->name,$provider);
             array_push($data,$item);
         }
         return $data;
@@ -546,10 +561,32 @@
         {
             $item = array();
             $item[0] = formatIt($bm->name);
-            $item[1] = $bm->description;
+            $item[2] = $bm->description;
             array_push($data,$item);
         }
         return $data;
+    }
+
+    // Format the multi-column data for two columns with a spacer in between
+    //
+    // @param $col1_width       How wide column 1 is
+    // @param $col2_width       How wide column 2 is
+    // @param $col_spacing      Spacing between columns
+    // @param $col1_font_size   The font size for column 1
+    // @param $col2_font_size   The font size for column 2
+    function setTwoColFormat($col1_width,$col2_width,$col_spacing,$col1_font_size,$col2_font_size)
+    {
+        $rowFormat = array();
+        $rowFormat[0]=array();
+        $rowFormat[0]['width'] = $col1_width;
+        $rowFormat[0]['font_size'] = $col1_font_size;
+        $rowFormat[1]=array();
+        $rowFormat[1]['width'] = $col_spacing;
+        $rowFormat[1]['font_size'] = 0;     //Doesn't matter (yet)
+        $rowFormat[2]=array();
+        $rowFormat[2]['width'] = $col2_width;
+        $rowFormat[2]['font_size'] = $col2_font_size;
+        return $rowFormat;
     }
 
     // Writes out multi-column data
@@ -558,18 +595,16 @@
     // @param $data             The data to be written
     //  This is an array containing row data.  Each row consists of multiple columns, sequentially numbered from '0'
     //  If 'isContinuation' is set for a row, then a seperator is not placed between it and the previous row
-    // @param $col1_width       How wide column 1 is
-    // @param $col1_width       How wide column 2 is
-    // @param $col_spacing      Spacing between columns
+    // @param $rowFormat        How each row is formatted
+    //  This is an array containing formatting information for each column.
+    //  Each column format is an array containing 'width' and 'font_size'
     // @param $row_height       How high each row is
-    // @param $col1_font_size   The font size for column 1
-    // @param $col2_font_size   The font size for column 2
     // @param $seperator_type   The type of separator between items
     //  0 no seperator
     //  1 line seperator
     //  2 every other row has a gray background
     //  3 every other row is bolded
-    function writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0)
+    function writeTwoColumns($pdf,$data,$rowFormat,$row_height,$seperator_type = 0)
     {
         $x_position = $pdf->GetX();
         $pdf->SetFillColor(200);    //Fill color for separating items
@@ -577,6 +612,14 @@
         $fontName = 'Lato-Lig';
         $i=0;
         $useFill = false;
+
+        //Verify That format data is correct
+//         foreach($rowFormat as $colFormat)
+//         {
+//             error_log("Width: ".$colFormat['width']);
+//             error_log("font_size: ".$colFormat['font_size']);
+//         }
+
         foreach($data as $item)
         {
             //Handle separators between items
@@ -584,7 +627,7 @@
             {
                 if($seperator_type == 1)
                 {
-                    $pdf->Line($x_position,$pdf->GetY(),$x_position+$col1_width+$col_spacing+$col2_width,$pdf->GetY());
+                    $pdf->Line($x_position,$pdf->GetY(),$x_position+$rowFormat[0]['width']+$rowFormat[1]['width']+$rowFormat[2]['width'],$pdf->GetY());
                 }
                 if($seperator_type == 2)
                 {
@@ -603,21 +646,24 @@
                 $i++;
             }
 
-            $pdf->SetFont($fontName, '', $col1_font_size);
+            $pdf->SetFont($fontName, '',$rowFormat[0]['font_size']);
             //If the first column is too long, drop the font size accordingly so it fits in a single line
-            $tmp_font_size = $col1_font_size;
-            while($pdf->GetStringWidth($item[0]) > $col1_width)
+            $tmp_font_size = $rowFormat[0]['font_size'];
+            while($pdf->GetStringWidth($item[0]) > $rowFormat[0]['width'])
             {
                 $tmp_font_size-=1;
                 $pdf->SetFontSize($tmp_font_size);
 //                 error_log($tmp_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
             }
-            $pdf->Cell($col1_width,$row_height,$item[0],0,0,'l',$useFill);
+            $pdf->Cell($rowFormat[0]['width'],$row_height,$item[0],0,0,'l',$useFill);
 
-            $pdf->SetFont($fontName, '', $col2_font_size);
-//             $pdf->SetX($pdf->GetX()+$col_spacing);
-            $pdf->Cell($col_spacing,$row_height,"",0,0,'l',$useFill);
-            $pdf->MultiCell($col2_width,$row_height,$item[1],0,'l',$useFill);
+            if(!isset($item[1]))
+                $item[1]="";
+            $pdf->SetFont($fontName, '', $rowFormat[1]['font_size']);
+            $pdf->Cell($rowFormat[1]['width'],$row_height,$item[1],0,0,'l',$useFill);
+
+            $pdf->SetFont($fontName, '', $rowFormat[2]['font_size']);
+            $pdf->MultiCell($rowFormat[2]['width'],$row_height,$item[2],0,'l',$useFill);
 
             $pdf->SetX($x_position);
         }
@@ -628,7 +674,7 @@
     // @param $ovf                  The overflow object to store extra items in
     // @param $overflow_number      The max number of items before overflow occurs
     // @param $overflow_message     The message to put on the overflow page
-    function writeTwoColumnsOvf($ovf,$pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
+    function writeTwoColumnsOvf($ovf,$pdf,$data,$rowFormat,$row_height,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
     {
         //Don't bother when not given input data
         if(count($data) == 0)
@@ -639,12 +685,15 @@
         {
             $chunks = array_chunk($data,$overflow_number);
             if(isset($chunks[1]))
+            {
+                error_log("Overflow:  ".$overflow_message);
                 $ovf->generateOverflowPage($overflow_message,$chunks[1]);
-            writeTwoColumns($pdf,$chunks[0],$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type);
+            }
+            writeTwoColumns($pdf,$chunks[0],$rowFormat,$row_height,$seperator_type);
 
         }
         else
-            writeTwoColumns($pdf,$data,$col1_width,$col2_width,$col_spacing,$row_height,$col1_font_size,$col2_font_size,$seperator_type);
+            writeTwoColumns($pdf,$data,$rowFormat,$row_height,$seperator_type);
     }
 
 	//HELPERS ===============================================================
