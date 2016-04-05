@@ -622,7 +622,7 @@
 
         foreach($data as $item)
         {
-            //Handle separators between items
+            //Handle row separators
             if(!isset($item['isContinuation']))
             {
                 if($seperator_type == 1)
@@ -647,15 +647,7 @@
             }
 
             $pdf->SetFont($fontName, '',$rowFormat[0]['font_size']);
-            //If the first column is too long, drop the font size accordingly so it fits in a single line
-            $tmp_font_size = $rowFormat[0]['font_size'];
-            while($pdf->GetStringWidth($item[0]) > $rowFormat[0]['width'])
-            {
-                $tmp_font_size-=1;
-                $pdf->SetFontSize($tmp_font_size);
-//                 error_log($tmp_font_size."->".$item[0].":  ".$pdf->GetStringWidth($item[0]));
-            }
-            $pdf->Cell($rowFormat[0]['width'],$row_height,$item[0],0,0,'l',$useFill);
+            singleCell($pdf,$rowFormat[0]['width'],$row_height,$item[0],$useFill);
 
             if(!isset($item[1]))
                 $item[1]="";
@@ -667,6 +659,18 @@
 
             $pdf->SetX($x_position);
         }
+    }
+
+    //Acts mostly like a normal $pdf->Cell, but re-sizes the current font so the text alwys fits on one line
+    function singleCell($pdf,$width,$height,$text,$useFill = false)
+    {
+        //If the column is too long, drop the font size accordingly so it fits in a single line
+        while($pdf->GetStringWidth($text) > $width)
+        {
+            $pdf->SetFontSize($pdf->FontSizePt - 1);
+            error_log($pdf->FontSizePt."->".$text.":  ".$pdf->GetStringWidth($text));
+        }
+        $pdf->Cell($width,$height,$text,0,0,'l',$useFill);
     }
 
     //Wrapper that allows for the creation of overflow pages if too many elements are entered
