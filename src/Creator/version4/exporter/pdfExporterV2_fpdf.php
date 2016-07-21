@@ -19,13 +19,20 @@
 	
 	if(isset($_SESSION['cc']))
 	{ 
-		
 		//provider for book pages
 		$p = new EPListProvider('../../../php/config.ini');
 		
 		$pdf = new FPDF();
+		$ovf = new Overflow();
+
+		//Disable automatic page breaks
+		$pdf->AutoPageBreak = false;
 		
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
+
+        //Set some formatting to be used later
+        $traitFormat = setTwoColFormat(30,15,1,8,7);        //For traits, and psi
+        $skillFormat = setTwoColFormat(55,7,1,9,9);         //For skills
 
 		//PDF EXPORT ================================================================
 	
@@ -56,8 +63,8 @@
 				$pdf->Text(37, 33, formatIt($_SESSION['cc']->getCurrentFaction()->name)); //Faction
 				
 				$pdf->SetFont('Lato-LigIta', '', 7);
-				setBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $p, $pdf);//Background bookLink
-				setBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
+				writeBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $p, $pdf);//Background bookLink
+				writeBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
 				
 				//AGE - SEX
 				$birthGender = " ";
@@ -79,220 +86,83 @@
 				
 				//EGO APTITUDES
 				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
-				
-				$aptitudes = $_SESSION['cc']->getAptitudes();
-				$y_space = 3.5;
-				$apt_x = 55;
-				$apt_y = 53;
-				
-				$pdf->SetFont('Lato-Lig', '', 10);
-				foreach($aptitudes as $apt)
-				{
-					$pdf->Text($apt_x, $apt_y, formatIt($apt->name));//Apt Name
-					$pdf->Text(($apt_x + 37), $apt_y, formatIt($apt->value));//Apt Value Ego
-					
-					$apt_y += $y_space;
-				}
-				
+
+                $aptitudes = $_SESSION['cc']->getAptitudes();
+                $formattedStats = formatStats($aptitudes,'getEgoValue');
+                $pdf->SetXY(58,50);
+                $format = setTwoColFormat(30,10,2,10,10);
+                writeTwoColumns($pdf,$formattedStats,$format,3.5,2);
+
 				//REPUTATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(138, 49, "(EP p.285)");//Reputation bookLink
 				
-				$reputations = $_SESSION['cc']->getReputations();
-				$y_space = 3.5;
-				$apt_x = 108;
-				$apt_y = 53;
-				
-				$pdf->SetFont('Lato-Lig', '', 10);
-				foreach($reputations as $rep)
-				{
-					$pdf->Text($apt_x, $apt_y, formatIt($rep->name));//Rep name
-					$pdf->Text(($apt_x + 33), $apt_y, formatIt($rep->getvalue()));//Rep value
-					
-					$apt_y += $y_space;
-				}
-				
+                $reputations = formatStats($_SESSION['cc']->getReputations());
+                $pdf->SetXY(111,50);
+                $format = setTwoColFormat(25,10,2,10,10);
+                writeTwoColumns($pdf,$reputations,$format,3.5,2);
+
 				//MOTIVATION
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(192, 49, "(EP p.120)");//Motivation bookLink
 				
 				$motivations = $_SESSION['cc']->getMotivations();
-				$y_space = 3.5;
-				$apt_x = 161;
-				$apt_y = 53;
-				
+				$apt_x = 158;
 				$pdf->SetFont('Lato-Lig', '', 10);
+				$pdf->setXY($apt_x,51);
 				foreach($motivations as $mot)
 				{
-					$pdf->Text($apt_x, $apt_y, formatIt($mot));//Motivations 
-					$apt_y += $y_space;
+					$pdf->MultiCell(50, 3.5, formatIt($mot));//Motivations
+					$pdf->setX($apt_x);
 				}
 				
 				//EGO SKILLS
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
-				
-				$skillList = $_SESSION['cc']->getSkills();
-				$apt_x = 12;
-				
-				//Count skills and specializations
-				$printedSkills = 0;
-				foreach($skillList as $skill)
-				{
-					if($skill->getValue() > 0)
-						$printedSkills++;
-					
-					if(!empty($skill->specialization))
-						$printedSkills++;
-				}
-				//if more than 60 skills, reduce the font and spaces
-				if($printedSkills <= 60)
-				{
-					$fontsize = 9;
-					$y_space = 3.5;
-					$apt_y = 86;
-				}
-				else
-				{
-					$fontsize = 6;
-					$y_space = 3;
-					$apt_y = 86;	
-				} 
-				
-				$i = 1;
-				foreach($skillList as $skill)
-				{
-					if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
-					{
-						//set the bold or normal font
-						if($i%2 == 0) 
-							$pdf->SetFont('Lato-Reg', '', $fontsize);
-						else 
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-						
-						//set the active or knowledge skill token
-						if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) 
-							$skillType = "K";
-						else
-							$skillType = "A";
-						
-						$skillCompleteName = "";
-						if(!empty($skill->prefix)) 
-							$skillCompleteName = $skill->prefix . " : ";
-						
-						$skillCompleteName .= $skill->name;
-						
-						if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) 
-							$skillCompleteName .= " *";
-						
-						$pdf->Text(($apt_x -4), $apt_y, formatIt($skillType));//Skill Type
-						$pdf->Text($apt_x, $apt_y, formatIt($skillCompleteName));//Skill complete name
-						$pdf->Text(($apt_x + 53), $apt_y, formatIt($skill->getEgoValue()));//Skill ego value;
-						
-						if(!empty($skill->specialization))
-						{
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$apt_y += $y_space;
-							$pdf->Text($apt_x, $apt_y, formatIt("spec[" . $skill->specialization . "]"));//Skill specialization
-						}
-						
-						$apt_y += $y_space;
-						$i++;
-					}
-				}
-				
-				//EGO NEG TRAIT
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
-				$y_space = 3;
-				$apt_x = 83;
-				$apt_y = 105;
-				
-				foreach($egoNegTraits as $trait)
-				{
-					$pdf->SetFont('Lato-Lig', '', 6);
-					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 5);
-					setBookLink($trait->name, ($apt_x - 8), $apt_y, $p, $pdf);//Trait Neg bookLink
-					
-					$apt_y += $y_space;
-				}
-				
-				//EGO POS TRAIT
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
-				$y_space = 3;
-				$apt_x = 116;
-				$apt_y = 105;
-				
-				//need to either add some additional spacing or test book name length PAN p100+ causes issues
-				foreach($egoNegTraits as $trait)
-				{
-					$pdf->SetFont('Lato-Lig', '', 6);
-					$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 5);
-					setBookLink($trait->name, ($apt_x + 30), $apt_y, $p, $pdf);//Trait Neg bookLink
-					
-					$apt_y += $y_space;
-				}
-				
-				//PSI SLEIGHTS
-				$psySleights = $_SESSION['cc']->getCurrentPsySleights();
-				$y_space = 3;
-				$apt_x = 160;
-				$apt_y = 105;
-				
-				foreach($psySleights as $sleight)
-				{
-					//set the slight token to active or passive
-					if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) 
-						$type = "(A)";
-					else
-						$type = "(P)";
 
-					$pdf->SetFont('Lato-Lig', '', 7);
-					$pdf->Text($apt_x, $apt_y, formatIt($type));//PsySleight type 
-					$pdf->Text(($apt_x + 4), $apt_y, formatIt($sleight->name));//PsySleight name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($sleight->name, ($apt_x + 36), $apt_y, $p, $pdf);//PsySleight bookLink
-					
-					$apt_y += $y_space;
-				}	
-				
-				//SOFT GEAR
-				$softGears = $_SESSION['cc']->getEgoSoftGears();
-				$apt_x = 86;
-				
-				if(count($softGears) <= 18)
-				{
-					$fontsize = 8;
-					$y_space = 3.5;
-					$apt_y = 155;
-				}
-				else
-				{
-					$fontsize = 6;
-					$y_space = 3;
-					$apt_y = 155;	
-				}
-				
-				foreach($softGears as $gear)
-				{
-					if($gear->occurence > 1) 
-						$occ = "(" . $gear->occurence . ") ";
-					else 
-						$occ = "";
-					
-					$pdf->SetFont('Lato-Lig', '', $fontsize);
-					$pdf->Text($apt_x, $apt_y, formatIt($occ . $gear->name));//soft gear name 
-					
-					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($gear->name, ($apt_x - 11), $apt_y, $p, $pdf);//soft gear bookLink
-					
-					$apt_y += $y_space;
-				}
-				
+                $skillList = $_SESSION['cc']->getSkills();
+                $formattedSkills = formatSkills($skillList,'getEgoValue');
+                $pdf->setXY(8,84);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
+
+                //EGO NEG TRAIT
+                $egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$NEGATIVE_TRAIT);
+                $formattedNegTraits = formatGearData($egoNegTraits,$p);
+                $pdf->setXY(80,102);
+                $format = setTwoColFormat(18,15,1,8,7);
+                writeTwoColumns($pdf,$formattedNegTraits,$format,3);
+
+                //EGO POS TRAIT
+                $egoPosTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(), EPTrait::$POSITIVE_TRAIT);
+                $formattedPosTraits = formatGearData($egoPosTraits,$p);
+                $pdf->setXY(116,102);
+                $format = setTwoColFormat(25,15,1,8,7);
+                writeTwoColumns($pdf,$formattedPosTraits,$format,3);
+
+                //PSI SLEIGHTS
+                $psySleights = $_SESSION['cc']->getCurrentPsySleights();
+                $formattedPsi = array();
+                foreach($psySleights as $sleight)
+                {
+                    $item = array();
+                    //set the slight token to active or passive
+                    if($sleight->psyType == EPPsySleight::$ACTIVE_PSY)
+                        $type = "(A) ";
+                    else
+                        $type = "(P) ";
+
+                    $item[0] = formatIt($type . $sleight->name);
+                    $item[2] = getBookLink($sleight->name,$p);
+                    array_push($formattedPsi,$item);
+                }
+                $pdf->setXY(158,102);
+                writeTwoColumns($pdf,$formattedPsi,$traitFormat,3);
+
+                //SOFT GEAR
+                $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
+                $pdf->SetXY(85,152);
+                writeTwoColumns($pdf,$softGears,$traitFormat,3);
+
 				//AI
 				$ais = $_SESSION['cc']->getEgoAi();
 				$y_space = 1;
@@ -307,16 +177,16 @@
 						$occ = "";
 					
 					$pdf->SetFont('Lato-Lig', '', 8);
-					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name 
+					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name
 					
 					$pdf->SetFont('Lato-LigIta', '', 6);
-					setBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
+					writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
 					
 					$skillAptNonformated = "";
 					foreach($ai->aptitudes as $aiApt)
 					{
 						$skillAptNonformated .= $aiApt->abbreviation . "[";
-						$skillAptNonformated .= $aiApt->value . "]   ";
+						$skillAptNonformated .= $aiApt->value . "]\n";
 					}
 					
 					//construct a skill string for each skill
@@ -328,27 +198,24 @@
 						
 						$skillCompleteName .= $aiSkill->name;
 						$skillAptNonformated .= $skillCompleteName . "(";
-						$skillAptNonformated .= $aiSkill->baseValue . ")  ";
+						$skillAptNonformated .= $aiSkill->baseValue . ")\n";
 					}
 					
-					
-					$aiSkillsApt = formatItForRect($skillAptNonformated, 35);
-					$paddle = 0;
-					
 					$pdf->SetFont('Lato-LigIta', '', 7);
-					foreach($aiSkillsApt as $line)
-					{
-						$pdf->Text(($apt_x + 27), ($apt_y + $paddle), formatIt($line));//ai skill apt
-						$paddle += 3;
-					} 
-					
-					$apt_y += $y_space + $paddle;
+					$pdf->setXY($apt_x + 27,$apt_y);
+					$pdf->MultiCell(30,3,$skillAptNonformated);
+					$pdf->Line($apt_x+27,$pdf->getY(),$apt_x+57,$pdf->getY());
+
+					$apt_y = $pdf->getY();
 				}	
 
-				//MEMO (all ego bonus malus)
-				$egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
-// 				writeMemo($pdf,getDescOnlyBM($egoBonusMalus));
-				writeMemo($pdf,$egoBonusMalus);
+                //MEMO (all ego bonus malus)
+                $egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
+//                 $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
+                $formattedMemo = formatMemoData($egoBonusMalus);
+                $pdf->SetXY(80,230);
+                $format = setTwoColFormat(45,80,2,7,5);
+                writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,"Ego Memo Overflow");
 				
 				//END EGO PAGE
 					
@@ -368,7 +235,7 @@
 						
 						$pdf->SetFont('Lato-Lig', '', 8);
 	
-						//DETAILS DATA
+						//DETAILS DATA$skillList
 						if($morph->morphType == EPMorph::$BIOMORPH) $type = "[bio]";
 						else if($morph->morphType == EPMorph::$SYNTHMORPH) $type = "[synth]";
 						else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
@@ -377,7 +244,7 @@
 						$pdf->Text(55, 11.5, formatIt($morph->name . " " . $type));//morph Name type
 						
 						$pdf->SetFont('Lato-LigIta', '', 5);
-						setBookLink($morph->name, 105, 11.5, $p, $pdf);//morph bookLink
+						writeBookLink($morph->name, 105, 11.5, $p, $pdf);//morph bookLink
 						
 						$pdf->SetFont('Lato-Lig', '', 8);
 						$pdf->Text(140, 12, formatIt($morph->nickname));//morph nickname
@@ -394,163 +261,45 @@
 							$morphGender = 'none';
 						
 						$pdf->Text(140, 26, formatIt($morphGender));//morph gender
-						
-						//MORPH NEG TRAIT
-						
-						$morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
-						$y_space = 3;
-						$apt_x = 13;
-						$apt_y = 45;
-						foreach($morphNegTraits as $trait)
-						{
-							$pdf->SetFont('Lato-Lig', '', 7);
-							$pdf->Text( $apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-							
-							$pdf->SetFont('Lato-LigIta', '', 5);
-							setBookLink($trait->name, ($apt_x - 9), $apt_y, $p, $pdf);//Trait Neg bookLink
-							
-							$apt_y += $y_space;
-						}
-					
-						//MORPH POS TRAIT
-						$morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
-						$y_space = 3;
-						$apt_x = 52;
-						$apt_y = 45;
-						
-						foreach($morphNegTraits as $trait)
-						{
-							$pdf->SetFont('Lato-Lig', '', 7);
-							$pdf->Text($apt_x, $apt_y, formatIt($trait->name));//Trait Neg name 
-							
-							$pdf->SetFont('Lato-LigIta', '', 5);
-							setBookLink($trait->name, ($apt_x + 41), $apt_y, $p, $pdf);//Trait Neg bookLink
-							
-							$apt_y += $y_space;
-						}
-							
+
+                        //MORPH NEG TRAIT
+                        $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
+                        $formattedNegTraits = formatGearData($morphNegTraits,$p);
+                        $pdf->setXY(5,43);
+                        writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
+
+
+                        //MORPH POS TRAIT
+                        $morphPosTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
+                        $formattedPosTraits = formatGearData($morphPosTraits,$p);
+                        $pdf->setXY(52,43);
+                        writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
+
 						//MORPH STATS
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(118, 40, "(EP p.121)");//Stats bookLink
-						$stats = $_SESSION['cc']->getStats();
-						$y_space = 3.5;
-						$apt_x = 103;
-						$apt_y = 46;
-						$i = 1;
-						foreach($stats as $s)
-						{
-							if($i%2 == 0)
-								$pdf->SetFont('Lato-Reg', '', 8);
-							else 
-								$pdf->SetFont('Lato-Lig', '', 8);
-							
-							$pdf->Text($apt_x, $apt_y, formatIt($s->name));//Stat name name 
-							$pdf->Text(($apt_x + 30), $apt_y, formatIt($s->getValue()));//Stat Value 
-							
-							$apt_y += $y_space;
-							$i++;
-						}
-						
+
+                        $stats = formatStats($_SESSION['cc']->getStats());
+                        $pdf->SetXY(102,43);
+                        $format = setTwoColFormat(28,7,1,7,7);
+                        writeTwoColumns($pdf,$stats,$format,3.5,2);
+
 						//MORPH APTITUDES
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(173, 40, "(EP p.122)");//Aptitude bookLink
-						$aptitudes = $_SESSION['cc']->getAptitudes();
-						$y_space = 3.5;
-						$apt_x = 142;
-						$apt_y = 46;
-						$i = 1;
-						
-						foreach($aptitudes as $apt)
-						{
-							if($i%2 == 0) 
-								$pdf->SetFont('Lato-Reg', '', 8); //bold
-							else 
-								$pdf->SetFont('Lato-Lig', '', 8); //normal
-							
-							$pdf->Text($apt_x, $apt_y, formatIt($apt->name));//Apt Name
-							$pdf->Text(($apt_x + 32), $apt_y, formatIt($apt->getValue()));//Apt Value 
-							
-							$apt_y += $y_space;
-							$i++;
-						}
-					
+
+                        $aptitudes = formatStats($_SESSION['cc']->getAptitudes());
+                        $pdf->SetXY(142,43);
+                        $format = setTwoColFormat(30,10,2,10,10);
+                        writeTwoColumns($pdf,$aptitudes,$format,3.5,2);
+
 						//MORPH SKILLS
 						$pdf->SetFont('Lato-LigIta', '', 7);
 						$pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
 						$skillList = $_SESSION['cc']->getSkills();
-						$apt_x = 12;
-						
-						//Count skills and specializations
-						$printedSkills = 0;
-						foreach($skillList as $skill)
-						{
-							if($skill->getValue() > 0)
-								$printedSkills++;
-
-							if(!empty($skill->specialization))
-								$printedSkills++;
-						}
-						//if more than 60 skills, reduce the font and spaces
-						if($printedSkills <= 60)
-						{
-							$fontsize = 9;
-							$y_space = 3.5;
-							$apt_y = 84;
-						}
-						else
-						{
-							$fontsize = 6;
-							$y_space = 3;
-							$apt_y = 84;	
-						} 
-						
-						$i = 1;
-						foreach($skillList as $skill)
-						{
-							if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
-							{
-								//set bold or normal row
-								if($i%2 == 0) 
-									$pdf->SetFont('Lato-Reg', '', $fontsize); //bold
-								else 
-									$pdf->SetFont('Lato-Lig', '', $fontsize); //light
-								
-								//set the active or knowledge token
-								if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) 
-									$skillType = "K";
-								else
-									$skillType = "A";
-								
-								//construct the full name prefix-name-postfix
-								$skillCompleteName = "";
-								
-								if(!empty($skill->prefix)) 
-									$skillCompleteName = $skill->prefix . " : ";
-								
-								$skillCompleteName .= $skill->name;
-								
-								if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) 
-									$skillCompleteName .= " *";
-								
-								//needs a check for total character length with either a word wrap option of a one time text size drop
-							
-								//write main skill row to the pdf
-								$pdf->Text(($apt_x - 4), $apt_y, formatIt($skillType));//Skill Type
-								$pdf->Text($apt_x, $apt_y, formatIt($skillCompleteName));//Skill complete name
-								$pdf->Text(($apt_x + 53), $apt_y, formatIt($skill->getValue()));//Skill morph value;
-								
-								//write the optional specialization to the pdf
-								if(!empty($skill->specialization))
-								{
-									$pdf->SetFont('Lato-Lig', '', $fontsize); //normal font
-									$apt_y += $y_space;  //increment the y position
-									$pdf->Text($apt_x, ($apt_y), formatIt("spec[" . $skill->specialization . "]"));//Skill specialization
-								}
-								
-								$apt_y += $y_space; //increment the y position
-								$i++;
-							}
-						}
+                        $formattedSkills = formatSkills($skillList,'getValue');
+                        $pdf->setXY(8,84);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Morph Skills Overflow");
 							
 						//NOTES 
 						$apt_x = 81;
@@ -601,7 +350,7 @@
 							$pdf->Text(($apt_x + 97), $apt_y, formatIt("AP : " . $w->armorPenetration));//Weapon Armor penetration 
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($w->name, ($apt_x + 108), $apt_y, $p, $pdf);//Weapon bookLink
+							writeBookLink($w->name, ($apt_x + 108), $apt_y, $p, $pdf);//Weapon bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -645,89 +394,39 @@
 							}
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x + 108), $apt_y, $p, $pdf);//Armor bookLink
+							writeBookLink($a->name, ($apt_x + 108), $apt_y, $p, $pdf);//Armor bookLink
 							
 							$apt_y += $y_space;
 						}
 							
-						//GEARS
-						$armor = filterGeneralOnly($morphGear);
-						$apt_x = 83;
-						
-						//if more than 15 gear then change the fontsize and spaces
-						if(count($armor) <= 15)
-						{
-							$fontsize = 8;
-							$y_space = 3.5;
-							$apt_y = 171.5;
-						}
-						else
-						{
-							$fontsize = 5;
-							$y_space = 2;
-							$apt_y = 170;	
-						} 
-						
-						foreach($armor as $a)
-						{
-							if($a->occurence > 1) 
-								$occ = "(" . $a->occurence . ") ";
-							else 
-								$occ = "";
-							
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text($apt_x, $apt_y, formatIt($occ . $a->name));//Gear name 
-							
-							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x - 12.5), $apt_y, $p, $pdf);//Gear bookLink
-							
-							$apt_y += $y_space;
-						}
-						
-						//IMPLANTS
-						$armor = filterImplantOnly($morphGear);
-						$apt_x = 141;
-						
-						//if more than 17 implants then change the fontsize and spaces
-						if(count($armor) <= 17)
-						{ //default
-							$fontsize = 8;
-							$y_space = 3.5;
-							$apt_y = 171.5;
-						}
-						else
-						{ //overflow resize
-							$fontsize = 5;
-							$y_space = 2;
-							$apt_y = 170;	
-						} 
-						
-						foreach($armor as $a)
-						{
-							if($a->occurence > 1) 
-								$occ = "(" . $a->occurence . ") ";
-							else 
-								$occ = "";
-							
-							$pdf->SetFont('Lato-Lig', '', $fontsize);							
-							$pdf->Text($apt_x, $apt_y, formatIt($occ . $a->name));//Implant name 
-							
-							$pdf->SetFont('Lato-LigIta', '', 6);
-							setBookLink($a->name, ($apt_x + 52), $apt_y, $p, $pdf);//Implant bookLink
-							
-							$apt_y += $y_space;
-						}
-						
-						//MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
-						$morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
-						writeMemo($pdf,getMorphMemoBM($morphBonusMalus));
-						
-					}
-				
+                        //GEAR
+                        $gear = filterGeneralOnly($morphGear);
+                        $formattedGear = formatGearData($gear,$p);
+                        $pdf->SetXY(83,168);
+                        $format = setTwoColFormat(35,18,1,7,7);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
+
+                        //IMPLANTS
+                        $implants = filterImplantOnly($morphGear);
+                        $formattedImplants = formatGearData($implants,$p);
+                        $pdf->SetXY(140,168);
+                        $format = setTwoColFormat(40,20,1,7,7);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
+
+                        //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
+                        $morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
+                        $formattedMemo = formatMemoData($morphBonusMalus);
+                        $pdf->SetXY(80,230);
+                        $format = setTwoColFormat(45,80,2,7,5);
+                        writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->name . " Memo Overflow");
+                    }
+
 			//===================
+        $ovf->printOverflowPages($pdf);
 		$file_util = new EPFileUtility($_SESSION['cc']->character);
 		$filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
-		$pdf->Output($filename, 'D');
+// 		$pdf->Output($filename, 'D');
+		$pdf->Output($filename, 'I');
 	}
 	
 	//NO CHARACTER CREATOR ! ================================================
@@ -740,54 +439,265 @@
 	
 	//Block Writers ===============================================================
 
+    //There are some cases where there is more information than can fit in the appropriate spot on a page
+    //To deal with this, we save the data, and print extra pages at the end if needed
+    class Overflow
+    {
+        var $page_data;  //A page's worth of data that's overflowed
+        function Overflow()
+        {
+            $this->page_data = array();
+        }
+        function generateOverflowPage($pageName,$data)
+        {
+            $item = array();
+            $item['name'] = $pageName;
+            $item['data'] = $data;
+            array_push($this->page_data,$item);
+        }
+        function printOverflowPages($pdf)
+        {
+            foreach($this->page_data as $page)
+            {
+                $pdf->AddPage('P', 'A4');
+                $pdf->SetFont('Lato-Reg', '', 30);
+                $pdf->Text(5, 15, formatIt($page['name']));
+                $pdf->SetXY(5,20);
+                $format = setTwoColFormat(60,90,2,8,8);
+                writeTwoColumns($pdf,$page['data'],$format,4,2);
+            }
 
-	$apt_x = 81;
-	$apt_y = 81;
-	$pdf->SetFont('Lato-Lig', '', 5);
-	$pdf->SetXY($apt_x,$apt_y);
-	$pdf->MultiCell(95,2,$character->note,0,'l');
+        }
+    }
 
-	//Bonus/Malus means good/bad in Latin
-	//MEMO (all bonus malus descriptive only)
-	function writeMemo($pdf,$filteredBM)
-	{
-		$apt_x = 80;
-		$apt_y = 230;
-		$y_space = 4;	//vertical spacing for the BM group
-		$fontsize = 9;
-		$fontsizetxt = 7;
+    //Prepare skill data for printing
+    //
+    // @param $functionName The Name of the function used to get the skills value
+    // 'getEgoValue' for ego skills
+    // 'getValue' for morph skills
+    function formatSkills($skillList,$functionName)
+    {
+        $formattedSkills = array();
+        foreach($skillList as $skill)
+        {
+            $item = array();
+            if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
+            {
+                //set the active or knowledge skill token
+                if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
+                    $skillType = "K";
+                else
+                    $skillType = "A";
 
-		//if more than 10 Bonus/Malus, resize
-		if(count($filteredBM) > 10)
-		{
-			$fontsize = 7;
-			$fontsizetxt = 5;
-			$y_space = 3;
-		}
+                $skillCompleteName = "";
+                if(!empty($skill->prefix))
+                    $skillCompleteName = $skill->prefix . " : ";
 
-		$pdf->SetXY($apt_x,$apt_y);
-		foreach($filteredBM as $bm)
-		{
-			$name = formatIt($bm->name);
-			$pdf->SetFont('Lato-Lig', '', $fontsize);
-			//If the name is too long, drop the font size accordingly so it fits
-			while($pdf->GetStringWidth($name) > 35)
-			{
-				$fontsize-=1;
-				$pdf->SetFontSize($fontsize);
-// 				error_log($fontsize."->".$bm->name.":  ".$pdf->GetStringWidth($bm->name));
-			}
-			$pdf->Cell(45,$y_space,$name,0,0,'l');
+                $skillCompleteName .= $skill->name;
 
-			$pdf->SetFont('Lato-Lig', '', $fontsizetxt);
+                if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
+                    $skillCompleteName .= " *";
 
-			$pdf->SetX($pdf->GetX()+2);
-			$pdf->MultiCell(80,$y_space,$bm->description,0,'l');
+                $item[0] = formatIt($skillType."   ".$skillCompleteName);
+                $item[2] = formatIt($skill->$functionName());
+                array_push($formattedSkills,$item);
 
-			$pdf->Line($apt_x,$pdf->GetY(),$apt_x+45+2+80,$pdf->GetY());
-			$pdf->SetX($apt_x);
-		}
-	}
+                if(!empty($skill->specialization))
+                {
+                    $item = array();
+                    $item[0] = formatIt("     spec[" . $skill->specialization . "]");
+                    $item[2] = "";
+                    $item['isContinuation'] = "Set!";
+                    array_push($formattedSkills,$item);
+                }
+            }
+        }
+        return $formattedSkills;
+    }
+
+    //Prepare aptitude/stats/rep data for printing
+    // @param $functionName The Name of the function used to get the skills value
+    // 'getEgoValue' for ego aptitudes
+    // 'getValue' for morph aptitudes and everything else
+    function formatStats($stats,$functionName = 'getValue')
+    {
+        $data = array();
+        foreach($stats as $stat)
+        {
+            $item = array();
+            $item[0] = formatIt($stat->name);
+            $item[2] = formatIt($stat->$functionName());
+            array_push($data,$item);
+        }
+        return $data;
+    }
+
+    //Prepare gear/item/trait data for printing
+    function formatGearData($gears,$provider)
+    {
+        $data = array();
+        foreach($gears as $g)
+        {
+            $item = array();
+            $occ = "";
+            if($g->occurence > 1)
+                $occ = "(" . $g->occurence . ") ";
+
+            $item[0] = formatIt($occ . $g->name);
+            $item[2] = getBookLink($g->name,$provider);
+            array_push($data,$item);
+        }
+        return $data;
+    }
+
+    //Prepare memo data for printing
+    //Bonus/Malus means good/bad in Latin
+    function formatMemoData($filteredBM)
+    {
+        $data = array();
+        foreach($filteredBM as $bm)
+        {
+            $item = array();
+            $item[0] = formatIt($bm->name);
+            $item[2] = $bm->description;
+            array_push($data,$item);
+        }
+        return $data;
+    }
+
+    // Format the multi-column data for two columns with a spacer in between
+    //
+    // @param $col1_width       How wide column 1 is
+    // @param $col2_width       How wide column 2 is
+    // @param $col_spacing      Spacing between columns
+    // @param $col1_font_size   The font size for column 1
+    // @param $col2_font_size   The font size for column 2
+    function setTwoColFormat($col1_width,$col2_width,$col_spacing,$col1_font_size,$col2_font_size)
+    {
+        $rowFormat = array();
+        $rowFormat[0]=array();
+        $rowFormat[0]['width'] = $col1_width;
+        $rowFormat[0]['font_size'] = $col1_font_size;
+        $rowFormat[1]=array();
+        $rowFormat[1]['width'] = $col_spacing;
+        $rowFormat[1]['font_size'] = 0;     //Doesn't matter (yet)
+        $rowFormat[2]=array();
+        $rowFormat[2]['width'] = $col2_width;
+        $rowFormat[2]['font_size'] = $col2_font_size;
+        return $rowFormat;
+    }
+
+    // Writes out multi-column data
+    //
+    // @param $pdf              The pdf to write to
+    // @param $data             The data to be written
+    //  This is an array containing row data.  Each row consists of multiple columns, sequentially numbered from '0'
+    //  If 'isContinuation' is set for a row, then a seperator is not placed between it and the previous row
+    // @param $rowFormat        How each row is formatted
+    //  This is an array containing formatting information for each column.
+    //  Each column format is an array containing 'width' and 'font_size'
+    // @param $row_height       How high each row is
+    // @param $seperator_type   The type of separator between items
+    //  0 no seperator
+    //  1 line seperator
+    //  2 every other row has a gray background
+    //  3 every other row is bolded
+    function writeTwoColumns($pdf,$data,$rowFormat,$row_height,$seperator_type = 0)
+    {
+        $x_position = $pdf->GetX();
+        $pdf->SetFillColor(200);    //Fill color for separating items
+
+        $fontName = 'Lato-Lig';
+        $i=0;
+        $useFill = false;
+
+        //Verify That format data is correct
+//         foreach($rowFormat as $colFormat)
+//         {
+//             error_log("Width: ".$colFormat['width']);
+//             error_log("font_size: ".$colFormat['font_size']);
+//         }
+
+        foreach($data as $item)
+        {
+            //Handle row separators
+            if(!isset($item['isContinuation']))
+            {
+                if($seperator_type == 1)
+                {
+                    $pdf->Line($x_position,$pdf->GetY(),$x_position+$rowFormat[0]['width']+$rowFormat[1]['width']+$rowFormat[2]['width'],$pdf->GetY());
+                }
+                if($seperator_type == 2)
+                {
+                    if($i%2 == 0)
+                        $useFill = false;
+                    else
+                        $useFill = true;
+                }
+                if($seperator_type == 3)
+                {
+                    if($i%2 == 0)
+                        $fontName = 'Lato-Lig';
+                    else
+                        $fontName = 'Lato-Reg';
+                }
+                $i++;
+            }
+
+            $pdf->SetFont($fontName, '',$rowFormat[0]['font_size']);
+            singleCell($pdf,$rowFormat[0]['width'],$row_height,$item[0],$useFill);
+
+            if(!isset($item[1]))
+                $item[1]="";
+            $pdf->SetFont($fontName, '', $rowFormat[1]['font_size']);
+            $pdf->Cell($rowFormat[1]['width'],$row_height,$item[1],0,0,'l',$useFill);
+
+            $pdf->SetFont($fontName, '', $rowFormat[2]['font_size']);
+            $pdf->MultiCell($rowFormat[2]['width'],$row_height,$item[2],0,'l',$useFill);
+
+            $pdf->SetX($x_position);
+        }
+    }
+
+    //Acts mostly like a normal $pdf->Cell, but re-sizes the current font so the text alwys fits on one line
+    function singleCell($pdf,$width,$height,$text,$useFill = false)
+    {
+        //If the column is too long, drop the font size accordingly so it fits in a single line
+        while($pdf->GetStringWidth($text) > $width)
+        {
+            $pdf->SetFontSize($pdf->FontSizePt - 1);
+            error_log($pdf->FontSizePt."->".$text.":  ".$pdf->GetStringWidth($text));
+        }
+        $pdf->Cell($width,$height,$text,0,0,'l',$useFill);
+    }
+
+    //Wrapper that allows for the creation of overflow pages if too many elements are entered
+    //
+    // @param $ovf                  The overflow object to store extra items in
+    // @param $overflow_number      The max number of items before overflow occurs
+    // @param $overflow_message     The message to put on the overflow page
+    function writeTwoColumnsOvf($ovf,$pdf,$data,$rowFormat,$row_height,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
+    {
+        //Don't bother when not given input data
+        if(count($data) == 0)
+            return;
+
+        //If overflow number is unset, fall back to normal writeTwoColumns
+        if($overflow_number > 0)
+        {
+            $chunks = array_chunk($data,$overflow_number);
+            if(isset($chunks[1]))
+            {
+                error_log("Overflow:  ".$overflow_message);
+                $ovf->generateOverflowPage($overflow_message,$chunks[1]);
+            }
+            writeTwoColumns($pdf,$chunks[0],$rowFormat,$row_height,$seperator_type);
+
+        }
+        else
+            writeTwoColumns($pdf,$data,$rowFormat,$row_height,$seperator_type);
+    }
+
 	//HELPERS ===============================================================
 
 	function formatIt($string)
@@ -796,12 +706,6 @@
 			$string = " ";
 		
 		return strtoupper($string);
-	}
-	
-	function formatItForRect($string, $length)
-	{
-		$final_result = str_split(formatIt($string), $length);
-		return $final_result;
 	}
 	
 	function getImplants($objArray)
@@ -943,8 +847,8 @@
 		}
 		return $result;
 	}
-	
-	function setBookLink($atomeName, $x, $y, $provider, $pdf)
+
+	function getBookLink($atomeName, $provider)
 	{
 		$bookFullName = $provider->getBookForName($atomeName);
 		if($bookFullName == EPListProvider::$BOOK_ECLIPSEPHASE) $book = "EP";
@@ -954,8 +858,13 @@
 		else if($bookFullName == EPListProvider::$BOOK_PANOPTICON) $book = "PAN";
 		else if($bookFullName == EPListProvider::$BOOK_RIMWARD) $book = "RW";
 		else $book = "??";
-		
+
 		$page = $provider->getPageForName($atomeName);
-		$pdf->Text($x, $y, "(" . $book . " p." . $page . ")");
+		return "(" . $book . " p." . $page . ")";
+	}
+
+	function writeBookLink($atomeName, $x, $y, $provider, $pdf)
+	{
+		$pdf->Text($x, $y, getBookLink($atomeName,$provider));
 	}
 ?>

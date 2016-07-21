@@ -113,10 +113,16 @@ class EPStat extends EPAtom{
         $this->multiGearMod = 1;
         $this->multiPsyMod = 1;
     }
+    function getEgoValue(){
+        if (!isset($this->cc)){
+            return 0;
+        }
+        return $this->value;
+    }
     function getValue(){
         if (!isset($this->cc)){
             return 0;
-        }    
+        }
         $multi = $this->multiMorphMod * $this->multiTraitMod * $this->multiFactionMod * $this->multiBackgroundMod * $this->multiSoftgearMod * $this->multiGearMod * $this->multiPsyMod;
         switch ($this->abbreviation) {
             case EPStat::$MOXIE:

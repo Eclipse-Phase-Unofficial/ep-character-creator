@@ -153,7 +153,7 @@ class EPEgo {
 	    	array_push($this->motivations, $m);
 	    } 
 	    
-	    //must be done befor skills !
+	    //must be done before skills !
 	    $this->aptitudes = array();
 	    foreach($savePack['aptitudesSavePacks'] as $m){
 	    	$savedAptitude = new EPAptitude('','');
