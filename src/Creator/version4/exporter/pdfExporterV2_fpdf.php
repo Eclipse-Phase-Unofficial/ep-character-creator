@@ -67,14 +67,8 @@
 				writeBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
 				
 				//AGE - SEX
-				$birthGender = " ";
-				if($character->birthGender == 'M') 
-					$birthGender = 'male';
-				else 
-					$birthGender = 'female';
-				
 				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->Text(143, 26, formatIt($birthGender)); //Birth gender
+				$pdf->Text(143, 26, formatIt($character->birthGender)); //Birth gender
 				$pdf->Text(143, 33, formatIt($character->realAge)); //Real age
 				
 				//CREDIT
@@ -251,16 +245,7 @@
 						$pdf->Text(50, 19, formatIt($morph->age));//morph apparent age
 						$pdf->Text(140, 19, formatIt($morph->location));//morph Location
 						$pdf->Text(50, 26, formatIt($character->playerName));//morph player
-						
-						$morphGender = " ";
-						if($character->birthGender == 'M') 
-							$morphGender = 'male';
-						else if($character->birthGender == 'F') 
-							$morphGender = 'female';
-						else 
-							$morphGender = 'none';
-						
-						$pdf->Text(140, 26, formatIt($morphGender));//morph gender
+						$pdf->Text(140, 26, formatIt($morph->gender));//morph gender
 
                         //MORPH NEG TRAIT
                         $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);

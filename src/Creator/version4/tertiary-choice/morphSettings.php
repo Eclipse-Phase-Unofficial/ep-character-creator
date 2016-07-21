@@ -23,15 +23,11 @@
 	</li>
 	<li>
 		<label>apparent age</label>
-		<input type='number' id="mAge" value="25" />
+		<input type='number' id="mAge" />
 	</li>
 	<li>
 		<label>Gender</label>
-		<select id="mGender">
-			<option value="M">Male</option>
-			<option value="F">Female</option>
-			<option value="N">None</option>
-		</select>
+		<input  type='text' id="mGender" placeholder="morph gender"/>
 	</li>
 	<li>
 		<label>Max aptitude</label>
