@@ -113,7 +113,11 @@ You will need:
     USE EclipsePhaseData;
     ```
 
-2. run the script sql/FullDatabase.sql
+2. Import the database
+
+    ```
+    mysql -h localhost -u epcc_www -p'0928sdGdsfa8#_+' EclipsePhaseData < sql/FullDatabase.sql
+    ```
 3. configure database access in php/config.ini
 
     ```ini
