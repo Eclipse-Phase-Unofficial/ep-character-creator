@@ -108,7 +108,7 @@ You will need:
 
     ```mySql
     CREATE USER 'epcc_www'@'localhost' IDENTIFIED BY '0928sdGdsfa8#_+';
-    GRANT ALL PRIVILEGES ON *.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON EclipsePhaseData.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
     CREATE DATABASE EclipsePhaseData;
     USE EclipsePhaseData;
     ```
