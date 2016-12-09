@@ -32,6 +32,17 @@ You will need to maintain a separate version of that file outside of this reposi
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
 [src/sql/FullDatabase.sql](https://github.com/rbewley4/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
 
+## Testing
+You will need:
+
+* php 5.3 or greater (php.net)
+* sqlite3
+
+1. Set up the sqlite database as explained in the Deployment section.
+2. From a command prompt in the `src` directory run `php -S localhost:8080`
+3. Browse to http://localhost:8080
+
+
 ## Deployment
 You will need:
 
