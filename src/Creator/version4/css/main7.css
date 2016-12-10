@@ -226,12 +226,12 @@ section.panel {
 	width: 100%;
 }
 
-#main-nav a.active .btnhelp{
+a.active .btnhelp{
 	opacity: 1;
 }
 
 
-#main-nav .btnhelp{
+.btnhelp{
 	display: block;
 	line-height: 3em;
 	width: 3em;
@@ -250,34 +250,9 @@ section.panel {
 	
 }
 
-#main-nav .btnhelp:hover{
+.btnhelp:hover{
 	opacity: 1;
 }
-
-
-.btnhelpPoint{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 1em;
-	padding-right: 1em;
-	opacity: .2;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-.btnhelpPoint:hover{
-	opacity: 1;
-}
-
 
 /*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 #secondary .mainlist{

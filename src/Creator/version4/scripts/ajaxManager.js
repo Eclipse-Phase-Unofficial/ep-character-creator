@@ -62,146 +62,56 @@ $(document).ready(function(){
 		  
             firstTime = false;
         }
-        
-        
+
         //HELPS (Sliding from the bottom)
         //first html page (don't know why the second option is not working for the first page)
-         $('.btnhelp').on('click' , function () {
-       		 $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            infosId : $(this).attr('id')
-                    },
-                    success : function(response){
-                           if(response.error) {
-                           		treatMessageError(response,DISPLAY_ON_TOP);
-                           }
-                           else {
-                           		$("#base-infos").html(response.infoData);
-                           	}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                $("#base-infos").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-			});
-       		$(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-       		return false;
-       	 });
-       	 
-       	 $('.btnhelpPoint').on('click' , function () {
-       		 $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            infosId : "points"
-                    },
-                    success : function(response){
-                           if(response.error) {
-                           		treatMessageError(response,DISPLAY_ON_TOP);
-                           }
-                           else {
-                           		$("#base-infos").html(response.infoData);
-                           	}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                $("#base-infos").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-			});
-       		$(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-       		return false;
-       	 });
-       	 
-       	 //dynamic pages  (morph page)
-       	 $(document).on('click', '.btnhelp' , function () {
-       		 $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            infosId : $(this).attr('id')
-                    },
-                    success : function(response){
-                           if(response.error) {
-                           		treatMessageError(response,DISPLAY_ON_TOP);
-                           }
-                           else {
-                           		$("#base-infos").html(response.infoData);
-                           }	
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                $("#base-infos").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-			});
-       		$(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-       		return false;
-       	 });
-        
+        $('.btnhelp').on('click' , function () {
+            do_ajax({infosId : $(this).attr('id')},
+                    function(response){
+                    $("#base-infos").html(response.infoData);
+                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+            });
+        return false;
+        });
+
+        //dynamic pages  (morph page)
+        $(document).on('click', '.btnhelp' , function () {
+            do_ajax({infosId : $(this).attr('id')},
+                    function(response){
+                    $("#base-infos").html(response.infoData);
+                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+            });
+        return false;
+        });
+
         //BACKGROUND
         //click on main menu
         $("a.background").click(function(){
         	hideErrorsMsg();
     		$("#secondary").load("secondary-choice/backgrounds.php");
-    		$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            getBcg : 'get'
-                    },
-                    success : function(response){
-                    		if(response.error){
-	                    		treatMessageError(response,DISPLAY_ON_3);
-                    		} 
-                    		else {
-                    			if(response.currentBcg != null){
-                    				//displayMessageOnTertiary(response.desc);
-                    				$("#secondary").load("secondary-choice/backgrounds.php");
-                    				$("#tertiary").load("tertiary-choice/backgroundBMD.php");
-                    			}
-                    			
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-			});
+            do_ajax({getBcg : 'get'},function(response){
+                if(response.currentBcg != null){
+                    //displayMessageOnTertiary(response.desc);
+                    $("#secondary").load("secondary-choice/backgrounds.php");
+                    $("#tertiary").load("tertiary-choice/backgroundBMD.php");
+                }
+            });
 			return false;
     	});
     	
     	//click on background
         $(document).on('click', '.bck' , function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
-                            origine : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {                    		
-								//displayMessageOnTertiary(response.desc);
-								$("#tertiary").load("tertiary-choice/backgroundBMD.php");
-								$("#secondary").load("secondary-choice/backgrounds.php");
-								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-				});
-				return false;
+            do_ajax({
+                        origine : $(this).attr('id'),
+                        getCrePoint : 'get'
+                },
+                function(response){
+                            //displayMessageOnTertiary(response.desc);
+                            $("#tertiary").load("tertiary-choice/backgroundBMD.php");
+                            $("#secondary").load("secondary-choice/backgrounds.php");
+                            setRemainingPoint(response);
+            });
+            return false;
         });
                
         //FACTION
@@ -209,60 +119,31 @@ $(document).ready(function(){
         $("a.faction").click(function(){
         	hideErrorsMsg();
     		$("#secondary").load("secondary-choice/factions.php");
-    		$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		do_ajax({
                             getFac : 'get'
                     },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {
-                    			if(response.currentFac != null){
-                    				$("#secondary").load("secondary-choice/factions.php");
-									$("#tertiary").load("tertiary-choice/factionBMD.php");
-                    				//displayMessageOnTertiary(response.desc);                    	
-                    			}
-                    			
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-			});
+                    function(response){
+                        if(response.currentFac != null){
+                            $("#secondary").load("secondary-choice/factions.php");
+                            $("#tertiary").load("tertiary-choice/factionBMD.php");
+                            //displayMessageOnTertiary(response.desc);
+                        }
+            });
     		return false;
     	});
 		
 		//click on faction
         $(document).on('click', '.fac' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             faction : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error){
-	                             treatMessageError(response,DISPLAY_ON_3);
-	                        }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/factions.php");
 								$("#tertiary").load("tertiary-choice/factionBMD.php");
                     			//displayMessageOnTertiary(response.desc);
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -276,77 +157,35 @@ $(document).ready(function(){
     	//enter key on the motivation text field
     	$(document).on('keydown', '#motToAdd' ,function (e) {
     		if(e.keyCode == 13) {
-    	 		$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    	 		do_ajax( {
                             newMot : $('#motToAdd').val()                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/motivations.php");
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
 			}
         });
     	
     	//click on addButton
     	$(document).on('click', '#addMotiv' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             newMot : $('#motToAdd').val()                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/motivations.php");
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
         //click on removeButton
     	$(document).on('click', '.remMotiv' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             remMot : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/motivations.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -367,12 +206,7 @@ $(document).ready(function(){
 
     	//apt value change
         $(document).on('change ', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             cog : $('#COG').val(),
                             coo : $('#COO').val(),
                             int : $('#INT').val(),
@@ -382,7 +216,7 @@ $(document).ready(function(){
                             wil : $('#WIL').val(),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
+                    function(response){
                     		$('#COG').css("background-color", "#FEFEFE");
                 			$('#COO').css("background-color", "#FEFEFE");
                 			$('#INT').css("background-color", "#FEFEFE");
@@ -402,11 +236,7 @@ $(document).ready(function(){
                     			});
                     		}
                             
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -416,26 +246,12 @@ $(document).ready(function(){
     			hideErrorsMsg();
         		var aptNameTotal = $(this).attr('id');
         		var aptName = aptNameTotal.substr(0, 3);
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             apt :aptName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	displayMessageOnTertiary(response.desc);	
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	displayMessageOnTertiary(response.desc);
+                    });
 				return false;
         
         });
@@ -444,26 +260,12 @@ $(document).ready(function(){
     	$(document).on('click', '.aptMorph' ,function () {
     			hideErrorsMsg();
         		var morphName = $(this).attr('id');	
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             currentMorphUsed :morphName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	$("#tertiary").load("tertiary-choice/aptsWithMorph.php");	
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	$("#tertiary").load("tertiary-choice/aptsWithMorph.php");
+                    });
 				return false;
         
         });
@@ -474,27 +276,13 @@ $(document).ready(function(){
         //click on main menu
         $("a.rep").click(function(){
         	hideErrorsMsg();
-        	$.ajax({
-	            type : 'POST',
-	            contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	            url : dispatcherURL,
-	            dataType : 'json',
-	            data: {
+        	do_ajax( {
 	                    getCrePoint : 'get'
 	            },
-	            success : function(response){
-	                   if(response.error){
-                			 treatMessageError(response,DISPLAY_ON_MSG);                		
-						}
-                		else {
+	            function(response){
 							setRemainingPoint(response);
 							$("#secondary").load("secondary-choice/reputations.php");
-                		}
-	            },
-	            error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                       displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-	            }
-			});
+	            });
 
 			return false;
 		});
@@ -507,12 +295,7 @@ $(document).ready(function(){
 		
 		//Rep value change
 	    $(document).on('change', '#\\@-Rep,#G-Rep,#C-Rep,#I-Rep,#E-Rep,#R-Rep,#F-Rep',function() {
-	        $.ajax({
-	            type : 'POST',
-	            contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	            url : dispatcherURL,
-	            dataType : 'json',
-	            data: {
+	        do_ajax( {
 	                    atrep : $('#\\@-Rep').val(),
 	                    grep : $('#G-Rep').val(),
 	                    crep : $('#C-Rep').val(),
@@ -522,7 +305,7 @@ $(document).ready(function(){
 	                    frep : $('#F-Rep').val(),
 	                    getCrePoint : 'get'
 	            },
-	            success : function(response){
+	            function(response){
 	            		$('#\\@-Rep').css("background-color", "#FEFEFE");
                 		$('#G-Rep').css("background-color", "#FEFEFE");
                 		$('#C-Rep').css("background-color", "#FEFEFE");
@@ -540,11 +323,7 @@ $(document).ready(function(){
 	                    			$(focusOn).focus();
                     		});
                 		}
-	            },
-	            error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                       displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-	            }
-			});
+	            });
 	
 			return false;
 		});
@@ -554,26 +333,12 @@ $(document).ready(function(){
     			hideErrorsMsg();
         		var repNameTotal = $(this).attr('id');	
         		var repName = repNameTotal.substr(0, 5);
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             rep :repName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	displayMessageOnTertiary(response.desc);	
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	displayMessageOnTertiary(response.desc);
+                    });
 				return false;
         
         });
@@ -587,26 +352,12 @@ $(document).ready(function(){
 		});
 		//hover on pos trait
 		 $(document).on('click', '.posTrait' ,function () {
-		 	$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+		 	do_ajax( {
                             posTraitHover : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/traitBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 
 		 	return false;
         
@@ -615,30 +366,16 @@ $(document).ready(function(){
         
 		//click on pos trait
         $(document).on('click', '.addPosTraitIcon,.selPosTraitIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             posTrait : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/positive-traits.php");
                     			$("#tertiary").load("tertiary-choice/traitBMD.php");
                     			//displayMessageOnTertiary(response.desc);
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -651,26 +388,12 @@ $(document).ready(function(){
 		});
 		//hover on neg trait
 		 $(document).on('click', '.negTrait' ,function () {
-		 	$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+		 	do_ajax( {
                             negTraitHover : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/traitBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 
 		 	return false;
         
@@ -678,30 +401,16 @@ $(document).ready(function(){
 
 		//click on neg trait
         $(document).on('click', '.addNegTraitIcon,.selNegTraitIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             negTrait : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnTertiary(response.desc);
 								$("#secondary").load("secondary-choice/negative-traits.php");
 								$("#tertiary").load("tertiary-choice/traitBMD.php");
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
@@ -714,26 +423,12 @@ $(document).ready(function(){
 		});
 		//hover on neu trait
 		 $(document).on('mouseover', '.neuTrait' ,function () {
-		 	$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+		 	do_ajax( {
                             negTraitHover : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/traitBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 
 		 	return false;
         
@@ -741,30 +436,16 @@ $(document).ready(function(){
 
 		//click on neu trait
         $(document).on('click', '.neuTrait' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             negTrait : $(this).attr('id'), //use negTrait, but dont matter, cost = 0
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnTertiary(response.desc);
 								$("#secondary").load("secondary-choice/neutral-traits.php");
 								$("#tertiary").load("tertiary-choice/traitBMD.php");
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
 
@@ -781,20 +462,11 @@ $(document).ready(function(){
 		});
 		//click on psi
         $(document).on('click', '.addPsySleightIcon,.selPsySleightIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             psyS : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/psy-sleights.php", function(){
 					    			setupFoldingList();
 					    		});
@@ -802,38 +474,19 @@ $(document).ready(function(){
                     			$("#tertiary").load("tertiary-choice/psySleightBDM.php");
                     			//displayMessageOnTertiary(response.desc);
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 				return false;
         
         });
         
         //hover on psi
 		$(document).on('click', '.psyS' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             hoverPsyS : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
-                    			$("#tertiary").load("tertiary-choice/psySleightBDM.php");                    		
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    function(response){
+                    			$("#tertiary").load("tertiary-choice/psySleightBDM.php");
+                    });
 				return false;
         
         });
@@ -862,53 +515,25 @@ $(document).ready(function(){
 		
 		//add a temp active skill
 		$(document).on('click', '#addActSkill' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             newTmpActSkill : $('#actToAdd').val(),
                             newTmpActSkillPrefix : $('#actprefix').val()
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/active-skills.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         //return key in the temp active field 
         $(document).on('keydown', '#actToAdd' ,function (e) {
         		if(e.keyCode == 13) {
-	                $.ajax({
-	                    type : 'POST',
-	                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	                    url : dispatcherURL,
-	                    dataType : 'json',
-	                    data: {
+	                do_ajax( {
 	                            newTmpActSkill : $('#actToAdd').val(),
 	                            newTmpActSkillPrefix : $('#actprefix').val()
 	                    },
-	                    success : function(response){
-	                            if(response.error) {
-	                            	treatMessageError(response,DISPLAY_ON_3);
-	                            }
-	                    		else {
+	                    function(response){
 	                    			$("#secondary").load("secondary-choice/active-skills.php");
-	                    		}
-	                    },
-	                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-	                    }
-					});
+	                    });
 					return false;
 				}
         });
@@ -921,20 +546,11 @@ $(document).ready(function(){
         
 		//remove specialization
 		 $(document).on('click', '.remSpeSkill' ,function () {
-	           $.ajax({
-	                type : 'POST',
-	                contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	                url : dispatcherURL,
-	                dataType : 'json',
-	                data: {
+	           do_ajax( {
 	                        remSpeSkillName : $(this).attr('data-skillname'),
 	                        getCrePoint : 'get'
 	                },
-	                success : function(response){
-	                        if(response.error){ 
-	                        	treatMessageError(response,DISPLAY_ON_3);	                        }
-	                		else {
-	                			var comeFrom = $('.skills').attr('id');
+	                function(response){
                     			if(comeFrom == "actSkills"){
                     				$("#secondary").load("secondary-choice/active-skills.php");
                     			}
@@ -942,12 +558,7 @@ $(document).ready(function(){
 	                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
                     			}
 	                			setRemainingPoint(response);
-	                		}
-	                },
-	                error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                           displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-	                }
-				});
+	                });
 				return false;
         });
        
@@ -973,51 +584,23 @@ $(document).ready(function(){
 		});
 		//Add the native language
 		$(document).on('click', '#addNativeLanguage' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             newNatLanguageSkill : $('#langToAdd').val()
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/knowledge-skills.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         //return key in the native language 
         $(document).on('keydown', '#langToAdd' ,function (e) {
         		if(e.keyCode == 13) {
-	                $.ajax({
-	                    type : 'POST',
-	                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	                    url : dispatcherURL,
-	                    dataType : 'json',
-	                    data: {
+	                do_ajax( {
 	                            newNatLanguageSkill : $('#langToAdd').val()
 	                    },
-	                    success : function(response){
-	                            if(response.error) {
-	                            	treatMessageError(response,DISPLAY_ON_3);
-	                            }
-	                    		else {
+	                    function(response){
 	                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
-	                    		}
-	                    },
-	                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-	                    }
-					});
+	                    });
 					return false;
 				}
         });
@@ -1025,54 +608,26 @@ $(document).ready(function(){
 		
 		//add a temp knowledge  skill
 		$(document).on('click', '#addKnowSkill' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             newTmpKnoSkill : $('#knoToAdd').val(),
                             newTmpKnoSkillPrefix : $('#knoprefix').val()
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			$("#secondary").load("secondary-choice/knowledge-skills.php");
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         
         });
         //Return key on the knowledge skill
         $(document).on('keydown', '#knoToAdd' ,function (e) {
         		if(e.keyCode == 13) {
-	        		$.ajax({
-	                    type : 'POST',
-	                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	                    url : dispatcherURL,
-	                    dataType : 'json',
-	                    data: {
+	        		do_ajax( {
 	                            newTmpKnoSkill : $('#knoToAdd').val(),
 	                            newTmpKnoSkillPrefix : $('#knoprefix').val()
 	                    },
-	                    success : function(response){
-	                            if(response.error) {
-	                            	treatMessageError(response,DISPLAY_ON_3);
-	                            }
-	                    		else {
+	                    function(response){
 	                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
-	                    		}
-	                    },
-	                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-	                    }
-					});
+	                    });
 					return false;
 			  }
         });
@@ -1086,27 +641,13 @@ $(document).ready(function(){
 		//GENERAL SKILLS
 		//click on skill for desc
         $(document).on('click', '.skName' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             skill : $(this).attr('data-skillname')
 					},
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			displayMessageOnTertiary(response.desc);
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
@@ -1123,21 +664,12 @@ $(document).ready(function(){
 				   var speVal = $(speId).val();
 
 				   if(speVal != null || speVal != ""){
-		               $.ajax({
-		                    type : 'POST',
-		                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-		                    url : dispatcherURL,
-		                    dataType : 'json',
-		                    data: {
+		               do_ajax( {
 		                            addSpe : speVal,
 		                            addSpeSkillName : $(this).attr('id'),
 		                            getCrePoint : 'get'
 		                    },
-		                    success : function(response){
-		                            if(response.error){ 
-		                            	treatMessageError(response,DISPLAY_ON_3);
-                                    }
-		                    		else {
+		                    function(response){
 		                    			var comeFrom = $('.skills').attr('id');
 		                    			if(comeFrom == "actSkills"){
 		                    				$("#secondary").load("secondary-choice/active-skills.php");
@@ -1146,12 +678,7 @@ $(document).ready(function(){
 			                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
 		                    			}		                    			
 		                    			setRemainingPoint(response);
-		                    		}
-		                    },
-		                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-		                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');   
-		                    }
-						});
+		                    });
 					}
                 }
 				return false;
@@ -1164,21 +691,12 @@ $(document).ready(function(){
 		    	var speVal = $(speId).val();
 
 		    	if(speVal != null || speVal != ""){
-	               $.ajax({
-	                    type : 'POST',
-	                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-	                    url : dispatcherURL,
-	                    dataType : 'json',
-	                    data: {
+	               do_ajax( {
 	                            addSpe : speVal,
 	                            addSpeSkillName : $(this).attr('data-skillname'),
 	                            getCrePoint : 'get'
 	                    },
-	                    success : function(response){
-	                            if(response.error){ 
-		                            	treatMessageError(response,DISPLAY_ON_3);
-                                    }
-		                    		else {
+	                    function(response){
 		                    			var comeFrom = $('.skills').attr('id');
 		                    			if(comeFrom == "actSkills"){
 		                    				$("#secondary").load("secondary-choice/active-skills.php");
@@ -1187,12 +705,7 @@ $(document).ready(function(){
 			                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
 		                    			}
 		                    			setRemainingPoint(response);
-		                    		}
-	                    },
-	                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-	                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-	                    }
-					});
+	                    });
 				}
 		  }
 		});
@@ -1208,26 +721,12 @@ $(document).ready(function(){
     	
     	//hover on morph
 		 $(document).on('click', '.addMorph,.remMorph' ,function () {
-		 	$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+		 	do_ajax( {
                             morphHover : $(this).attr('id')
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-                            }
-                    		else {
+                    function(response){
                     			displayMessageOnTertiary(response.desc, response.title);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');    
-                    }
-				});
+                    });
 
 		 	return false;
         
@@ -1237,107 +736,56 @@ $(document).ready(function(){
     	//click on add morph
         $(document).on('click','.addMorphIcone' ,function () {
         		hideErrorsMsg();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             addMorph : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else{
+                    function(response){
                                 displayMessageOnTertiary(response.desc, response.title);
 								$("#secondary").load("secondary-choice/morph.php", function(){
 					    			setupFoldingList();
 					    		});
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         });
         
         //click on remove morph
         $(document).on('click','.remMorphIcone' ,function () {
         		hideErrorsMsg();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             remMorph : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else{
+                    function(response){
 								$("#secondary").load("secondary-choice/morph.php", function(){
 					    			setupFoldingList();
 					    		});
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         });
         
          //click on morph bonus and description
         $(document).on('click','.morph-BMD', function() {
         	 hideErrorsMsg();
-	         $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+	         do_ajax( {
                             currentMorphUsed : $(this).attr('id')
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else{
+                    function(response){
 								$("#tertiary").load("tertiary-choice/morphBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');       
-                    }
-			});
+                    });
 			return false;
         });
         
         //click on morph settings
         $(document).on('click','.morph-settings', function() {
         	 hideErrorsMsg();
-	         $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+	         do_ajax( {
                             morphSettings : $(this).attr('id'),
                             currentMorphUsed : $(this).attr('id')
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else{
+                    function(response){
 								$("#tertiary").load("tertiary-choice/morphSettings.php", function(){
 									$("#morphName").attr('value',response.morphName);									
 									$("#mNickname").val(response.nickname);
@@ -1347,38 +795,21 @@ $(document).ready(function(){
 									$("#mMaxApt").html("["+response.morphMaxApt+"]");
 									$("#mDur").html("["+response.morphDur+"]");
 								});
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');       
-                    }
-			});
+                    });
 			return false;
         });
         
         //morph settings changes
          $(document).on('change', '#mNicknamem,#mLocation,#mAge,#mGender' ,function () {
-          $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+          do_ajax( {
                             morphSettingsChange : $("#morphName").attr('value'),
 							morphNickname : $("#mNickname").val(),
 							morphLocation : $("#mLocation").val(),
 							morphAge : $("#mAge").val(),  
 							morphGender : $("#mGender").val()                  
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');       
-                    }
-			});
+                    function(response){}
+          );
 			return false;
         });
         
@@ -1386,55 +817,27 @@ $(document).ready(function(){
         $(document).on('click','.morph-positive-traits', function() {
         		hideErrorsMsg();
         		var morphName = $(this).attr('id');
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+				do_ajax( {
                             currentMorphUsed : morphName
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                            else{
-	                            $("#tertiary").load("tertiary-choice/morphPosTraits.php");	
-                            }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    function(response){
+	                            $("#tertiary").load("tertiary-choice/morphPosTraits.php");
+                    });
 				return false;
         });
         
         //click on morph pos trait for selection deselection
         $(document).on('click', '.addMorphPosTraitIcon,.selMorphPosTraitIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphPosTrait : $(this).attr('id').trim(),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/morphPosTraits.php");
 								$("#quaternary").load("quaternary-choice/traitMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
@@ -1442,55 +845,27 @@ $(document).ready(function(){
         $(document).on('click','.morph-neutral-traits', function() {
         		hideErrorsMsg();
         		var morphName = $(this).attr('id');
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+				do_ajax( {
                             currentMorphUsed : morphName
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                            else{
-	                            $("#tertiary").load("tertiary-choice/morphNeuTraits.php");	
-                            }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    function(response){
+	                            $("#tertiary").load("tertiary-choice/morphNeuTraits.php");
+                    });
 				return false;
         });
         
         //click on morph neutral trait for selection deselection
         $(document).on('click', '.addMorphNeuTraitIcon,.selMorphNeuTraitIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphPosTrait : $(this).attr('id'), //keep call to posTrait, it's the same anyway
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/morphNeuTraits.php");
 								$("#quaternary").load("quaternary-choice/traitMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
@@ -1498,79 +873,37 @@ $(document).ready(function(){
         $(document).on('click','.morph-negative-traits', function() {
         		hideErrorsMsg();
         		var morphName = $(this).attr('id');
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+				do_ajax( {
                             currentMorphUsed : morphName
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                            else{
-	                            $("#tertiary").load("tertiary-choice/morphNegTraits.php");	
-                            }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});	
+                    function(response){
+	                            $("#tertiary").load("tertiary-choice/morphNegTraits.php");
+                    });
 				return false;
         });
         //click on morph neg trait for selection deselection
         $(document).on('click', '.addMorphNegTraitIcon,.selMorphNegTraitIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphNegTrait : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/morphNegTraits.php");	
 								$("#quaternary").load("quaternary-choice/traitMorphBMD.php");
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
         //hover on morph pos or neg or neu trait
         $(document).on('click', '.morphPosTrait,.morphNegTrait,.morphNeuTrait' ,function () {
-            $.ajax({
-                type : 'POST',
-                contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                url : dispatcherURL,
-                dataType : 'json',
-                data: {
+            do_ajax( {
                     morphTraitHover : $(this).attr('id')
                 },
-                success : function(response){
-                    if(response.error){
-                        treatMessageError(response,DISPLAY_ON_3);
-                    }
-                    else {
+                function(response){
                         $("#quaternary").load("quaternary-choice/traitMorphBMD.php");
-                    }
-                },
-                error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                }
-            });
+                });
 
             return false;
 
@@ -1581,55 +914,27 @@ $(document).ready(function(){
         $(document).on('click','.implants', function() {
         		hideErrorsMsg();
         		var morphName = $(this).attr('id');
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+				do_ajax( {
                             currentMorphUsed : morphName
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                            else{
+                    function(response){
 	                            $("#tertiary").load("tertiary-choice/implants.php");
-                            }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});	
+                    });
 				return false;
         });
         
          //click on implants for selection deselection
         $(document).on('click', '.addMorphImplantIcon,.selMorphImplantIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphImplant : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_MSG);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/implants.php");
 								$("#quaternary").load("quaternary-choice/gearMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
@@ -1638,49 +943,25 @@ $(document).ready(function(){
         $(document).on('click','.gear', function() {
         		hideErrorsMsg();
         		var morphName = $(this).attr('id');	
-				$.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+				do_ajax( {
                             currentMorphUsed : morphName
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                            else{
+                    function(response){
 	                            $("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
 					    		});
-
-                            }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
        
          //click on gears for selection deselection
         $(document).on('click', '.addMorphGearIcon,.selMorphGearIcon' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphGear : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
                     			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
@@ -1688,43 +969,24 @@ $(document).ready(function(){
 
 								$("#quaternary").load("quaternary-choice/gearMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         
         //remove free morph gear
          $(document).on('click', '.remFreeGear' ,function () {
         		var name = $(this).attr('id');
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphFreeGear : name,
                             morphFreePrice : 0,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
 					    		});
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
 
@@ -1732,33 +994,19 @@ $(document).ready(function(){
         $(document).on('click', '#addFreeMorphGear' ,function () {
         		var name = $("#freeMorphGearToAdd").val();
         		var price = $("#freeMorphGearPrice").val();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphFreeGear : name,
                             morphFreePrice : price,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
 					    		});
 
 								$("#quaternary").load("quaternary-choice/gearMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         //return on the free morph gear text
@@ -1766,33 +1014,19 @@ $(document).ready(function(){
     		if(e.keyCode == 13) {
     	 		var name = $("#freeMorphGearToAdd").val();
         		var price = $("#freeMorphGearPrice").val();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             morphFreeGear : name,
                             morphFreePrice : price,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
 					    		});
 
 								$("#quaternary").load("quaternary-choice/gearMorphBMD.php");	
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
 
 			}
@@ -1803,26 +1037,12 @@ $(document).ready(function(){
 		//hover on morph implant or gear
          //click on implants for selection deselection
         $(document).on('click', '.morphImplant,.morphGear' ,function () {
-            $.ajax({
-                type : 'POST',
-                contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                url : dispatcherURL,
-                dataType : 'json',
-                data: {
+            do_ajax( {
                     morphImplantGearHover : $(this).attr('id')
                 },
-                success : function(response){
-                    if(response.error) {
-                        treatMessageError(response,DISPLAY_ON_4);
-                    }
-                    else {
+                function(response){
                         $("#quaternary").load("quaternary-choice/gearMorphBMD.php");
-                    }
-                },
-                error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                }
-            });
+                });
             return false;
         });
 
@@ -1839,20 +1059,11 @@ $(document).ready(function(){
     	
     	//click on ai
         $(document).on('click', '.addAiIcon,.selAiIcon' , function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             ai : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {                    		
+                    function(response){
 								//displayMessageOnTertiary(response.desc);
 								$("#tertiary").load("tertiary-choice/aiBMD.php");
 								$("#secondary").load("secondary-choice/softGear.php", function(){
@@ -1860,56 +1071,28 @@ $(document).ready(function(){
 					    		});
 
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-				});
+                    });
 				return false;
         });
         
         //hover on ai
          $(document).on('click', '.ai' , function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             hoverAi : $(this).attr('id')
                     },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {                    		
+                    function(response){
 								$("#tertiary").load("tertiary-choice/aiBMD.php");
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-				});
+                    });
 				return false;
         });
         
         //click on soft
         $(document).on('click', '.addSoftGearIcon,.selSoftGearIcon' , function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             softg : $(this).attr('id'),
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {                    		
+                    function(response){
 								//displayMessageOnTertiary(response.desc);
 								$("#tertiary").load("tertiary-choice/softGearBMD.php");
 								$("#secondary").load("secondary-choice/softGear.php", function(){
@@ -1917,69 +1100,36 @@ $(document).ready(function(){
 					    		});
 
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-				});
+                    });
 				return false;
         });
         
         //Hover on soft gear
         $(document).on('click', '.softG' , function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             hoverSoftg : $(this).attr('id')
                     },
-                    success : function(response){
-                    		if(response.error) {
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    		else {                    		
-								$("#tertiary").load("tertiary-choice/softGearBMD.php");							
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                    			displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    }
-				});
+                    function(response){
+								$("#tertiary").load("tertiary-choice/softGearBMD.php");
+                    });
 				return false;
         });
         
          //remove free ego gear
          $(document).on('click', '.remFreeEgoGear' ,function () {
         		var name = $(this).attr('id');
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             egoFreeGear : name,
                             egoFreePrice : 0,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#secondary").load("secondary-choice/softGear.php", function(){
 					    			setupFoldingList();
 					    		});
 
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
 
@@ -1988,32 +1138,18 @@ $(document).ready(function(){
         $(document).on('click', '#addFreeEgoGear' ,function () {
         		var name = $("#freeEgoGearToAdd").val();
         		var price = $("#freeEgoGearPrice").val();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             egoFreeGear : name,
                             egoFreePrice : price,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#secondary").load("secondary-choice/softGear.php", function(){
 					    			setupFoldingList();
 					    		});
 
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;
         });
         //return on the free ego gear text
@@ -2021,32 +1157,18 @@ $(document).ready(function(){
     		if(e.keyCode == 13) {
     	 		var name = $("#freeEgoGearToAdd").val();
         		var price = $("#freeEgoGearPrice").val();
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             egoFreeGear : name,
                             egoFreePrice : price,
                             getCrePoint : 'get'
                     },
-                    success : function(response){
-                            if(response.error) {
-                            	treatMessageError(response,DISPLAY_ON_4);
-                            }
-                    		else {
+                    function(response){
 								$("#secondary").load("secondary-choice/softGear.php", function(){
 					    			setupFoldingList();
 					    		});
 
 								setRemainingPoint(response);
-							}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                                displayMessageOnQuaternary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-                    }
-				});
+                    });
 				return false;			
 			}
         });
@@ -2062,56 +1184,28 @@ $(document).ready(function(){
         
         //click on addButton
     	$(document).on('click', '#addCredit' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             addCredit :'get',
                             getCrePoint : 'get'                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/credits.php");
                     		 	setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
         
           //click on remove Button
     	$(document).on('click', '#removeCredit' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             remCredit :'get',
                             getCrePoint : 'get'                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/credits.php");
                     		 	setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2125,28 +1219,14 @@ $(document).ready(function(){
     	
     	//click on addButton
     	$(document).on('click', '#addMoxie' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             addMoxie :'get',
                             getCrePoint : 'get'                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/stats.php");
                     		 	setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2155,26 +1235,12 @@ $(document).ready(function(){
     	$(document).on('click', '.descMoxie' ,function () {
     			hideErrorsMsg();
         		var moxName = $(this).attr('id');	
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             mox :moxName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	displayMessageOnTertiary(response.desc);	
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	displayMessageOnTertiary(response.desc);
+                    });
 				return false;
         
         });
@@ -2184,54 +1250,26 @@ $(document).ready(function(){
     	$(document).on('click', '.statMorph' ,function () {
     			//hideErrorsMsg();
         		var statName = $(this).attr('id');	
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             stat :statName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	displayMessageOnQuaternary(response.desc);		
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	displayMessageOnQuaternary(response.desc);
+                    });
 				return false;
         });
 
         
           //click on remove Button
     	$(document).on('click', '#removeMoxie' ,function () {
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             remMoxie :'get',
                             getCrePoint : 'get'                   
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     		 	$("#secondary").load("secondary-choice/stats.php");
                     		 	setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2241,26 +1279,12 @@ $(document).ready(function(){
     	$(document).on('click', '.callStatMorph' ,function () {
     			hideErrorsMsg();
         		var morphName = $(this).attr('id');	
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             currentMorphUsed :morphName             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
-                    		 	$("#tertiary").load("tertiary-choice/statsWithMorph.php");	
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    function(response){
+                    		 	$("#tertiary").load("tertiary-choice/statsWithMorph.php");
+                    });
 				return false;
         
         });
@@ -2275,12 +1299,7 @@ $(document).ready(function(){
     	
     	//last details settings changes
          $(document).on('change', '#mPlayerName,#mCharacterName,#mRealAge,#mBirthGender,#mNote' ,function () {
-          $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+          do_ajax( {
                             lastDetailsChange : 'get',
 							playerName : $("#mPlayerName").val(),
 							characterName : $("#mCharacterName").val(),
@@ -2288,15 +1307,8 @@ $(document).ready(function(){
 							birthGender : $("#mBirthGender").val(),
 							noteDetails : $("#mNote").val()                  
                     },
-                    success : function(response){
-                    		if(response.error){ 
-                    			treatMessageError(response,DISPLAY_ON_3);
-                    		}
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');       
-                    }
-			});
+                    function(response){}
+          );
 			return false;
         });
         
@@ -2327,12 +1339,7 @@ $(document).ready(function(){
                     var parentType_var = $("#"+targetId+"Type").val();
     			}
 
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             addTargetTo : addTargetTo_var,
                             targetVal : targetVal_var,
                             parentName : parentName_var, 
@@ -2342,11 +1349,7 @@ $(document).ready(function(){
                             bmId : targetId,
                             parentBmId : parentId         
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     			if(parentType_var == 'origine') $("#tertiary").load("tertiary-choice/backgroundBMD.php");
                     			else if(parentType_var == 'faction') $("#tertiary").load("tertiary-choice/factionBMD.php");
                     			else if(parentType_var == 'trait') $("#tertiary").load("tertiary-choice/traitBMD.php");
@@ -2356,12 +1359,7 @@ $(document).ready(function(){
                     			else if(parentType_var == 'morphGear') $("#quaternary").load("quaternary-choice/gearMorphBMD.php");
                     			else if(parentType_var == 'ai') $("#tertiary").load("tertiary-choice/aiBMD.php");
                     			else if(parentType_var == 'soft') $("#tertiary").load("tertiary-choice/softGearBMD.php");
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2390,12 +1388,7 @@ $(document).ready(function(){
                     var parentName_var = $("#"+targetId+"Parent").val();
                     var parentType_var = $("#"+targetId+"Type").val();
     			}
-                $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+                do_ajax( {
                             removeTargetFrom : removeTargetFrom_var,
                             targetVal : targetVal_var,
                             parentName : parentName_var, 
@@ -2406,11 +1399,7 @@ $(document).ready(function(){
                             parentBmId : parentId 
                                        
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_3);
-							}
-                    		else{
+                    function(response){
                     			if(parentType_var == 'origine') $("#tertiary").load("tertiary-choice/backgroundBMD.php");
                     			else if(parentType_var == 'faction') $("#tertiary").load("tertiary-choice/factionBMD.php");
                     			else if(parentType_var == 'trait') $("#tertiary").load("tertiary-choice/traitBMD.php");
@@ -2420,12 +1409,7 @@ $(document).ready(function(){
                     			else if(parentType_var == 'morphGear') $("#quaternary").load("quaternary-choice/gearMorphBMD.php");
                     			else if(parentType_var == 'ai') $("#tertiary").load("tertiary-choice/aiBMD.php");
                     			else if(parentType_var == 'soft') $("#tertiary").load("tertiary-choice/softGearBMD.php");
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2433,157 +1417,73 @@ $(document).ready(function(){
         //Click on occurence button ADD and REMOVE
         //AI
         $(document).on('click', '#addOccurence_AI' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             addOccurence : 'AI' ,
                             getCrePoint : 'get'              
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/aiBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         });
         $(document).on('click', '#removeOccurence_AI' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             remOccurence : 'AI'  ,
                             getCrePoint : 'get'             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/aiBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
 		//SOFT
 		 $(document).on('click', '#addOccurence_SOFT' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             addOccurence : 'SOFT' ,
                             getCrePoint : 'get'              
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/softGearBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         });
         $(document).on('click', '#removeOccurence_SOFT' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             remOccurence : 'SOFT'  ,
                             getCrePoint : 'get'             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#tertiary").load("tertiary-choice/softGearBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
         //MORPH
          $(document).on('click', '#addOccurence_MORPH' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             addOccurence : 'MORPH' ,
                             getCrePoint : 'get'              
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#quaternary").load("quaternary-choice/gearMorphBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         });
         $(document).on('click', '#removeOccurence_MORPH' ,function () {
-    		    $.ajax({
-                    type : 'POST',
-                    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                    url : dispatcherURL,
-                    dataType : 'json',
-                    data: {
+    		    do_ajax( {
                             remOccurence : 'MORPH'  ,
                             getCrePoint : 'get'             
                     },
-                    success : function(response){
-                            if(response.error){
-                            	 treatMessageError(response,DISPLAY_ON_MSG);
-							}
-                    		else{
+                    function(response){
                     			$("#quaternary").load("quaternary-choice/gearMorphBMD.php");
                     			setRemainingPoint(response);
-                    		 }
-                    },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
-                               displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                    }
-				});
+                    });
 				return false;
         
         });
@@ -2603,61 +1503,55 @@ $(document).ready(function(){
 	
 });
 
-function changeSkill(node, after) {
-    //change skill value
-    var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
-
+//Send an ajax request, and process the result
+function do_ajax(data,success) {
     $.ajax({
         type : 'POST',
         contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
         url : dispatcherURL,
         dataType : 'json',
-        data: {
+        data: data,
+        success: function(response){
+                if(response.error) {
+                    treatMessageError(response,DISPLAY_ON_TOP);
+                }
+                else {
+                    success(response)
+                }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("#base-infos").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+        }
+    });
+}
+
+function changeSkill(node, after) {
+    //change skill value
+    var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
+
+    do_ajax( {
             changeSkillName : node.attr('data-skillname'),
             changeSkillValue : node.val(),
             getCrePoint : 'get'
         },
-        success : function(response){
-            if(response.error) {
-                treatMessageError(response,DISPLAY_ON_3);
-                $("[id="+skId+"]").css("background-color", "#BA0050");
-            }
-            else {
+        function(response){
                 $("[id="+skId+"]").css("background-color", "#FEFEFE");
                 $("#secondary").load(after, function(){
                     $(focusOnSkill).focus();
                 });
                 setRemainingPoint(response);
-            }
-        },
-        error : function(XMLHttpRequest, textStatus, errorThrown) {
-            displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-        }
-    });
+        });
 }
 
 function removeSkill(node, after) {
     //remove a temp active skill
-    $.ajax({
-        type : 'POST',
-        contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-        url : dispatcherURL,
-        dataType : 'json',
-        data: {
+    do_ajax( {
                 remSkill : node.attr('data-skillname')
         },
-        success : function(response){
-                if(response.error) {
-                    treatMessageError(response,DISPLAY_ON_3);
-                }
-                else {
+        function(response){
                     $("#secondary").load(after);
-                }
-        },
-        error : function(XMLHttpRequest, textStatus, errorThrown) {
-                   displayMessageOnTertiary('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');     
-        }
-    });
+        });
 }
 
 function treatMessageError(response,preferenceDisplay){
@@ -2686,6 +1580,7 @@ function treatMessageError(response,preferenceDisplay){
 
 function displayMessageOnTop(msg){
 	$("#base-infos").html(msg);
+    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
 }
 
 function displayMessageOnTertiary(msg,title){
