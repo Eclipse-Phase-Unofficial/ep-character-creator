@@ -34,21 +34,4 @@
             <br><br>
         </td>
     </tr>
-
-    <tr align="center">
-        <td>
-            You can download this work and install it in your own server. If you make some changes or improvements, please let us know.<br>
-            <a href="https://github.com/EmperorArthur/ep-character-creator/releases" target="_blank">EPCC Releases</a>
-            <br><br>
-        </td>
-    </tr>
-
-    <tr align="center">
-        <td>
-            <br><br>
-            <button class="closeAboutButton">
-                Close
-            </button>
-        </td>
-    </tr>
 </table>

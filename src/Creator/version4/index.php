@@ -228,6 +228,7 @@
         <script src="scripts/jquery.mCustomScrollbar.js"></script>
         <script src="scripts/vegas/jquery.vegas.js"></script>
         <script src="scripts/ajaxManager.js"></script>
+        <script src="scripts/ajax_popup.js"></script>
         <script>
 
             $( function() {
