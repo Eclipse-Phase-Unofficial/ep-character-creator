@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css" />
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/1.1.0/normalize.min.css"/>
         <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:400,700,400italic'>
-        <link rel="stylesheet" href="scripts/vegas/jquery.vegas.css">
+        <link rel="stylesheet" href="scripts/vegas/vegas.css">
         <link rel="stylesheet" href="css/icomoon.css" />
         <link rel="stylesheet" href="css/main7.css">
     </head>
@@ -226,7 +226,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.0.6/jquery.mousewheel.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
         <script src="scripts/jquery.mCustomScrollbar.js"></script>
-        <script src="scripts/vegas/jquery.vegas.js"></script>
+        <script src="scripts/vegas/vegas.js"></script>
         <script src="scripts/ajaxManager.js"></script>
         <script src="scripts/ajax_popup.js"></script>
         <script>
@@ -249,15 +249,20 @@
                     $(this).find('.help-btn').toggle();
                 });
 
-
-                //background fixe
-                $.vegas({
-                    src:'img/bg/bg1.jpg'
-                })('overlay', {
-                    src:'scripts/vegas/overlays/13.png'
+                //background slideshow
+                //See here for more options:  http://vegas.jaysalvat.com/documentation/settings/
+                $('body').vegas({
+                    timer: false,
+                    shuffle: true,
+                    delay: 60000,
+                    overlay: 'scripts/vegas/overlays/08.png',
+                    slides: [
+                        { src: 'img/bg/bg1.jpg'},
+                        { src: 'img/bg/bg2.jpg'},
+                        { src: 'img/bg/bg3.jpg'}
+                    ]
                 });
             });
-
         </script>
     </body>
 </html>
