@@ -1722,10 +1722,8 @@ ul#implants li:hover{
 } 
 
 /*settings buttons*/
-.validateButton{
-  	bottom: 250px;
-  	right: 0px;
-  	position: absolute;
+
+.popupButton{
     height: 55px;
     width: 100px;
     font-family: 'Lato', sans-serif;
@@ -1742,163 +1740,52 @@ ul#implants li:hover{
     border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.validateButton:hover {
+.popupButton:hover {
   color: rgb(186, 0, 80);
   background-color: rgba(254, 254, 254, .85);
 }
 
-.saveButton{
-	bottom: 310px;
-	right: 0px;
-	position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.saveButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-.loadButton{
+#loadButton{
 	bottom: 370px;
 	right: 0px;
 	position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.loadButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-.exportButton{
-	bottom: 130px;
+#saveButton{
+	bottom: 310px;
 	right: 0px;
 	position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.exportButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
+#validateButton{
+  	bottom: 250px;
+  	right: 0px;
+  	position: absolute;
 }
 
-.exportTxtButton{
+#exportTxtButton{
 	bottom: 190px;
 	right: 0px;
 	position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.exportTxtButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
+#exportButton{
+	bottom: 130px;
+	right: 0px;
+	position: absolute;
 }
 
-
-.settingsButton{
+#settingsButton{
 	bottom: 70px;
 	right: 0px;
 	position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.settingsButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-
-.aboutButton{
+#aboutButton{
     bottom: 10px;
     right: 0px;
     position: absolute;
-    height: 55px;
-    width: 100px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
 }
-
-.aboutButton:hover {
-    color: rgb(186, 0, 80);
-    background-color: rgba(254, 254, 254, .85);
-}
-
 
 .startButton{
     height: 55px;
@@ -1918,28 +1805,6 @@ ul#implants li:hover{
 }
 
 .startButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-.cancelButton{
-    height: 55px;
-    width: 150px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.cancelButton:hover {
   color: rgb(186, 0, 80);
   background-color: rgba(254, 254, 254, .85);
 }
@@ -1966,50 +1831,6 @@ ul#implants li:hover{
   background-color: rgba(254, 254, 254, .85);
 }
 
-.cancelLoadButton{
-    height: 55px;
-    width: 150px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.cancelLoadButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-.closeAboutButton{
-    height: 55px;
-    width: 150px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-    text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.closeAboutButton:hover {
-    color: rgb(186, 0, 80);
-    background-color: rgba(254, 254, 254, .85);
-}
-
 .saveSaveButton{
     height: 55px;
     width: 150px;
@@ -2032,29 +1853,6 @@ ul#implants li:hover{
   background-color: rgba(254, 254, 254, .85);
 }
 
-.cancelSaveButton{
-    height: 55px;
-    width: 150px;
-    font-family: 'Lato', sans-serif;
-    text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
-    border-radius: 40px;
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.cancelSaveButton:hover {
-  color: rgb(186, 0, 80);
-  background-color: rgba(254, 254, 254, .85);
-}
-
-
 .button_icone{
 	display: block;
 	line-height: 3em;
@@ -2066,6 +1864,28 @@ ul#implants li:hover{
 	top: 0;
 	padding-right: 1em;
 	opacity: 1;
+}
+
+.closeButton{
+    height: 55px;
+    width: 150px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.closeButton:hover {
+    color: rgb(186, 0, 80);
+    background-color: rgba(254, 254, 254, .85);
 }
 
 /*===============POPUPS=====================*/

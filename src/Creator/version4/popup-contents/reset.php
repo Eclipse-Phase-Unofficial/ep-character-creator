@@ -29,7 +29,7 @@
 			<button class="startButton">
 		       			Begin!
 	        </button>
-	        <button class="cancelButton">
+	        <button class="closeButton">
 		       			Cancel
 	        </button>
 		</td>

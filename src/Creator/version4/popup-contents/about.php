@@ -34,4 +34,11 @@
             <br><br>
         </td>
     </tr>
+    <tr align="center">
+        <td>
+            <button class="closeButton">
+                Close
+            </button>
+        </td>
+    </tr>
 </table>

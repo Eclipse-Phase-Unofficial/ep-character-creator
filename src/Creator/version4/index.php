@@ -183,40 +183,40 @@
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>
         	<!-- SAVE BUTTON-->
-			<button class="saveButton">
+			<button class="popupButton" id="saveButton">
 	       			save<!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
         	</button>
         	<!-- LOAD BUTTON-->
-			<button class="loadButton">
+			<button class="popupButton" id="loadButton">
 	       			load<!-- <span class="button_icone" data-icon="&#x30;"></span> -->
         	</button>
         	<!-- VALIDATE BUTTON-->
-        	<button class="validateButton">
+        	<button class="popupButton" id="validateButton">
 	       		check<!-- <span class="button_icone" data-icon="&#x2b;"></span> -->
         	</button>
         	<!-- EXPORT TXT BUTTON-->
-        	<button class="exportTxtButton">
+        	<button class="popupButton" id="exportTxtButton">
 	       		TXT<!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
         	</button>
         	<!-- EXPORT PDF BUTTON-->
-        	<button class="exportButton">
+        	<button class="popupButton" id="exportButton">
 	       		PDF<!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
         	</button>
         	<!-- RESET BUTTON-->
-        	<button class="settingsButton">
+        	<button class="popupButton" id="settingsButton">
 	       		reset<!-- <span class="button_icone" data-icon="&#x21;"></span> -->
         	</button>
             <!-- ABOUT BUTTON-->
-            <button class="aboutButton">
+            <button class="popupButton" id="aboutButton">
                 about<!-- <span class="button_icone" data-icon="&#x21;"></span> -->
             </button>
         </div>
 
 		<!-- POPUP  -- DYNAMIC CONTENT -->
-        <div class="popup" id="validation_popup"></div>
-        <div class="popup" id="reset_popup"></div>
         <div class="popup" id="load_popup"></div>
+        <div class="popup" id="reset_popup"></div>
         <div class="popup" id="save_popup"></div>
+        <div class="popup" id="validation_popup"></div>
         <div class="popup" id="about_popup"></div>
         <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
 

@@ -160,6 +160,12 @@ session_start();
 				echo " 	<td><span class='invalidIcone' remMotiv' data-icon='&#x39;'></span><b>Reputation Points = ".$RP."</b></td>";
 			}
 		 echo "</tr>";
-        
 	?>
+	<tr align="center">
+		<td>
+			<button class="closeButton">
+				Close
+			</button>
+		</td>
+	</tr>
 </table>

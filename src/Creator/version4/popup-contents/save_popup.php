@@ -39,7 +39,7 @@
 			       			Save 
 		        </button>
 		        
-		        <button class="cancelSaveButton">
+		        <button class="closeButton">
 			       			Cancel
 		        </button>
 			</td>	

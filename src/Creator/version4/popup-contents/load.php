@@ -53,7 +53,7 @@ session_start();
 			       			Load 
 		        </button>
 		        </form>
-		        <button class="cancelButton">
+		        <button class="closeButton">
 			       			Cancel
 		        </button>
 			</td>	
