@@ -227,8 +227,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
         <script src="scripts/jquery.mCustomScrollbar.js"></script>
         <script src="scripts/vegas/vegas.js"></script>
+        <script src="scripts/ajax_helper.js"></script>
         <script src="scripts/ajaxManager.js"></script>
-        <script src="scripts/ajax_popup.js"></script>
+        <script src="scripts/popup.js"></script>
         <script>
 
             $( function() {

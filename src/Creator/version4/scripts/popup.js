@@ -60,30 +60,24 @@ $(".settingsButton").click(function() {
 //Click on the begin button
 $(document).on("click",".startButton",function() {
     startLoading();
-        $.ajax({
-            type : 'POST',
-            contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-            url : dispatcherURL,
-            dataType : 'json',
-            data: {
-                    setCP :  $("#startCP").val(),
-                    getCrePoint : 'get'
-            },
-            success : function(response){
-                    if(response.error){
-                        $("#reset_popup").html(response.msg);
-                    }
-                    else{
-                        loaddingReset();
-                        setRemainingPoint(response);
-
-                    }
-            },
-            error : function(XMLHttpRequest, textStatus, errorThrown) {
-                        $("#reset_popup").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+    ajax_helper({
+            setCP :  $("#startCP").val(),
+            getCrePoint : 'get'
+        },
+        function(response){
+            if(response.error){
+                $("#reset_popup").html(response.msg);
             }
-    });
+            else{
+                loaddingReset();
+                setRemainingPoint(response);
 
+            }
+        },
+        function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("#reset_popup").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+        }
+    );
     return false;
 });
 

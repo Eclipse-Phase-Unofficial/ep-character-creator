@@ -25,16 +25,11 @@ $(document).ready(function(){
         	
         	startLoading();
         	//initialize character and extract first data
-            $.ajax({
-                type : 'POST',
-                contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-                url : dispatcherURL,
-                dataType : 'json',
-                data: {
+            ajax_helper({
                         firstTime : 'first',
                         getCrePoint : 'get'
                 },
-                success : function(response){
+                function(response){
                 		if(response.versioningFault){
 	                        closeAllPopup();
 	                        endLoading();
@@ -54,12 +49,9 @@ $(document).ready(function(){
 							$("#reset_popup").css('visibility','visible');
                         }
                 },
-                error : function(XMLHttpRequest, textStatus, errorThrown) {
-                            $("#secondary").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');      
-                }
-            });
-                
-		  
+                function(XMLHttpRequest, textStatus, errorThrown) {
+                            $("#secondary").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+                });
             firstTime = false;
         }
 
@@ -206,7 +198,7 @@ $(document).ready(function(){
 
     	//apt value change
         $(document).on('change ', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
-                do_ajax( {
+                ajax_helper( {
                             cog : $('#COG').val(),
                             coo : $('#COO').val(),
                             int : $('#INT').val(),
@@ -236,6 +228,9 @@ $(document).ready(function(){
                     			});
                     		}
                             
+                    },
+                    function(XMLHttpRequest, textStatus, errorThrown) {
+                        treatMessageError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>',DISPLAY_ON_TOP);
                     });
 				return false;
         
@@ -295,7 +290,7 @@ $(document).ready(function(){
 		
 		//Rep value change
 	    $(document).on('change', '#\\@-Rep,#G-Rep,#C-Rep,#I-Rep,#E-Rep,#R-Rep,#F-Rep',function() {
-	        do_ajax( {
+	        ajax_helper({
 	                    atrep : $('#\\@-Rep').val(),
 	                    grep : $('#G-Rep').val(),
 	                    crep : $('#C-Rep').val(),
@@ -323,8 +318,10 @@ $(document).ready(function(){
 	                    			$(focusOn).focus();
                     		});
                 		}
-	            });
-	
+	            },
+                function(XMLHttpRequest, textStatus, errorThrown) {
+                    treatMessageError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>',DISPLAY_ON_TOP);
+                });
 			return false;
 		});
 		
@@ -1503,29 +1500,6 @@ $(document).ready(function(){
 	
 });
 
-//Send an ajax request, and process the result
-function do_ajax(data,success) {
-    $.ajax({
-        type : 'POST',
-        contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
-        url : dispatcherURL,
-        dataType : 'json',
-        data: data,
-        success: function(response){
-                if(response.error) {
-                    treatMessageError(response,DISPLAY_ON_TOP);
-                }
-                else {
-                    success(response)
-                }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    $("#base-infos").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
-                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-        }
-    });
-}
-
 function changeSkill(node, after) {
     //change skill value
     var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
@@ -1573,7 +1547,7 @@ function treatMessageError(response,preferenceDisplay){
 		displayRulesMessage(response.msg);
 	}
 	else{
-		displayMessageOnQuaternary(response.msg);
+		displayMessageOnTop(response.msg);
 	}
 }
 
