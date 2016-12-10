@@ -40,14 +40,14 @@
 			JavaScript and Cookie must be enabled.
 			<br><br>
 			Please submit all suggestions and bug reports to the <br>
-         GitHub <a href="https://github.com/rbewley4/ep-character-creator/issues" target="_blank">Issues</a> page.
+         GitHub <a href="https://github.com/EmperorArthur/ep-character-creator/issues" target="_blank">Issues</a> page.
          <br><br>
 		</td>
 	</tr>
 	
 	<tr align="center">
 		<td>
-            <small><a href="https://github.com/rbewley4/ep-character-creator/releases/tag/v1.2.0" target="_blank">Version 1.2.1 (07.2015)<a/></small>
+            <small><a href="https://github.com/EmperorArthur/ep-character-creator/" target="_blank">Version 1.2.1 (07.2015)<a/></small>
 			<br><br>
 		</td>
 	</tr>

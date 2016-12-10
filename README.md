@@ -2,35 +2,32 @@
 
 A web-based character creator application for the Eclipse Phase role-playing game.
 
+* [Source](https://github.com/EmperorArthur/ep-character-creator)
+* [Releases](https://github.com/EmperorArthur/ep-character-creator/releases)
+* [Issues](https://github.com/EmperorArthur/ep-character-creator/issues)
 * Websites that Host EPCC
     * [next-loop.com](http://eclipsephase.next-loop.com/)
-* [Source](https://github.com/rbewley4/ep-character-creator)
-* [Releases](https://github.com/rbewley4/ep-character-creator/releases)
-* [Issues](https://github.com/rbewley4/ep-character-creator/issues)
-
+    * [cd-net.net](https://www.cd-net.net/ep-character-creator/)
 
 ## License
 
 This work is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License**.
 
-You can read the full license description [here](https://github.com/rbewley4/ep-character-creator/blob/master/LICENSE.txt).
+You can read the full license description [here](https://github.com/EmperorArthur/ep-character-creator/blob/master/LICENSE.txt).
 
 ### Derivative Work
 
 You can download the original source code for EPCC V 1.0 (03.2014) from
 [GitHub](https://github.com/rbewley4/ep-character-creator/releases/tag/v1.0.0).
 
-You may also view the README file that came with the original work
-[here](https://github.com/rbewley4/ep-character-creator/blob/master/OookReadme.txt).
-
 
 ## EPCC Configuration
 
-There is a single configuration file for EPCC: [src/php/config.ini](https://github.com/rbewley4/ep-character-creator/blob/master/src/php/config.ini).
+There is a single configuration file for EPCC: [src/php/config.ini](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/php/config.ini).
 You will need to maintain a separate version of that file outside of this repository for your production environment.
 
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
-[src/sql/FullDatabase.sql](https://github.com/rbewley4/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
+[src/sql/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
 
 ## Testing
 You will need:
