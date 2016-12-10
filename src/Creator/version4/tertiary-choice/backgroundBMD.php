@@ -1,6 +1,7 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 include('../other/bonusMalusLayer.php');
+include('../other/traitLayer.php');
 include('../other/bookPageLayer.php');
 
 session_start();
@@ -19,19 +20,7 @@ $currentBck = $_SESSION['cc']->getCurrentBackground();
           echo "		<label class='bmDesc'>".$currentBck->description."</label>";
           echo "</li>";
 
+		  getTraitHtml($currentBck->traits);
 		  getBMHtml($currentBck->bonusMalus,$currentBck->name,'origine');
-		  
-		  if(!empty($currentBck->traits)){
-			  echo "<li>";
-	          echo "		<label class='listSection'>Traits</label>";
-	          echo "</li>"; 
-	          foreach($currentBck->traits as $t){
-		          echo "<li>";
-		          echo "		<label class='bmGranted'>".$t->name."</label>";
-		          echo "</li>";
-	          }
-          }
-         
-          
 	?>
 </ul>
