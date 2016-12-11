@@ -1,3 +1,7 @@
+
+
+var dispatcherURL = 'scripts/dispatcher.php';
+
 //Handle the boilerplate ajax code
 function ajax_helper(data,success_function,error_function) {
     $.ajax({
@@ -7,7 +11,9 @@ function ajax_helper(data,success_function,error_function) {
         dataType : 'json',
         data: data,
         success: success_function,
-        error: error_function
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            displayError('An Error Occured!<br>'+textStatus+'<br>'+errorThrown+'<br>The Server May Be Down!<br>Please Try Again Later!');
+        }
     });
 }
 
@@ -21,8 +27,5 @@ function do_ajax(data,success_function) {
             else {
                 success_function(response)
             }
-        },
-        function(XMLHttpRequest, textStatus, errorThrown) {
-            treatMessageError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>',DISPLAY_ON_TOP);
         });
 }

@@ -10,7 +10,8 @@ function endLoading(){
 
 function closeAllPopup(){
     if($("#load_popup").css('visibility') == 'visible' ||
-       $("#reset_popup").css('visibility') == 'visible'){
+       $("#reset_popup").css('visibility') == 'visible'||
+       $("#error_popup").css('visibility') == 'visible'){
         location.reload();
     }
     $(".popup").css('opacity',0);
@@ -27,6 +28,14 @@ function loadPopup(popup_name,url){
         $(popup_name).css('opacity',1);
         $(popup_name).css('visibility','visible');
     }
+}
+
+function displayError(error_message){
+    $(".popup").css('opacity',0);
+    $(".popup").css('visibility','hidden');
+    $("#error_popup").html(error_message);
+    $("#error_popup").css('opacity',1);
+    $("#error_popup").css('visibility','visible');
 }
 
 //**************************************************
@@ -70,12 +79,16 @@ $("#aboutButton").click(function() {
 
 //**************************************************
 
-// Close about and check popups by clicking on it
+// Close about, check, and error popups by clicking on them
 $("#validation_popup").click(function() {
     closeAllPopup();
 });
 
 $("#about_popup").click(function() {
+    closeAllPopup();
+});
+
+$("#error_popup").click(function() {
     closeAllPopup();
 });
 
@@ -105,7 +118,7 @@ $(document).on("click",".startButton",function() {
             }
         },
         function(XMLHttpRequest, textStatus, errorThrown) {
-                    $("#reset_popup").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
+                    displayError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
         }
     );
     return false;

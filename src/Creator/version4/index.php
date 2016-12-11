@@ -213,6 +213,7 @@
         </div>
 
 		<!-- POPUP  -- DYNAMIC CONTENT -->
+        <div class="popup" id="error_popup"></div>
         <div class="popup" id="load_popup"></div>
         <div class="popup" id="reset_popup"></div>
         <div class="popup" id="save_popup"></div>

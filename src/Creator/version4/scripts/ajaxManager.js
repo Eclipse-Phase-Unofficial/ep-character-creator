@@ -1,6 +1,5 @@
 
 var firstTime = true;
-var dispatcherURL = 'scripts/dispatcher.php';
 
 var TERTIARY_INFO_HTML = "<div id='tertiary_infos'></div>";
 var QUATERNARY_INFO_HTML = "<div id='quaternary_infos'></div>";
@@ -33,9 +32,7 @@ $(document).ready(function(){
                 		if(response.versioningFault){
 	                        closeAllPopup();
 	                        endLoading();
-				        	$("#load_popup").load("popup-contents/load.php");
-							$("#load_popup").css('opacity',1);
-							$("#load_popup").css('visibility','visible');
+                            loadPopup("#load_popup","popup-contents/load.php");
                         }
                         else if(response.sessionExist){
 	                        setRemainingPoint(response);
@@ -44,13 +41,8 @@ $(document).ready(function(){
                         else{
 	                        closeAllPopup();
 	                        endLoading();
-				        	$("#reset_popup").load("popup-contents/reset.php");
-							$("#reset_popup").css('opacity',1);
-							$("#reset_popup").css('visibility','visible');
+				        	loadPopup("#reset_popup","popup-contents/reset.php");
                         }
-                },
-                function(XMLHttpRequest, textStatus, errorThrown) {
-                            $("#secondary").html('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
                 });
             firstTime = false;
         }
@@ -60,8 +52,7 @@ $(document).ready(function(){
         $('.btnhelp').on('click' , function () {
             do_ajax({infosId : $(this).attr('id')},
                     function(response){
-                    $("#base-infos").html(response.infoData);
-                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+                        displayMessageOnTop(response.infoData);
             });
         return false;
         });
@@ -70,8 +61,7 @@ $(document).ready(function(){
         $(document).on('click', '.btnhelp' , function () {
             do_ajax({infosId : $(this).attr('id')},
                     function(response){
-                    $("#base-infos").html(response.infoData);
-                    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
+                        displayMessageOnTop(response.infoData);
             });
         return false;
         });
@@ -217,7 +207,7 @@ $(document).ready(function(){
                 			$('#SOM').css("background-color", "#FEFEFE");
                 			$('#WIL').css("background-color", "#FEFEFE");
                     		if(response.error){
-                    			 treatMessageError(response,DISPLAY_ON_MSG);
+                    			 treatMessageError(response);
                     			 $("#"+response.aptError).css("background-color", "#BA0050");
                     		}
                     		else {
@@ -228,9 +218,6 @@ $(document).ready(function(){
                     			});
                     		}
                             
-                    },
-                    function(XMLHttpRequest, textStatus, errorThrown) {
-                        treatMessageError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>',DISPLAY_ON_TOP);
                     });
 				return false;
         
@@ -309,7 +296,7 @@ $(document).ready(function(){
                 		$('#R-Rep').css("background-color", "#FEFEFE");
                 	    $('#F-Rep').css("background-color", "#FEFEFE");
 	                   if(response.error){
-                			 treatMessageError(response,DISPLAY_ON_MSG);
+                			 treatMessageError(response);
                 			 $("#"+response.repError).css("background-color", "#BA0050");                		
 						}
                 		else {
@@ -318,10 +305,7 @@ $(document).ready(function(){
 	                    			$(focusOn).focus();
                     		});
                 		}
-	            },
-                function(XMLHttpRequest, textStatus, errorThrown) {
-                    treatMessageError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>',DISPLAY_ON_TOP);
-                });
+	            });
 			return false;
 		});
 		
@@ -1528,26 +1512,15 @@ function removeSkill(node, after) {
         });
 }
 
-function treatMessageError(response,preferenceDisplay){
-	if(response.erType == "system"){
-		if(preferenceDisplay == DISPLAY_ON_MSG){
-			displayRulesMessage(response.msg);
-		}
-		else if(preferenceDisplay == DISPLAY_ON_TOP){
-			displayMessageOnTop(response.msg);
-		}
-		else if(preferenceDisplay == DISPLAY_ON_3){
-			displayMessageOnTertiary(response.msg);
-		}
-		else if(preferenceDisplay == DISPLAY_ON_4){
-			displayMessageOnQuaternary(response.msg);
-		}
-	}
-	else if(response.erType == "rules"){
+function treatMessageError(response){
+	if(response.erType == "rules"){
 		displayRulesMessage(response.msg);
 	}
+	else if(response.msg == ''){
+		displayError('An Error Occured!<br>No Error Message Recieved!');
+	}
 	else{
-		displayMessageOnTop(response.msg);
+		displayError(response.msg);
 	}
 }
 
