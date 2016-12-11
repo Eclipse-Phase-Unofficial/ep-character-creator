@@ -1525,7 +1525,6 @@ function treatMessageError(response){
 	}
 }
 
-
 function displayMessageOnTop(msg){
 	$("#base-infos").html(msg);
     $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
@@ -1591,24 +1590,6 @@ function setRemainingPoint(ajaxData){
      $("#rez_remain").html(ajaxData.rez_remain);
      $("#asr_remain").html(ajaxData.asr_remain);
      $("#ksr_remain").html(ajaxData.ksr_remain);
-}
-//loading function
-function loaddingReset(){
-	setTimeout(function(){
-		location.reload();
-		$("#reset_popup").css('opacity',0);
-		$("#reset_popup").css('visibility','hidden');
-	    closeAllPopup();
-	},1000);
-}
-
-function loaddingLoad(){
-	setTimeout(function(){
-		endLoading();
-		$("#reset_popup").css('opacity',0);
-		$("#reset_popup").css('visibility','hidden');
-	    closeAllPopup();
-	},3000);
 }
 
 //CREATE FOLDING LIST SESSION PREFERECES and SET THE RIGHT CSS FOR FOLDING LIST

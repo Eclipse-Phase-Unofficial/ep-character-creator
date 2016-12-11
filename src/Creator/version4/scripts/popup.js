@@ -1,5 +1,27 @@
 //POPUP MANAGEMENT =================
 
+//**************************************************
+//**********Loading Popup**********
+
+function loaddingReset(){
+	setTimeout(function(){
+		location.reload();
+		$("#reset_popup").css('opacity',0);
+		$("#reset_popup").css('visibility','hidden');
+	    closeAllPopup();
+	},1000);
+}
+
+function loaddingLoad(){
+	setTimeout(function(){
+		endLoading();
+		$("#reset_popup").css('opacity',0);
+		$("#reset_popup").css('visibility','hidden');
+	    closeAllPopup();
+	},3000);
+}
+
+
 function startLoading(){
 	$("#loading_popup").show();
 }
@@ -7,6 +29,9 @@ function startLoading(){
 function endLoading(){
 	$("#loading_popup").hide();
 }
+
+//**************************************************
+//**********Popup Helpers**********
 
 function closeAllPopup(){
     if($("#load_popup").css('visibility') == 'visible' ||
