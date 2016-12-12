@@ -13,9 +13,9 @@
             
           // session_start();
            
+           require_once 'EPPersistentDataManager.php';
            require_once '../php/EPConfigFile.php';
            require_once '../php/EPListProvider.php';
-           require_once '../php/EPPersistentDataManager.php';
            require_once '../php/EPConfigFile.php';
            require_once '../php/EPBonusMalus.php';
            require_once '../php/EPGear.php';

@@ -11,17 +11,17 @@
  * @author reinhardt
  */
 
-require_once 'EPAtom.php';
-require_once 'EPSkill.php';
-require_once 'EPBonusMalus.php';
-require_once 'EPTrait.php';
-require_once 'EPConfigFile.php';
-require_once 'EPBackground.php';
-require_once 'EPGear.php';
-require_once 'EPCreditCost.php';
-require_once 'EPMorph.php';
-require_once 'EPAi.php';
-require_once 'EPPsySleight.php';
+require_once '../php/EPAtom.php';
+require_once '../php/EPSkill.php';
+require_once '../php/EPBonusMalus.php';
+require_once '../php/EPTrait.php';
+require_once '../php/EPConfigFile.php';
+require_once '../php/EPBackground.php';
+require_once '../php/EPGear.php';
+require_once '../php/EPCreditCost.php';
+require_once '../php/EPMorph.php';
+require_once '../php/EPAi.php';
+require_once '../php/EPPsySleight.php';
 
 
 class EPPersistentDataManager {

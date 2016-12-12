@@ -20,12 +20,12 @@ and open the template in the editor.
             $cibleTest = 'Jigé';
             if (strcmp($cibleTest,'Jigé') == 0){
                 //===================   Jige Test   ============================
-                require_once 'EPCharacterCreator.php';
-                require_once 'EPAptitude.php';
-                require_once 'EPStat.php';
                 require_once 'EPTestTools.php';
-                require_once 'EPConfigFile.php';
-                require_once 'EPPsySleight.php';
+                require_once '../php/EPCharacterCreator.php';
+                require_once '../php/EPAptitude.php';
+                require_once '../php/EPStat.php';
+                require_once '../php/EPConfigFile.php';
+                require_once '../php/EPPsySleight.php';
                 
                 $testFailed = array();
 
@@ -289,8 +289,8 @@ and open the template in the editor.
             if (strcmp($cibleTest,'Simplex') == 0){
                 //===================  Simplex Test ================================                       
                 require_once 'EPPersistentDataManager.php';
-                require_once 'EPListProvider.php';
-                require_once 'EPConfigFile.php';
+                require_once '../php/EPListProvider.php';
+                require_once '../php/EPConfigFile.php';
 
                 $persistManager = new EPPersistentDataManager('./config.ini');
                 $listProvider = new EPListProvider('./config.ini');
@@ -913,9 +913,9 @@ and open the template in the editor.
             
             if (strcmp($cibleTest,'Delete') == 0){
                 //=====DELETE TESTS ================================================
-                require_once 'EPPersistentDataManager.php';
-                require_once 'EPAptitude.php';
-                require_once 'EPListProvider.php';
+                require_once '../php/EPPersistentDataManager.php';
+                require_once '../php/EPAptitude.php';
+                require_once '../php/EPListProvider.php';
 
                 $listProvider = new EPListProvider('./config.ini');
                 $persistManager = new EPPersistentDataManager('./config.ini');

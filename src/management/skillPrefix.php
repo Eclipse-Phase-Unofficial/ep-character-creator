@@ -13,9 +13,9 @@
             
           // session_start();
            
+           require_once 'EPPersistentDataManager.php';
            require_once '../php/EPConfigFile.php';
            require_once '../php/EPListProvider.php';
-           require_once '../php/EPPersistentDataManager.php';
            
            $epListP = new EPListProvider('../php/config.ini');
            $persistManager = new EPPersistentDataManager('../php/config.ini');

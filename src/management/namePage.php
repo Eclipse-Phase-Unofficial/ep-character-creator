@@ -13,11 +13,10 @@
             
           // session_start();
            
+           require_once 'EPPersistentDataManager.php';
            require_once '../php/EPConfigFile.php';
            require_once '../php/EPListProvider.php';
-           require_once '../php/EPPersistentDataManager.php';
            require_once '../php/EPConfigFile.php';
-           
            require_once '../php/EPBackground.php';
            require_once '../php/EPTrait.php';
            require_once '../php/EPGear.php';
