@@ -635,14 +635,14 @@ $(document).ready(function(){
         
         //click + skill specialization
         $(document).on('click', '.addSkillSpec' ,function () {
-        		var id_spez = '#spezBox'+$(this).attr('data-skillname').replace(/[\/\s_]+/g, '');
+        		var id_spez = '#spezBox'+$(this).attr('data-skillname');
 
         		if($(id_spez).css('visibility') == 'hidden'){
                 	$(id_spez).css('visibility', 'visible').find(".spezInt").focus();
                 }
                 else{
 	               $(id_spez).css('visibility', 'hidden'); 
-	               var speId = '#spe_'+$(this).attr('data-skillname').replace(/[\/\s_]+/g, '');
+	               var speId = '#spe_'+$(this).attr('data-skillname');
 				   var speVal = $(speId).val();
 
 				   if(speVal != null || speVal != ""){
@@ -669,7 +669,7 @@ $(document).ready(function(){
         $(document).on('keypress','.skName',function (e) {
 		  if (e.which == 13) {
 		    	$(this).css('visibility') == 'hidden';
-		    	var speId = '#spe_'+$(this).attr('id').replace(/[\/\s_]+/g, '');
+		    	var speId = '#spe_'+$(this).attr('id');
 		    	var speVal = $(speId).val();
 
 		    	if(speVal != null || speVal != ""){

@@ -151,10 +151,10 @@ class EPSkill extends EPAtom{
         $this->maxValueSoftgearMod = $savePack['maxValueSoftgearMod'];	 
     }
     function __construct($atName, $atDesc, $linkedApt,$skillType,$defaultable,$prefix="",$groups = array(),$baseValue = 0, $tempSkill = false) {
-         parent::__construct(EPAtom::$SKILL, $atName, $atDesc);
+         parent::__construct(EPAtom::$SKILL, trim($atName), trim($atDesc));
          $this->linkedApt = $linkedApt;
          $this->skillType = $skillType;
-         $this->prefix = $prefix;
+         $this->prefix = trim($prefix);
          $this->baseValue = $baseValue;
          $this->defaultable = $defaultable;
          $this->groups = $groups;

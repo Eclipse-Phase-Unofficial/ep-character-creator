@@ -76,7 +76,7 @@ class EPCharacterCreator {
             return $this->evoRepPoint;
         }           
     }
-    
+
     function getSavePack(){
 		$savePack = array();
 		
@@ -415,7 +415,7 @@ class EPCharacterCreator {
             }            
         }
         return false;
-    }  
+    }
     function removeAI($ai){
         if ($this->creationMode){
             if ($this->atomExistInArray($this->character->ego->defaultAis, $ai)){
@@ -1011,6 +1011,16 @@ class EPCharacterCreator {
         }
         return false;
     }
+    function isAtomInArrayById($atomName,$array){
+        if (!empty($array)){
+            foreach ($array as $item){
+                if (strcmp($item->atomUid,$atomName) == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     function isLowerLevelBuy($trait,$currentTraits){ 
 	$traitName = $this->removeLastWord($trait->name);
         foreach ($currentTraits as $t){
@@ -1124,7 +1134,23 @@ class EPCharacterCreator {
         }                   
     }
 
-    function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){ 
+    //Skills are unique by name AND prefix
+    function skillExistInArray(&$list,$skill){
+        if (is_array($list)){
+            foreach ($list as $l){
+                if (strcasecmp($l->name,$skill->name) == 0 && strcasecmp($l->prefix,$skill->prefix) == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
+        if (!$this->prefixExist($prefix)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
         $ns = new EPSkill($name,
                           '',
                           $this->getAptitudeByAbbreviation($linkedApt),
@@ -1135,18 +1161,14 @@ class EPCharacterCreator {
                           0,
                           true
                           );
+        if ($this->skillExistInArray($this->character->ego->skills, $ns)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Skill already exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
         if($nativeLanguage){
 	        $ns->isNativeTongue = true;
                 $ns->nativeTongueBonus = $this->configValues->getValue('RulesValues','NativeTongueBaseValue');
 	        $this->nativeLanguageSet = true;
-        }
-        if ($this->atomExistInArray($this->character->ego->skills, $ns)){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Skill already exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;    
-        }
-        if (!$this->prefixExist($prefix)){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;
         }
         array_push($this->character->ego->skills,$ns);               
                 
@@ -1159,7 +1181,7 @@ class EPCharacterCreator {
             return false;           
         }
         if($skill->isNativeTongue) $this->nativeLanguageSet = false;
-        $this->removeAtomFromArray($this->character->ego->skills,$skill);
+        $this->removeAtomFromArrayById($this->character->ego->skills,$skill);
         return true;
     }
     function removeSpecialization($skill){
@@ -1172,7 +1194,7 @@ class EPCharacterCreator {
                 return false;            
             }            
         }else{
-            $oldSk = $this->back->getSkillByName($skill->name);
+            $oldSk = $this->back->getSkillByAtomUid($skill->atomUid);
             if (!empty($skill->specialization)){
                 if (empty($oldSk->specialization)){
                     $skill->specialization = '';
@@ -1542,7 +1564,16 @@ class EPCharacterCreator {
         }
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         return null;       
-    }   
+    }
+    function getSkillByAtomUid($id){
+        foreach ($this->character->ego->skills as $sk){
+            if (strcmp($sk->atomUid,$id) == 0){
+                return $sk;
+            }
+        }
+        Array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+        return null;
+    }
     function getSkillsByGroup($group){
         $res = array();
         foreach ($this->character->ego->skills as $sk){
@@ -1926,14 +1957,13 @@ class EPCharacterCreator {
         $sk->baseValue = $value;
         return true;         
     }
-    function setSkillValue($name,$value = 0){
+    function setSkillValue($id,$value = 0){
+        $sk = $this->getSkillByAtomUid($id);
+        if (!isset($sk)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No skill with this id !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
         if ($this->creationMode){
-            $sk = $this->getSkillByName($name);
-
-            if (!isset($sk)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No skill with this name !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
             if ($sk->baseValue == $value){
                 return true;
             }
@@ -1952,13 +1982,8 @@ class EPCharacterCreator {
             $sk->baseValue = $value;
             return true;              
         }else{
-            $sk = $this->getSkillByName($name);
-            if (!isset($sk)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No skill with this name !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
             $diff = $value - $sk->baseValue;
-            $oldSk = $this->back->getSkillByName($sk->name);
+            $oldSk = $this->back->getSkillByAtomUid($sk->atomUid);
             if (empty($oldSk)){
                 $oldSk = $sk;
             }
@@ -2300,7 +2325,7 @@ class EPCharacterCreator {
         foreach ($this->character->ego->skills as $a){
             $maxValue = $a->getMaxValue() - $a->getBonusForCost();
             $newValue = min($maxValue,$a->baseValue);
-            $this->setSkillValue($a->name,$newValue);    
+            $this->setSkillValue($a->atomUid,$newValue);
         }
         foreach ($this->character->ego->ais as $ia){
                 foreach ($ia->aptitudes as $a){                
@@ -2893,7 +2918,7 @@ class EPCharacterCreator {
         $this->groups = $this->listProvider->getListGroups();
     }
     private function loadPrefixs(){
-        $this->prefixs = $this->listProvider->getListPrefix();     
+        $this->prefixs = $this->listProvider->getListPrefix();
     }
     private function loadReps(){
         $this->character->ego->reputations = $this->listProvider->getListReputation();
@@ -2973,6 +2998,23 @@ class EPCharacterCreator {
                 $this->evoCrePointPurchased -= $cred;
                 return true;                
             }            
+        }
+    }
+    private function removeAtomFromArrayById(&$arr,$atom){
+        if (!$this->isAtomInArrayById($atom->atomUid, $arr)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Atom not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return null;
+        }else{
+            $index = 0;
+            foreach ($arr as $value) {
+                if (strcmp($value->atomUid,$atom->atomUid) == 0){
+                    break;
+                }else{
+                    $index++;
+                }
+            }
+            array_splice($arr, $index, 1);
+            return true;
         }
     }
     private function removeAtomFromArray(&$arr,$atom){

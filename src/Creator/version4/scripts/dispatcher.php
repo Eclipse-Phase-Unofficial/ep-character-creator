@@ -391,7 +391,8 @@ if(isset($_POST['rep'])){
 
 //GET SKILL DECRIPTION
 if(isset($_POST['skill'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['skill']);
+	$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['skill']);
+	//error_log("Getting skill id: " . $_POST['skill']. " -> " . $skill->name);
 	if($skill->description == null || $skill->description == ""){
 		$prefix = $skill->prefix;
 		if($prefix != null || $prefix != ""){
@@ -408,6 +409,7 @@ if(isset($_POST['skill'])){
 
 //ADD TMP ACTIVE SKILL
 if(isset($_POST['newTmpActSkill'])){
+	//error_log("adding active skill \"" . $_POST['newTmpSkillPrefix'] . "\": \"" . $_POST['newTmpActSkill']."\"");
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpActSkill'], 
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$ACTIVE_SKILL_TYPE, 
@@ -419,6 +421,7 @@ if(isset($_POST['newTmpActSkill'])){
 
 //ADD TMP KNOWLEDGE SKILL
 if(isset($_POST['newTmpKnoSkill'])){
+	//error_log("adding knowledge skill  \"" . $_POST['newTmpSkillPrefix'] . "\": \"" . $_POST['newTmpKnoSkill']."\"");
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpKnoSkill']." ", 
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE, 
@@ -445,7 +448,8 @@ if(isset($_POST['newNatLanguageSkill'])){
 
 //REMOVE TMP SKILL
 if(isset($_POST['remSkill'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['remSkill']);
+	$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['remSkill']);
+	//error_log("removing skill id: " . $_POST['remSkill']. " -> " . $skill->name);
 	if($skill != null){
 		if(!$_SESSION['cc']->removeSkill($skill)){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
@@ -465,7 +469,8 @@ if(isset($_POST['changeSkill'])){
 
 //ADD SKILL SPECIALIZATION
 if(isset($_POST['addSpe'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['addSpeSkill']);
+	$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['addSpeSkill']);
+	//error_log("adding skill specialization id: " . $_POST['addSpeSkill']. " -> " . $skill->name);
 	if($skill == null){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
@@ -476,7 +481,8 @@ if(isset($_POST['addSpe'])){
 
 //REMOVE SKILL SPECIALIZATION
 if(isset($_POST['remSpeSkill'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['remSpeSkill']);
+	$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['remSpeSkill']);
+	//error_log("removing skill specialization id: " . $_POST['remSpeSkill']. " -> " . $skill->name);
 	if($skill == null){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
