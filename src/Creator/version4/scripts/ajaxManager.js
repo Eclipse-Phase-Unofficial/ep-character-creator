@@ -498,7 +498,7 @@ $(document).ready(function(){
 		$(document).on('click', '#addActSkill' ,function () {
                 do_ajax( {
                             newTmpActSkill : $('#actToAdd').val(),
-                            newTmpActSkillPrefix : $('#actprefix').val()
+                            newTmpSkillPrefix : $('#actprefix').val()
                     },
                     function(response){
                     			$("#secondary").load("secondary-choice/active-skills.php");
@@ -510,7 +510,7 @@ $(document).ready(function(){
         		if(e.keyCode == 13) {
 	                do_ajax( {
 	                            newTmpActSkill : $('#actToAdd').val(),
-	                            newTmpActSkillPrefix : $('#actprefix').val()
+	                            newTmpSkillPrefix : $('#actprefix').val()
 	                    },
 	                    function(response){
 	                    			$("#secondary").load("secondary-choice/active-skills.php");
@@ -528,7 +528,7 @@ $(document).ready(function(){
 		//remove specialization
 		 $(document).on('click', '.remSpeSkill' ,function () {
 	           do_ajax( {
-	                        remSpeSkillName : $(this).attr('data-skillname'),
+	                        remSpeSkill : $(this).attr('data-skillname'),
 	                        getCrePoint : 'get'
 	                },
 	                function(response){
@@ -592,7 +592,7 @@ $(document).ready(function(){
 		$(document).on('click', '#addKnowSkill' ,function () {
                 do_ajax( {
                             newTmpKnoSkill : $('#knoToAdd').val(),
-                            newTmpKnoSkillPrefix : $('#knoprefix').val()
+                            newTmpSkillPrefix : $('#knoprefix').val()
                     },
                     function(response){
                     			$("#secondary").load("secondary-choice/knowledge-skills.php");
@@ -605,7 +605,7 @@ $(document).ready(function(){
         		if(e.keyCode == 13) {
 	        		do_ajax( {
 	                            newTmpKnoSkill : $('#knoToAdd').val(),
-	                            newTmpKnoSkillPrefix : $('#knoprefix').val()
+	                            newTmpSkillPrefix : $('#knoprefix').val()
 	                    },
 	                    function(response){
 	                    			$("#secondary").load("secondary-choice/knowledge-skills.php");
@@ -648,7 +648,7 @@ $(document).ready(function(){
 				   if(speVal != null || speVal != ""){
 		               do_ajax( {
 		                            addSpe : speVal,
-		                            addSpeSkillName : $(this).attr('id'),
+		                            addSpeSkill : $(this).attr('data-skillname'),
 		                            getCrePoint : 'get'
 		                    },
 		                    function(response){
@@ -675,7 +675,7 @@ $(document).ready(function(){
 		    	if(speVal != null || speVal != ""){
 	               do_ajax( {
 	                            addSpe : speVal,
-	                            addSpeSkillName : $(this).attr('data-skillname'),
+	                            addSpeSkill : $(this).attr('data-skillname'),
 	                            getCrePoint : 'get'
 	                    },
 	                    function(response){
@@ -1490,7 +1490,7 @@ function changeSkill(node, after) {
     var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
 
     do_ajax( {
-            changeSkillName : node.attr('data-skillname'),
+            changeSkill : node.attr('data-skillname'),
             changeSkillValue : node.val(),
             getCrePoint : 'get'
         },

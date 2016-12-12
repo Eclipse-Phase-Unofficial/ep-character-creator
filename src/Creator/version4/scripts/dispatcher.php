@@ -409,10 +409,10 @@ if(isset($_POST['skill'])){
 //ADD TMP ACTIVE SKILL
 if(isset($_POST['newTmpActSkill'])){
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpActSkill'], 
-									  $provider->getAptForPrefix($_POST['newTmpActSkillPrefix']), 
+									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$ACTIVE_SKILL_TYPE, 
-									  EPSkill::$NO_DEFAULTABLE, 
-									  $_POST['newTmpActSkillPrefix'])){
+									  EPSkill::$NO_DEFAULTABLE,
+									  $_POST['newTmpSkillPrefix'])){
 										  treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 									  }
 }
@@ -420,10 +420,10 @@ if(isset($_POST['newTmpActSkill'])){
 //ADD TMP KNOWLEDGE SKILL
 if(isset($_POST['newTmpKnoSkill'])){
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpKnoSkill']." ", 
-									  $provider->getAptForPrefix($_POST['newTmpKnoSkillPrefix']), 
+									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE, 
 									  EPSkill::$NO_DEFAULTABLE, 
-									  $_POST['newTmpKnoSkillPrefix'])){
+									  $_POST['newTmpSkillPrefix'])){
 										  treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 									  }
 }
@@ -431,7 +431,7 @@ if(isset($_POST['newTmpKnoSkill'])){
 //ADD NATIVE LANGUAGE SKILL
 if(isset($_POST['newNatLanguageSkill'])){
 	if(!$_SESSION['cc']->addSkill($_POST['newNatLanguageSkill'], 
-									  $provider->getAptForPrefix('Language'), 
+									  $provider->getAptForPrefix('Language'),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE, 
 									  EPSkill::$DEFAULTABLE, 
 									  "Language",
@@ -457,15 +457,15 @@ if(isset($_POST['remSkill'])){
 }
 
 //CHANGE SKILL VALUE
-if(isset($_POST['changeSkillName'])){
-	if(!$_SESSION['cc']->setSkillValue($_POST['changeSkillName'], intval($_POST['changeSkillValue']))){
+if(isset($_POST['changeSkill'])){
+	if(!$_SESSION['cc']->setSkillValue($_POST['changeSkill'], intval($_POST['changeSkillValue']))){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
 }
 
 //ADD SKILL SPECIALIZATION
 if(isset($_POST['addSpe'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['addSpeSkillName']);
+	$skill = $_SESSION['cc']->getSkillByName($_POST['addSpeSkill']);
 	if($skill == null){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
@@ -475,8 +475,8 @@ if(isset($_POST['addSpe'])){
 }
 
 //REMOVE SKILL SPECIALIZATION
-if(isset($_POST['remSpeSkillName'])){
-	$skill = $_SESSION['cc']->getSkillByName($_POST['remSpeSkillName']);
+if(isset($_POST['remSpeSkill'])){
+	$skill = $_SESSION['cc']->getSkillByName($_POST['remSpeSkill']);
 	if($skill == null){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
