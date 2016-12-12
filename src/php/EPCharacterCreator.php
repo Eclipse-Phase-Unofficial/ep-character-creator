@@ -180,7 +180,7 @@ class EPCharacterCreator {
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
                 if (strcmp($m->name,$morph->name) == 0){
-                    $this->character->currentMorphUid = $m->atomUid;
+                    $this->character->currentMorphUid = $m->getUid();
                     foreach ($this->getAptitudes() as $a){
                         $a->activMorph = $m;
                     }
@@ -196,7 +196,7 @@ class EPCharacterCreator {
     function addAtomInArray(&$list,$atom){
         if (is_array($list)){
             foreach ($list as $l){
-                if (strcmp($atom->atomUid,$l->atomUid) == 0){
+                if (strcmp($atom->getUid(),$l->getUid()) == 0){
                     return true;
                 }
             }
@@ -1011,10 +1011,10 @@ class EPCharacterCreator {
         }
         return false;
     }
-    function isAtomInArrayById($atomName,$array){
+    function isAtomInArrayById($atomUid,$array){
         if (!empty($array)){
             foreach ($array as $item){
-                if (strcmp($item->atomUid,$atomName) == 0){
+                if (strcmp($item->getUid(),$atomUid) == 0){
                     return true;
                 }
             }
@@ -1194,7 +1194,7 @@ class EPCharacterCreator {
                 return false;            
             }            
         }else{
-            $oldSk = $this->back->getSkillByAtomUid($skill->atomUid);
+            $oldSk = $this->back->getSkillByAtomUid($skill->getUid());
             if (!empty($skill->specialization)){
                 if (empty($oldSk->specialization)){
                     $skill->specialization = '';
@@ -1229,7 +1229,7 @@ class EPCharacterCreator {
             return null;
         }
         foreach ($this->character->morphs as $m){
-            if (strcmp($m->atomUid,$this->character->currentMorphUid) == 0){
+            if (strcmp($m->getUid(),$this->character->currentMorphUid) == 0){
                 return $m;
             }
         }
@@ -1567,7 +1567,7 @@ class EPCharacterCreator {
     }
     function getSkillByAtomUid($id){
         foreach ($this->character->ego->skills as $sk){
-            if (strcmp($sk->atomUid,$id) == 0){
+            if (strcmp($sk->getUid(),$id) == 0){
                 return $sk;
             }
         }
@@ -1983,7 +1983,7 @@ class EPCharacterCreator {
             return true;              
         }else{
             $diff = $value - $sk->baseValue;
-            $oldSk = $this->back->getSkillByAtomUid($sk->atomUid);
+            $oldSk = $this->back->getSkillByAtomUid($sk->getUid());
             if (empty($oldSk)){
                 $oldSk = $sk;
             }
@@ -2325,7 +2325,7 @@ class EPCharacterCreator {
         foreach ($this->character->ego->skills as $a){
             $maxValue = $a->getMaxValue() - $a->getBonusForCost();
             $newValue = min($maxValue,$a->baseValue);
-            $this->setSkillValue($a->atomUid,$newValue);
+            $this->setSkillValue($a->getUid(),$newValue);
         }
         foreach ($this->character->ego->ais as $ia){
                 foreach ($ia->aptitudes as $a){                
@@ -3001,13 +3001,13 @@ class EPCharacterCreator {
         }
     }
     private function removeAtomFromArrayById(&$arr,$atom){
-        if (!$this->isAtomInArrayById($atom->atomUid, $arr)){
+        if (!$this->isAtomInArrayById($atom->getUid(), $arr)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Atom not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return null;
         }else{
             $index = 0;
             foreach ($arr as $value) {
-                if (strcmp($value->atomUid,$atom->atomUid) == 0){
+                if (strcmp($value->getUid(),$atom->getUid()) == 0){
                     break;
                 }else{
                     $index++;
@@ -4444,7 +4444,7 @@ class EPCharacterCreator {
 	}
 	function getBonusMalusByAtomeId($bmArray,$atomeId){           
 		foreach($bmArray as $bm){
-			if($bm->atomUid == $atomeId){
+			if($bm->getUid() == $atomeId){
 				return $bm;
 			}
 		}

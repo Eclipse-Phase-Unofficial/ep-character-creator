@@ -80,14 +80,14 @@ class EPPersistentDataManager {
                                                 .$this->adjustForSQL($epSkill->name)
                                                 ."')";
                 if(!self::$database->exec($insertGroupTargetQuerry)){
-                    $this->addError("Skill groups list ".$epSkill->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
+                    $this->addError("Skill groups list ".$epSkill->getUid()." and ".$gr."  persistance failed:  No rows were modified.");
                     return false;
                 }
             }
             return true;
            }
            else {
-               $this->addError("Skill core ".$epSkill->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Skill core ".$epSkill->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -124,7 +124,7 @@ class EPPersistentDataManager {
                                 ."')";
                         if(!self::$database->exec($insertGroupTargetQuerry))
                         {
-                            $this->addError("Bonnus Malus groups list  ".$epBonusMalus->atomUid." and ".$gr." persistance failed:  No rows were modified.");
+                            $this->addError("Bonnus Malus groups list  ".$epBonusMalus->getUid()." and ".$gr." persistance failed:  No rows were modified.");
                             return false;
                         }
                     }
@@ -137,7 +137,7 @@ class EPPersistentDataManager {
                                 ."')";
                         if(!self::$database->exec($insertMultiChoiceQuerry))
                         {
-                            $this->addError("Bonnus Malus multi choice list  ".$epBonusMalus->atomUid." and ".$gr." persistance failed:  No rows were modified.");
+                            $this->addError("Bonnus Malus multi choice list  ".$epBonusMalus->getUid()." and ".$gr." persistance failed:  No rows were modified.");
                             return false;
                         }
                     }
@@ -145,7 +145,7 @@ class EPPersistentDataManager {
                 }
                 else
                 {
-                    $this->addError("BonusMalus ".$epBonusMalus->atomUid." persistance failed:  No rows were modified.");
+                    $this->addError("BonusMalus ".$epBonusMalus->getUid()." persistance failed:  No rows were modified.");
                     return false;
                 }
             }
@@ -203,7 +203,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertBMtraitQuerry)){
-                            $this->addError("Trait bonnus malus table ".$epTrait->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("Trait bonnus malus table ".$epTrait->getUid()." and ".$bmt->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -211,7 +211,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Trait core ".$epTrait->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Trait core ".$epTrait->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -259,7 +259,7 @@ class EPPersistentDataManager {
                                                    ."')";
 
                    if(!self::$database->exec($insertGroupTargetQuerry)){
-                       $this->addError("Aptitude groups list ".$epAptitude->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
+                       $this->addError("Aptitude groups list ".$epAptitude->getUid()." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
                 }
@@ -267,7 +267,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Aptitude core ".$epAptitude->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Aptitude core ".$epAptitude->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -299,7 +299,7 @@ class EPPersistentDataManager {
                                                    ."')";
 
                    if(!self::$database->exec($insertGroupTargetQuerry)){
-                       $this->addError("Stat groups list ".$epStat->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
+                       $this->addError("Stat groups list ".$epStat->getUid()." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
                 }
@@ -307,7 +307,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Stat core ".$epStat->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Stat core ".$epStat->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -357,7 +357,7 @@ class EPPersistentDataManager {
                                                    ."')";
 
                    if(!self::$database->exec($insertGroupTargetQuerry)){
-                       $this->addError("Reputation groups list ".$epReputation->atomUid." and ".$gr."  persistance failed:  No rows were modified.");
+                       $this->addError("Reputation groups list ".$epReputation->getUid()." and ".$gr."  persistance failed:  No rows were modified.");
                        return false;
                    }
                 }
@@ -365,7 +365,7 @@ class EPPersistentDataManager {
             return true;      
            }
            else {
-               $this->addError("Reputation core ".$epReputation->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Reputation core ".$epReputation->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -400,7 +400,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertBMbkgQuerry)){
-                            $this->addError("Background bonnus malus table ".$epBackground->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("Background bonnus malus table ".$epBackground->getUid()." and ".$bmt->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -416,7 +416,7 @@ class EPPersistentDataManager {
                                                          ."')";
 
                     if(!self::$database->exec($insertTraitBkgQuerry)){
-                        $this->addError("Background trait table ".$epBackground->atomUid." and ".$trait->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Background trait table ".$epBackground->getUid()." and ".$trait->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -431,7 +431,7 @@ class EPPersistentDataManager {
                                                          ."')";
 
                     if(!self::$database->exec($insertLimitationBkgQuerry)){
-                        $this->addError("Background Limitation table ".$epBackground->atomUid." and ".$limit->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Background Limitation table ".$epBackground->getUid()." and ".$limit->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -446,7 +446,7 @@ class EPPersistentDataManager {
                                                          ."')";
 
                     if(!self::$database->exec($insertObligationBkgQuerry)){
-                        $this->addError("Background Obligation table ".$epBackground->atomUid." and ".$oblig->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Background Obligation table ".$epBackground->getUid()." and ".$oblig->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -454,7 +454,7 @@ class EPPersistentDataManager {
                return true;  
            }
            else {
-               $this->addError("Background core ".$epBackground->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Background core ".$epBackground->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -503,7 +503,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertBMMorphQuerry)){
-                            $this->addError("Morph bonnus malus table ".$epMorph->atomUid." and ".$bmt->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("Morph bonnus malus table ".$epMorph->getUid()." and ".$bmt->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -519,7 +519,7 @@ class EPPersistentDataManager {
                                                          ."')";
 
                     if(!self::$database->exec($insertTraitMorphQuerry)){
-                        $this->addError("Morph trait table ".$epMorph->atomUid." and ".$trait->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Morph trait table ".$epMorph->getUid()." and ".$trait->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -537,7 +537,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertGearMorphQuerry)){
-                            $this->addError("Morph Gear table ".$epMorph->atomUid." and ".$gear->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("Morph Gear table ".$epMorph->getUid()." and ".$gear->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -546,7 +546,7 @@ class EPPersistentDataManager {
                return true;  
            }
            else {
-               $this->addError("Morph core ".$epMorph->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Morph core ".$epMorph->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -595,7 +595,7 @@ class EPPersistentDataManager {
                                                          .")";
 
                     if(!self::$database->exec($insertAptQuerry)){
-                        $this->addError("Ai Aptitude table ".$epAi->atomUid." and ".$apt->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Ai Aptitude table ".$epAi->getUid()." and ".$apt->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -610,7 +610,7 @@ class EPPersistentDataManager {
                                                          .")";
 
                     if(!self::$database->exec($insertStatQuerry)){
-                        $this->addError("Ai Stat table ".$epAi->atomUid." and ".$stat->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Ai Stat table ".$epAi->getUid()." and ".$stat->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -626,7 +626,7 @@ class EPPersistentDataManager {
                                                          .")";
 
                     if(!self::$database->exec($insertSkillQuerry)){
-                        $this->addError("Ai Skill table ".$epAi->atomUid." and ".$skill->atomUid."  persistance failed:  No rows were modified.");
+                        $this->addError("Ai Skill table ".$epAi->getUid()." and ".$skill->getUid()."  persistance failed:  No rows were modified.");
                         return false;
                     }
                }
@@ -634,7 +634,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Ai core ".$epAi->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Ai core ".$epAi->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -677,7 +677,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertBMGearQuerry)){
-                            $this->addError("Gear bonnus malus table ".$bmGear->atomUid." and ".$bmg->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("Gear bonnus malus table ".$bmGear->getUid()." and ".$bmg->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -685,7 +685,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("Grear core ".$epGear->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("Grear core ".$epGear->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }
@@ -742,7 +742,7 @@ class EPPersistentDataManager {
                                                              ."')";
 
                         if(!self::$database->exec($insertBMGearQuerry)){
-                            $this->addError("PsySleight bonnus malus table ".$bmPsy->atomUid." and ".$bmp->atomUid."  persistance failed:  No rows were modified.");
+                            $this->addError("PsySleight bonnus malus table ".$bmPsy->getUid()." and ".$bmp->getUid()."  persistance failed:  No rows were modified.");
                             return false;
                         }
                    }
@@ -750,7 +750,7 @@ class EPPersistentDataManager {
                return true;
            }
            else {
-               $this->addError("PsySleight core ".$epPsyS->atomUid."  persistance failed:  No rows were modified.");
+               $this->addError("PsySleight core ".$epPsyS->getUid()."  persistance failed:  No rows were modified.");
                return false;
            }
         }

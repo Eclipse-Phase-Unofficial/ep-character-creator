@@ -28,7 +28,7 @@ class EPAtom {
     static $AI = 'ai';
     static $PSY = 'psy';
     
-    public $atomUid;
+    private $atomUid;
     public $type;
     
     public $occurence;
@@ -114,6 +114,10 @@ class EPAtom {
         }
         return 0;
     }
+    public function getUid(){
+        return $this->atomUid;
+    }
+
     private function sanitize($input){
         $replace_char = '/[^A-Z,^a-z,^0-9]/';
         return preg_replace($replace_char, '_', $input);
