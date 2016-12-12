@@ -532,6 +532,7 @@ $(document).ready(function(){
 	                        getCrePoint : 'get'
 	                },
 	                function(response){
+                                var comeFrom = $('.skills').attr('id');
                     			if(comeFrom == "actSkills"){
                     				$("#secondary").load("secondary-choice/active-skills.php");
                     			}
