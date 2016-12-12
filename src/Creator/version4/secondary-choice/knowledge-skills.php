@@ -60,32 +60,30 @@
 		        	else{
 			        	echo "<tr class='alternateLine'>";
 		        	}
-		        	$replace_char = array('/','\s');
-		        	$id = str_replace($replace_char, '_', $m->atomUid);
 
 		        	if($prefix != null || $prefix != ""){
-			        	echo "		<td class='skName' id='$id' atomic='$id'><div class='spezBox' id='spezBox".$id."'><input class='spezInt' type='text' id='spe_".$id."' /></div> ".$prefix." : ".$m->name;
+						echo "		<td class='skName' id='$m->atomUid' atomic='$m->atomUid'><div class='spezBox' id='spezBox".$m->atomUid."'><input class='spezInt' type='text' id='spe_".$m->atomUid."' /></div> ".$prefix." : ".$m->name;
 		        	}
 		        	else{
-		        		echo "		<td class='skName' id='$id' atomic='$id'><div class='spezBox' id='spezBox".$id."'><input class='spezInt' type='text' id='spe_".$id."' /></div>".$m->name;
+						echo "		<td class='skName' id='$m->atomUid' atomic='$m->atomUid'><div class='spezBox' id='spezBox".$m->atomUid."'><input class='spezInt' type='text' id='spe_".$m->atomUid."' /></div>".$m->name;
 		        	}
 
 		        	if($spe != null || $spe != ""){
 						echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";
-		        		echo "		<td align='center'><span class='icone remSpeSkill' atomic='$id' data-icon='&#x39;'></span></span></td>\n";
+						echo "		<td align='center'><span class='icone remSpeSkill' atomic='$m->atomUid' data-icon='&#x39;'></span></span></td>\n";
 		        	}
 		        	else{
 						echo "</td>\n";
-			        	echo "		<td align='center'><span class='icone addSkillSpec' atomic='$id' data-icon='&#x3a;'></span></td>\n";
+						echo "		<td align='center'><span class='icone addSkillSpec' atomic='$m->atomUid' data-icon='&#x3a;'></span></td>\n";
 		        	}
 
-		        	echo "		<td><input class='knoskillbase' type='number' atomic='$id' min=0 step=5 value='".$m->baseValue."'/></td>\n";
+					echo "		<td><input class='knoskillbase' type='number' atomic='$m->atomUid' min=0 step=5 value='".$m->baseValue."'/></td>\n";
 		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
 		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>\n";
 		        	if($m->tempSkill){
-		        		echo "		<td><span class='icone remKnowSkill' atomic='$id' data-icon='&#x39;'></span></td>\n";
+						echo "		<td><span class='icone remKnowSkill' atomic='$m->atomUid' data-icon='&#x39;'></span></td>\n";
 		        	}
 		        	else{
 			        	echo "		<td></td>\n";

@@ -1,8 +1,14 @@
 <?php
 /**
- * Description of EPAtom
+ * EPAtom is the generic object class of the character creator, almost everything is subclassed from it.
+ *
+ * EPAtom provides several key features:
+ *   * Save/Load functionality that can be expanded by subclasses
+ *   * A Unique Id that's guaranteed to safe for use in HTML 'id' tags
+ *        Do NOT attempt to sanitize this ID.  Doing so will merely break things when attempting to compare the sanitized version to the unsanitized one!
  *
  * @author reinhardt
+ * @author EmperorArthur
  */
 class EPAtom {
     
@@ -42,7 +48,7 @@ class EPAtom {
     
     
     function __construct($atType, $atName, $atDesc) {
-       $this->atomUid = uniqid('Atom_'.$this->name);
+       $this->atomUid = uniqid('Atom_'.$this->sanitize($atName).'_');
        $this->type = $atType;  
        $this->name = $atName;
        $this->description = $atDesc;
@@ -100,13 +106,17 @@ class EPAtom {
     function __clone()
     {
         // Ensure a clone object have a different atomUid from original 
-        $this->atomUid = uniqid('Atom_'.$this->name);
+        $this->atomUid = uniqid('Atom_'.$this->sanitize($this->name).'_');
     }
     public function getCost(){
         if (is_int($this->cost)){
             return round($this->cost * $this->ratioCost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
         }
         return 0;
+    }
+    private function sanitize($input){
+        $replace_char = '/[^A-Z,^a-z,^0-9]/';
+        return preg_replace($replace_char, '_', $input);
     }
 }
 
