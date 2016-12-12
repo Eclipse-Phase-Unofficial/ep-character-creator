@@ -147,7 +147,7 @@ class EPCharacterCreator {
 		//set linked Apt on skill
 		$skillToComplete = $this->character->ego->skills;
 		foreach($skillToComplete as $m){
-			$linkedApt = $this->listProvider->getSkillByName($m->name,$this->character->ego->aptitudes)->linkedApt;
+			$linkedApt = $this->listProvider->getSkillByNamePrefix($m->name,$m->prefix,$this->character->ego->aptitudes)->linkedApt;
 			if($linkedApt == null){
 				$linkedApt = $this->getAptitudeByAbbreviation($this->listProvider->getAptForPrefix($m->prefix));
 			}
