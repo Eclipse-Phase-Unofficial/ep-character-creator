@@ -1513,7 +1513,7 @@ function removeSkill(node, after) {
 }
 
 function treatMessageError(response){
-	if(response.erType == "rules"){
+	if(response.erType == "rules" || response.erType == "system"){
 		displayRulesMessage(response.msg);
 	}
 	else if(response.msg == ''){

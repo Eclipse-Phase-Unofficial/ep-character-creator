@@ -1696,11 +1696,12 @@ ul#implants li:hover{
 /*messages*/
 #messages{
 	position: absolute;
-	top: 150px;
-    right: 0;
+	top: 0;
+	right: 50%;
+	transform: translate(50%,0);
 	margin:0;
 	background-color: rgba(255, 255, 255, .95);
-	width: 300px;
+	min-width: 300px;
 	height: 25px;
 	font-size:1.25em;
 	color: hsl(200,10%,40%);
@@ -1709,6 +1710,7 @@ ul#implants li:hover{
 	vertical-align: middle;
 	visibility: visible;
 	display: block;
+	z-index: 3;
 }
 
 #user-messages{
