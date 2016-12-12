@@ -528,7 +528,7 @@ $(document).ready(function(){
 		//remove specialization
 		 $(document).on('click', '.remSpeSkill' ,function () {
 	           do_ajax( {
-	                        remSpeSkill : $(this).attr('data-skillname'),
+	                        remSpeSkill : $(this).attr('atomic'),
 	                        getCrePoint : 'get'
 	                },
 	                function(response){
@@ -624,7 +624,7 @@ $(document).ready(function(){
 		//click on skill for desc
         $(document).on('click', '.skName' ,function () {
                 do_ajax( {
-                            skill : $(this).attr('data-skillname')
+                            skill : $(this).attr('atomic')
 					},
                     function(response){
                     			displayMessageOnTertiary(response.desc);
@@ -635,20 +635,20 @@ $(document).ready(function(){
         
         //click + skill specialization
         $(document).on('click', '.addSkillSpec' ,function () {
-        		var id_spez = '#spezBox'+$(this).attr('data-skillname');
+        		var id_spez = '#spezBox'+$(this).attr('atomic');
 
         		if($(id_spez).css('visibility') == 'hidden'){
                 	$(id_spez).css('visibility', 'visible').find(".spezInt").focus();
                 }
                 else{
 	               $(id_spez).css('visibility', 'hidden'); 
-	               var speId = '#spe_'+$(this).attr('data-skillname');
+	               var speId = '#spe_'+$(this).attr('atomic');
 				   var speVal = $(speId).val();
 
 				   if(speVal != null || speVal != ""){
 		               do_ajax( {
 		                            addSpe : speVal,
-		                            addSpeSkill : $(this).attr('data-skillname'),
+		                            addSpeSkill : $(this).attr('atomic'),
 		                            getCrePoint : 'get'
 		                    },
 		                    function(response){
@@ -669,13 +669,13 @@ $(document).ready(function(){
         $(document).on('keypress','.skName',function (e) {
 		  if (e.which == 13) {
 		    	$(this).css('visibility') == 'hidden';
-		    	var speId = '#spe_'+$(this).attr('id');
+		    	var speId = '#spe_'+$(this).attr('atomic');
 		    	var speVal = $(speId).val();
 
 		    	if(speVal != null || speVal != ""){
 	               do_ajax( {
 	                            addSpe : speVal,
-	                            addSpeSkill : $(this).attr('data-skillname'),
+	                            addSpeSkill : $(this).attr('atomic'),
 	                            getCrePoint : 'get'
 	                    },
 	                    function(response){
@@ -1487,10 +1487,10 @@ $(document).ready(function(){
 
 function changeSkill(node, after) {
     //change skill value
-    var skId = node.attr('data-skillname').replace(/[\/\s]+/g,"");
+    var skId = node.attr('atomic');
 
     do_ajax( {
-            changeSkill : node.attr('data-skillname'),
+            changeSkill : node.attr('atomic'),
             changeSkillValue : node.val(),
             getCrePoint : 'get'
         },
@@ -1506,7 +1506,7 @@ function changeSkill(node, after) {
 function removeSkill(node, after) {
     //remove a temp active skill
     do_ajax( {
-                remSkill : node.attr('data-skillname')
+                remSkill : node.attr('atomic')
         },
         function(response){
                     $("#secondary").load(after);
