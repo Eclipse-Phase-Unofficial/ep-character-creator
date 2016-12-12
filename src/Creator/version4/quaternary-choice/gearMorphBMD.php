@@ -1,5 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+require_once '../../../php/EPAtom.php';
 include('../other/bonusMalusLayer.php');
 include('../other/armorDegatsLayer.php');
 include('../other/bookPageLayer.php');
@@ -9,7 +10,7 @@ session_start();
 
 // $hint = "--dubug:morph";
 $morphGears = $_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']);
-$currentGear = $_SESSION['cc']->getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
+$currentGear = getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
 if($currentGear == null){
     $currentGear =  $_SESSION['cc']->getGearByName($_SESSION['currentMorphGearName']);
     // $hint = "--debug:general";

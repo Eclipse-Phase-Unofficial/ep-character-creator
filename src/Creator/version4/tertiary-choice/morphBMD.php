@@ -1,10 +1,11 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
+require_once '../../../php/EPAtom.php';
 include('../other/bonusMalusLayer.php');
 include('../other/bookPageLayer.php');
 session_start();
 $currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
-$currentMorph = $_SESSION['cc']->getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
+$currentMorph = getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 if($currentMorph == null){
     $currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
 }

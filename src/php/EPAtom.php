@@ -118,10 +118,78 @@ class EPAtom {
         return $this->atomUid;
     }
 
+    //Strip any character that could cause an issue in an id tag
     private function sanitize($input){
         $replace_char = '/[^A-Z,^a-z,^0-9]/';
         return preg_replace($replace_char, '_', $input);
     }
+
+    // Check if this Atom is in the array
+    public function isInArray($array){
+        if (!empty($array)){
+            foreach ($array as $item){
+                if (strcmp($item->getUid(),$this->atomUid) == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Add this Atom to an array, returns true when done, or if this atom was already in the array
+    public function addToArray(&$array){
+        if (is_array($array)){
+            if (!$this->isInArray($array)){
+                array_push($array, $this);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Remove this Atom from an array, returns false on failure
+    public function removeFromArray(&$array){
+        if (!$this->isInArray($array)){
+            return false;
+        }else{
+            $index = 0;
+            foreach ($array as $value) {
+                if (strcmp($value->getUid(),$this->getUid()) == 0){
+                    break;
+                }else{
+                    $index++;
+                }
+            }
+            array_splice($array, $index, 1);
+            return true;
+        }
+    }
+}
+
+//**********HELPER FUNCTIONS**********//
+
+// Find an Atom with a particular name (potentially dangerous, do not use for skills)
+function getAtomByName($array,$name){
+    if(!empty($array)){
+        foreach ($array as $a){
+            if (strcmp($a->name,$name) == 0){
+                return $a;
+            }
+        }
+    }
+    return null;
+}
+
+// Find an atom by unique id (safe)
+function getAtomByUid($array,$id){
+    if(!empty($array)){
+        foreach ($array as $a){
+            if (strcmp($a->getUid(),$id) == 0){
+                return $a;
+            }
+        }
+    }
+    return null;
 }
 
 ?>

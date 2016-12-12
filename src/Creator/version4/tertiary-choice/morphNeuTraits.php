@@ -17,11 +17,11 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
                $m->cpCost == 0){
             	echo "<li>";
                     
-            	if($defaultTrait != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$defaultTrait)){
+            	if($defaultTrait != null && $m->isInArray($defaultTrait)){
 	            	echo "		<label class='morphNegTrait selNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selNeuTrait selMorphNeuTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 
             	}
-            	else if($currentTraits != null && $_SESSION['cc']->isAtomInArrayByName($m->name,$currentTraits)){
+            	else if($currentTraits != null && $m->isInArray($currentTraits)){
             		echo "		<label class='morphNeuTrait selNeuTrait' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='selectedicone selNeuTrait selMorphNeuTraitIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
             	}
             	else{

@@ -2,6 +2,7 @@
 
 require_once '../../../php/EPCharacterCreator.php';
 require_once '../../../php/EPListProvider.php';
+require_once '../../../php/EPAtom.php';
 require_once '../../../php/EPAptitude.php';
 require_once '../../../php/EPStat.php';
 require_once '../../../php/EPReputation.php';
@@ -176,7 +177,7 @@ if(isset($_POST['faction'])){
 if(isset($_POST['posTrait'])){
 	$trait = $_SESSION['cc']->getTraitByName($_POST['posTrait']);
 	if($trait != null){
-		if($_SESSION['cc']->isAtomInArrayByName($trait->name, $_SESSION['cc']->getCurrentTraits())){
+		if( $trait->isInArray( $_SESSION['cc']->getCurrentTraits() ) ){
 			if($_SESSION['cc']->removeTrait($trait)){
 				$_SESSION['currentTraitName'] = $trait->name;
 	        	$return['desc'] = $trait->description;
@@ -207,7 +208,7 @@ if(isset($_POST['posTraitHover'])){
 if(isset($_POST['psyS'])){
 	$psyS = $_SESSION['cc']->getPsySleightsByName($_POST['psyS']);
 	if($psyS != null){
-		if($_SESSION['cc']->isAtomInArrayByName($psyS->name, $_SESSION['cc']->getCurrentPsySleights())){
+		if( $psyS->isInArray( $_SESSION['cc']->getCurrentPsySleights() ) ){
 			if($_SESSION['cc']->removePsySleight($psyS)){
 	        	$return['desc'] = $psyS->description;
 	        	$_SESSION['currentPsiSName'] = $psyS->name;
@@ -235,7 +236,7 @@ if(isset($_POST['hoverPsyS'])){
 if(isset($_POST['negTrait'])){
 	$trait = $_SESSION['cc']->getTraitByName($_POST['negTrait']);
 	if($trait != null){
-		if($_SESSION['cc']->isAtomInArrayByName($trait->name, $_SESSION['cc']->getCurrentTraits())){
+		if($trait->isInArray($_SESSION['cc']->getCurrentTraits())){
                     if($_SESSION['cc']->removeTrait($trait)){
 			$_SESSION['currentTraitName'] = $trait->name;
 	        	$return['desc'] = $trait->description;
@@ -485,7 +486,7 @@ if(isset($_POST['remSpeSkill'])){
 
 //SET MORPH
 if (isset($_POST['addMorph'])) {
-	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['addMorph']);
+	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['addMorph']);
 	   if($_SESSION['cc']->addMorph($morph)){
                 $_SESSION['currentMorph'] =  $_POST['addMorph'];
                 $return['title'] = $morph->name;
@@ -498,7 +499,7 @@ if (isset($_POST['addMorph'])) {
 
 //HOVER MORPH
 if (isset($_POST['morphHover'])) {
-	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphHover']);
+	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphHover']);
        $return['title'] = $morph->name;
 	   $return['desc'] = $morph->description;
 }
@@ -507,7 +508,7 @@ if (isset($_POST['morphHover'])) {
 
 //REMOVE MORPH
 if (isset($_POST['remMorph'])) {
-	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['remMorph']);
+	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['remMorph']);
 	   if($_SESSION['cc']->removeMorph($morph)){
                 $return['desc'] = $morph->description;
 	   }
@@ -518,7 +519,7 @@ if (isset($_POST['remMorph'])) {
 
 //GET MORPH SETTINGS
 if (isset($_POST['morphSettings'])) {
-	   $morph = $provider->getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
+	   $morph = getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
 	   if($morph != null){
 	   		 $_SESSION['currentMorph'] =  $_POST['morphSettings'];
 	   		 $return['morphName'] = $morph->name;
@@ -542,7 +543,7 @@ if (isset($_POST['currentMorphUsed'])) {
 
 //SET MORPH SETTINGS
 if (isset($_POST['morphSettingsChange'])) {
-	   $morph = $provider->getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
+	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
 	   if($morph != null){
 	   		 $_SESSION['currentMorph'] =  $_POST['morphSettingsChange'];
 		     $morph->nickname = $_POST['morphNickname'];
@@ -927,24 +928,24 @@ if(isset($_POST['addTargetTo'])){
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "trait"){
-		$currentTrait = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getCurrentTraits(),$_POST['parentName']);
+		$currentTrait = getAtomByName($_SESSION['cc']->getCurrentTraits(),$_POST['parentName']);
 		if(!isset($currentTrait)){
 			$currentTrait = $_SESSION['cc']->getTraitByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentTrait->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morph"){
-		$currentMorph = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_POST['parentName']);
+		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_POST['parentName']);
 		if(!isset($currentMorph)){
 			$currentMorph = $_SESSION['cc']->getMorphByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
+		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
         $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
 		if (!empty($traits)){
-                    $currentMorphTrait = $_SESSION['cc']->getAtomByName($traits,$_POST['parentName']);
+                    $currentMorphTrait = getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;          
                 }                
 	}
@@ -953,9 +954,9 @@ if(isset($_POST['addTargetTo'])){
 	}
 	
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
-		$candidatParent = $_SESSION['cc']->getBonusMalusByAtomeId($bonusMalusArray,$_POST['parentBmId']);
+		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
 		if($candidatParent != null){
-			$candidat = $_SESSION['cc']->getBonusMalusByAtomeId($candidatParent->bonusMalusTypes,$_POST['bmId']);
+			$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
 			if($candidat != null){
 				if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
 
@@ -981,7 +982,7 @@ if(isset($_POST['addTargetTo'])){
 	else{
             $candidat = null;
             if (!empty($bonusMalusArray)){
-                $candidat = $_SESSION['cc']->getBonusMalusByAtomeId($bonusMalusArray,$_POST['bmId']);   
+                $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
             }
 
             if($candidat != null){
@@ -1019,10 +1020,10 @@ if(isset($_POST['removeTargetFrom'])){
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
+		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
                 $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
                 if (!empty($traits)){
-                    $currentMorphTrait = $_SESSION['cc']->getAtomByName($traits,$_POST['parentName']);
+                    $currentMorphTrait = getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;                    
                 }
 	}
@@ -1030,9 +1031,9 @@ if(isset($_POST['removeTargetFrom'])){
 		treatCreatorErrors($return,new EPCreatorErrors("Unknown parent type",EPCreatorErrors::$SYSTEM_ERROR));
 	}
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
-		$candidatParent = $_SESSION['cc']->getBonusMalusByAtomeId($bonusMalusArray,$_POST['parentBmId']);
+		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
 		if($candidatParent != null){
-			$candidat = $_SESSION['cc']->getBonusMalusByAtomeId($candidatParent->bonusMalusTypes,$_POST['bmId']);
+			$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
 			if($candidat != null){
 				if(!empty($candidat->targetForChoice)){
 					$candidat->forTargetNamed = "";
@@ -1049,7 +1050,7 @@ if(isset($_POST['removeTargetFrom'])){
 		}
 	}
 	else{
-		$candidat = $_SESSION['cc']->getBonusMalusByAtomeId($bonusMalusArray,$_POST['bmId']);
+		$candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
 		if($candidat != null){
 			$candidat->forTargetNamed = "";
 			$_SESSION['cc']->adjustAll();
@@ -1071,14 +1072,14 @@ if(isset($_POST['addOccurence'])){
 	}
 	
 	if($_POST['addOccurence'] == "SOFT"){
-		$currentOccu = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
+		$currentOccu = getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentSoftName'],$currentOccu+1)){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
 	}
 	
 	if($_POST['addOccurence'] == "MORPH"){
-		$currentOccu = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu+1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
@@ -1098,14 +1099,14 @@ if(isset($_POST['remOccurence'])){
 	}
 	
 	if($_POST['remOccurence'] == "SOFT"){
-		$currentOccu = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
+		$currentOccu = getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentSoftName'],$currentOccu-1)){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
 	}
 	
 	if($_POST['remOccurence'] == "MORPH"){
-		$currentOccu = $_SESSION['cc']->getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu-1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}

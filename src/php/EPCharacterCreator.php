@@ -186,33 +186,21 @@ class EPCharacterCreator {
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
     }
-    function addAtomInArray(&$list,$atom){
-        if (is_array($list)){
-            foreach ($list as $l){
-                if (strcmp($atom->getUid(),$l->getUid()) == 0){
-                    return true;
-                }
-            }
-            array_push($list, $atom);
-            return true;            
-        }
-        return false;
-    }       
     function addAI($ai){
         if ($this->creationMode){
-            if ($this->atomExistInArray($this->character->ego->defaultAis, $ai)){
+            if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
             }        
-            if ($this->addAtomInArray($this->character->ego->ais, $ai)){ 
+            if ($ai->addToArray($this->character->ego->ais)){
                 $this->adjustAll();
                 return true;            
             }
             return false;            
         }else{
-            if ($this->atomExistInArray($this->character->ego->defaultAis, $ai)){
+            if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
             }        
-            if ($this->addAtomInArray($this->character->ego->ais, $ai)){ 
+            if ($ai->addToArray($this->character->ego->ais)){
                 $this->adjustAll();
                 $this->evoCrePoint -= $ai->getCost();
                 return true;            
@@ -312,25 +300,11 @@ class EPCharacterCreator {
         }
         return null;
     }
-    function getCurrentMorphsByName($morphName){
-        if (is_array($this->character->morphs)){
-            foreach ($this->character->morphs as $m){
-                if (strcmp($m->name, $morphName) == 0){
-                    return $m;
-                }                
-            }   
-        }
-        return null;
+    function getCurrentMorphsByName($name){
+        return getAtomByName($this->character->morphs,$name);
     }
     function getTraitByName($name){
-        if (is_array($this->traits)){
-            foreach ($this->traits as $t) {
-                if (strcmp($t->name, $name) == 0){
-                    return $t;
-                }
-            }   
-        }
-        return null;
+        return getAtomByName($this->traits,$name);
     }    
     function haveTraitOnEgo($traitName){
         if (is_array($this->character->ego->traits)){
@@ -399,37 +373,28 @@ class EPCharacterCreator {
         }
         return false;         
     }
-    function atomExistInArray(&$list,$atom){
-        if (is_array($list)){
-            foreach ($list as $l){
-                if (strcmp($l->name,$atom->name) == 0){
-                    return true;
-                }
-            }            
-        }
-        return false;
-    }
+
     function removeAI($ai){
         if ($this->creationMode){
-            if ($this->atomExistInArray($this->character->ego->defaultAis, $ai)){
+            if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
             }
-            if (!$this->atomExistInArray($this->character->ego->ais, $ai)){
+            if (!$ai->isInArray($this->character->ego->ais)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this AI !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            $this->removeAtomFromArray($this->character->ego->ais, $ai); 
+            $ai->removeFromArray($this->character->ego->ais);
             $this->adjustAll();
             return true;            
         }else{            
-            if ($this->atomExistInArray($this->character->ego->defaultAis, $ai)){
+            if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
             }
-            if (!$this->atomExistInArray($this->character->ego->ais, $ai)){
+            if (!$ai->isInArray($this->character->ego->ais)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this AI !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            $this->removeAtomFromArray($this->character->ego->ais, $ai); 
+            $ai->removeFromArray($this->character->ego->ais);
             $this->evoCrePoint += $ai->getCost() * $ai->occurence;
             $this->adjustAll();
             return true;            
@@ -449,7 +414,7 @@ class EPCharacterCreator {
             $gearToAdd = $this->listProvider->getGearByName($gear->name);   
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
-                $this->addAtomInArray($morph->additionalGears, $gearToAdd);
+                $gearToAdd->addToArray($morph->additionalGears);
             }else{
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Implant Rejection Level II !)', EPCreatorErrors::$RULE_ERROR));
                 return false;                
@@ -469,7 +434,7 @@ class EPCharacterCreator {
             $gearToAdd = $this->listProvider->getGearByName($gear->name);  
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
-                $this->addAtomInArray($morph->additionalGears, $gearToAdd);
+                $gearToAdd->addToArray($morph->additionalGears);
             }            
             $this->evoCrePoint -= $gearToAdd->getCost();
             $this->adjustAll();
@@ -486,7 +451,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }             
-            $this->addAtomInArray($morph->additionalGears, $gear);
+            $gear->addToArray($morph->additionalGears);
             $this->adjustAll();
             return true;            
         }else{
@@ -498,7 +463,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }             
-            $this->addAtomInArray($morph->additionalGears, $gear);
+            $gear->addToArray($morph->additionalGears);
             $this->evoCrePoint -= $gear->getCost();
             $this->adjustAll();
             return true;            
@@ -572,19 +537,19 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            if (!$this->atomExistInArray($this->character->morphs, $morph)){
+            if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            if (!$this->atomExistInArray($morph->additionalGears, $gear)){
-                if ($this->atomExistInArray($morph->gear, $gear)){
+            if (!$gear->isInArray($morph->additionalGears)){
+                if ($gear->isInArray($morph->gear)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
                     return false;                
                 }
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this additional gear !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }       
-            $this->removeAtomFromArray($morph->additionalGears, $gear);
+            $gear->removeFromArray($morph->additionalGears);
             $this->adjustAll();
             return true;            
         }else{
@@ -596,32 +561,29 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            if (!$this->atomExistInArray($this->character->morphs, $morph)){
+            if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }
-            if (!$this->atomExistInArray($morph->additionalGears, $gear)){
-                if ($this->atomExistInArray($morph->gear, $gear)){
+            if (!$gear->isInArray($morph->additionalGears)){
+                if ($gear->isInArray($morph->gear)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
                     return false;                
                 }
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this additional gear !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;            
             }       
-            $this->removeAtomFromArray($morph->additionalGears, $gear);
+            $gear->removeFromArray($morph->additionalGears);
             $this->evoCrePoint += $gear->getCost() * $gear->occurence;
             $this->adjustAll();
             return true;            
         }
     }
     function haveAdditionalGear($gear,$morph){
-        if ($this->atomExistInArray($morph->additionalGears, $gear)){
-            return true;            
-        }            
-        return false;
+        return $gear->isInArray($morph->additionalGears);
     }
     function addMorphCreationMode($morph){              
-        if ($this->addAtomInArray($this->character->morphs, $morph)){
+        if ($morph->addToArray($this->character->morphs)){
             $this->activateMorph($morph);
             $this->adjustAll();
             return true;            
@@ -629,7 +591,7 @@ class EPCharacterCreator {
         return false;        
     }
     function addMorphUpdateMode($morph){          
-        if ($this->addAtomInArray($this->character->morphs, $morph)){
+        if ($morph->addToArray($this->character->morphs)){
             $this->evoCrePoint -= $morph->getCost();
             $this->activateMorph($morph);
             $this->adjustAll();
@@ -674,7 +636,7 @@ class EPCharacterCreator {
                     foreach ($list as $g){
                         $this->removeGear($g, $morph);
                     }                    
-                    $this->removeAtomFromArray($this->character->morphs, $morph);
+                    $morph->removeFromArray($this->character->morphs);
                     $this->adjustAll();
                     return true;
                 }
@@ -709,7 +671,7 @@ class EPCharacterCreator {
                         $this->removeGear($g, $morph);
                     }             
                     $this->evoCrePoint += $morph->getCost();
-                    $this->removeAtomFromArray($this->character->morphs, $morph);
+                    $morph->removeFromArray($this->character->morphs);
                     $this->adjustAll();
                     return true;
                 }
@@ -747,22 +709,18 @@ class EPCharacterCreator {
         }   
     }
     function addSoftGear($sg){
-        if ($this->creationMode){
-            $this->addAtomInArray($this->character->ego->softGears, $sg); 
-            $this->adjustAll();
-            return true;
-        }else{
+        if (!$this->creationMode){
             $this->evoCrePoint -= $sg->getCost();
-            $this->addAtomInArray($this->character->ego->softGears, $sg); 
-            $this->adjustAll();
-            return true;            
-        }      
+        }
+        $sg->addToArray($this->character->ego->softGears);
+        $this->adjustAll();
+        return true;
     }
     function removeSoftGear($sg){
         if ($this->creationMode){
             foreach ($this->character->ego->softGears as $s){
                 if ($s->name == $sg->name){
-                    $this->removeAtomFromArray($this->character->ego->softGears, $sg);
+                    $sg->removeFromArray($this->character->ego->softGears);
                     $this->adjustAll();
                     return true;
                 }
@@ -773,7 +731,7 @@ class EPCharacterCreator {
             foreach ($this->character->ego->softGears as $s){
                 if ($s->name == $sg->name){
                     $this->evoCrePoint += $s->getCost() * $s->occurence;
-                    $this->removeAtomFromArray($this->character->ego->softGears, $sg);
+                    $sg->removeFromArray($this->character->ego->softGears);
                     $this->adjustAll();
                     return true;
                 }
@@ -863,7 +821,7 @@ class EPCharacterCreator {
             if (isset($morph)){
                 $this->listProvider->connect();
                 $traitToAdd = $this->listProvider->getTraitByName($trait->name);
-                $this->addAtomInArray($morph->additionalTraits,$traitToAdd);
+                $traitToAdd->addToArray($morph->additionalTraits);
             }else{
                 array_push($this->character->ego->additionalTraits,$trait);
             }  
@@ -873,8 +831,8 @@ class EPCharacterCreator {
         }else{
             $neg = strcmp($trait->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0;
             if (isset($morph)){
-                $listOldTraits = $this->back->getCurrentTraits(true); 
-                $haveOld = $this->isAtomInArrayByName($trait->name, $listOldTraits);
+                $listOldTraits = $this->back->getCurrentTraits(true);
+                $haveOld = $trait->isInArray($listOldTraits);
             
                 if ($this->haveTraitOnMorph($trait->name,$morph)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character morph own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -892,7 +850,7 @@ class EPCharacterCreator {
                 }
             }else{
                 $listOldTraits = $this->back->getCurrentTraits(false); 
-                $haveOld = $this->isAtomInArrayByName($trait->name, $listOldTraits);
+                $haveOld = $trait->isInArray($listOldTraits);
                 if ($this->haveTraitOnEgo($trait->name)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;
@@ -917,7 +875,7 @@ class EPCharacterCreator {
             if (isset($morph)){
                 $this->listProvider->connect();
                 $traitToAdd = $this->listProvider->getTraitByName($trait->name);  
-                $this->addAtomInArray($morph->additionalTraits,$traitToAdd);
+                $traitToAdd->addToArray($morph->additionalTraits);
             }else{
                 array_push($this->character->ego->additionalTraits,$trait);
             }  
@@ -929,7 +887,7 @@ class EPCharacterCreator {
     function removeTrait($trait,$morph = null){    
         if ($this->creationMode){
             if (isset($morph)){
-                if (!$this->atomExistInArray($this->character->morphs, $morph)){
+                if (!$morph->isInArray($this->character->morphs)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;            
                 }     
@@ -937,7 +895,7 @@ class EPCharacterCreator {
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;
                 }      
-                $this->removeAtomFromArray($morph->additionalTraits,$trait);
+                $trait->removeFromArray($morph->additionalTraits);
                 $this->adjustAll();
                 return true;
             }else{
@@ -945,7 +903,7 @@ class EPCharacterCreator {
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;
                 }
-                $this->removeAtomFromArray($this->character->ego->additionalTraits,$trait);
+                $trait->removeFromArray($this->character->ego->additionalTraits);
              
                 $this->adjustAll();
                 return true;
@@ -954,8 +912,8 @@ class EPCharacterCreator {
             $neg = strcmp($trait->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0;
             if (isset($morph)){
                 $listOldTraits = $this->back->getCurrentTraits(true);
-                $haveOld = $this->isAtomInArrayByName($trait->name, $listOldTraits);
-                if (!$this->atomExistInArray($this->character->morphs, $morph)){
+                $haveOld = $trait->isInArray($listOldTraits);
+                if (!$morph->isInArray($this->character->morphs)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;            
                 }     
@@ -963,8 +921,8 @@ class EPCharacterCreator {
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;
                 }            
-                if ($this->atomExistInArray($morph->additionalTraits, $trait)){
-                    $this->removeAtomFromArray($morph->additionalTraits,$trait);
+                if ($trait->isInArray($morph->additionalTraits)){
+                    $trait->removeFromArray($morph->additionalTraits);
                     if (!$neg){
                         if (!$haveOld){
                             $this->evoRezPoint += $trait->cpCost;
@@ -975,13 +933,13 @@ class EPCharacterCreator {
                 return true;
             }else{
                 $listOldTraits = $this->back->getCurrentTraits(false);
-                $haveOld = $this->isAtomInArrayByName($trait->name, $listOldTraits);
+                $haveOld = $trait->isInArray($listOldTraits);
                 if (!$this->haveTraitOnEgo($trait->name)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                     return false;
                 }
-                if ($this->atomExistInArray($this->character->ego->additionalTraits, $trait)){
-                    $this->removeAtomFromArray($this->character->ego->additionalTraits,$trait);
+                if ($trait->isInArray($this->character->ego->additionalTraits)){
+                    $trait->removeFromArray($this->character->ego->additionalTraits);
                     
                     if (!$neg){
                         if (!$haveOld){
@@ -993,26 +951,6 @@ class EPCharacterCreator {
                 return true;
             }            
         }
-    }
-    function isAtomInArrayByName($atomName,$array){
-        if (!empty($array)){
-            foreach ($array as $item){
-                if (strcmp($item->name,$atomName) == 0){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    function isAtomInArrayById($atomUid,$array){
-        if (!empty($array)){
-            foreach ($array as $item){
-                if (strcmp($item->getUid(),$atomUid) == 0){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     function isLowerLevelBuy($trait,$currentTraits){ 
 	$traitName = $this->removeLastWord($trait->name);
@@ -1111,7 +1049,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
-            $this->removeAtomFromArray($this->character->ego->psySleights,$psySleight);
+            $psySleight->removeFromArray($this->character->ego->psySleights);
             $this->adjustAll();
 
             return true;
@@ -1120,7 +1058,7 @@ class EPCharacterCreator {
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
-            $this->removeAtomFromArray($this->character->ego->psySleights,$psySleight);
+            $psySleight->removeFromArray($this->character->ego->psySleights);
             if (!$psySleight->buyinCreationMode){
                 $this->evoRezPoint += $this->configValues->getValue('RulesValues','PsyCpCost');
             } 
@@ -1151,8 +1089,7 @@ class EPCharacterCreator {
                 $ns->nativeTongueBonus = $this->configValues->getValue('RulesValues','NativeTongueBaseValue');
 	        $this->nativeLanguageSet = true;
         }
-        array_push($this->character->ego->skills,$ns);               
-                
+        $ns->addToArray($this->character->ego->skills);
         $this->adjustAll();
         return true;
     }
@@ -1162,8 +1099,11 @@ class EPCharacterCreator {
             return false;           
         }
         if($skill->isNativeTongue) $this->nativeLanguageSet = false;
-        $this->removeAtomFromArrayById($this->character->ego->skills,$skill);
-        return true;
+        if($skill->removeFromArray($this->character->ego->skills)){
+            return true;
+        }
+        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+        return false;
     }
     function removeSpecialization($skill){
         if ($this->creationMode){
@@ -1267,32 +1207,15 @@ class EPCharacterCreator {
     }
     
     function getAisByName($name){
-        if (is_array($this->ais)){
-            foreach ($this->ais as $m) {
-                if (strcmp($m->name,$name) == 0){
-                    return $m;
-                }                
-            }
-        }
-        return null;
+        return getAtomByName($this->ais,$name);
     }
     
     function haveAi($ai){
-        if ($this->atomExistInArray($this->character->ego->ais, $ai)){
-            return true;            
-        }            
-        return false;
+        return $ai->isInArray($this->character->ego->ais);
     }
     
     function getGearByName($name){
-        if (is_array($this->gears)){
-            foreach ($this->gears as $m) {
-                if (strcmp($m->name,$name) == 0){
-                    return $m;
-                }                
-            }
-        }
-        return null;
+        return getAtomByName($this->gears,$name);
     } 
     
     function getEgoSoftGears(){            
@@ -1300,10 +1223,7 @@ class EPCharacterCreator {
     }
     
     function haveSoftGear($soft){
-        if ($this->atomExistInArray($this->character->ego->softGears, $soft)){
-            return true;            
-        }            
-        return false;
+        return $soft->isInArray($this->character->ego->softGears);
     }
     
     function getEgoTraits(){
@@ -1363,24 +1283,12 @@ class EPCharacterCreator {
     function getAptitudes(){
         return $this->character->ego->aptitudes;
     }
-    function getAtomByName($listAtom,$name){
-    	if(!empty($listAtom)){
-	        foreach ($listAtom as $a){
-	            if (strcmp($a->name,$name) == 0){
-	                return $a;
-	            }
-	        }
-        }
-        return null;
-    }
     function getBackgroundByName($name){
-        foreach ($this->backgrounds as $b){
-            if (strcmp($b->name,$name) == 0){
-                return $b;
-            }
+        $ret = getAtomByName($this->backgrounds,$name);
+        if($ret == null){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This background not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This background not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;
+        return $ret;
     }
     function getBackgrounds(){
         return $this->backgrounds;
@@ -1529,31 +1437,16 @@ class EPCharacterCreator {
         }
         return $res;
     }
+    //WARNING / FIXME:  Dangerous (Skills should always be referenced by name AND prefix)
     function getAiSkillByName($ai,$name){
-        foreach ($ai->skills as $sk){
-            if (strcmp($sk->name,$name) == 0){
-                return $sk;
-            }
-        }
-        return null;         
-    }
-    function getSkillByName($name){
-        foreach ($this->character->ego->skills as $sk){
-            if (strcmp($sk->name,$name) == 0){
-                return $sk;
-            }
-        }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;       
+        return getAtomByName($ai->skills,$name);
     }
     function getSkillByAtomUid($id){
-        foreach ($this->character->ego->skills as $sk){
-            if (strcmp($sk->getUid(),$id) == 0){
-                return $sk;
-            }
+        $ret = getAtomByUid($this->character->ego->skills,$id);
+        if($ret == null){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
-        Array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;
+        return $ret;
     }
     function getSkillsByGroup($group){
         $res = array();
@@ -1599,13 +1492,11 @@ class EPCharacterCreator {
 	    return $this->character->ego->stats;
     }
     function getStatByName($name){
-        foreach ($this->character->ego->stats as $s){
-            if (strcmp($s->name,$name) == 0){
-                return $s;
-            }
+        $ret = getAtomByName($this->character->ego->stats,$name);
+        if($ret == null){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;
+        return $ret;
     }
     function getStatByAbbreviation($abbr){
         foreach ($this->character->ego->stats as $s){
@@ -2230,7 +2121,7 @@ class EPCharacterCreator {
     function adjustGrantedTraits(){
          if (!empty($this->character->ego->background)){
              foreach ($this->character->ego->background->traits as $t) {
-                 if ($this->isAtomInArrayByName($t->name, $this->character->ego->additionalTraits)){
+                 if ($t->isInArray($this->character->ego->additionalTraits)){
                      $this->removeTrait($t);
                  }                 
              }
@@ -2862,13 +2753,11 @@ class EPCharacterCreator {
         }
     }   
     function getReputationByName($name){
-        foreach ($this->character->ego->reputations as $r){
-            if (strcmp($r->name,$name) == 0){
-                return $r;
-            }
+        $ret = getAtomByName($this->character->ego->reputations,$name);
+        if($ret == null){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;
+        return $ret;
     }
     function getReputations(){
         return $this->character->ego->reputations;
@@ -2981,40 +2870,7 @@ class EPCharacterCreator {
             }            
         }
     }
-    private function removeAtomFromArrayById(&$arr,$atom){
-        if (!$this->isAtomInArrayById($atom->getUid(), $arr)){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Atom not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return null;
-        }else{
-            $index = 0;
-            foreach ($arr as $value) {
-                if (strcmp($value->getUid(),$atom->getUid()) == 0){
-                    break;
-                }else{
-                    $index++;
-                }
-            }
-            array_splice($arr, $index, 1);
-            return true;
-        }
-    }
-    private function removeAtomFromArray(&$arr,$atom){
-        if (!$this->isAtomInArrayByName($atom->name, $arr)){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Atom not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return null;            
-        }else{
-            $index = 0;
-            foreach ($arr as $value) {
-                if (strcmp($value->name,$atom->name) == 0){
-                    break;
-                }else{
-                    $index++;
-                }  
-            }
-            array_splice($arr, $index, 1);
-            return true;
-        }   
-    }
+
     function getSumPosTraits(){
         $tot = 0;
 //        foreach ($this->character->ego->traits as $t) {
@@ -3136,14 +2992,7 @@ class EPCharacterCreator {
 	    return $this->psySleights;
     }
     function getPsySleightsByName($name){
-        if (is_array($this->psySleights)){
-            foreach ($this->psySleights as $p) {
-                if (strcmp($p->name, $name) == 0){
-                    return $p;
-                }
-            }   
-        }
-        return null;
+        return getAtomByName($this->psySleights,$name);
     } 
     private function applyBonusMalus($bm,$source){
         switch ($bm->bonusMalusType) {
@@ -4414,22 +4263,6 @@ class EPCharacterCreator {
 		 	$wLastWord .= " ";
 		 }
 		 return $wLastWord;
-	}
-	function getBonusMalusByName($bmArray,$name){
-		foreach($bmArray as $bm){
-			if($bm->name == $name){
-				return $bm;
-			}
-		}
-		return null;
-	}
-	function getBonusMalusByAtomeId($bmArray,$atomeId){           
-		foreach($bmArray as $bm){
-			if($bm->getUid() == $atomeId){
-				return $bm;
-			}
-		}
-		return null;
 	}
 	function getSelectedOnMulti($bmMulti){
 		$count = 0;

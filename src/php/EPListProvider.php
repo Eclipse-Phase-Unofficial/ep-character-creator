@@ -691,17 +691,7 @@ class EPListProvider {
             }
         return $psyList;
     }
-    
-    //ATOM
-    function getAtomByName($atomList,$atomName){
-     	foreach ($atomList as $a){
-            if ($a->name == $atomName){
-                return $a;
-            }
-        }
-        return null;
-    }
-    
+
     //BOOK 
     function getBookForName($name){
         $res = self::$database->query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';");
