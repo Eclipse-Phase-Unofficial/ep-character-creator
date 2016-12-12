@@ -109,13 +109,6 @@ class EPCharacterCreator {
     }
     
     function loadSavePack($savePack,$cc = null){
-    
-    	//to do befor the load save pack
-    	$this->character->ego->skills = array();
-    	$this->character->ego->stats = array();
-    	$this->character->ego->defaultAis = array();
-    	//------
-    
         $this->initialCreationPoints = $savePack['initialCreationPoints'];
 		$this->aptitudePoints = $savePack['aptitudePoints'];
 		$this->reputationPoints = $savePack['reputationPoints'];

@@ -125,7 +125,7 @@ class EPEgo {
 	    return $savePack;   
     }
     
-    function loadSavePack($savePack,$cc = null){	    
+    function loadSavePack($savePack,$cc = null){
 	    $this->name = $savePack['name'];
 	    $this->creditInstant = $savePack['creditInstant'];
 	    $this->credit = $savePack['credit'];
@@ -160,7 +160,8 @@ class EPEgo {
 	    	$savedAptitude->loadSavePack($m);
 	    	array_push($this->aptitudes, $savedAptitude);
 	    }
-	    
+
+        $this->skills = array();
 	    foreach($savePack['skillsSavePacks'] as $m){
 	    	$savedSkill = new EPSkill('','','','','');
 	    	$savedSkill->loadSavePack($m);
@@ -173,7 +174,8 @@ class EPEgo {
 	    	$savedRep->loadSavePack($m);
 	    	array_push($this->reputations, $savedRep);
 	    }
-	    
+
+        $this->stats = array();
 	    foreach($savePack['statsSavePacks'] as $m){
 	    	$savedStat = new EPStat('','','',0,$cc);
 	    	$savedStat->loadSavePack($m);
@@ -190,7 +192,7 @@ class EPEgo {
 	    	$savedAddTrait = new EPTrait('','','','','');
 	    	$savedAddTrait->loadSavePack($m);
 	    	array_push($this->additionalTraits, $savedAddTrait);
-	    }	
+	    }
             
 	    foreach($savePack['softGearSavePacks'] as $m){
 	    	$savedSoftG = new EPGear('','','','');
@@ -203,7 +205,8 @@ class EPEgo {
 	    	$savedAi->loadSavePack($m,$cc);
 	    	array_push($this->ais, $savedAi);
 	    }
-	    
+
+        $this->defaultAis = array();
 	    foreach($savePack['defaultAisSavePacks'] as $m){
 	    	$defSavedAi = new EPAi('',array(),'');
 	    	$defSavedAi->loadSavePack($m,$cc);
