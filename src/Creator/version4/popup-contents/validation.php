@@ -2,7 +2,7 @@
 require_once '../../../php/EPCharacterCreator.php';
 session_start();
 ?>
-<table id="table_validation" align="center">
+<table class="popup_table" id="table_validation" align="center">
 	<?php
 		
 		$_SESSION['cc']->checkValidation();
@@ -163,7 +163,7 @@ session_start();
 	?>
 	<tr align="center">
 		<td>
-			<button class="closeButton">
+			<button class="closeButton popupInnerButton">
 				Close
 			</button>
 		</td>

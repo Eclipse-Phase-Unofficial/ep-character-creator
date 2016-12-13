@@ -2,7 +2,7 @@
 session_start();
 ?>
 <form action="index.php" id="loadForm" method="POST" enctype="multipart/form-data">
-	<table id="table_load" align="center">
+	<table class="popup_table" id="table_load" align="center">
 		<tr align="center">
 			<td>
 				<h1><b><u> Load file </u></b></h1>
@@ -49,11 +49,11 @@ session_start();
 		<tr align="center">
 			<td>
 				<br><br>
-				<button class="loadLoadButton">
+				<button class="loadLoadButton popupInnerButton">
 			       			Load 
 		        </button>
 		        </form>
-		        <button class="closeButton">
+		        <button class="closeButton popupInnerButton">
 			       			Cancel
 		        </button>
 			</td>	

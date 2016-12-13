@@ -2,7 +2,7 @@
 require_once '../../../php/EPConfigFile.php';
 $config = new EPConfigFile('../../../php/config.ini');
 ?>
-<table id="table_reset" align="center">
+<table class="popup_table" id="table_reset" align="center">
 	<tr align="center">
 		<td>
 			<h1><b><u> Eclipse phase character creator</u></b></h1>
@@ -30,10 +30,10 @@ $config = new EPConfigFile('../../../php/config.ini');
 	<tr align="center">
 		<td>
 			<br><br>
-			<button class="startButton">
+			<button class="startButton popupInnerButton">
 		       			Begin!
 	        </button>
-	        <button class="closeButton">
+	        <button class="closeButton popupInnerButton">
 		       			Cancel
 	        </button>
 		</td>

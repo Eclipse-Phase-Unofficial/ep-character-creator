@@ -6,7 +6,7 @@
     $file_util = new EPFileUtility($_SESSION['cc']->character);
     $save_name = $file_util->buildExportFilename('EPCharacterSave', 'json');
 ?>
-	<table id="table_save" align="center">
+	<table class="popup_table" id="table_save" align="center">
 		<tr align="center">
 			<td>
 				<h1><b><u> Save character </u></b></h1>
@@ -35,11 +35,11 @@
 		<tr align="center">
 			<td>
 				<br><br>
-				<button class="saveSaveButton">
+				<button class="saveSaveButton popupInnerButton">
 			       			Save 
 		        </button>
 		        
-		        <button class="closeButton">
+		        <button class="closeButton popupInnerButton">
 			       			Cancel
 		        </button>
 			</td>	

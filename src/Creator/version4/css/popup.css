@@ -1,0 +1,206 @@
+/*===============POPUP BUTTONS=====================*/
+
+.popupButton{
+    height: 55px;
+    width: 100px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-decoration: none;
+	text-transform: uppercase;
+    padding: 10px 25px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.popupButton:hover {
+  color: rgb(186, 0, 80);
+  background-color: rgba(254, 254, 254, .85);
+}
+
+.button_icone{
+	display: block;
+	line-height: 3em;
+	width: 3em;
+	height:3em;
+	text-align: right;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding-right: 1em;
+	opacity: 1;
+}
+
+#loadButton{
+	bottom: 370px;
+	right: 0px;
+	position: absolute;
+}
+
+#saveButton{
+	bottom: 310px;
+	right: 0px;
+	position: absolute;
+}
+
+#validateButton{
+  	bottom: 250px;
+  	right: 0px;
+  	position: absolute;
+}
+
+#exportTxtButton{
+	bottom: 190px;
+	right: 0px;
+	position: absolute;
+}
+
+#exportButton{
+	bottom: 130px;
+	right: 0px;
+	position: absolute;
+}
+
+#settingsButton{
+	bottom: 70px;
+	right: 0px;
+	position: absolute;
+}
+
+#aboutButton{
+    bottom: 10px;
+    right: 0px;
+    position: absolute;
+}
+
+.popupInnerButton{
+    height: 55px;
+    width: 150px;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.popupInnerButton:hover {
+    color: rgb(186, 0, 80);
+    background-color: rgba(254, 254, 254, .85);
+}
+
+/*===============POPUPS=====================*/
+
+.popup {
+    display: inline-block;
+    left: 2%;
+    opacity: 0;
+    padding: 15px;
+    position: fixed;
+    text-align: justify;
+    top: 2%;
+    visibility: hidden;
+    z-index: 10;
+
+    width: 85%;
+    height: 80%;
+
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -moz-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -ms-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -o-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+
+    -webkit-transition: opacity .5s;
+    -moz-transition: opacity .5s;
+    -ms-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+}
+
+.loadingPopup {
+    display: inline-block;
+    left: 30%;
+    opacity: 1;
+    padding: 15px;
+    position: fixed;
+    text-align: justify;
+    top: 42%;
+    display: none;
+    z-index: 10;
+
+    width: 25%;
+    height: 3%;
+
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -moz-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -ms-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    -o-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
+
+    -webkit-transition: opacity .5s;
+    -moz-transition: opacity .5s;
+    -ms-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+}
+
+.popup_table{
+	border: 0;
+	width: 60%;
+	font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-decoration: none;
+	text-transform: uppercase;
+}
+
+.popup_table input{
+	height: 1em;
+}
+
+/*Validation*/
+.valideIcone{
+	color: #48ffaa;
+}
+
+.invalidIcone{
+	color: #f41010;
+}
+
+/*paypalButton*/
+#paypalButton{
+	width: auto !important;
+	height: auto !important;
+}

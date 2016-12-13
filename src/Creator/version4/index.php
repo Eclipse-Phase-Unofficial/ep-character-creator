@@ -28,6 +28,7 @@
         <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:400,700,400italic'>
         <link rel="stylesheet" href="scripts/vegas/vegas.css">
         <link rel="stylesheet" href="css/icomoon.css" />
+        <link rel="stylesheet" href="css/popup.css">
         <link rel="stylesheet" href="css/main7.css">
     </head>
     <body>
