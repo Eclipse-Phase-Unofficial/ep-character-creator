@@ -2993,7 +2993,7 @@ class EPCharacterCreator {
     }
     function getPsySleightsByName($name){
         return getAtomByName($this->psySleights,$name);
-    } 
+    }
     private function applyBonusMalus($bm,$source){
         switch ($bm->bonusMalusType) {
             case EPBonusMalus::$ON_SPECIAL_01: // Special for Feeble negative trait
@@ -3022,97 +3022,57 @@ class EPCharacterCreator {
                 }                
             break;
             case EPBonusMalus::$ON_APTITUDE:
-                switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:                        
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                foreach ($this->character->ego->aptitudes as $a){
+                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                        switch ($source) {
+                            case EPBonusMalus::$FROM_MORPH:
                                 $a->morphMod += $bm->value;
-                            }
-                        }                                               
-                    break;               
-                    case EPBonusMalus::$FROM_TRAIT:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_TRAIT:
                                 $a->traitMod += $bm->value;
-                            }
-                        } 
-                    break;               
-                    case EPBonusMalus::$FROM_BACKGROUND:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_BACKGROUND:
                                 $a->backgroundMod += $bm->value;
-                            }
-                        }
-                    break;               
-                    case EPBonusMalus::$FROM_FACTION:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_FACTION:
                                 $a->factionMod += $bm->value;
-                            }
-                        }
-                    break;
-                    case EPBonusMalus::$FROM_SOFTGEAR:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_SOFTGEAR:
                                 $a->softgearMod += $bm->value;
-                            }
-                        }
-                    break;  
-                    case EPBonusMalus::$FROM_PSY:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_PSY:
                                 $a->psyMod += $bm->value;
-                            }
+                            break;
                         }
-                    break;  
+                    }
                 }
-            break;                    
+            break;
             case EPBonusMalus::$ON_APTITUDE_EGO_MAX:
-                switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:                        
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                foreach ($this->character->ego->aptitudes as $a){
+                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                        switch ($source) {
+                            case EPBonusMalus::$FROM_MORPH:
                                 $a->maxEgoValueMorphMod += $bm->value;
-                            }
-                        }                                               
-                    break;               
-                    case EPBonusMalus::$FROM_TRAIT:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_TRAIT:
                                 $a->maxEgoValueTraitMod += $bm->value;
-                            }
-                        } 
-                    break;               
-                    case EPBonusMalus::$FROM_BACKGROUND:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_BACKGROUND:
                                 $a->maxEgoValueBackgroundMod += $bm->value;
-                            }
-                        }
-                    break;               
-                    case EPBonusMalus::$FROM_FACTION:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_FACTION:
                                 $a->maxEgoValueFactionMod += $bm->value;
-                            }
-                        }
-                    break;
-                    case EPBonusMalus::$FROM_SOFTGEAR:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
-                                $a->maxEgoValueSoftgearMod += $bm->value;
-                            }
-                        }
-                    break;  
-                    case EPBonusMalus::$FROM_PSY:
-                        foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || $this->isInGroups($a,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_SOFTGEAR:
+                                 $a->maxEgoValueSoftgearMod += $bm->value;
+                            break;
+                            case EPBonusMalus::$FROM_PSY:
                                 $a->maxEgoValuePsyMod += $bm->value;
-                            }
+                            break;
                         }
-                    break;  
+                    }
                 }
-            break; 
+            break;
             case EPBonusMalus::$ON_APTITUDE_MORPH_MAX:
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
@@ -3252,123 +3212,83 @@ class EPCharacterCreator {
                 }
             break;
             case EPBonusMalus::$ON_SKILL:
-                switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+//                 $skill = getSkillByAtomUid($bm->forTargetNamed);
+                foreach ($this->character->ego->skills as $s){
+                    if (strcmp($s->getUid(),$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                        switch ($source) {
+                            case EPBonusMalus::$FROM_MORPH:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostMorphMod *= $bm->value;
                                 }else{
-                                    $s->morphMod += $bm->value;                                        
+                                    $s->morphMod += $bm->value;
                                 }
-                            }
-                        }       
-                    break;
-                    case EPBonusMalus::$FROM_TRAIT:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_TRAIT:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostTraitMod *= $bm->value;
                                 }else{
-                                    $s->traitMod += $bm->value;                                        
-                                }                                
-                            }
-                        }
-                    break;
-                    case EPBonusMalus::$FROM_FACTION:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
-                                                                
+                                    $s->traitMod += $bm->value;
+                                }
+                            break;
+                            case EPBonusMalus::$FROM_FACTION:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostFactionMod *= $bm->value;
                                 }else{
-                                    $s->factionMod += $bm->value;                                        
-                                } 
-                            }
-                        }             
-                    break; 
-                    case EPBonusMalus::$FROM_BACKGROUND:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){  
-                                
+                                    $s->factionMod += $bm->value;
+                                }
+                            break;
+                            case EPBonusMalus::$FROM_BACKGROUND:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostBackgroundMod *= $bm->value;
                                 }else{
-                                    $s->backgroundMod += $bm->value;  
+                                    $s->backgroundMod += $bm->value;
                                 }
-                            }
-                        }           
-                    break;  
-                    case EPBonusMalus::$FROM_SOFTGEAR:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_SOFTGEAR:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostSoftgearMod *= $bm->value;
                                 }else{
-                                    $s->softgearMod += $bm->value;                                        
+                                    $s->softgearMod += $bm->value;
                                 }
-                            }
-                        }                     
-                    break;
-                    case EPBonusMalus::$FROM_PSY:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_PSY:
                                 if ($bm->onCost == 'true'){
                                     $s->ratioCostPsyMod *= $bm->value;
                                 }else{
-                                    $s->psyMod += $bm->value;                                        
+                                    $s->psyMod += $bm->value;
                                 }
-                            }
-                        }                     
-                    break;                     
+                            break;
+                        }
+                    }
                 }
             break;
             case EPBonusMalus::$ON_SKILL_MAX:
-                switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
-                                $s->maxValueMorphMod += $bm->value; 
-                            }
-                        }       
-                    break;
-                    case EPBonusMalus::$FROM_TRAIT:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
-                                $s->maxValueTraitMod += $bm->value;                                
-                            }
-                        }
-                    break;
-                    case EPBonusMalus::$FROM_FACTION:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+//                 $skill = getSkillByAtomUid($bm->forTargetNamed);
+                foreach ($this->character->ego->skills as $s){
+                    if (strcmp($s->getUid(),$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                        switch ($source) {
+                            case EPBonusMalus::$FROM_MORPH:
+                                $s->maxValueMorphMod += $bm->value;
+                            break;
+                            case EPBonusMalus::$FROM_TRAIT:
+                                $s->maxValueTraitMod += $bm->value;
+                            break;
+                            case EPBonusMalus::$FROM_FACTION:
                                 $s->maxValueFactionMod += $bm->value; 
-                            }
-                        }             
-                    break; 
-                    case EPBonusMalus::$FROM_BACKGROUND:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){  
+                            break;
+                            case EPBonusMalus::$FROM_BACKGROUND:
                                 $s->maxValueBackgroundMod += $bm->value;
-                            }
-                        }           
-                    break;  
-                    case EPBonusMalus::$FROM_SOFTGEAR:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_SOFTGEAR:
                                 $s->maxValueSoftgearMod += $bm->value;
-                            }
-                        }                     
-                    break;
-                    case EPBonusMalus::$FROM_PSY:
-                        foreach ($this->character->ego->skills as $s){
-                            if (strcmp($s->name,$bm->forTargetNamed) == 0 || $this->isInGroups($s,$bm->groups)){
+                            break;
+                            case EPBonusMalus::$FROM_PSY:
                                 $s->maxValuePsyMod += $bm->value;
-                            }
-                        }                     
-                    break;                     
+                            break;
+                        }
+                    }
                 }
-            break;            
+            break;
             case EPBonusMalus::$ON_SKILL_PREFIX:
                 $ls = $this->getSkillsByPrefix($bm->forTargetNamed);
                 switch ($source) {
