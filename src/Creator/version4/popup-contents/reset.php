@@ -1,3 +1,7 @@
+<?php
+require_once '../../../php/EPConfigFile.php';
+$config = new EPConfigFile('../../../php/config.ini');
+?>
 <table id="table_reset" align="center">
 	<tr align="center">
 		<td>
@@ -47,7 +51,8 @@
 	
 	<tr align="center">
 		<td>
-            <small><a href="https://github.com/EmperorArthur/ep-character-creator/" target="_blank">Version 1.2.1 (07.2015)<a/></small>
+            <?php echo $config->getVersionName(); ?><br>
+            <small><a href="https://github.com/EmperorArthur/ep-character-creator/" target="_blank"><?php echo $config->getVersionString(); ?><a/></small>
 			<br><br>
 		</td>
 	</tr>

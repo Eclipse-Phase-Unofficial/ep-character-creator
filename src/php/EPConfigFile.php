@@ -8,9 +8,12 @@ class EPConfigFile {
     private $configFile;
     
     function __construct($file){
-	if(file_exists($file)){
-            $this->configFile = parse_ini_file ($file,TRUE);
-	}
+        if(file_exists($file)){
+                $this->configFile = parse_ini_file ($file,TRUE);
+        }
+        else{
+            error_log("Unable to open Config File: ".$file." does not exist!");
+        }
     }
 
     function getValue($section,$name){
@@ -26,6 +29,15 @@ class EPConfigFile {
             default:
                 return $this->configFile[$section][$name];
         } 
+    }
+
+    function getVersionName(){
+        return $versionName = $this->getValue('GeneralValues','versionName');
+    }
+    function getVersionString(){
+        $versionNumber = $this->getValue('GeneralValues','versionNumber');
+        $releaseDate = $this->getValue('GeneralValues','releaseDate');
+        return "Version ".$versionNumber." ".$releaseDate;
     }
 }
 ?>
