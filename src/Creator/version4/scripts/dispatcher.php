@@ -700,7 +700,7 @@ if(isset($_POST['morphFreeGear'])){
 	if(!empty($_POST['morphFreeGear'])){
 	    $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 	    $gear = new EPGear($_POST['morphFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['morphFreePrice']));
-	   // error_log(print_r($gear,true));
+	   //error_log(print_r($gear,true));
 	    if (isset($morph)){
 	        if (isset($gear)){
 	           if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
@@ -918,7 +918,11 @@ if (isset($_POST['lastDetailsChange'])) {
 
 //BONUS MALUS MANAGEMENT
 if(isset($_POST['addTargetTo'])){
-	//error_log(print_r($_POST,true));
+    //error_log(print_r($_POST,true));
+    if(!isset($_POST['targetVal'])){
+        treatCreatorErrors($return,new EPCreatorErrors("Must select an item!",EPCreatorErrors::$SYSTEM_ERROR));
+    }
+
 	if($_POST['parentType'] == "origine"){
 		$currentBck = $_SESSION['cc']->getBackgroundByName($_POST['parentName']);
 		$bonusMalusArray = $currentBck->bonusMalus;
@@ -955,52 +959,43 @@ if(isset($_POST['addTargetTo'])){
 	
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
-		if($candidatParent != null){
-			$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
-			if($candidat != null){
-				if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
-
-                    error_log($_POST['targetVal']);
-                    $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
-                    if($skill != null){
-                        $candidat->typeTarget = $skill->prefix;
-                    }
-                                        
-				}
-				$candidat->forTargetNamed = $_POST['targetVal'];
-				$candidat->selected = true;
-				$_SESSION['cc']->adjustAll();
-			}
-			else{
-				treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Multi Unknow",EPCreatorErrors::$SYSTEM_ERROR));
-			}
-		}
-		else{
+		if($candidatParent == null){
 			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (1)",EPCreatorErrors::$SYSTEM_ERROR));
 		}
+		$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
+		if($candidat == null){
+			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Multi Unknow",EPCreatorErrors::$SYSTEM_ERROR));
+		}
+		if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
+			$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+			if($skill == null){
+				treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
+			}
+			$candidat->typeTarget = $skill->prefix;
+		}
+		$candidat->forTargetNamed = $_POST['targetVal'];
+		$candidat->selected = true;
+		$_SESSION['cc']->adjustAll();
 	}
 	else{
-            $candidat = null;
-            if (!empty($bonusMalusArray)){
-                $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
-            }
-
+            $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
             if($candidat != null){
-                    $candidat->forTargetNamed = $_POST['targetVal'];
-                    if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
-                        error_log($_POST['targetVal']);
-                        $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
-                        if($skill != null){
-                            $candidat->typeTarget = $skill->prefix;
-                        }
+                $candidat->forTargetNamed = $_POST['targetVal'];
+                if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
+                    $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+                    if($skill == null){
+                        treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
                     }
-                    $_SESSION['cc']->adjustAll();
+                    $candidat->typeTarget = $skill->prefix;
+                }
+                $_SESSION['cc']->adjustAll();
             }
             else{
                     treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (2)",EPCreatorErrors::$SYSTEM_ERROR));
             }
 	}			
 }
+
 if(isset($_POST['removeTargetFrom'])){
 	//error_log(print_r($_POST,true));
 	if($_POST['parentType'] == "origine"){

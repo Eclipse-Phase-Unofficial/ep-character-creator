@@ -1,4 +1,6 @@
 <?php
+require_once '../../../php/EPAtom.php';
+
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		$provider = new EPListProvider('../../../php/config.ini');
 		$prefixList =  $provider->getListPrefix();
@@ -35,168 +37,22 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 			foreach($bonusMalusArray as $bm){
 					if($bm->targetForChoice != ""){
 						if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "	 <label class='bmChoiceInput'>".$bm->name;
-								if(skillWithPrefixExist($totalSkills,$bm->typeTarget)){
-									echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
-									foreach($totalSkills as $acSkill){
-												if($acSkill->prefix == $bm->typeTarget){
-													echo "	 <option value='".$acSkill->getUid()."'>".$bm->typeTarget." : ".$acSkill->name."</option>";
-												}
-									}
-									echo "	 </select></label>";
-									echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								}
-								else{
-									echo "		<label class='bmGrantedDesc'>Create an appropriate skill (skills menus)</label></label>";
-								}
-								echo "</li>";							 	}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." ".$bm->typeTarget." : ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+							printSkillOptions($bm,$totalSkills);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "	 <label class='bmChoiceInput'>".$bm->name;
-								echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
-								foreach($activeSkillList as $acSkill){
-											if(!empty($acSkill->prefix)) $sk_prefix = $acSkill->prefix." : ";
-											else $sk_prefix = "";
-											echo "	 <option value='".$acSkill->getUid()."'>".$sk_prefix.$acSkill->name."</option>";
-								}
-								echo "	 </select></label>";
-								echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								echo "</li>";
-							}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." ".$bm->typeTarget." : ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+							printSkillOptions($bm,$activeSkillList);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "	 <label class='bmChoiceInput'>".$bm->name;
-								if(!empty($knowledgeSkillList)){
-									echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
-									foreach($knowledgeSkillList as $knSkill){
-										if(!empty($knSkill->prefix)){
-											$sk_prefix = $knSkill->prefix." : ";
-										}
-										else{
-											$sk_prefix = "";
-										}
-										echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
-									}
-									echo "	 </select></label>";
-								}
-								else{
-									echo "		<label class='bmGrantedDesc'>Create an appropriate skill (skills menus)</label></label>";
-								}
-								echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								echo "</li>";
-							}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." ".$bm->typeTarget." : ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+							printSkillOptions($bm,$knowledgeSkillList);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "	 <label class='bmChoiceInput'>".$bm->name;
-								echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
-								foreach($totalSkills as $knSkill){
-									if(!empty($knSkill->prefix)){
-										$sk_prefix = $knSkill->prefix." : ";
-									}
-									else{
-										$sk_prefix = "";
-									}
-									echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
-								}
-								echo "	 </select></label>";
-								echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								echo "</li>";
-							}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." ".$bm->typeTarget." : ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+							printSkillOptions($bm,$totalSkills);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "		<label class='bmChoiceInput'>".$bm->name;
-								echo "		<select id='".$bm->getUid()."Sel'>";
-								if($parentType == 'morph'){
-									$morph = $_SESSION['cc']->getMorphByName($parentName);
-									if(!empty($morph)){
-										$banedAptNameList = $_SESSION['cc']->getMorphGrantedBMApptitudesNameList($morph);
-										foreach($_SESSION['cc']->getAptitudes() as $apt){
-											if(!isNameOnList($apt->name, $banedAptNameList)){
-												echo "<option value='".$apt->name."'>".$apt->name."</option>";
-											}
-										}
-									}
-								}
-								else{
-									foreach($_SESSION['cc']->getAptitudes() as $apt){
-										echo "<option value='".$apt->name."'>".$apt->name."</option>";
-									}
-								}
-								echo "		</select></label>";
-								echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								echo "</li>";
-							}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_APTITUDE."'>";
+							printAptitudeOptions($bm,$parentName,$parentType);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-							if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-								echo "<li>";
-								echo "		<label class='bmChoiceInput'>".$bm->name;
-								echo "		<select id='".$bm->getUid()."Sel'>";
-								foreach($_SESSION['cc']->getReputations() as $apt){
-									echo "<option value='".$apt->name."'>".$apt->name."</option>";
-								}
-								echo "		</select></label>";
-								echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-								echo "</li>";
-							}
-							else{
-								echo "<li>";
-								echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
-								echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-								echo "</li>";
-
-							}
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_REPUTATION."'>";
+							printReputationOptions($bm);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$MULTIPLE){
 							echo "<li>";
@@ -237,152 +93,22 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 							else{
 								foreach($bm->bonusMalusTypes as $bmMulti){
 									if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "	 <label class='bmChoiceInput'>".$bmMulti->name;
-											if(skillWithPrefixExist($totalSkills,$bmMulti->typeTarget)){
-												echo "	 <select class='bmChoiceSelect' id='".$bmMulti->getUid()."Sel'>";
-												foreach($totalSkills as $acSkill){
-													if($acSkill->prefix == $bmMulti->typeTarget){
-														echo "	 <option value='".$acSkill->getUid()."'>".$acSkill->prefix." : ".$acSkill->name."</option>";
-													}
-												}
-												echo "	 </select></label>";
-												echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											}
-											else{
-												echo "		<label class='bmGrantedDesc'>Create an appropriate skill (skills menus)</label>";
-											}
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+										printSkillOptions($bmMulti,$totalSkills);
 									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "	 <label class='bmChoiceInput'>".$bmMulti->name;
-											echo "	 <select class='bmChoiceSelect' id='".$bmMulti->getUid()."Sel'>";
-											foreach($activeSkillList as $acSkill){
-												if(!empty($acSkill->prefix)) $sk_prefix = $acSkill->prefix." : ";
-													else $sk_prefix = "";
-													echo "	 <option value='".$acSkill->getUid()."'>".$sk_prefix.$acSkill->name."</option>";
-											}
-											echo "	 </select></label>";
-											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+										printSkillOptions($bmMulti,$activeSkillList);
 									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "	 <label class='bmChoiceInput'>".$bmMulti->name;
-											echo "	 <select class='bmChoiceSelect' id='".$bmMulti->getUid()."Sel'>";
-											foreach($knowledgeSkillList as $knSkill){
-												if(!empty($knSkill->prefix)){
-													$sk_prefix = $knSkill->prefix." : ";
-												}
-												else{
-													$sk_prefix = "";
-												}
-												echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
-											}
-											echo "	 </select></label>";
-											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+										printSkillOptions($bmMulti,$knowledgeSkillList);
 									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "	 <label class='bmChoiceInput'>".$bmMulti->name;
-											echo "	 <select class='bmChoiceSelect' id='".$bmMulti->getUid()."Sel'>";
-											foreach($totalSkills as $knSkill){
-												if(!empty($knSkill->prefix)){
-													$sk_prefix = $knSkill->prefix." : ";
-												}
-												else{
-													$sk_prefix = "";
-												}
-												echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
-											}
-											echo "	 </select></label>";
-											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
-								}
-
+										printSkillOptions($bmMulti,$totalSkills);
+									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "		<label class='bmChoiceInput'>".$bmMulti->name;
-											echo "		<select id='".$bmMulti->getUid()."Sel'>";
-											foreach($_SESSION['cc']->getAptitudes() as $apt){
-												echo "<option value='".$apt->name."'>".$apt->name."</option>";
-											}
-											echo "		</select></label>";
-											echo "		<span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+										printAptitudeOptions($bmMulti,$parentName,$parentType);
 									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-										if($bmMulti->forTargetNamed == null || $bmMulti->forTargetNamed == ""){
-											echo "<li>";
-											echo "		<label class='bmChoiceInput'>".$bmMulti->name;
-											echo "		<select id='".$bmMulti->getUid()."Sel'>";
-											foreach($_SESSION['cc']->getReputations() as $apt){
-												echo "<option value='".$apt->name."'>".$apt->name."</option>";
-											}
-											echo "		</select></label>";
-											echo "		<span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
-										}
-										else{
-											echo "<li>";
-											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
-
-										}
-										echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+										printReputationOptions($bmMulti);
 									}
 									else{
 										if($bmMulti->selected){
@@ -420,6 +146,95 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		}
 }
 
+// Print out the options to select/deselect a skill
+// Use this instead of repeating the same thing multiple times
+function printSkillOptions($bm,$skill_list){
+	//Handle Prefix only skill selection
+	if(!empty($bm->typeTarget)){
+		$skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
+	}
+
+	echo "<li>";
+	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+		echo "	 <label class='bmChoiceInput'>".$bm->name;
+		if(!empty($skill_list)){
+			echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
+			foreach($skill_list as $skill){
+				echo "	 <option value='".$skill->getUid()."'>".$skill->getPrintableName()."</option>";
+			}
+			echo "	 </select></label>";
+			echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+		}
+		else{
+			echo "		<label class='bmGrantedDesc'>Create an appropriate skill (skills menus)</label></label>";
+		}
+	}
+	else{
+		$skill = getAtomByUid($skill_list,$bm->forTargetNamed);
+		echo "		<label class='bmChoiceInput''> +".$bm->value." ".$skill->getPrintableName()."</label>";
+		echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+
+	}
+	echo "</li>";
+	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+}
+
+// Print out the options to select/deselect an aptitude
+// Use this instead of repeating the same thing multiple times
+function printAptitudeOptions($bm,$parentName,$parentType){
+	echo "<li>";
+	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+		echo "		<label class='bmChoiceInput'>".$bm->name;
+		echo "		<select id='".$bm->getUid()."Sel'>";
+		if($parentType == 'morph'){
+			$morph = $_SESSION['cc']->getMorphByName($parentName);
+			if(!empty($morph)){
+				$banedAptNameList = $_SESSION['cc']->getMorphGrantedBMApptitudesNameList($morph);
+				foreach($_SESSION['cc']->getAptitudes() as $apt){
+					if(!isNameOnList($apt->name, $banedAptNameList)){
+						echo "<option value='".$apt->name."'>".$apt->name."</option>";
+					}
+				}
+			}
+		}
+		else{
+			foreach($_SESSION['cc']->getAptitudes() as $apt){
+				echo "<option value='".$apt->name."'>".$apt->name."</option>";
+			}
+		}
+		echo "		</select></label>";
+		echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+	}
+	else{
+		echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
+		echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+
+	}
+	echo "</li>";
+	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_APTITUDE."'>";
+}
+
+// Print out the options to select/deselect a reputation
+// Use this instead of repeating the same thing multiple times
+function printReputationOptions($bm){
+	echo "<li>";
+	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+		echo "		<label class='bmChoiceInput'>".$bm->name;
+		echo "		<select id='".$bm->getUid()."Sel'>";
+		foreach($_SESSION['cc']->getReputations() as $apt){
+			echo "<option value='".$apt->name."'>".$apt->name."</option>";
+		}
+		echo "		</select></label>";
+		echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+	}
+	else{
+		echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
+		echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+	}
+	echo "</li>";
+	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_REPUTATION."'>";
+}
+
 function grantedExist($bmArray){
 		foreach($bmArray as $bm){
 			if($bm->targetForChoice == "") return true;
@@ -432,11 +247,16 @@ function choiceExist($bmArray){
 	}
 	return false;
 }
-function skillWithPrefixExist($skillArray,$prefix){
+
+//All the skills in an array that have a certain prefix
+function skillsWithPrefix($skillArray,$prefix){
+	$outArray = array();
 	foreach($skillArray as $skill){
-		if($skill->prefix == $prefix) return true;
+		if($skill->prefix == $prefix){
+			array_push($outArray, $skill);
+		}
 	}
-	return false;
+	return $outArray;
 }
 
 function isNameOnList($name,$list){
