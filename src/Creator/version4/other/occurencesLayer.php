@@ -8,8 +8,8 @@ function getOccurenceHtml($atom,$type){
 		  echo "<li>";	
 		  $currentOccurence = $atom->occurence;
 		  echo "<label class='bmGranted'>Number</label><label class='occurences'>[".$currentOccurence."]</label>";
-		  echo "	<span class='iconeAddOccu' id='addOccurence_".$type."' data-icon='&#x3a;'></span>";	
-		  echo "	<span class='iconeRemOccu' id='removeOccurence_".$type."' data-icon='&#x3b;'></span>";
+		  echo "	<span class='iconPlusMinus iconeAddOccu' id='addOccurence_".$type."' data-icon='&#x3a;'></span>";
+		  echo "	<span class='iconPlusMinus iconeRemOccu' id='removeOccurence_".$type."' data-icon='&#x3b;'></span>";
 		  echo "</li>";	
 	}
 }

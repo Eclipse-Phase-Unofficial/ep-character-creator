@@ -68,7 +68,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-/*PASTILLE //////////*/
+/************Book Icons************/
 
 span.SW{
 	display: block;
@@ -254,13 +254,18 @@ a.active .btnhelp{
 	opacity: 1;
 }
 
-/*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-#secondary .mainlist{
-	padding: 0;
-	margin: 0;
+/************SHARED************/
+.listSection{
+	font-size: x-small;
+	color: rgb(186, 0, 80);
+	background-color: rgba(202,194,194,0.61);
+	padding-left: 1em;
+	display: block;
+	line-height:3em;
+	padding-right: 1em;
 }
 
-#secondary .mainlist li{
+.panel li{
 	padding: 0;
 	margin: 0;
 	position: relative;
@@ -272,16 +277,11 @@ a.active .btnhelp{
 	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
-}	
+}
 
-.listSection{
-	font-size: x-small;
-	color: rgb(186, 0, 80);
-	background-color: rgba(202,194,194,0.61);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
+.mainlist{
+	padding: 0;
+	margin: 0;
 }
 
 .foldingListSection{
@@ -294,14 +294,14 @@ a.active .btnhelp{
 	padding-right: 1em;
 }
 
-.iconeAddOccu{
+/************Occurrences (Buy/Sell More gear)************/
+.iconPlusMinus{
 	display: block;
 	line-height: 2em;
 	width: 3em;
 	height:3em;
 	text-align: right;
 	position: absolute;
-	right: 5em;
 	top: 0;
 	padding-right: 1em;
 	opacity: .8;
@@ -310,37 +310,22 @@ a.active .btnhelp{
 	    -ms-transition: opacity .3s ease .2s;
 	     -o-transition: opacity .3s ease .2s;
 	        transition: opacity .3s ease .2s;
-	
 }
 
-.iconeAddOccu:hover{
+.iconPlusMinus:hover{
 	opacity: 1;
 	color: rgb(186, 0, 80);
+}
+
+.iconeAddOccu{
+	right: 5em;
 }
 
 .iconeRemOccu{
-	display: block;
-	line-height: 2em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
 	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
 }
 
-.iconeRemOccu:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
+/*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 /*aptitudes*/
 #aptitudes label{
@@ -485,7 +470,6 @@ a.active .btnhelp{
 	    -ms-transition: opacity .3s ease .2s;
 	     -o-transition: opacity .3s ease .2s;
 	        transition: opacity .3s ease .2s;
-	
 }
 
 #motivation .icone:hover{
@@ -1110,33 +1094,6 @@ a.active .btnhelp{
 
 
 /*TERTIARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-#tertiary .mainlist{
-	padding: 0;
-	margin: 0;
-}
-
-#tertiary .mainlist li{
-	padding: 0;
-	margin: 0;
-	position: relative;
-	display: block;
-	line-height:3em;
-	text-decoration: none;
-	text-transform: uppercase;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	border-top: 1px solid rgba(245, 245, 245, .8);
-	border-bottom: 1px solid rgba(148,155,153,.8);
-}
-
-.listSection{
-	font-size: x-small;
-	background-color: rgba(202,194,194,0.61);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
 
 .bmGranted{
 	font-size: x-small;
@@ -1431,24 +1388,6 @@ ul#implants li:hover{
 }
 
 /*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
-#quaternary .mainlist{
-	padding: 0;
-	margin: 0;
-}
-
-#quaternary .mainlist li{
-	padding: 0;
-	margin: 0;
-	position: relative;
-	display: block;
-	line-height:3em;
-	text-decoration: none;
-	text-transform: uppercase;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	border-top: 1px solid rgba(245, 245, 245, .8);
-	border-bottom: 1px solid rgba(148,155,153,.8);
-}
 
 #quaternary_infos{
 	visibility: hidden;
@@ -1457,15 +1396,6 @@ ul#implants li:hover{
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
 	padding: 1em;
-}
-
-.listSection{
-	font-size: x-small;
-	background-color: rgba(202,194,194,0.61);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
 }
 
 .listSectionClose{
