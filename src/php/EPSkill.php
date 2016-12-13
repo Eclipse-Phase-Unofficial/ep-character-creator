@@ -169,6 +169,32 @@ class EPSkill extends EPAtom{
          $this->isNativeTongue = false;
          $this->nativeTongueBonus = 0;
      }
+
+    // Check for duplicate skills by name AND prefix.
+    // This is safe, and prevents users from adding duplicate skills
+    public function isInArray($list){
+        if (is_array($list)){
+            foreach ($list as $l){
+                if (strcasecmp($l->name,$this->name) == 0 && strcasecmp($l->prefix,$this->prefix) == 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Give a name that can be printed out everywhere
+    public function getPrintableName(){
+        $nameStr = "";
+        if(!empty($this->prefix)){
+            $nameStr .= $this->prefix." : ";
+        }
+        $nameStr .= $this->name;
+        if($this->defaultable == EPSkill::$NO_DEFAULTABLE){
+            $nameStr .= " *";
+        }
+        return $nameStr;
+    }
 }
 
 //Skills are unique by name AND prefix
@@ -181,17 +207,6 @@ function getSkill(&$list,$name,$prefix=''){
         }
     }
     return null;
-}
-
-function skillExistInArray(&$list,$skill){
-    if (is_array($list)){
-        foreach ($list as $l){
-            if (strcasecmp($l->name,$skill->name) == 0 && strcasecmp($l->prefix,$skill->prefix) == 0){
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 ?>

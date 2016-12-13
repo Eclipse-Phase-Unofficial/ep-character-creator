@@ -474,16 +474,7 @@
                 else
                     $skillType = "A";
 
-                $skillCompleteName = "";
-                if(!empty($skill->prefix))
-                    $skillCompleteName = $skill->prefix . " : ";
-
-                $skillCompleteName .= $skill->name;
-
-                if($skill->defaultable == EPSkill::$NO_DEFAULTABLE)
-                    $skillCompleteName .= " *";
-
-                $item[0] = formatIt($skillType."   ".$skillCompleteName);
+                $item[0] = formatIt($skillType."   ".$skill->getPrintableName());
                 $item[2] = formatIt($skill->$functionName());
                 array_push($formattedSkills,$item);
 

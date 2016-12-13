@@ -1080,7 +1080,7 @@ class EPCharacterCreator {
                           0,
                           true
                           );
-        if (skillExistInArray($this->character->ego->skills, $ns)){
+        if ($ns->isInArray($this->character->ego->skills)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Skill already exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }

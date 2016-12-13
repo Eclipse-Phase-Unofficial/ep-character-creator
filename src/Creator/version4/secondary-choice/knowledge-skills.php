@@ -48,12 +48,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				
 			<?php		         
 				 $lineNumeber = 1;
 		         foreach($_SESSION['cc']->getKnowledgeSkills() as $m){
 		        	$prefix = $m->prefix;
 		        	$spe = $m->specialization;
+					$name = $m->getPrintableName();
+
 		        	if($lineNumeber%2 == 0){
 		        		echo "<tr>";
 		        	}
@@ -62,12 +63,7 @@
 		        	}
 
 					echo "		<td class='skName' id='".$m->getUid()."' atomic='".$m->getUid()."'><div class='spezBox' id='spezBox".$m->getUid()."'><input class='spezInt' type='text' id='spe_".$m->getUid()."' /></div>";
-		        	if($prefix != null || $prefix != ""){
-						 echo $prefix." : ".$m->name;
-		        	}
-		        	else{
-						echo $m->name;
-		        	}
+					echo $name;
 
 		        	if($spe != null || $spe != ""){
 						echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";

@@ -45,13 +45,7 @@ session_start();
 				 foreach($_SESSION['cc']->getActiveSkills() as $m){
 		         	$prefix = $m->prefix;
 		         	$spe = $m->specialization;
-
-					if($m->defaultable == EPSkill::$NO_DEFAULTABLE){
-						$skillGuiName = $m->name." *";
-					}
-		         	else{
-						$skillGuiName = $m->name;
-					}
+					$name = $m->getPrintableName();
 
 		         	if($lineNumeber%2 == 0){
 		        		echo "<tr>\n";
@@ -60,13 +54,8 @@ session_start();
 			        	echo "<tr class='alternateLine'>\n";
 		        	}
 
-					echo "		<td class='skName' id='".$m->getUid()."' atomic='".$m->getUid()."'><div class='spezBox' id='spezBox".$m->getUid()."'><input class='spezInt' type='text' id='spe_".$m->getUid()."' /></div> ";
-		        	if($prefix != null || $prefix != ""){
-						echo $prefix." : ".$skillGuiName;
-		        	}
-		        	else{
-						echo $skillGuiName;
-		        	}
+					echo "		<td class='skName' id='".$m->getUid()."' atomic='".$m->getUid()."'><div class='spezBox' id='spezBox".$m->getUid()."'><input class='spezInt' type='text' id='spe_".$m->getUid()."' /></div>";
+					echo $name;
 
 		        	if($spe != null || $spe != ""){
 						echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";
