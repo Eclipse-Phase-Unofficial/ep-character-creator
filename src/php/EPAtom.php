@@ -192,4 +192,35 @@ function getAtomByUid($array,$id){
     return null;
 }
 
+// TODO:  Make this object oriented
+function isInGroups($atom,$groups){
+    if (!empty($atom->groups)){
+        foreach ($atom->groups as $grp){
+            if (is_array($groups)){
+                foreach ($groups as $g){
+                    if (strcmp($grp,$g) == 0){
+                        return true;
+                    }
+                }
+            }else{
+                if (strcmp($grp,$groups) == 0){
+                        return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// Get all the members of a group from an array
+// May be expensive (not optimized at all)
+function getGroupMembers($array,$groups){
+    $groupArr = array();
+    foreach ($array as $i){
+        if(isInGroups($i,$groups)){
+            $i->addToArray($groupArr);
+        }
+    }
+    return $groupArr;
+}
 ?>

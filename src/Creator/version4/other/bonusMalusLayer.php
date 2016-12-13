@@ -37,7 +37,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 			foreach($bonusMalusArray as $bm){
 					if($bm->targetForChoice != ""){
 						if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-							printSkillOptions($bm,$totalSkills);
+							printSkillOptions($bm,$totalSkills,true);
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
 							printSkillOptions($bm,$activeSkillList);
@@ -93,7 +93,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 							else{
 								foreach($bm->bonusMalusTypes as $bmMulti){
 									if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-										printSkillOptions($bmMulti,$totalSkills);
+										printSkillOptions($bmMulti,$totalSkills,true);
 									}
 									else if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
 										printSkillOptions($bmMulti,$activeSkillList);
@@ -148,9 +148,9 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 
 // Print out the options to select/deselect a skill
 // Use this instead of repeating the same thing multiple times
-function printSkillOptions($bm,$skill_list){
+function printSkillOptions($bm, $skill_list, $prefix_skill=false){
 	//Handle Prefix only skill selection
-	if(!empty($bm->typeTarget)){
+	if( $prefix_skill == true && !empty($bm->typeTarget)){
 		$skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
 	}
 
