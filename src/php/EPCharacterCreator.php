@@ -1127,18 +1127,6 @@ class EPCharacterCreator {
         }                   
     }
 
-    //Skills are unique by name AND prefix
-    function skillExistInArray(&$list,$skill){
-        if (is_array($list)){
-            foreach ($list as $l){
-                if (strcasecmp($l->name,$skill->name) == 0 && strcasecmp($l->prefix,$skill->prefix) == 0){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
         if (!$this->prefixExist($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -1154,7 +1142,7 @@ class EPCharacterCreator {
                           0,
                           true
                           );
-        if ($this->skillExistInArray($this->character->ego->skills, $ns)){
+        if (skillExistInArray($this->character->ego->skills, $ns)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Skill already exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }

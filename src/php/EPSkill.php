@@ -171,4 +171,27 @@ class EPSkill extends EPAtom{
      }
 }
 
+//Skills are unique by name AND prefix
+function getSkill(&$list,$name,$prefix=''){
+    if (is_array($list)){
+        foreach ($list as $l){
+            if (strcasecmp($l->name,$name) == 0 && strcasecmp($l->prefix,$prefix) == 0){
+                return $l;
+            }
+        }
+    }
+    return null;
+}
+
+function skillExistInArray(&$list,$skill){
+    if (is_array($list)){
+        foreach ($list as $l){
+            if (strcasecmp($l->name,$skill->name) == 0 && strcasecmp($l->prefix,$skill->prefix) == 0){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 ?>

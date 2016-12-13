@@ -959,9 +959,11 @@ if(isset($_POST['addTargetTo'])){
 			if($candidat != null){
 				if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
 
-                                    
-					$skill = $_SESSION['cc']->getSkillByName($_POST['targetVal']);
-					if($skill != null) $candidat->typeTarget = $skill->prefix;	
+                    error_log($_POST['targetVal']);
+                    $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+                    if($skill != null){
+                        $candidat->typeTarget = $skill->prefix;
+                    }
                                         
 				}
 				$candidat->forTargetNamed = $_POST['targetVal'];
@@ -981,13 +983,15 @@ if(isset($_POST['addTargetTo'])){
             if (!empty($bonusMalusArray)){
                 $candidat = $_SESSION['cc']->getBonusMalusByAtomeId($bonusMalusArray,$_POST['bmId']);   
             }
-		
+
             if($candidat != null){
                     $candidat->forTargetNamed = $_POST['targetVal'];
                     if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
-                                    $skill = $_SESSION['cc']->getSkillByName($_POST['targetVal']);
-                                    //error_log($_POST['targetVal']);
-                                    if($skill != null) $candidat->typeTarget = $skill->prefix;	
+                        error_log($_POST['targetVal']);
+                        $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+                        if($skill != null){
+                            $candidat->typeTarget = $skill->prefix;
+                        }
                     }
                     $_SESSION['cc']->adjustAll();
             }

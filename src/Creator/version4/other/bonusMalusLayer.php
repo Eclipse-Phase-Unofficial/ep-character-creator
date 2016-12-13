@@ -42,7 +42,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 									echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
 									foreach($totalSkills as $acSkill){
 												if($acSkill->prefix == $bm->typeTarget){
-													echo "	 <option value='".$acSkill->name."'>".$bm->typeTarget." : ".$acSkill->name."</option>";
+													echo "	 <option value='".$acSkill->getUid()."'>".$bm->typeTarget." : ".$acSkill->name."</option>";
 												}
 									}
 									echo "	 </select></label>";
@@ -69,7 +69,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 								foreach($activeSkillList as $acSkill){
 											if(!empty($acSkill->prefix)) $sk_prefix = $acSkill->prefix." : ";
 											else $sk_prefix = "";
-											echo "	 <option value='".$acSkill->name."'>".$sk_prefix.$acSkill->name."</option>";
+											echo "	 <option value='".$acSkill->getUid()."'>".$sk_prefix.$acSkill->name."</option>";
 								}
 								echo "	 </select></label>";
 								echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
@@ -97,7 +97,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 										else{
 											$sk_prefix = "";
 										}
-										echo "	 <option value='".$knSkill->name."'>".$sk_prefix.$knSkill->name."</option>";
+										echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
 									}
 									echo "	 </select></label>";
 								}
@@ -128,7 +128,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 									else{
 										$sk_prefix = "";
 									}
-									echo "	 <option value='".$knSkill->name."'>".$sk_prefix.$knSkill->name."</option>";
+									echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
 								}
 								echo "	 </select></label>";
 								echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
@@ -244,7 +244,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 												echo "	 <select class='bmChoiceSelect' id='".$bmMulti->getUid()."Sel'>";
 												foreach($totalSkills as $acSkill){
 													if($acSkill->prefix == $bmMulti->typeTarget){
-														echo "	 <option value='".$acSkill->name."'>".$acSkill->prefix." : ".$acSkill->name."</option>";
+														echo "	 <option value='".$acSkill->getUid()."'>".$acSkill->prefix." : ".$acSkill->name."</option>";
 													}
 												}
 												echo "	 </select></label>";
@@ -272,7 +272,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 											foreach($activeSkillList as $acSkill){
 												if(!empty($acSkill->prefix)) $sk_prefix = $acSkill->prefix." : ";
 													else $sk_prefix = "";
-													echo "	 <option value='".$acSkill->name."'>".$sk_prefix.$acSkill->name."</option>";
+													echo "	 <option value='".$acSkill->getUid()."'>".$sk_prefix.$acSkill->name."</option>";
 											}
 											echo "	 </select></label>";
 											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
@@ -299,7 +299,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 												else{
 													$sk_prefix = "";
 												}
-												echo "	 <option value='".$knSkill->name."'>".$sk_prefix.$knSkill->name."</option>";
+												echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
 											}
 											echo "	 </select></label>";
 											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
@@ -326,7 +326,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 												else{
 													$sk_prefix = "";
 												}
-												echo "	 <option value='".$knSkill->name."'>".$sk_prefix.$knSkill->name."</option>";
+												echo "	 <option value='".$knSkill->getUid()."'>".$sk_prefix.$knSkill->name."</option>";
 											}
 											echo "	 </select></label>";
 											echo "	 <span class='iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";

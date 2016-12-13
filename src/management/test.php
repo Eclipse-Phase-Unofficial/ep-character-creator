@@ -29,7 +29,7 @@ and open the template in the editor.
                 
                 $testFailed = array();
 
-                $cc = new EPCharacterCreator('.\config.ini');
+                $cc = new EPCharacterCreator('../php/config.ini');
                 $tools = new EPTestTools();
                 //===================== EPCharacterCreator TEST =========================
                 //-------------- init() -------------
@@ -124,16 +124,16 @@ and open the template in the editor.
                 }    
                 //------------- skills --------------------
                 $res = $cc->setSkillValue('Blades', 0, '');
-                if ($cc->getRealCPCostForSkill($cc->getSkillByName('Blades')) != 0){
+                if ($cc->getRealCPCostForSkill(getSkill($cc->character->ego->skills,'Blades')) != 0){
                     array_push($testFailed, ' -- setSkillValue() 15 to 0 FAILL !</br>');
                 }  
                 $res = $cc->setSkillValue('Blades', 40, '');
-                if ($cc->getRealCPCostForSkill($cc->getSkillByName('Blades')) != 40){
+                if ($cc->getRealCPCostForSkill(getSkill($cc->character->ego->skills,'Blades')) != 40){
                     array_push($testFailed, ' -- setSkillValue() 0 to 40 FAILL !</br>');
                 } 
                 $res = $cc->setSkillValue('Blades', 60, '');
-                if ($cc->getRealCPCostForSkill($cc->getSkillByName('Blades')) != 80){
-                    array_push($testFailed, ' -- setSkillValue() 0 to 60 FAILL ! ('.$cc->getRealCPCostForSkill($cc->getSkillByName('Blades')).') </br>');
+                if ($cc->getRealCPCostForSkill(getSkill($cc->character->ego->skills,'Blades')) != 80){
+                    array_push($testFailed, ' -- setSkillValue() 0 to 60 FAILL ! ('.$cc->getRealCPCostForSkill(getSkill($cc->character->ego->skills,'Blades')).') </br>');
                 }
                 //--------------- reputation ----------------------
                 $res = $cc->setReputation('@-Rep', 40);
@@ -269,10 +269,10 @@ and open the template in the editor.
                 echo '===============</br>';
                 echo '</br>';
                 echo '===============</br>';
-                echo 'Clubs = '.$cc->getSkillByName('Clubs')->getValue().'</br>';
+                echo 'Clubs = '.getSkill($cc->character->ego->skills,'Clubs')->getValue().'</br>';
                 $cc->setSkillValue('Clubs', 50);
                 echo 'Set Clubs to 50 </br>';
-                echo 'Clubs = '.$cc->getSkillByName('Clubs')->getValue().'</br>';
+                echo 'Clubs = '.getSkill($cc->character->ego->skills,'Clubs')->getValue().'</br>';
                 echo 'Rest need for Actives skills = '.$cc->getActiveRestNeed().'</br>';
                 echo '===============</br>';
                 echo '</br>';
