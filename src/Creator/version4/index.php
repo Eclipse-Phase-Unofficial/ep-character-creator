@@ -13,16 +13,23 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css" />
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/1.1.0/normalize.min.css"/>
-        <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Lato:400,700,400italic'>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic" />
         <link rel="stylesheet" href="scripts/vegas/vegas.css">
         <link rel="stylesheet" href="css/icomoon.css" />
-        <link rel="stylesheet" href="css/popup.css">
-        <link rel="stylesheet" href="css/main7.css">
+        <link rel="stylesheet" href="css/popup.css" />
+        <link rel="stylesheet" href="css/main7.css" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+        <script src="scripts/jquery.mCustomScrollbar.js"></script>
+        <script src="scripts/vegas/vegas.js"></script>
+        <script src="scripts/ajax_helper.js"></script>
     </head>
     <body>
-
         <div id="container">
         
         	<!-- HELP SLIDING WINDOW - DYNAMIC CONTENT-->
@@ -212,14 +219,6 @@
         <div class="popup" id="about_popup"></div>
         <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.0.6/jquery.mousewheel.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-        <script src="scripts/jquery.mCustomScrollbar.js"></script>
-        <script src="scripts/vegas/vegas.js"></script>
-        <script src="scripts/ajax_helper.js"></script>
         <script src="scripts/ajaxManager.js"></script>
         <script src="scripts/popup.js"></script>
         <script>
