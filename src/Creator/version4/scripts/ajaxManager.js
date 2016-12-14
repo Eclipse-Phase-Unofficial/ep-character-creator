@@ -29,20 +29,14 @@ $(document).ready(function(){
                         getCrePoint : 'get'
                 },
                 function(response){
-                		if(response.versioningFault){
-	                        closeAllPopup();
-	                        endLoading();
-                            loadPopup("#load_popup","popup-contents/load.php");
-                        }
-                        else if(response.sessionExist){
-	                        setRemainingPoint(response);
-	                        loaddingLoad();
-                        }
-                        else{
-	                        closeAllPopup();
-	                        endLoading();
-				        	loadPopup("#reset_popup","popup-contents/reset.php");
-                        }
+                    if(response.sessionExist){
+                        setRemainingPoint(response);
+                        loaddingLoad();
+                    }
+                    else{
+                        endLoading();
+                        loadPopup("#reset_popup","popup-contents/reset.php");
+                    }
                 });
             firstTime = false;
         }

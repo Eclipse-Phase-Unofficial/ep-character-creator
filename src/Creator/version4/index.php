@@ -1,15 +1,5 @@
 <?php 
 	error_reporting(0);
-	session_start();
-	if(isset($_FILES['uploadedfile'])){
-		$handle = fopen($_FILES['uploadedfile']['tmp_name'],'r');
-		$_SESSION['fileToLoad'] = fread($handle, filesize($_FILES['uploadedfile']['tmp_name']));
-		fclose($handle);
-		$_SESSION['creationMode'] = isset($_POST['creationMode']);
-		$_SESSION['rezPoints'] = $_POST['rezPoints'];
-	    $_SESSION['repPoints'] = $_POST['repPoints'];
-	    $_SESSION['credPoints'] = $_POST['credPoints'];
-	}
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

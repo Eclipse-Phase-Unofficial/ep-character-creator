@@ -54,8 +54,6 @@ function treatCreatorErrors(&$data,$creatorError){
 //INIT
 $return = array();
 $return['error'] = false;
-$_SESSION['versioningFault'] = false;
-$return['versioningFault'] = false; 
 $provider = new EPListProvider('../../../php/config.ini');
 
 	//error_log(print_r($_POST,true));
@@ -63,47 +61,41 @@ $provider = new EPListProvider('../../../php/config.ini');
 	//error_log(print_r($_SESSION,true));
 
 //if a file to load LOAD FILE
-if (isset($_SESSION['fileToLoad'])) {
-    $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
-    $_SESSION['cc']->back = new EPCharacterCreator("../../../php/config.ini");		
+if (isset($_POST['load_char'])) {
+    if(isset($_SESSION['fileToLoad'])){
+        $saveFile = json_decode($_SESSION['fileToLoad'],true);
 
-    $saveFile = json_decode($_SESSION['fileToLoad'],true);
- 
-    if (!empty($saveFile['versionNumber']) && floatval($saveFile['versionNumber']) >= $_SESSION['cc']->configValues->getValue('GeneralValues','versionNumberMin')){	
-		$_SESSION['cc']->loadSavePack($saveFile);
-        $_SESSION['cc']->back->loadSavePack($saveFile);
-        $_SESSION['cc']->back->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-        $_SESSION['cc']->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-        $_SESSION['cc']->back->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-        $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-                    
-        if ($_SESSION['cc']->creationMode == false){ //We are alreay in evo mode
-            $_SESSION['creationMode'] = false; //We force evo mode
-            $_SESSION['cc']->evoRezPoint += $_SESSION['rezPoints'];
-			$_SESSION['cc']->evoRepPoint += $_SESSION['repPoints'];
-			$_SESSION['cc']->evoCrePoint += $_SESSION['credPoints'];
-        }else{//We are in creation mode
-            if(!$_SESSION['creationMode']){//We pass in evo mode
-                $_SESSION['cc']->creationMode = false;
-                $_SESSION['cc']->evoCrePoint = $_SESSION['cc']->getCredit(); // we keep credits from creation mode
-				$_SESSION['cc']->evoRezPoint += $_SESSION['rezPoints'];
-				$_SESSION['cc']->evoRepPoint += $_SESSION['repPoints'];
-				$_SESSION['cc']->evoCrePoint += $_SESSION['credPoints'];
-            }else{//We stay in creation mode
-                $_SESSION['cc']->creationMode = true;
-            }            
+        if (!empty($saveFile['versionNumber']) && floatval($saveFile['versionNumber']) >= $_SESSION['cc']->configValues->getValue('GeneralValues','versionNumberMin')){
+            $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
+            $_SESSION['cc']->back = new EPCharacterCreator("../../../php/config.ini");
+
+            $_SESSION['cc']->loadSavePack($saveFile);
+            $_SESSION['cc']->back->loadSavePack($saveFile);
+            $_SESSION['cc']->back->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
+            $_SESSION['cc']->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
+            $_SESSION['cc']->back->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+            $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+
+            // Save pack and user both say we are in creation mode
+            if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == true ){
+                $_SESSION['cc']->creationMode = true; //We stay in creation mode
+            }else{
+                // We force evo mode
+                $_SESSION['creationMode'] = false;
+                $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
+                $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
+                $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
+            }
+
+            if (!empty($_SESSION['cc']->character->morphs)){
+                $_SESSION['cc']->activateMorph($_SESSION['cc']->character->morphs[0]);
+            }
+            $_SESSION['cc']->adjustAll();
+        }else{
+            treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
         }
-        
-        if (!empty($_SESSION['cc']->character->morphs)){
-            $_SESSION['cc']->activateMorph($_SESSION['cc']->character->morphs[0]);
-        }
-                
-		$_SESSION['fileToLoad'] = null; 
-        $_SESSION['cc']->adjustAll();            
-	}else{ 
-        $_SESSION['versioningFault'] = true;
-        $_SESSION['fileToLoad'] = null;  
-        $return['versioningFault'] = true; 
+    }else{
+        treatCreatorErrors($return,new EPCreatorErrors("No File Selected!",EPCreatorErrors::$SYSTEM_ERROR));
     }
 }
 

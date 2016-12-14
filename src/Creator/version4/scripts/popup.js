@@ -5,19 +5,15 @@
 
 function loaddingReset(){
 	setTimeout(function(){
+		closeAllPopup();
 		location.reload();
-		$("#reset_popup").css('opacity',0);
-		$("#reset_popup").css('visibility','hidden');
-	    closeAllPopup();
 	},1000);
 }
 
 function loaddingLoad(){
 	setTimeout(function(){
+		closeAllPopup();
 		endLoading();
-		$("#reset_popup").css('opacity',0);
-		$("#reset_popup").css('visibility','hidden');
-	    closeAllPopup();
 	},3000);
 }
 
@@ -34,8 +30,7 @@ function endLoading(){
 //**********Popup Helpers**********
 
 function closeAllPopup(){
-    if($("#load_popup").css('visibility') == 'visible' ||
-       $("#reset_popup").css('visibility') == 'visible'||
+    if($("#reset_popup").css('visibility') == 'visible'||
        $("#error_popup").css('visibility') == 'visible'){
         location.reload();
     }
@@ -146,11 +141,6 @@ $(document).on("click",".startButton",function() {
     return false;
 });
 
-//Click on the load load button
-$(document).on("click",".loadLoadButton",function() {
-    $('#loadForm').submit();
-});
-
 //Click on the save save button
 $(document).on("click",".saveSaveButton",function() {
     $('#saveForm').submit();
@@ -159,13 +149,22 @@ $(document).on("click",".saveSaveButton",function() {
 
 //Load file
 $(document).on('submit','#loadForm', function () {
-    var fileVal = $('#fileName').val();
-    if(fileVal == ""){
-        $('#errorLoadMsg').html("Choose a file !");
-        return false;
-    }
-    else{
-        closeAllPopup();
-    }
+    startLoading();
+    ajax_helper({
+            load_char :     true,
+            creationMode:   $('#creationMode').prop("checked"),
+            rezPoints:      $('#rezPoints').val(),
+            repPoints:      $('#repPoints').val(),
+            credPoints:     $('#credPoints').val()
+        },
+        function(response){
+            if(response.error) {
+                endLoading();
+                treatMessageError(response);
+            }else{
+                location.reload();
+                return false;
+            }
+        });
+    return false;
 });
-

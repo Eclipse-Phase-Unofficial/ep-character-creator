@@ -1,7 +1,4 @@
-<?php
-session_start();
-?>
-<form action="index.php" id="loadForm" method="POST" enctype="multipart/form-data">
+<form id="loadForm" method="POST">
 	<table class="popup_table" id="table_load" align="center">
 		<tr align="center">
 			<td>
@@ -13,16 +10,14 @@ session_start();
 			<td>
 				If you have save a character you can reload it on the system for evolving or changing details.
 				<br><br>
-				
-				<input type="hidden" name="MAX_FILE_SIZE" value="1000000000" />
-				Choose a file to upload: <input id="fileName" name="uploadedfile" type="file">
+				Choose a file: <iframe style="position: absolute; border:none;" src="other/upload_file.php"></iframe>
 				<br><br>
 			</td>
 		</tr>
 		
 		 <tr align="center">	
 			<td>
-				<input type="checkbox" name="creationMode" value="cre"/> Check if you want to continue on creation mode.
+				<input type="checkbox" id="creationMode" name="creationMode" value="cre" checked/> Check if you want to continue on creation mode.
 				<br><br>
 				I have earned <input style="line-height: 1em;" id="rezPoints" name="rezPoints" type="number" min="0" value="0"> Rez points.
 				<br><br>
@@ -32,30 +27,17 @@ session_start();
 				<br><br>
 			</td>
 		</tr>
-		
-		<tr align="center">
-			<td>
-				<div id="errorLoadMsg">
-					<?php
-						if($_SESSION['versioningFault']){
-							echo "<label style='color:red'>Your file version is too old and no more compatible, sorry.</label>";
-						}
-						$_SESSION['versioningFault'] = false;
-					?>
-				</div>
-			</td>
-		</tr>
-		
+
 		<tr align="center">
 			<td>
 				<br><br>
-				<button class="loadLoadButton popupInnerButton">
+				<button type="submit" class="popupInnerButton">
 			       			Load 
 		        </button>
-		        </form>
-		        <button class="closeButton popupInnerButton">
+		        <button type="button" class="closeButton popupInnerButton">
 			       			Cancel
 		        </button>
 			</td>	
 		</tr>
 	</table>
+</form>
