@@ -1640,7 +1640,7 @@ ul#implants li:hover{
 	vertical-align: middle;
 	visibility: visible;
 	display: block;
-	z-index: 3;
+	z-index: 100;
 }
 
 #user-messages{

@@ -141,9 +141,6 @@ $(document).on("click",".startButton",function() {
                 setRemainingPoint(response);
 
             }
-        },
-        function(XMLHttpRequest, textStatus, errorThrown) {
-                    displayError('There was an error.<br>'+textStatus+'<br>'+errorThrown+'<br>');
         }
     );
     return false;

@@ -22,7 +22,7 @@ function do_ajax(data,success_function) {
     ajax_helper(data,
         function(response){
             if(response.error) {
-                treatMessageError(response,DISPLAY_ON_TOP);
+                treatMessageError(response);
             }
             else {
                 success_function(response)
