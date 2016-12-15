@@ -1,9 +1,13 @@
-
+//Helper library for ajax and error messages
+// This helps reduce boilerplate code, and increases consistency
 
 var dispatcherURL = 'scripts/dispatcher.php';
 
-//Handle the boilerplate ajax code
-function ajax_helper(data,success_function,error_function) {
+// Handle the boilerplate ajax code
+//
+// Do not use except in special circumstances.
+// In 90% of the cases, do_ajax(...) provides all the functionality, and handles displaying errors.
+function ajax_helper(data,success_function) {
     $.ajax({
         type : 'POST',
         contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',
@@ -17,7 +21,10 @@ function ajax_helper(data,success_function,error_function) {
     });
 }
 
-//Send an ajax request, and process the result
+// Send an ajax request, and process the result
+//
+// Handles error responses.
+// Use this one most of the time
 function do_ajax(data,success_function) {
     ajax_helper(data,
         function(response){
@@ -28,4 +35,45 @@ function do_ajax(data,success_function) {
                 success_function(response)
             }
         });
+}
+
+//**********Error display functions**********//
+var USER_MSG_HTML = "<div id='user-messages'></div>";
+
+function treatMessageError(response){
+	if(response.erType == "rules" || response.erType == "system"){
+		displayRulesMessage(response.msg);
+	}
+	else if(response.msg == ''){
+		displayError('An Error Occured!<br>No Error Message Recieved!');
+	}
+	else{
+		displayError(response.msg);
+	}
+}
+
+// Puts a temporary message on screen that slowly fades out
+// This is a fairly unobtrusive way to tell the user when they are attempting an invalid action
+function displayRulesMessage(msg){
+	$("#messages").stop( true, true ).fadeOut();
+	$("#user-messages").stop( true, true ).fadeOut();
+	$("#messages").html(USER_MSG_HTML);
+	$("#user-messages").html(msg);
+	$("#messages").fadeIn();
+	$("#user-messages").fadeIn();
+    $("#messages").fadeOut(15000);
+}
+
+function hideRulesMessage(){
+	$("#messages").html(USER_MSG_HTML);
+    $("#user-messages").fadeOut();
+}
+
+//Should be in popup.js, but preventing circular dependencies
+function displayError(error_message){
+    $(".popup").css('opacity',0);
+    $(".popup").css('visibility','hidden');
+    $("#error_popup").html(error_message);
+    $("#error_popup").css('opacity',1);
+    $("#error_popup").css('visibility','visible');
 }

@@ -3,7 +3,6 @@ var firstTime = true;
 
 var TERTIARY_INFO_HTML = "<div id='tertiary_infos'></div>";
 var QUATERNARY_INFO_HTML = "<div id='quaternary_infos'></div>";
-var USER_MSG_HTML = "<div id='user-messages'></div>";
 
 var DISPLAY_ON_4 = 4;
 var DISPLAY_ON_3 = 3;
@@ -1507,18 +1506,6 @@ function removeSkill(node, after) {
         });
 }
 
-function treatMessageError(response){
-	if(response.erType == "rules" || response.erType == "system"){
-		displayRulesMessage(response.msg);
-	}
-	else if(response.msg == ''){
-		displayError('An Error Occured!<br>No Error Message Recieved!');
-	}
-	else{
-		displayError(response.msg);
-	}
-}
-
 function displayMessageOnTop(msg){
 	$("#base-infos").html(msg);
     $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
@@ -1544,16 +1531,6 @@ function displayMessageOnQuaternary(msg){
 
 }
 
-function displayRulesMessage(msg){
-	$("#messages").stop( true, true ).fadeOut();
-	$("#user-messages").stop( true, true ).fadeOut();
-	$("#messages").html(USER_MSG_HTML);
-	$("#user-messages").html(msg);
-	$("#messages").fadeIn();
-	$("#user-messages").fadeIn();
-    $("#messages").fadeOut(15000);
-}
-
 
 function hideErrorsMsg(){
 	hideRulesMessage();
@@ -1569,11 +1546,6 @@ function hideQuaternaryContent(){
 function hideTertiaryContent(){
 	$("#tertiary").html(TERTIARY_INFO_HTML);
     $("#tertiary_infos").css('visibility','hidden');
-}
-
-function hideRulesMessage(){
-	$("#messages").html(USER_MSG_HTML);
-    $("#user-messages").fadeOut();
 }
 
 function setRemainingPoint(ajaxData){

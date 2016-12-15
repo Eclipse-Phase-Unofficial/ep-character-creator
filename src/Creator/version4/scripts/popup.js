@@ -1,4 +1,5 @@
 //POPUP MANAGEMENT =================
+//Requires: ajax_helper.js
 
 //**************************************************
 //**********Loading Popup**********
@@ -48,14 +49,6 @@ function loadPopup(popup_name,url){
         $(popup_name).css('opacity',1);
         $(popup_name).css('visibility','visible');
     }
-}
-
-function displayError(error_message){
-    $(".popup").css('opacity',0);
-    $(".popup").css('visibility','hidden');
-    $("#error_popup").html(error_message);
-    $("#error_popup").css('opacity',1);
-    $("#error_popup").css('visibility','visible');
 }
 
 //**************************************************
@@ -129,6 +122,7 @@ $(document).on("click",".startButton",function() {
         },
         function(response){
             if(response.error){
+                endLoading();
                 $("#reset_popup").html(response.msg);
             }
             else{
