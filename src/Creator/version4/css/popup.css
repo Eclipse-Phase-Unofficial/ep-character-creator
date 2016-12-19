@@ -101,7 +101,7 @@
 
 /*===============POPUPS=====================*/
 
-.popup {
+#popup {
     display: inline-block;
     left: 2%;
     opacity: 0;

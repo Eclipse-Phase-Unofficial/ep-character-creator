@@ -31,23 +31,30 @@ function endLoading(){
 //**********Popup Helpers**********
 
 function closeAllPopup(){
-    if($("#reset_popup").css('visibility') == 'visible'||
-       $("#error_popup").css('visibility') == 'visible'){
+    if($('#popup').data('name') == 'reload_popup' ||
+        $('#popup').data('name') == 'error_popup'){
         location.reload();
     }
-    $(".popup").css('opacity',0);
-    $(".popup").css('visibility','hidden');
+    $('#popup').data('name','');
+    $("#popup").css('opacity',0);
+    $("#popup").css('visibility','hidden');
 }
 
+// Load a url into #popup
+//
+// If attempting to reload the same popup instead close it.
+// Note: A popup name of "reload_popup" or "error_popup" is treated in a special manner.
+//       If this popup is ever closed the page will reload.
 function loadPopup(popup_name,url){
-    if($(popup_name).css('visibility') == 'visible'){
+    //Let an already loaded popup close instead of reloading it
+    if($('#popup').data('name') != popup_name){
         closeAllPopup();
-    }
-    else{
+        $('#popup').data('name',popup_name)
+        $('#popup').load(url);
+        $('#popup').css('opacity',1);
+        $('#popup').css('visibility','visible');
+    }else{
         closeAllPopup();
-        $(popup_name).load(url);
-        $(popup_name).css('opacity',1);
-        $(popup_name).css('visibility','visible');
     }
 }
 
@@ -82,7 +89,7 @@ $("#exportButton").click(function() {
 
 // Reset button
 $("#settingsButton").click(function() {
-        loadPopup("#reset_popup","popup-contents/reset.php");
+        loadPopup("reload_popup","popup-contents/reset.php");
 });
 
 // About button
@@ -93,16 +100,13 @@ $("#aboutButton").click(function() {
 //**************************************************
 
 // Close about, check, and error popups by clicking on them
-$("#validation_popup").click(function() {
-    closeAllPopup();
-});
-
-$("#about_popup").click(function() {
-    closeAllPopup();
-});
-
-$("#error_popup").click(function() {
-    closeAllPopup();
+$("#popup").click(function() {
+    var popup_name = $('#popup').data('name');
+    if(popup_name == '#about_popup' ||
+       popup_name == '#validation_popup' ||
+       popup_name == 'error_popup'){
+        closeAllPopup();
+    }
 });
 
 //**************************************************
@@ -123,7 +127,7 @@ $(document).on("click",".startButton",function() {
         function(response){
             if(response.error){
                 endLoading();
-                $("#reset_popup").html(response.msg);
+                displayError(response.msg);
             }
             else{
                 loaddingReset();

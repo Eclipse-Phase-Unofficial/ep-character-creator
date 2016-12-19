@@ -71,9 +71,10 @@ function hideRulesMessage(){
 
 //Should be in popup.js, but preventing circular dependencies
 function displayError(error_message){
-    $(".popup").css('opacity',0);
-    $(".popup").css('visibility','hidden');
-    $("#error_popup").html(error_message);
-    $("#error_popup").css('opacity',1);
-    $("#error_popup").css('visibility','visible');
+    $("#popup").css('opacity',0);
+    $("#popup").css('visibility','hidden');
+    $("#popup").html(error_message);
+    $('#popup').data('name','error_popup');
+    $("#popup").css('opacity',1);
+    $("#popup").css('visibility','visible');
 }

@@ -34,7 +34,7 @@ $(document).ready(function(){
                     }
                     else{
                         endLoading();
-                        loadPopup("#reset_popup","popup-contents/reset.php");
+                        loadPopup("reload_popup","popup-contents/reset.php");
                     }
                 });
             firstTime = false;
