@@ -41,120 +41,38 @@
         	<section id="primary">
         		<nav id="main-nav">
     			<ul>
-    				<li>
-    					<a class="background" href="#">
-    						<span class="icone" data-icon="&#x2f;"></span>
-							background
-							<span class="btnhelp" id="backgrounds" data-icon="&#x2a;"></span>
-						</a>
-    				</li>
-    				<li>
-    					<a class="faction" href="#">
-    						<span class="icone" data-icon="&#x30;"></span>
-							faction
-							<span class="btnhelp" id="faction" data-icon="&#x2a;"></span>
-						</a>
-					</li>
-    				<li>
-    					<a class="motivations" href="#">
-    						<span class="icone" data-icon="&#x28;"></span>
-    						motivations
-    						<span class="btnhelp" id="motivations" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="aptitudes" href="#">
-    						<span class="icone" data-icon="&#x21;"></span>
-    						aptitudes
-    						<span class="btnhelp" id="aptitudes" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="rep" href="#">
-    						<span class="icone" data-icon="&#x24;"></span>
-    						rep
-    						<span class="btnhelp" id="rep" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-					<li>
-						<a class="positive-traits" href="#">
-							<span class="icone" data-icon="&#x35;"></span>
-							ego pos. traits
-							<span class="btnhelp" id="posTrait" data-icon="&#x2a;"></span>
-						</a>
-					</li>
-					<!--
-					<li>
-						<a class="neutral-traits" href="#">
-							<span class="icone" data-icon="&#x34;"></span>
-							ego neutral traits
-							<span class="btnhelp" id="neuTrait" data-icon="&#x2a;"></span>
-						</a>
-					</li>
-					-->
-    				<li>
-    					<a class="negative-traits" href="#">
-    						<span class="icone" data-icon="&#x36;"></span>
-    						ego neg. traits
-    						<span class="btnhelp" id="negTrait" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-					<li>
-						<a class="active-skills" href="#">
-							<span class="icone" data-icon="&#x2d;"></span>
-							active skills
-							<span class="btnhelp" id="activeSkills" data-icon="&#x2a;"></span>
-						</a>
-					</li>
-    				<li>
-    					<a class="knowledge-skills" href="#">
-    						<span class="icone" data-icon="&#x2e;"></span>
-    						knowledge skills
-    						<span class="btnhelp" id="knowledgeSkills" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="morph" href="#">
-    						<span class="icone" data-icon="&#x32;"></span>
-    						morph
-    						<span class="btnhelp" id="morph" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="soft" href="#">
-    						<span class="icone" data-icon="&#x33;"></span>
-    						ai's & soft gear
-    						<span class="btnhelp" id="soft" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="psy" href="#">
-    						<span class="icone" data-icon="&#x34;"></span>
-    						psi sleights
-    						<span class="btnhelp" id="psy" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="credit" href="#">
-    						<span class="icone" data-icon="&#x38;"></span>
-    						credit
-    						<span class="btnhelp" id="credit" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="stat" href="#">
-    						<span class="icone" data-icon="&#x37;"></span>
-    						stat
-    						<span class="btnhelp" id="moxie" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
-    				<li>
-    					<a class="lastdetails" href="#">
-    						<span class="icone" data-icon="&#x27;"></span>
-    						last details
-    						<span class="btnhelp" id="lastdetails" data-icon="&#x2a;"></span>
-    					</a>
-    				</li>
+                    <?php
+                    $main_menu = array(
+                        array("background","&#x2f;","Background","backgrounds"),
+                        array("faction","&#x30;","Faction","faction"),
+                        array("motivations","&#x28;","Motivations","motivations"),
+                        array("aptitudes","&#x21;","Aptitudes","aptitudes"),
+                        array("rep","&#x24;","Rep","rep"),
+                        array("positive-traits","&#x35;","ego pos. traits","posTrait"),
+//                         array("neutral-traits","&#x34;","ego neutral traits","neuTrait"),
+                        array("negative-traits","&#x36;","ego neg. traits","negTrait"),
+                        array("active-skills","&#x2d;","Active Skills","activeSkills"),
+                        array("knowledge-skills","&#x2e;","Knowledge Skills","knowledgeSkills"),
+                        array("morph","&#x32;","Morph","morph"),
+                        array("soft","&#x33;","Ai's & Soft Gear","soft"),
+                        array("psy","&#x34;","Psi Sleights","psy"),
+                        array("credit","&#x38;","Credit","credit"),
+                        array("stat","&#x37;","Stat","moxie"),
+                        array("lastdetails","&#x27;","Last Details","lastdetails")
+                        );
+                    function createElement($item_class,$icon,$display_name,$help_id){
+                        echo '<li>';
+                        echo '  <a class="'.$item_class.'" href="#">';
+                        echo '      <span class="icone" data-icon="'.$icon.'"></span>';
+                        echo        $display_name;
+                        echo '      <span class="btnhelp" id="'.$help_id.'" data-icon="&#x2a;"></span>';
+                        echo '  </a>';
+                        echo '</li>';
+                    };
+                    foreach ($main_menu as $i){
+                        createElement($i[0],$i[1],$i[2],$i[3]);
+                    }
+                    ?>
     			</ul>
     			</nav>
         	</section>
