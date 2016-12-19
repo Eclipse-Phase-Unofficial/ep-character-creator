@@ -30,11 +30,11 @@ $(document).ready(function(){
                 function(response){
                     if(response.sessionExist){
                         setRemainingPoint(response);
-                        loaddingLoad();
+                        endLoading();
                     }
                     else{
-                        endLoading();
                         loadPopup("reload_popup","popup-contents/reset.php");
+                        endLoading();
                     }
                 });
             firstTime = false;

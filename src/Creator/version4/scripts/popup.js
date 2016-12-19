@@ -4,21 +4,6 @@
 //**************************************************
 //**********Loading Popup**********
 
-function loaddingReset(){
-	setTimeout(function(){
-		closeAllPopup();
-		location.reload();
-	},1000);
-}
-
-function loaddingLoad(){
-	setTimeout(function(){
-		closeAllPopup();
-		endLoading();
-	},3000);
-}
-
-
 function startLoading(){
 	$("#loading_popup").show();
 }
@@ -130,9 +115,7 @@ $(document).on("click",".startButton",function() {
                 displayError(response.msg);
             }
             else{
-                loaddingReset();
-                setRemainingPoint(response);
-
+                location.reload();
             }
         }
     );
@@ -161,7 +144,6 @@ $(document).on('submit','#loadForm', function () {
                 treatMessageError(response);
             }else{
                 location.reload();
-                return false;
             }
         });
     return false;
