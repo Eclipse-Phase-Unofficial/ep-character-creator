@@ -60,6 +60,7 @@ $provider = new EPListProvider('../../../php/config.ini');
 	//error_log(print_r($_POST,true));
 	//error_log(print_r($_FILES,true));
 	//error_log(print_r($_SESSION,true));
+//     returnErrors($return,"Forced Error!");
 
 //if a file to load LOAD FILE
 if (isset($_POST['load_char'])) {
@@ -118,15 +119,6 @@ if(isset($_POST['setCP'])){
     //error_log("NEW CHAR");
 }
 
-//INFOS
-if(isset($_POST['infosId'])){
-	if($provider->getInfosById($_POST['infosId'])!= null){
-		 $return['infoData'] = $provider->getInfosById($_POST['infosId']);
-	}
-	else{
-        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-    }
-}
 //GET ORIGINE
 if(isset($_POST['getBcg'])){
 	if($_SESSION['cc']->getCurrentBackground() != null){

@@ -40,23 +40,13 @@ $(document).ready(function(){
             firstTime = false;
         }
 
-        //HELPS (Sliding from the bottom)
-        //first html page (don't know why the second option is not working for the first page)
-        $('.btnhelp').on('click' , function () {
-            do_ajax({infosId : $(this).attr('id')},
-                    function(response){
-                        displayMessageOnTop(response.infoData);
-            });
-        return false;
-        });
-
-        //dynamic pages  (morph page)
-        $(document).on('click', '.btnhelp' , function () {
-            do_ajax({infosId : $(this).attr('id')},
-                    function(response){
-                        displayMessageOnTop(response.infoData);
-            });
-        return false;
+        //Tooltips (used for help buttons)
+        $(document).tooltip({
+            position: { at: "right center" },
+            content: function(){
+                var element = $( this );
+                return element.attr('title');
+            }
         });
 
         //BACKGROUND

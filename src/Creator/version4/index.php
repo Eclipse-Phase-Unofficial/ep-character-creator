@@ -1,5 +1,7 @@
-<?php 
-	error_reporting(0);
+<?php
+    require_once '../../php/EPListProvider.php';
+    error_reporting(0);
+    $provider = new EPListProvider('../../php/config.ini');
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -61,11 +63,12 @@
                         array("lastdetails","&#x27;","Last Details","lastdetails")
                         );
                     function createElement($item_class,$icon,$display_name,$help_id){
+                        global $provider;
                         echo '<li>';
                         echo '  <a class="'.$item_class.'" href="#">';
                         echo '      <span class="icone" data-icon="'.$icon.'"></span>';
                         echo        $display_name;
-                        echo '      <span class="btnhelp" id="'.$help_id.'" data-icon="&#x2a;"></span>';
+                        echo '      <span class="btnhelp" data-icon="&#x2a;" title="'.$provider->getInfosById($help_id).'"></span>';
                         echo '  </a>';
                         echo '</li>';
                     };
@@ -93,7 +96,7 @@
             		RP <span id="reputation_remain" class="rest"></span><br>
             		CR <span id="credit_remain" class="rest"></span><br>
                     ASR <span id="asr_remain" class="rest"></span><br>
-                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelp" id="points" data-icon="&#x2a;"></span><br>
+                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelp" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span><br>
                     RZ <span id="rez_remain" class="rest"></span><br>
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
@@ -135,7 +138,6 @@
         <script src="scripts/ajaxManager.js"></script>
         <script src="scripts/popup.js"></script>
         <script>
-
             $( function() {
                 //NAVIGATION JQUERRY
                 //class active au menu principal

@@ -72,6 +72,7 @@ session_start();
         
          
          function getFormatedMorphList($totalMorphList,$currentList){
+             $provider = new EPListProvider('../../../php/config.ini');
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){
 	         	$cost_string = "";
@@ -92,19 +93,19 @@ session_start();
             		$htmlBlock .= "		<a class='morph-settings' id='".$m->name."' href='#'><span class='icone' data-icon='&#x27;'></span>settings</a>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
-            		$htmlBlock .= "		<a class='morph-positive-traits' id='".$m->name."' href='#'><span class='icone' data-icon='&#x35;'></span>morph pos. traits</span><span class='btnhelp' id='posTrait' data-icon='&#x2a;'></a>";
+            		$htmlBlock .= "		<a class='morph-positive-traits' id='".$m->name."' href='#'><span class='icone' data-icon='&#x35;'></span>morph pos. traits</span><span class='btnhelp' id='posTrait' data-icon='&#x2a;' title='".$provider->getInfosById('posTrait')."'></a>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
-            		$htmlBlock .= "		<a class='morph-neutral-traits' id='".$m->name."' href='#'><span class='icone' data-icon='&#x34;'></span>morph neutral traits</span><span class='btnhelp' id='neuTrait' data-icon='&#x2a;'></a>";
+            		$htmlBlock .= "		<a class='morph-neutral-traits' id='".$m->name."' href='#'><span class='icone' data-icon='&#x34;'></span>morph neutral traits</span><span class='btnhelp' id='neuTrait' data-icon='&#x2a;' title='".$provider->getInfosById('neuTrait')."'></a>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
-            		$htmlBlock .= "		<a class='morph-negative-traits'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x36;'></span>morph neg. traits</span><span class='btnhelp' id='negTrait' data-icon='&#x2a;'></a>";
+            		$htmlBlock .= "		<a class='morph-negative-traits'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x36;'></span>morph neg. traits</span><span class='btnhelp' id='negTrait' data-icon='&#x2a;' title='".$provider->getInfosById('negTrait')."'></a>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
-            		$htmlBlock .= "		<a class='implants'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x31;'></span>implants<span class='btnhelp' id='implants' data-icon='&#x2a;'></a>";
+            		$htmlBlock .= "		<a class='implants'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x31;'></span>implants<span class='btnhelp' id='implants' data-icon='&#x2a;' title='".$provider->getInfosById('implants')."'></a>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
-            		$htmlBlock .= "		<a class='gear'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x33;'></span>gear<span class='btnhelp' id='gear' data-icon='&#x2a;'></a>";
+            		$htmlBlock .= "		<a class='gear'  id='".$m->name."' href='#'><span class='icone' data-icon='&#x33;'></span>gear<span class='btnhelp' id='gear' data-icon='&#x2a;' title='".$provider->getInfosById('gear')."'></a>";
             		$htmlBlock .= "</li>";
             	}
             	else{
