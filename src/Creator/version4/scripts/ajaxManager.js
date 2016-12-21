@@ -16,11 +16,10 @@ $(document).ready(function(){
 
         //FIRST OPEN WEB PAGE -- INIT
         if(firstTime){
-        	
-        	//hide help panel
-        	$(".help").hide();
+
+            //Hide messages pane
         	$("#messages").fadeOut();
-        	
+
         	startLoading();
         	//initialize character and extract first data
             ajax_helper({
@@ -1491,11 +1490,6 @@ function removeSkill(node, after) {
         function(response){
                     $("#secondary").load(after);
         });
-}
-
-function displayMessageOnTop(msg){
-	$("#base-infos").html(msg);
-    $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
 }
 
 function displayMessageOnTertiary(msg,title){

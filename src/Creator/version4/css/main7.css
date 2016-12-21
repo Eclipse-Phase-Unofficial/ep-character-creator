@@ -1356,31 +1356,6 @@ ul#implants li:hover{
 	opacity: 1;
 }
 
-
-/*help*/
-.help{
-	padding: 0;
-	margin:0;
-	background-color: rgba(255, 255, 255, .95);
-	width: 100%;
-	border-bottom: 1px solid #333;
-	height: auto;
-}
-
-#base-infos{
-	margin: 0 auto;
-	padding: 3em 0;
-	width: 25em;
-	font-size:1.25em;
-	color: hsl(200,10%,40%);
-}
-
-#base-infos p{
-	padding: 0;
-	margin:0;
-	margin-bottom: .7em;
-}
-
 /*remaining points*/
 .points{
 	position: absolute;

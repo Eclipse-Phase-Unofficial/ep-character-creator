@@ -30,12 +30,7 @@
     </head>
     <body>
         <div id="container">
-        
-        	<!-- HELP SLIDING WINDOW - DYNAMIC CONTENT-->
-        	<section class="help">
-        		<div id="base-infos"></div>
-        	</section>
-        	
+
         	<!-- MAIN MENU - STATIC CONTENT-->       	
         	<section id="primary" class="panel">
         		<nav id="main-nav">
@@ -141,9 +136,6 @@
                 $("#main-nav li a").click(function(){
                     $(".active").removeClass("active");
                     $(this).toggleClass("active");
-                    if($('.help').is(':visible')) {
-                        $(".help").animate({height: "toggle"}, 350, 'easeInOutQuint');
-                    }
                     $("#tertiary_infos").css('visibility','hidden');
                     return false;
                 });
