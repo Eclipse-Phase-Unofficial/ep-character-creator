@@ -25,9 +25,6 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-        <script src="scripts/jquery.mCustomScrollbar.js"></script>
         <script src="scripts/vegas/vegas.js"></script>
         <script src="scripts/ajax_helper.js"></script>
     </head>
@@ -149,11 +146,6 @@
                     }
                     $("#tertiary_infos").css('visibility','hidden');
                     return false;
-                });
-
-                $("a.help-btn").hide();
-                $(".mainlist li").hover(function(){
-                    $(this).find('.help-btn').toggle();
                 });
 
                 //background slideshow
