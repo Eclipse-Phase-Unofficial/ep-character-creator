@@ -40,7 +40,7 @@
         	</section>
         	
         	<!-- MAIN MENU - STATIC CONTENT-->       	
-        	<section id="primary">
+        	<section id="primary" class="panel">
         		<nav id="main-nav">
     			<ul>
                     <?php
@@ -68,7 +68,7 @@
                         echo '  <a class="'.$item_class.'" href="#">';
                         echo '      <span class="icone" data-icon="'.$icon.'"></span>';
                         echo        $display_name;
-                        echo '      <span class="btnhelp" data-icon="&#x2a;" title="'.$provider->getInfosById($help_id).'"></span>';
+                        echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$provider->getInfosById($help_id).'"></span>';
                         echo '  </a>';
                         echo '</li>';
                     };
@@ -96,7 +96,7 @@
             		RP <span id="reputation_remain" class="rest"></span><br>
             		CR <span id="credit_remain" class="rest"></span><br>
                     ASR <span id="asr_remain" class="rest"></span><br>
-                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelp" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span><br>
+                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span><br>
                     RZ <span id="rez_remain" class="rest"></span><br>
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->

@@ -8,11 +8,11 @@ session_start();
         $_SESSION['cc']->activateMorph($morph);
         
         echo "<li>";
-		echo "		<label class='listSection'>".$morph->name."</label>";
+		echo "		<span class='listSection'>".$morph->name."</span>";
 		echo "</li>";
 		foreach($_SESSION['cc']->getAptitudes() as $m){
         	echo "<li>";
-        	echo "		<label>".$m->name."</label><label class='score'>[".$m->getValue()."] </label>";
+        	echo "		<span class='paddedLeft'>".$m->name."</span><span class='score'>[".$m->getValue()."] </span>";
         	echo "</li>";
         	
          }

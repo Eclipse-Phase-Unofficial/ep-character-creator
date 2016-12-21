@@ -1198,16 +1198,13 @@ $(document).ready(function(){
         
          //click on moxie for description
     	$(document).on('click', '.descMoxie' ,function () {
-    			hideErrorsMsg();
-        		var moxName = $(this).attr('id');	
                 do_ajax( {
-                            mox :moxName             
+                            mox : true
                     },
                     function(response){
                     		 	displayMessageOnTertiary(response.desc);
                     });
 				return false;
-        
         });
 
         

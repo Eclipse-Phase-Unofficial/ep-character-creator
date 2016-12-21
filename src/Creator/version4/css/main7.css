@@ -147,7 +147,7 @@ span.EP{
 	background-position: 0px -150px;
 }
 
-/* SECONDAY, TERTIARY and QUATERNARY panels */
+/* PRIMARY, SECONDAY, TERTIARY and QUATERNARY panels */
 section.panel {
 	position: relative;
 	float: left;
@@ -155,24 +155,18 @@ section.panel {
 	/*background-color: rgba(242, 242, 242, .2);*/
 	overflow: auto;
 	margin-left: 1px;
-	width: 21em;
+	width: 20em;
+	z-index: 2;
 }
 
 /*PRIMARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 #primary{
-	position: relative;
-	float: left;
-	height: 100%;
-	width: 20em;
-	z-index: 2;
+    margin-left: 0px;
 }
-	
+
 
 /*première colonne*/
 #main-nav{
-	width: 20em;
-	min-width: 20em;
-	height:100%;
 	overflow-y: auto;
 	list-style: none;
 }
@@ -206,7 +200,6 @@ section.panel {
 
 #main-nav .icone{
 	display: inline-block;
-	line-height: 2em;
 	width: 3em;
 	text-align: center;
 	border-right: 1px solid rgba(148,155,153,.6);
@@ -226,34 +219,6 @@ section.panel {
 	width: 100%;
 }
 
-a.active .btnhelp{
-	opacity: 1;
-}
-
-
-.btnhelp{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .2;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-.btnhelp:hover{
-	opacity: 1;
-}
-
 /************SHARED************/
 .listSection{
 	font-size: x-small;
@@ -271,6 +236,7 @@ a.active .btnhelp{
 	position: relative;
 	display: block;
 	line-height:3em;
+	vertical-align: middle;
 	text-decoration: none;
 	text-transform: uppercase;
 	color: hsl(200,10%,40%);
@@ -284,6 +250,10 @@ a.active .btnhelp{
 	margin: 0;
 }
 
+/*.mainlist li{
+	padding-left: 1em;
+}*/
+
 .foldingListSection{
 	font-size: x-small;
 	color: rgb(186, 0, 80);
@@ -294,17 +264,7 @@ a.active .btnhelp{
 	padding-right: 1em;
 }
 
-/************Occurrences (Buy/Sell More gear)************/
-.iconPlusMinus{
-	display: block;
-	line-height: 2em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
+.slowTransition{
 	-webkit-transition: opacity .3s ease .2s;
 	   -moz-transition: opacity .3s ease .2s;
 	    -ms-transition: opacity .3s ease .2s;
@@ -312,17 +272,40 @@ a.active .btnhelp{
 	        transition: opacity .3s ease .2s;
 }
 
-.iconPlusMinus:hover{
+.slowTransition:hover{
 	opacity: 1;
+}
+
+.btnhelp{
+	float: right;
+	padding-right: 1em;
+	opacity: .2;
+
+}
+
+a.active .btnhelp{
+	opacity: 1;
+}
+
+/* All plus or minus icons, also works with 'X' icons */
+.iconPlusMinus{
+	float: right;
+	padding-right: 1em;
+	padding-left: 1em;
+	opacity: .8;
+
+}
+
+.iconPlusMinus:hover{
 	color: rgb(186, 0, 80);
 }
 
-.iconeAddOccu{
-	right: 5em;
+.betweenPlusMinus{
+	float: right;
 }
 
-.iconeRemOccu{
-	right: 0;
+.paddedLeft{
+	padding-left: 1em;
 }
 
 /*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -419,30 +402,6 @@ a.active .btnhelp{
 	display: block;
 	line-height:3em;
 	padding-right: 1em;
-}
-
-#motivation .icone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#motivation .icone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
 }
 
 /*free gear*/
@@ -738,25 +697,9 @@ a.active .btnhelp{
 }
 
 .score {
-	display: block;
-	text-align: right;
-	position: absolute;
-	right: 3em;
-	top: 0em;
-	padding-right: 1em;
-}
-
-.occurences {
-	font-size: small;
-	color: hsl(200,10%,40%);
-	padding-left: 1em;
-	line-height:2.5em;	
-	display: block;
-	text-align: right;
-	position: absolute;
-	right: 3em;
-	top: 0em;
-	padding-right: 1em;
+    width: 3em;
+    float: right;
+    text-align: left;
 }
 
 .score_rep {
@@ -871,102 +814,12 @@ a.active .btnhelp{
 	width: 100%;
 }
 
-#morphs a.active .btnhelp{
-	opacity: 1;
-}
-
-
-#morphs .btnhelp{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .2;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-
-}
-
-#morphs .btnhelp:hover{
-	opacity: 1;
-}
-
-
-/* credits */
-#credits label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-
-#credits .iconeAdd{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 7em;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#credits .iconeAdd:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
-#credits .iconeRem{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#credits .iconeRem:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
 /* stats */
-#stats label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
+
 
 #stats li:hover{
 	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
+	background-color: rgba(254, 254, 254, .85);
 }
 
 #stats .statMorph:hover{
@@ -974,56 +827,6 @@ a.active .btnhelp{
 	background-color: rgba(254, 254, 254, .85);
 		
 }
-
-#stats .iconeAdd{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 3em;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#stats .iconeAdd:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
-#stats .iconeRem{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#stats .iconeRem:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
-
 
 /*Ai and softgear*/
 #soft label{
@@ -1097,12 +900,6 @@ a.active .btnhelp{
 
 .bmGranted{
 	font-size: x-small;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
 }
 
 .bmGrantedDesc{
@@ -1405,29 +1202,6 @@ ul#implants li:hover{
 	display: block;
 	line-height:1em;
 	padding-right: 1em;
-}
-
-.bmGranted{
-	font-size: x-small;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-
-.bmGrantedDesc{
-	font-size: xx-small;
-	text-transform:none;
-	text-align: justify;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	padding-left: 1em;
-	display: block;
-	line-height:1em;
-	padding-right: 1em;
-	padding-bottom: 1em;
 }
 
 .bmChoice{
