@@ -56,17 +56,4 @@ $config = new EPConfigFile('../../../php/config.ini');
 			<br><br>
 		</td>
 	</tr>
-	<tr align="center">
-		<td>
-			<img src="./img/safari_logo.png" width="50px" height="50px" /><label style="color:green">ok</label>
-	
-			<img src="./img/opera_logo.png" width="50px" height="50px" /><label style="color:green">ok</label>
-
-			<img src="./img/chrome_logo.png" width="50px" height="50px" /><label style="color:green">ok</label>
-
-			<img src="./img/firefox_logo.png" width="50px" height="50px" /><label style="color:orange">layout issues</label>
-
-			<img src="./img/ie_Logo.png" width="50px" height="50px" /><label style="color:orange">navigation issues</label>
-		</td>
-	</tr>	
 </table>
