@@ -10,7 +10,7 @@ The sole exception to this is file loading, which is still mostly ajax, but uses
 `index.php` has the following features:
 
 * 4 vertical content panes.
-    * Each is at a minimum 20em wide
+    * Each is at a minimum 20em wide (Total of 80em or ~1280px)
     > Note that buttons **can** currently overlap text if the text is too long.
     * 1px seperation between each pane
     * #primary is on the far left, with #secondary to the right of it, #tertiary to the right of #secondary, and #quaternary to the right of #tertiary
@@ -30,6 +30,7 @@ The sole exception to this is file loading, which is still mostly ajax, but uses
     * Absolute positioned:
         * 0px right
         * 10,70,130, etc.. px from bottom (60px increments)
+        * All buttons together take up ~430px
     * Text is left aligned
 * A stats panel on the top right of the page
     * Absolute position top, right 0
@@ -37,3 +38,5 @@ The sole exception to this is file loading, which is still mostly ajax, but uses
     * 200px heigh
 * Popup windows covering most of the page
 * Tooltips when a user hovers over a '?'
+
+Final minimal page dimensions to display everything are 1400 X 630.

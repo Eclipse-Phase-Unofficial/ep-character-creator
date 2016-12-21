@@ -140,14 +140,11 @@
                     return false;
                 });
 
+                var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+
                 //background slideshow
                 //See here for more options:  http://vegas.jaysalvat.com/documentation/settings/
-                $('body').vegas({
-                    timer: false,
-                    shuffle: true,
-                    delay: 60000,
-                    overlay: 'scripts/vegas/overlays/08.png',
-                    slides: [
+                var desktopSlides = [
                         { src: 'img/bg/bg1.jpg'},
                         { src: 'img/bg/bg2.jpg'},
                         { src: 'img/bg/bg3.jpg'},
@@ -161,7 +158,17 @@
                         { src: 'https://upload.wikimedia.org/wikipedia/commons/5/57/Witness_the_Birth_of_a_Star.jpg'},  //Credit NASA
                         { src: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Ngc6397_hst_blue_straggler.jpg'},   //Credit NASA
                         { src: 'https://upload.wikimedia.org/wikipedia/commons/b/b4/The_Sun_by_the_Atmospheric_Imaging_Assembly_of_NASA%27s_Solar_Dynamics_Observatory_-_20100819.jpg'}  //Credit NASA
-                    ]
+                    ];
+                //Do not show the (data heavy) background images if on mobile
+                if(isMobile){
+                    desktopSlides=[{}]
+                };
+                $('body').vegas({
+                    timer: false,
+                    shuffle: true,
+                    delay: 60000,
+                    overlay: 'scripts/vegas/overlays/08.png',
+                    slides: desktopSlides
                 });
             });
         </script>
