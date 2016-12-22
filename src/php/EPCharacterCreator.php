@@ -3262,7 +3262,6 @@ class EPCharacterCreator {
                 if($skill != null){
                     array_push($group_members,$skill);
                 }
-                array_push($group_members,$skill);
                 foreach ($group_members as $s){
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
