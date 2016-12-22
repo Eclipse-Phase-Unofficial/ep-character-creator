@@ -28,20 +28,21 @@ function getBPHtml($atomName){
 		   
 }
 
-function getListStampHtml($atomeName){
+function getListStampHtml($atomName){
 		$provider = new EPListProvider('../../../php/config.ini');
+		$book = $provider->getBookForName($atomName);
 
-	 	$supPastille = "<span class='";
+		$supPastille = "<span class='";
 		 
-		if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_RIMWARD) $supPastille .=  "RW";
-		else if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_PANOPTICON) $supPastille .=  "PAN";
-		else if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_SUNWARD) $supPastille .=  "SW";
-		else if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_GATECRASHING) $supPastille .=  "GC";
-		else if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_TRANSHUMAN) $supPastille .=  "TH";
-		else if($provider->getBookForName($atomeName) == EPListProvider::$BOOK_ECLIPSEPHASE) $supPastille .=  "EP";
-		 
+		if($book == EPListProvider::$BOOK_RIMWARD) $supPastille .=  "RW";
+		else if($book == EPListProvider::$BOOK_PANOPTICON) $supPastille .=  "PAN";
+		else if($book == EPListProvider::$BOOK_SUNWARD) $supPastille .=  "SW";
+		else if($book == EPListProvider::$BOOK_GATECRASHING) $supPastille .=  "GC";
+		else if($book == EPListProvider::$BOOK_TRANSHUMAN) $supPastille .=  "TH";
+		else if($book == EPListProvider::$BOOK_ECLIPSEPHASE) $supPastille .=  "EP";
+
 		$supPastille .= "'></span>";
-		
+
 		return $supPastille;
 }
 
