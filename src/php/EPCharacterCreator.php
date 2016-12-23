@@ -19,13 +19,6 @@ require_once 'EPValidation.php';
 require_once 'EPCreatorErrors.php';
 require_once 'EPCreditCost.php';
 
-function compSkilByPrefixName($a, $b){
-    $an = $a->prefix.$a->name;
-    $bn = $b->prefix.$b->name;
-
-    return strcmp($an, $bn);
-}
-   
 class EPCharacterCreator {
     static $PSY_CHI_TRAIT_NAME = "Psi I";
     static $PSY_GAMMA_TRAIT_NAME = "Psi II";

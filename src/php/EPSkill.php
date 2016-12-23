@@ -205,4 +205,15 @@ function getSkill($list,$name,$prefix=''){
     return null;
 }
 
+
+// Use with usort to sort skills
+//
+// Usage:  usort($res, "compSkilByPrefixName")
+function compSkilByPrefixName($a, $b){
+    $an = $a->prefix.$a->name;
+    $bn = $b->prefix.$b->name;
+
+    return strcmp($an, $bn);
+}
+
 ?>
