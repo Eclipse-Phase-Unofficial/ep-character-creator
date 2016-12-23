@@ -146,10 +146,8 @@ class EPAtom {
 
     // Add this Atom to an array, returns true when done, or if this atom was already in the array
     public function addToArray(&$array){
-        if (is_array($array)){
-            if (!$this->isInArray($array)){
-                array_push($array, $this);
-            }
+        if (is_array($array) && !$this->isInArray($array)){
+            array_push($array, $this);
             return true;
         }
         return false;

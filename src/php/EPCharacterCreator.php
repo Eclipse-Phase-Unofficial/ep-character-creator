@@ -1058,6 +1058,7 @@ class EPCharacterCreator {
         }                   
     }
 
+    // Create a skill from a user entered name and pre-defined prefix
     function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
         if (!$this->prefixExist($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -1073,16 +1074,15 @@ class EPCharacterCreator {
                           0,
                           true
                           );
-        if ($ns->isInArray($this->character->ego->skills)){
+        if (!$ns->addToArray($this->character->ego->skills)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Skill already exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
         if($nativeLanguage){
-	        $ns->isNativeTongue = true;
-                $ns->nativeTongueBonus = $this->configValues->getValue('RulesValues','NativeTongueBaseValue');
-	        $this->nativeLanguageSet = true;
+            $ns->isNativeTongue = true;
+            $ns->nativeTongueBonus = $this->configValues->getValue('RulesValues','NativeTongueBaseValue');
+            $this->nativeLanguageSet = true;
         }
-        $ns->addToArray($this->character->ego->skills);
         $this->adjustAll();
         return true;
     }
