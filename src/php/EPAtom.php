@@ -124,11 +124,19 @@ class EPAtom {
         return preg_replace($replace_char, '_', $input);
     }
 
+    //Check if two atoms are the same
+    function match($atom){
+        if (strcmp($atom->getUid(),$this->atomUid) == 0){
+            return true;
+        }
+        return false;
+    }
+
     // Check if this Atom is in the array
     public function isInArray($array){
         if (!empty($array)){
             foreach ($array as $item){
-                if (strcmp($item->getUid(),$this->atomUid) == 0){
+                if ($this->match($item)){
                     return true;
                 }
             }
@@ -150,11 +158,12 @@ class EPAtom {
     // Remove this Atom from an array, returns false on failure
     public function removeFromArray(&$array){
         if (!$this->isInArray($array)){
+            error_log("Not in array!");
             return false;
         }else{
             $index = 0;
-            foreach ($array as $value) {
-                if (strcmp($value->getUid(),$this->getUid()) == 0){
+            foreach ($array as $item) {
+                if ($this->match($item)){
                     break;
                 }else{
                     $index++;

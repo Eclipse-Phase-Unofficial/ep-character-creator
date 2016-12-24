@@ -82,6 +82,21 @@ class EPTrait extends EPAtom{
         $this->canUse = $canUse;
     }
     
+    // Check for duplicate traits by checking all values.
+    // This is more expensive than EPAtom's version, but catches duplicate traits with different Uids
+    //Check if two atoms are the same
+    public function match($trait){
+        if (strcasecmp($trait->name,$this->name) == 0 &&
+            $trait->traitPosNeg===$this->traitPosNeg &&
+            $trait->traitEgoMorph===$this->traitEgoMorph &&
+            $trait->cpCost===$this->cpCost &&
+            $trait->level===$this->level &&
+            $trait->canUse===$this->canUse){
+                return true;
+        }
+        return false;
+    }
+
 }
 
 ?>
