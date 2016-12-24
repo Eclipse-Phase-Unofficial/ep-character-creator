@@ -1,8 +1,8 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 include('../other/bonusMalusLayer.php');
-include('../other/traitLayer.php');
-include('../other/bookPageLayer.php');
+require_once('../other/traitLayer.php');
+require_once('../other/bookPageLayer.php');
 
 session_start();
 
@@ -11,7 +11,6 @@ $currentFaction = $_SESSION['cc']->getCurrentFaction();
 <label class="descriptionTitle"><?php echo $currentFaction->name; ?></label>
 <ul class="mainlist" id="bmdList">
 	<?php
-		  
 		  getBPHtml($currentFaction->name);
 		  
 		  echo "<li>";
@@ -21,7 +20,7 @@ $currentFaction = $_SESSION['cc']->getCurrentFaction();
           echo "		<label class='bmDesc'>".$currentFaction->description."</label>";
           echo "</li>";
 
-		  getTraitHtml($currentFaction->traits);
+		  getStaticTraitHtml($currentFaction->traits);
 		  getBMHtml($currentFaction->bonusMalus,$currentFaction->name,'faction');
 	?>
 </ul>

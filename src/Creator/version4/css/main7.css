@@ -300,6 +300,39 @@ a.active .btnhelp{
 	color: rgb(186, 0, 80);
 }
 
+/* Was .addIcon and .selectedicone */
+.addOrSelectedIcon{
+    float: right;
+    padding-right: 1em;
+    opacity: 1;
+}
+
+.addIcon{
+	display: block;
+	line-height: 3em;
+	width: 3em;
+	height:3em;
+	text-align: right;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding-right: 1em;
+	opacity: 1;
+}
+
+.selectedicone{
+	display: block;
+	line-height: 3em;
+	width: 3em;
+	height:3em;
+	text-align: right;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding-right: 1em;
+	opacity: 1;
+}
+
 .betweenPlusMinus{
 	float: right;
 }
@@ -365,19 +398,6 @@ a.active .btnhelp{
 	top: 0;
 	padding-right: 1em;
 	opacity: 1;
-}
-
-.addIcon{
-    display: block;
-    line-height: 3em;
-    width: 3em;
-    height:3em;
-    text-align: right;
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding-right: 1em;
-    opacity: 1;
 }
 
 /*factions*/
@@ -838,20 +858,6 @@ a.active .btnhelp{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);		
 }
-
-
-.selectedicone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
-}	
 
 /*Last details*/
 

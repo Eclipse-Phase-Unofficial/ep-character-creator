@@ -325,7 +325,7 @@ $(document).ready(function(){
         
         
 		//click on pos trait
-        $(document).on('click', '.addPosTraitIcon,.selPosTraitIcon' ,function () {
+        $(document).on('click', '.addSelPosTraitIcon' ,function () {
                 do_ajax( {
                             posTrait : $(this).attr('id'),
                             getCrePoint : 'get'
@@ -360,7 +360,7 @@ $(document).ready(function(){
         });
 
 		//click on neg trait
-        $(document).on('click', '.addNegTraitIcon,.selNegTraitIcon' ,function () {
+        $(document).on('click', '.addSelNegTraitIcon' ,function () {
                 do_ajax( {
                             negTrait : $(this).attr('id'),
                             getCrePoint : 'get'
@@ -788,7 +788,7 @@ $(document).ready(function(){
         });
         
         //click on morph pos trait for selection deselection
-        $(document).on('click', '.addMorphPosTraitIcon,.selMorphPosTraitIcon' ,function () {
+        $(document).on('click', '.addSelMorphPosTraitIcon' ,function () {
                 do_ajax( {
                             morphPosTrait : $(this).attr('id').trim(),
                             getCrePoint : 'get'
@@ -816,7 +816,7 @@ $(document).ready(function(){
         });
         
         //click on morph neutral trait for selection deselection
-        $(document).on('click', '.addMorphNeuTraitIcon,.selMorphNeuTraitIcon' ,function () {
+        $(document).on('click', '.addSelMorphNeuTraitIcon' ,function () {
                 do_ajax( {
                             morphPosTrait : $(this).attr('id'), //keep call to posTrait, it's the same anyway
                             getCrePoint : 'get'
@@ -843,7 +843,7 @@ $(document).ready(function(){
 				return false;
         });
         //click on morph neg trait for selection deselection
-        $(document).on('click', '.addMorphNegTraitIcon,.selMorphNegTraitIcon' ,function () {
+        $(document).on('click', '.addSelMorphNegTraitIcon' ,function () {
                 do_ajax( {
                             morphNegTrait : $(this).attr('id'),
                             getCrePoint : 'get'

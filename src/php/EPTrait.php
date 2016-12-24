@@ -59,8 +59,8 @@ class EPTrait extends EPAtom{
     }
     function loadSavePack($savePack,$cc = null){
         parent::loadSavePack($savePack);
-	    
-	$this->canUse = $savePack['canUse'];
+
+        $this->canUse = $savePack['canUse'];
         $this->mandatory = $savePack['mandatory'];
         $this->traitPosNeg = $savePack['traitPosNeg'];
         $this->traitEgoMorph = $savePack['traitEgoMorph'];
@@ -81,7 +81,7 @@ class EPTrait extends EPAtom{
         $this->level = $level;
         $this->canUse = $canUse;
     }
-    
+
     // Check for duplicate traits by checking all values.
     // This is more expensive than EPAtom's version, but catches duplicate traits with different Uids
     //Check if two atoms are the same
@@ -97,6 +97,19 @@ class EPTrait extends EPAtom{
         return false;
     }
 
+    //Standard getters to save some comparison operators
+    function isPositive(){
+        return $this->traitPosNeg == EPTrait::$POSITIVE_TRAIT;
+    }
+    function isNegative(){
+        return $this->traitPosNeg == EPTrait::$NEGATIVE_TRAIT;
+    }
+    function isEgo(){
+        return $this->traitEgoMorph == EPTrait::$EGO_TRAIT;
+    }
+    function isMorph(){
+        return $this->traitEgoMorph == EPTrait::$MORPH_TRAIT;
+    }
 }
 
 ?>
