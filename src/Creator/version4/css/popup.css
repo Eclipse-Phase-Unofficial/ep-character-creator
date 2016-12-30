@@ -102,13 +102,16 @@
 /*===============POPUPS=====================*/
 
 #popup {
+    /* centered */
+    position: fixed;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%,-50%);
+
     display: inline-block;
-    left: 2%;
     opacity: 0;
     padding: 15px;
-    position: fixed;
     text-align: justify;
-    top: 2%;
     visibility: hidden;
     z-index: 10;
 
@@ -140,13 +143,16 @@
 }
 
 .loadingPopup {
+    /* centered */
+    position: fixed;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%,-50%);
+
     display: inline-block;
-    left: 30%;
     opacity: 1;
     padding: 15px;
-    position: fixed;
     text-align: justify;
-    top: 42%;
     display: none;
     z-index: 11;
 
