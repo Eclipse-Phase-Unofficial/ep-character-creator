@@ -16,7 +16,7 @@
         <meta name="viewport" content="width=device-width">
 
         <style><?php include "scripts/jquery/jquery-ui.min.css"; ?></style>
-        <style><?php include "scripts/vegas/vegas.css"; ?></style>
+        <style><?php include "scripts/vegas/vegas.min.css"; ?></style>
         <style><?php include "css/normalize/normalize.min.css"; ?></style>
         <style><?php include "css/lato.css"; ?></style>
         <style><?php include "css/icomoon.css"; ?></style>
@@ -25,7 +25,7 @@
 
         <script><?php include "scripts/jquery/jquery.min.js"; ?></script>
         <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
-        <script><?php include "scripts/vegas/vegas.js"; ?></script>
+        <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
         <script><?php include "scripts/ajax_helper.js"; ?></script>
     </head>
     <body>

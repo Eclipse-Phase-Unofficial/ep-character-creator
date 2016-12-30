@@ -1,0 +1,3 @@
+WARNING:  Do not simply update vegas.min.css or vegas.min.js
+    This file has been modified for php inclusion.
+    You should remove `/*# sourceMappingURL=vegas.min.css.map */` and `/*# sourceMappingURL=vegas.min.js.map */` !!!
