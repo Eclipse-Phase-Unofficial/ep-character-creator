@@ -18,15 +18,15 @@
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic" />
-        <link rel="stylesheet" href="scripts/vegas/vegas.css">
-        <link rel="stylesheet" href="css/icomoon.css" />
-        <link rel="stylesheet" href="css/popup.css" />
-        <link rel="stylesheet" href="css/main7.css" />
+        <style><?php include "scripts/vegas/vegas.css"; ?></style>
+        <style><?php include "css/icomoon.css"; ?></style>
+        <style><?php include "css/popup.css"; ?></style>
+        <style><?php include "css/main7.css"; ?></style>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-        <script src="scripts/vegas/vegas.js"></script>
-        <script src="scripts/ajax_helper.js"></script>
+        <script><?php include "scripts/vegas/vegas.js"; ?></script>
+        <script><?php include "scripts/ajax_helper.js"; ?></script>
     </head>
     <body>
         <div id="container">
@@ -127,8 +127,8 @@
         <div id="popup" data-name=""></div>
         <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
 
-        <script src="scripts/ajaxManager.js"></script>
-        <script src="scripts/popup.js"></script>
+        <script><?php include "scripts/ajaxManager.js"; ?></script>
+        <script><?php include "scripts/popup.js"; ?></script>
         <script>
             $( function() {
                 //NAVIGATION JQUERRY
