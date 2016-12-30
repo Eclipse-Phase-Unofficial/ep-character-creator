@@ -156,7 +156,7 @@ section.panel {
 	overflow: auto;
 	margin-left: 1px;
 	width: 20em;
-	z-index: 2;
+	z-index: 1;
 }
 
 /*PRIMARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -327,7 +327,6 @@ a.active .btnhelp{
 	display: block;
 	position: absolute;
 	text-align: center;
-	z-index: 2;
 }
 
 #aptitudes li:hover{
@@ -458,7 +457,6 @@ a.active .btnhelp{
 	display: block;
 	position: absolute;
 	text-align: center;
-	z-index: 2;
 }
 
 
@@ -679,7 +677,7 @@ a.active .btnhelp{
     position: absolute;
     margin: 20px; padding: 10px;
     visibility: hidden;
-    z-index: 1000;
+    z-index: 1;
 }
 
 .spezInt {
@@ -1389,7 +1387,7 @@ ul#implants li:hover{
 	vertical-align: middle;
 	visibility: visible;
 	display: block;
-	z-index: 100;
+	z-index: 100; /* This should be on top of everything else */
 }
 
 #user-messages{

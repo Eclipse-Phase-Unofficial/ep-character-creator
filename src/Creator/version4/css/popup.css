@@ -15,6 +15,7 @@
     background-color: rgba(242, 242, 242, .8);
     border-top: 1px solid rgba(245, 245, 245, .8);
     border-bottom: 1px solid rgba(148,155,153,.8);
+    z-index: 3;
 }
 
 .popupButton:hover {
@@ -113,7 +114,7 @@
     padding: 15px;
     text-align: justify;
     visibility: hidden;
-    z-index: 10;
+    z-index: 2;
 
     width: 85%;
     height: 80%;
@@ -153,7 +154,7 @@
     opacity: 1;
     padding: 15px;
     text-align: justify;
-    z-index: 11;
+    z-index: 100; /* This should be on top of everything else */
 
     width: 25%;
     height: 3%;
