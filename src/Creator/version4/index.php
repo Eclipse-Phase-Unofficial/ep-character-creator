@@ -17,21 +17,13 @@
         <title>Eclipse Phase Character Creator</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-
-        <style><?php include "scripts/jquery/jquery-ui.min.css"; ?></style>
-        <style><?php include "scripts/vegas/vegas.min.css"; ?></style>
-        <style><?php include "css/normalize/normalize.min.css"; ?></style>
-        <style><?php include "css/lato.css"; ?></style>
-        <style><?php include "css/icomoon.css"; ?></style>
-        <style><?php include "css/popup.css"; ?></style>
-        <style><?php include "css/main7.css"; ?></style>
-
-        <script><?php include "scripts/jquery/jquery.min.js"; ?></script>
-        <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
-        <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
-        <script><?php include "scripts/ajax_helper.js"; ?></script>
     </head>
     <body>
+
+        <!-- POPUP  -- DYNAMIC CONTENT -->
+        <div id="popup" data-name=""></div>
+        <div class="loadingPopup" id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
+
         <div id="container">
 
         	<!-- MAIN MENU - STATIC CONTENT-->       	
@@ -126,10 +118,18 @@
             </button>
         </div>
 
-		<!-- POPUP  -- DYNAMIC CONTENT -->
-        <div id="popup" data-name=""></div>
-        <div class="loadingPopup" id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
+        <style><?php include "css/popup.css"; ?></style>
+        <style><?php include "scripts/jquery/jquery-ui.min.css"; ?></style>
+        <style><?php include "scripts/vegas/vegas.min.css"; ?></style>
+        <style><?php include "css/normalize/normalize.min.css"; ?></style>
+        <style><?php include "css/lato.css"; ?></style>
+        <style><?php include "css/icomoon.css"; ?></style>
+        <style><?php include "css/main7.css"; ?></style>
 
+        <script><?php include "scripts/jquery/jquery.min.js"; ?></script>
+        <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
+        <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
+        <script><?php include "scripts/ajax_helper.js"; ?></script>
         <script><?php include "scripts/ajaxManager.js"; ?></script>
         <script><?php include "scripts/popup.js"; ?></script>
         <script>
