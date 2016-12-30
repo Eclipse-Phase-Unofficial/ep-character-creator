@@ -15,16 +15,16 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic" />
+        <style><?php include "scripts/jquery/jquery-ui.min.css"; ?></style>
         <style><?php include "scripts/vegas/vegas.css"; ?></style>
+        <style><?php include "css/normalize/normalize.min.css"; ?></style>
+        <style><?php include "css/lato.css"; ?></style>
         <style><?php include "css/icomoon.css"; ?></style>
         <style><?php include "css/popup.css"; ?></style>
         <style><?php include "css/main7.css"; ?></style>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script><?php include "scripts/jquery/jquery.min.js"; ?></script>
+        <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
         <script><?php include "scripts/vegas/vegas.js"; ?></script>
         <script><?php include "scripts/ajax_helper.js"; ?></script>
     </head>
