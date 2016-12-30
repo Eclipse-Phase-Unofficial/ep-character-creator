@@ -2,6 +2,9 @@
     require_once '../../php/EPListProvider.php';
     error_reporting(0);
     $provider = new EPListProvider('../../php/config.ini');
+    function createDataURI($image,$image_type){
+        return "data:image/".$image_type.";base64,".base64_encode(file_get_contents($image));
+    }
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -125,7 +128,7 @@
 
 		<!-- POPUP  -- DYNAMIC CONTENT -->
         <div id="popup" data-name=""></div>
-        <div class="loadingPopup" id="loading_popup"><center><img src="img/ajax-loader.gif"></center></div>
+        <div class="loadingPopup" id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
 
         <script><?php include "scripts/ajaxManager.js"; ?></script>
         <script><?php include "scripts/popup.js"; ?></script>
@@ -167,7 +170,7 @@
                     timer: false,
                     shuffle: true,
                     delay: 60000,
-                    overlay: 'scripts/vegas/overlays/08.png',
+                    overlay: '<?php echo createDataURI("scripts/vegas/overlays/08.png","png"); ?>',
                     slides: desktopSlides
                 });
             });
