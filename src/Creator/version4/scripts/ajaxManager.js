@@ -17,9 +17,6 @@ $(document).ready(function(){
         //FIRST OPEN WEB PAGE -- INIT
         if(firstTime){
 
-            //Hide messages pane
-        	$("#messages").fadeOut();
-
         	startLoading();
         	//initialize character and extract first data
             ajax_helper({

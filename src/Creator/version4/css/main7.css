@@ -1385,8 +1385,7 @@ ul#implants li:hover{
 	text-align: center;
 	font-size: small;
 	vertical-align: middle;
-	visibility: visible;
-	display: block;
+	display: none;
 	z-index: 100; /* This should be on top of everything else */
 }
 
