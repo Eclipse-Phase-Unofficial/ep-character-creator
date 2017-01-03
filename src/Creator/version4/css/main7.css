@@ -76,7 +76,7 @@ span.bookIcon{
     height:25px;
     background: url(./img/EP-sup.png) no-repeat;
     position: absolute;
-    right: 1.5em;
+    right: 2em;
     /* Vertically center the icon */
     top: 50%;
     transform: translate(0,-50%);
@@ -260,9 +260,10 @@ a.active .btnhelp{
 
 /* All Plus or Checked icons */
 .addOrSelectedIcon{
-    float: right;
-    padding-right: 1em;
-    opacity: 1;
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    transform: translate(0,-50%);
 }
 
 .betweenPlusMinus{
@@ -271,6 +272,15 @@ a.active .btnhelp{
 
 .paddedLeft{
 	padding-left: 1em;
+}
+
+.costInfo {
+    font-size: x-small;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 1em;
+    top: -2em;
 }
 
 /*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -621,16 +631,6 @@ a.active .btnhelp{
 
 .spezInt {
 	width: 97%;
-}
-
-.costInfo {
-	font-size: x-small;
-	display: block;
-	text-align: right;
-	position: absolute;
-	right: 3em;
-	top: -1em;
-	padding-right: 1em;
 }
 
 .score {
