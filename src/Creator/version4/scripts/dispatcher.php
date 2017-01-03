@@ -555,22 +555,17 @@ if(isset($_POST['morphPosTrait'])){
     
     if (isset($morph)){
         if (isset($trait)){
-           if ($_SESSION['cc']->haveTraitOnMorph($trait->name,$morph)){
-                if ($_SESSION['cc']->removeTrait($trait,$morph)){
-                    $return['desc'] = $trait->description;
-                    $_SESSION['currentMorphTraitName'] = $trait->name;
-                    
-                }else{
+           if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
+                if (!$_SESSION['cc']->removeTrait($trait,$morph)){
                     treatCreatorErrors($return, $_SESSION['cc']->getLastError());
                 }        
             }else{
-                if ($_SESSION['cc']->addTrait($trait,$morph)){
-                    $return['desc'] = $trait->description;
-                    $_SESSION['currentMorphTraitName'] = $trait->name;
-                }else{
+                if (!$_SESSION['cc']->addTrait($trait,$morph)){
                     treatCreatorErrors($return, $_SESSION['cc']->getLastError());
                 }      
             }
+            $return['desc'] = $trait->description;
+            $_SESSION['currentMorphTraitName'] = $trait->name;
         }else{    
             treatCreatorErrors($return, "Trait does not exist (".$_POST['morphPosTrait'].")");            
         }        
@@ -586,7 +581,7 @@ if(isset($_POST['morphNegTrait'])){
     
     if (isset($morph)){
         if (isset($trait)){
-           if ($_SESSION['cc']->haveTraitOnMorph($trait->name,$morph)){
+           if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
                 if ($_SESSION['cc']->removeTrait($trait,$morph)){
                     $return['desc'] = $trait->description;
                     $_SESSION['currentMorphTraitName'] = $trait->name;

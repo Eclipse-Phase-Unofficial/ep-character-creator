@@ -237,16 +237,18 @@ class EPCharacterCreator {
         return array_merge($this->character->ego->traits,$this->character->ego->additionalTraits);
     }
     
+    // All the traits the morph has on it by default
+    //
+    // AKA, all the traits that can't be removed from the morph.
     function getCurrentDefaultMorphTraits($morph){
         return $morph->traits;                   
     }
     
+    // All the traits granted by background and faction
+    //
+    // AKA all the traits that can only be removed by changing background or faction
     function getCurrentDefaultEgoTraits(){
-        $res = array();
-        if (!empty($this->character->ego->background)){
-            $res = $this->character->ego->background->traits;
-        }
-	return array_merge($this->character->ego->traits,$res);
+        return $this->character->ego->traits;
     }
     
     function getTraits(){
@@ -298,23 +300,6 @@ class EPCharacterCreator {
     }
     function getTraitByName($name){
         return getAtomByName($this->traits,$name);
-    }    
-    function haveTraitOnEgo($traitName){
-        if (is_array($this->character->ego->traits)){
-            foreach ($this->character->ego->traits as $t){
-                if (strcmp($t->name, $traitName) == 0){
-                    return true;
-                }
-            }            
-        }
-        if (is_array($this->character->ego->additionalTraits)){
-            foreach ($this->character->ego->additionalTraits as $t){
-                if (strcmp($t->name, $traitName) == 0){
-                    return true;
-                }
-            }            
-        }
-        return false;                
     }
      function havePsiSleight($psiName){
         if (is_array($this->character->ego->psySleights)){
@@ -326,23 +311,20 @@ class EPCharacterCreator {
         }
         return false;                
     }
-    function haveTraitOnMorph($traitName,$morph){
-        if (is_array($morph->traits)){
-            foreach ($morph->traits as $t){
-                if (strcmp($t->name, $traitName) == 0){
-                    return true;
-                }
-            }            
+
+    // If the morph has the trait
+    //
+    // Searches both default traits, and used added traits
+    function haveTraitOnMorph($trait,$morph){
+        if ($trait->isInArray($morph->traits)){
+            return true;
         }
-        if (is_array($morph->additionalTraits)){
-            foreach ($morph->additionalTraits as $t){
-                if (strcmp($t->name, $traitName) == 0){
-                    return true;
-                }
-            }            
+        if ($trait->isInArray($morph->additionalTraits)){
+            return true;
         }
-        return false;         
+        return false;
     }
+
     function haveGearOnMorph($gear,$morph){
         if (!isset($morph)){
             return false;
@@ -463,63 +445,10 @@ class EPCharacterCreator {
         }
     }
     
-    function getCurrentPositiveTrait($morph = false){
-        $res = array();        
-        if ($morph){            
-            $m = $this->getCurrentMorph();
-            if (isset($m)){
-                if (is_array($m->traits)){
-                    foreach ($m->traits as $t){
-                        if (strcmp($t->traitPosNeg, EPTrait::$POSITIVE_TRAIT) == 0){
-                            array_push($res, $t);
-                        }
-                    }                     
-                }                   
-            }
-        }else{
-            if (is_array($this->character->ego->traits)){
-                foreach ($this->character->ego->traits as $t){
-                    if (strcmp($t->traitPosNeg, EPTrait::$POSITIVE_TRAIT) == 0){
-                        array_push($res, $t);
-                    }
-                }                
-            }            
-        }        
-        if (count($res) > 0){
-            return $res;
-        }             
-        return null;
-    }
     function getCurrentPsySleight(){
         return $this->character->ego->psySleights;
     }
-    function getCurrentNegativeTrait($morph = false){
-        $res = array();        
-        if ($morph){            
-            $m = $this->getCurrentMorph();
-            if (isset($m)){
-                if (is_array($m->traits)){
-                    foreach ($m->traits as $t){
-                        if (strcmp($t->traitPosNeg, EPTrait::$NEGATIVE_TRAIT) == 0){
-                            array_push($res, $t);
-                        }
-                    }                     
-                }                   
-            }
-        }else{
-            if (is_array($this->character->ego->traits)){
-                foreach ($this->character->ego->traits as $t){
-                    if (strcmp($t->traitPosNeg, EPTrait::$NEGATIVE_TRAIT) == 0){
-                        array_push($res, $t);
-                    }
-                }                
-            }            
-        }        
-        if (count($res) > 0){
-            return $res;
-        }             
-        return null;
-    }
+
     function removeGear($gear,$morph){
         if ($this->creationMode){
             if (!isset($morph)){
@@ -746,33 +675,52 @@ class EPCharacterCreator {
 		$this->character->ego->motivations = $candidat;
         return true;
     }
-    function addTrait($trait, $morph = null){ 
+    function addTrait($trait, $morph = null){
+        //Error checking
+        if (isset($morph)){
+            if (!$morph->isInArray($this->character->morphs)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if ($this->haveTraitOnMorph($trait,$morph)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' ((This character morph own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if ($trait->isEgo()){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No ego trait on morph !)', EPCreatorErrors::$RULE_ERROR));
+                return false;
+            }
+        }else{
+            if ($trait->isInArray( $this->character->ego->getTraits() )){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if ($trait->isMorph()){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph trait on ego !)', EPCreatorErrors::$RULE_ERROR));
+                return false;
+            }
+        }
+
         if ($this->creationMode){
-            $neg = strcmp($trait->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0;
-            if (isset($morph)){
-                if ($this->haveTraitOnMorph($trait->name,$morph)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character morph own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+            //More error checking
+            if ($trait->isPositive()){
+                $totPosTrait = $this->getSumPosTraits();
+                if ($totPosTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointPositiveTrait')){
+                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Positive Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
-                }  
-                if (strcmp($trait->traitEgoMorph, EPTrait::$EGO_TRAIT) == 0){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No ego trait on morph !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
                 }
-                if (strcmp($trait->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
-                    $totPosTrait = $this->getSumPosTraits();
-                    if ($totPosTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointPositiveTrait')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Positive Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                    
-                    }
-                }else{
-                    $totNegTrait = $this->getSumNegTraits();
-                    if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTrait')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                    
-                    }                
-                    $totNegTrait = $this->getSumNegTraitsForMorph($morph);
+            }else{
+                $totNegTrait = $this->getSumNegTraits();
+                if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTrait')){
+                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
+                    return false;
+                }
+            }
+            if (isset($morph)){
+                if ($trait->isNegative()){
+                    $totNegTrait = $this->getSumNegMorphTraits();
                     if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTraitOnMorph')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP for this morph outdated !)', EPCreatorErrors::$RULE_ERROR));
+                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP for morphs outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;                    
                     }
                 }
@@ -782,168 +730,110 @@ class EPCharacterCreator {
                 if($this->isHigherLevelBuy($trait,$morph->traits) || $this->isHigherLevelBuy($trait,$morph->additionalTraits)){
                     $this->sellHigherLevel($trait,$morph);
                 }
+
+                array_push($morph->additionalTraits,$trait);
             }else{
-                if ($this->haveTraitOnEgo($trait->name)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }
-                if (strcmp($trait->traitEgoMorph, EPTrait::$MORPH_TRAIT) == 0){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph trait on ego !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
-                }
-                if (strcmp($trait->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
-                    $totPosTrait = $this->getSumPosTraits();
-                    if ($totPosTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointPositiveTrait')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Positive Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                    
-                    }
-                }else{
-                    $totNegTrait = $this->getSumNegTraits();
-                    if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTrait')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                    
-                    }                
-                }      
                 if($this->isLowerLevelBuy($trait,$this->character->ego->traits) || $this->isLowerLevelBuy($trait,$this->character->ego->additionalTraits)){
                         $this->sellLowerLevel($trait,null);
                 }
                 if($this->isHigherLevelBuy($trait,$this->character->ego->traits) || $this->isHigherLevelBuy($trait,$this->character->ego->additionalTraits)){
                         $this->sellHigherLevel($trait,null);
                 }
-            }
-            if (isset($morph)){
-                $this->listProvider->connect();
-                $traitToAdd = $this->listProvider->getTraitByName($trait->name);
-                $traitToAdd->addToArray($morph->additionalTraits);
-            }else{
+
                 array_push($this->character->ego->additionalTraits,$trait);
             }  
 
             $this->adjustAll();
             return true;
         }else{
-            $neg = strcmp($trait->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0;
             if (isset($morph)){
                 $listOldTraits = $this->back->getCurrentTraits(true);
                 $haveOld = $trait->isInArray($listOldTraits);
-            
-                if ($this->haveTraitOnMorph($trait->name,$morph)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character morph own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }  
-                if (strcmp($trait->traitEgoMorph, EPTrait::$EGO_TRAIT) == 0){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No ego trait on morph !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
-                }
+
                 if($this->isLowerLevelBuy($trait,$morph->traits) || $this->isLowerLevelBuy($trait,$morph->additionalTraits)){
                     $this->sellLowerLevel($trait,$morph);
                 }
                 if($this->isHigherLevelBuy($trait,$morph->traits) || $this->isHigherLevelBuy($trait,$morph->additionalTraits)){
                     $this->sellHigherLevel($trait,$morph);
                 }
+
+                $this->listProvider->connect();
+                $traitToAdd = $this->listProvider->getTraitByName($trait->name);
+                $traitToAdd->addToArray($morph->additionalTraits);
             }else{
                 $listOldTraits = $this->back->getCurrentTraits(false); 
                 $haveOld = $trait->isInArray($listOldTraits);
-                if ($this->haveTraitOnEgo($trait->name)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }
-                if (strcmp($trait->traitEgoMorph, EPTrait::$MORPH_TRAIT) == 0){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph trait on ego !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
-                }      
+
                 if($this->isLowerLevelBuy($trait,$this->character->ego->traits) || $this->isLowerLevelBuy($trait,$this->character->ego->additionalTraits)){
                         $this->sellLowerLevel($trait,null);
                 }
                 if($this->isHigherLevelBuy($trait,$this->character->ego->traits) || $this->isHigherLevelBuy($trait,$this->character->ego->additionalTraits)){
                         $this->sellHigherLevel($trait,null);
                 }
+
+                array_push($this->character->ego->additionalTraits,$trait);
             }    
               
-            if (!$neg){
+            if (!$trait->isNegative()){
                 if (!$haveOld){
                     $this->evoRezPoint -= $trait->cpCost;
                 }
             }
-            if (isset($morph)){
-                $this->listProvider->connect();
-                $traitToAdd = $this->listProvider->getTraitByName($trait->name);  
-                $traitToAdd->addToArray($morph->additionalTraits);
-            }else{
-                array_push($this->character->ego->additionalTraits,$trait);
-            }  
         
             $this->adjustAll();
             return true;
         }
     }
-    function removeTrait($trait,$morph = null){    
+    function removeTrait($trait,$morph = null){
+        //Error checking
+        if (isset($morph)){
+            if (!$morph->isInArray($this->character->morphs)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if (!$this->haveTraitOnMorph($trait,$morph)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if (!$trait->isInArray($morph->additionalTraits)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Can not remove default morph traits !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+        }else{
+            if (!$trait->isInArray( $this->character->ego->getTraits() )){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+            if (!$trait->isInArray($this->character->ego->additionalTraits)){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Can not remove background/faction traits !)', EPCreatorErrors::$SYSTEM_ERROR));
+                return false;
+            }
+        }
+
         if ($this->creationMode){
             if (isset($morph)){
-                if (!$morph->isInArray($this->character->morphs)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;            
-                }     
-                if (!$this->haveTraitOnMorph($trait->name,$morph)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }      
                 $trait->removeFromArray($morph->additionalTraits);
-                $this->adjustAll();
-                return true;
             }else{
-                if (!$this->haveTraitOnEgo($trait->name)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }
                 $trait->removeFromArray($this->character->ego->additionalTraits);
-             
-                $this->adjustAll();
-                return true;
-            }            
-        }else{             
-            $neg = strcmp($trait->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0;
+            }
+        }else{
             if (isset($morph)){
                 $listOldTraits = $this->back->getCurrentTraits(true);
                 $haveOld = $trait->isInArray($listOldTraits);
-                if (!$morph->isInArray($this->character->morphs)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;            
-                }     
-                if (!$this->haveTraitOnMorph($trait->name,$morph)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
-                }            
-                if ($trait->isInArray($morph->additionalTraits)){
-                    $trait->removeFromArray($morph->additionalTraits);
-                    if (!$neg){
-                        if (!$haveOld){
-                            $this->evoRezPoint += $trait->cpCost;
-                        }
-                    }
-                    $this->adjustAll();                    
-                }
-                return true;
+                $trait->removeFromArray($morph->additionalTraits);
             }else{
                 $listOldTraits = $this->back->getCurrentTraits(false);
                 $haveOld = $trait->isInArray($listOldTraits);
-                if (!$this->haveTraitOnEgo($trait->name)){
-                    array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                    return false;
+                $trait->removeFromArray($this->character->ego->additionalTraits);
+            }
+            if (!$trait->isNegative()){
+                if (!$haveOld){
+                    $this->evoRezPoint += $trait->cpCost;
                 }
-                if ($trait->isInArray($this->character->ego->additionalTraits)){
-                    $trait->removeFromArray($this->character->ego->additionalTraits);
-                    
-                    if (!$neg){
-                        if (!$haveOld){
-                            $this->evoRezPoint += $trait->cpCost;
-                        }          
-                    }               
-                    $this->adjustAll();                    
-                }
-                return true;
-            }            
+            }
         }
+        $this->adjustAll();
+        return true;
     }
     function isLowerLevelBuy($trait,$currentTraits){ 
 	$traitName = $this->removeLastWord($trait->name);
@@ -1217,10 +1107,6 @@ class EPCharacterCreator {
     
     function haveSoftGear($soft){
         return $soft->isInArray($this->character->ego->softGears);
-    }
-    
-    function getEgoTraits(){
-	    return array_merge($this->character->ego->traits,$this->character->ego->additionalTraits);
     }
     
     function getEgoAi(){        
@@ -1605,12 +1491,7 @@ class EPCharacterCreator {
     function setBackground($background){   
         if ($this->creationMode){
             $this->character->ego->background = $background;
-            if (!empty($this->character->ego->faction) && is_array($this->character->ego->faction->traits)){
-                $arr = $this->character->ego->faction->traits;
-            }else{
-                $arr = array();
-            }
-            $this->character->ego->traits = array_merge($arr,$background->traits);
+            $this->setEgoTraits();
             $this->adjustAll();
             return true;            
         }else{
@@ -1621,19 +1502,28 @@ class EPCharacterCreator {
     function setFaction($faction){
         if ($this->creationMode){
             $this->character->ego->faction = $faction;
-            if (!empty($this->character->ego->background) && is_array($this->character->ego->background->traits)){
-                $arr = $this->character->ego->background->traits;
-            }else{
-                $arr = array();
-            }
-            $this->character->ego->traits = array_merge($arr,$faction->traits);
+            $this->setEgoTraits();
             $this->adjustAll();
             return true;            
         }else{
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Evolution mode no faction change  !)', EPCreatorErrors::$RULE_ERROR));
             return false;            
         }
-    }   
+    }
+
+    // Set the ego traits from background and faction
+    function setEgoTraits(){
+        $background_traits = array();
+        $faction_traits = array();
+        if (!empty($this->character->ego->background) && is_array($this->character->ego->background->traits)){
+            $background_traits = $this->character->ego->background->traits;
+        }
+        if (!empty($this->character->ego->faction) && is_array($this->character->ego->faction->traits)){
+            $faction_traits = $this->character->ego->faction->traits;
+        }
+        $this->character->ego->traits = array_merge($background_traits,$faction_traits);
+    }
+
     function setOccurenceGear( $gearName, $occurence,$morphName = null){
       if ($occurence < 1){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
@@ -2866,76 +2756,43 @@ class EPCharacterCreator {
 
     function getSumPosTraits(){
         $tot = 0;
-//        foreach ($this->character->ego->traits as $t) {
-//            if (strcmp($t->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
-//                $tot += $t->cpCost;
-//            }
-//        }
-//        foreach ($this->character->morphs as $m) {
-//            foreach ($m->traits as $t) {
-//                if (strcmp($t->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
-//                    $tot += $t->cpCost;
-//                }
-//            }            
-//        }
         foreach ($this->character->ego->additionalTraits as $t) {
-            if (strcmp($t->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
+            if ($t->isPositive()){
                 $tot += $t->cpCost;
             }
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->additionalTraits as $t) {
-                if (strcmp($t->traitPosNeg,EPTrait::$POSITIVE_TRAIT) == 0){
+                if ($t->isPositive()){
                     $tot += $t->cpCost;
                 }
-            }            
-        }        
-        
+            }
+        }
+
         return $tot;
     }
     function getSumNegTraits(){
         $tot = 0;
-//        foreach ($this->character->ego->traits as $t) {
-//            if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
-//                $tot += $t->cpCost;
-//            }
-//        }
-//        foreach ($this->character->morphs as $m) {
-//            foreach ($m->traits as $t) {
-//                if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
-//                    $tot += $t->cpCost;
-//                }
-//            }            
-//        }
         foreach ($this->character->ego->additionalTraits as $t) {
-            if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
+            if ($t->isNegative()){
                 $tot += $t->cpCost;
             }
         }
-        foreach ($this->character->morphs as $m) {
-            foreach ($m->additionalTraits as $t) {
-                if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
+        $tot += $this->getSumNegMorphTraits();
+        return $tot;
+    }
+    function getSumNegMorphTraits(){
+        $tot = 0;
+        foreach ($this->character->morphs as $morph) {
+            foreach ($morph->additionalTraits as $t) {
+                if ($t->isNegative()){
                     $tot += $t->cpCost;
                 }
-            }            
-        }
-        
-        return $tot;        
-    }
-    function getSumNegTraitsForMorph($morph){
-        $tot = 0;
-//        foreach ($morph->traits as $t) {
-//            if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
-//                $tot += $t->cpCost;
-//            }
-//        }        
-        foreach ($morph->additionalTraits as $t) {
-            if (strcmp($t->traitPosNeg,EPTrait::$NEGATIVE_TRAIT) == 0){
-                $tot += $t->cpCost;
             }
         }
         return $tot;
     }
+
     private function getSumAptitudes(){
         $res = 0;
         foreach ($this->character->ego->aptitudes as $a){

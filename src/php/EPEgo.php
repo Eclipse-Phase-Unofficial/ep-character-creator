@@ -30,8 +30,8 @@ class EPEgo {
     public $skills;
     public $reputations;
     public $stats;
-    public $traits;
-    public $additionalTraits;
+    public $traits;             //All the traits granted by faction and background (not user modifiable)
+    public $additionalTraits;   //All the traits the user has added
     public $softGears;
     public $ais;
     public $defaultAis;
@@ -245,6 +245,11 @@ class EPEgo {
         if (isset($defaultAi)){
             array_push($this->defaultAis,$defaultAi);
         }
+    }
+
+    // All the traits, both user added, and from background/faction
+    function getTraits(){
+	    return array_merge($this->traits,$this->additionalTraits);
     }
 }
 

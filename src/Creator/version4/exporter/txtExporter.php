@@ -201,7 +201,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(),EPTrait::$NEGATIVE_TRAIT);
+				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(),EPTrait::$NEGATIVE_TRAIT);
 				foreach($egoNegTraits as $trait){
 					echo formatResult($trait->name)
 					.$tab
@@ -217,7 +217,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->getEgoTraits(),EPTrait::$POSITIVE_TRAIT);
+				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(),EPTrait::$POSITIVE_TRAIT);
 				foreach($egoNegTraits as $trait){
 					 echo formatResult($trait->name)
 					.$tab
