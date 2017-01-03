@@ -32,7 +32,7 @@ function getListStampHtml($atomName){
 		$provider = new EPListProvider('../../../php/config.ini');
 		$book = $provider->getBookForName($atomName);
 
-		$supPastille = "<span class='";
+		$supPastille = "<span class='bookIcon ";
 		 
 		if($book == EPListProvider::$BOOK_RIMWARD) $supPastille .=  "RW";
 		else if($book == EPListProvider::$BOOK_PANOPTICON) $supPastille .=  "PAN";

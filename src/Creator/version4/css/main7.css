@@ -70,80 +70,38 @@ input[type=number]::-webkit-outer-spin-button {
 
 /************Book Icons************/
 
+span.bookIcon{
+    display: block;
+    width:25px;
+    height:25px;
+    background: url(./img/EP-sup.png) no-repeat;
+    position: absolute;
+    right: 1.5em;
+    /* Vertically center the icon */
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
 span.SW{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 	background-position: 0px -60px;
 }
 
 span.RW{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 }
 
 span.PAN{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 	background-position: 0px -30px;
 }
 
 span.GC{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 	background-position: 0px -90px;
 }
 
 span.TH{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 	background-position: 0px -120px;
 }
 
 span.EP{
-	display: block;
-	width:25px;
-	height:25px;
-	background: url(./img/EP-sup.png) no-repeat;
-	position: absolute;
-	right: 1.5em;
-	top: 1em;
-	padding-right: 1em;
-	opacity: 1;
 	background-position: 0px -150px;
 }
 
