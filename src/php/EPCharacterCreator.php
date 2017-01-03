@@ -236,14 +236,14 @@ class EPCharacterCreator {
         }
         return array_merge($this->character->ego->traits,$this->character->ego->additionalTraits);
     }
-    
+
     // All the traits the morph has on it by default
     //
     // AKA, all the traits that can't be removed from the morph.
     function getCurrentDefaultMorphTraits($morph){
-        return $morph->traits;                   
+        return $morph->traits;
     }
-    
+
     // All the traits granted by background and faction
     //
     // AKA all the traits that can only be removed by changing background or faction
@@ -278,6 +278,14 @@ class EPCharacterCreator {
             return 'N/A';
         }        
     }
+
+    // All the gear the morph has on it by default
+    //
+    // AKA, all the gear that can't be removed from the morph.
+    function getCurrentDefaultMorphGear($morph){
+        return $morph->gears;
+    }
+
     function getCurrentMorphGears($morphName){
         $m = $this->getCurrentMorphsByName($morphName);
         if (!isset($m)){
@@ -337,7 +345,7 @@ class EPCharacterCreator {
                 if (strcmp($g->name, $gear->name) == 0){
                     return true;
                 }
-            }            
+            }
         }
         if (is_array($morph->additionalGears)){
             foreach ($morph->additionalGears as $g){

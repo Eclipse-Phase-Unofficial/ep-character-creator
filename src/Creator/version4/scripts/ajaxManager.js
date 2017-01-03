@@ -885,7 +885,7 @@ $(document).ready(function(){
         });
         
          //click on implants for selection deselection
-        $(document).on('click', '.addMorphImplantIcon,.selMorphImplantIcon' ,function () {
+        $(document).on('click', '.addSelMorphImplantIcon',function () {
                 do_ajax( {
                             morphImplant : $(this).attr('id'),
                             getCrePoint : 'get'
@@ -917,7 +917,7 @@ $(document).ready(function(){
         
        
          //click on gears for selection deselection
-        $(document).on('click', '.addMorphGearIcon,.selMorphGearIcon' ,function () {
+        $(document).on('click', '.addSelMorphGearIcon' ,function () {
                 do_ajax( {
                             morphGear : $(this).attr('id'),
                             getCrePoint : 'get'
@@ -996,8 +996,7 @@ $(document).ready(function(){
 
 
 		//hover on morph implant or gear
-         //click on implants for selection deselection
-        $(document).on('click', '.morphImplant,.morphGear' ,function () {
+        $(document).on('click', '.morphGear' ,function () {
             do_ajax( {
                     morphImplantGearHover : $(this).attr('id')
                 },

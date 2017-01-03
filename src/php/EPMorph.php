@@ -19,36 +19,36 @@ class EPMorph extends EPAtom {
     static $SYNTHMORPH = 'synthmorph';
     static $PODMORPH = 'podmorph';
     static $INFOMORPH = 'infomorph';
-    
+
     static $GENDER_MALE = 'M';
     static $GENDER_FEMAL = 'F';
     static $GENDER_NONE = 'N';
-        
+
     public $morphType;
     public $age;
     public $gender;
-    
+
     public $maxApptitude;
-    
+
     public $durability;
     public $nickname;
     public $location;
-   
+
     public $cpCost;
     public $buyInCreationMode;
-       
+
     //array
-    public $traits;
-    public $additionalTraits;
-    public $gears;
-    public $additionalGears;
+    public $traits;             //All the traits granted by default (not user modifiable)
+    public $additionalTraits;   //All the traits the user has added
+    public $gears;              //All the gear granted by default (not user modifiable)
+    public $additionalGears;    //All the gear the user has added
     public $bonusMalus; 
-    
+
     public $implantReject;
-    
+
     function getSavePack(){
-	$savePack = parent::getSavePack();
-	    
+        $savePack = parent::getSavePack();
+
         $savePack['morphType'] = $this->morphType;
         $savePack['age'] = $this->age;
         $savePack['gender'] = $this->gender;
@@ -58,7 +58,7 @@ class EPMorph extends EPAtom {
         $savePack['location'] = $this->location;
         $savePack['cpCost'] = $this->cpCost;
         $savePack{'buyInCreationMode'} = $this->buyInCreationMode;
-        
+
         $traitsSavePacks = array();
         foreach($this->traits as $m){
             array_push($traitsSavePacks	, $m->getSavePack());
@@ -87,8 +87,8 @@ class EPMorph extends EPAtom {
         return $savePack;	    
     }   
     function loadSavePack($savePack,$cc = null){
-	parent::loadSavePack($savePack);    
-	    
+        parent::loadSavePack($savePack);
+
         $this->name = $savePack['name'];
         $this->description = $savePack['description'];
         $this->morphType = $savePack['morphType']; 
@@ -100,7 +100,7 @@ class EPMorph extends EPAtom {
         $this->location = $savePack['location'];
         $this->cpCost = $savePack['cpCost'];
         $this->buyInCreationMode = $savePack['buyInCreationMode'];
-        
+
         foreach($savePack['traitsSavePacks'] as $m){
             $savedTrait = new EPTrait('','','','','');
             $savedTrait->loadSavePack($m);
@@ -156,7 +156,8 @@ class EPMorph extends EPAtom {
         if (isset($gear) && $gear->type == EPAtom::$GEAR){
             array_push($this->additionalGears, $gear);
             return true;
-        } 
+        }
+
     }
 }
 

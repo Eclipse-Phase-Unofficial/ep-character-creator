@@ -1,5 +1,6 @@
 <?php
-require_once('../other/bookPageLayer.php');
+require_once('bookPageLayer.php');
+require_once('gearHelper.php');
 
 function getStaticTraitHtml($traits){
 //     if(!empty($traits)){
@@ -22,18 +23,10 @@ function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$ico
         $defaultTraits = array();
     }
 
-    $costDisplay = "(".$trait->cpCost." cp)";
-    if($trait->isInArray($defaultTraits)){
-        $costDisplay = "(Granted)";
-    }
-    if($trait->cpCost == 0){
-        $costDisplay = "";
-    }
-
     echo "<li class='".$traitClass."' id='".$trait->name."'>";
     echo "  <span class='paddedLeft'>".$trait->name."</span>";
     echo "  ".getListStampHtml($trait->name);
-    echo "  <span class='costInfo'>".$costDisplay."</span>";
+    echo getCostHtml($trait->cpCost,$trait->isInArray($defaultTraits));
     if($trait->isInArray($currentTraits)){
         echo "  <span class='addOrSelectedIcon ".$iconClass."' id='".$trait->name."' data-icon='&#x2b;'></span>";
     }

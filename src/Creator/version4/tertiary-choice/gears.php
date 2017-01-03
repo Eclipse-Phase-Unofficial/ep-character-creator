@@ -1,5 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
+require_once '../other/gearHelper.php';
 include('../other/bookPageLayer.php');
 session_start();
 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
@@ -21,7 +22,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
      		 	array_push($listFiltered, $m);
  		 	}
  		}
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo "<ul class='mainlist foldingList kinW'>";
  		echo $formatedHtml;
  		echo "</ul>";
@@ -37,7 +38,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList engW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -52,7 +53,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList sprW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -67,7 +68,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList seeW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -82,7 +83,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList meeW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -98,7 +99,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList ammo'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -113,7 +114,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList expW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
 
@@ -128,7 +129,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  			}
  		}
  		echo "<ul class='mainlist foldingList accW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -144,7 +145,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList armor'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -160,7 +161,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList drug'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -176,7 +177,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList poison'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -192,7 +193,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList chem'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -208,7 +209,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList pets'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -224,7 +225,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList vehi'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -240,7 +241,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList rob'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -256,7 +257,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		 	}
  		}
  		echo "<ul class='mainlist foldingList misc'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph);
+ 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
  		echo $formatedHtml;
  		echo "</ul>";
  		
@@ -286,54 +287,6 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 				echo "</li>"; 		
  		 	}
  		}
- 		echo "</ul>";	
-               
-        function getFormatedGearList($listFiltered,$morph){
-        	 $htmlResult = "";
-	         foreach($listFiltered as $m){
-	            if(isGearLegal($morph,$m)){
-		            $htmlResult .= "<li>";
-					if(isset($morph) && $_SESSION['cc']->haveGearOnMorph($m,$morph)){
-		            	if ($_SESSION['cc']->haveAdditionalGear($m,$morph)){
-		                    $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-		                }else{
-		                    $htmlResult .= "		<label class='morphGear selGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(base gear)</label><span class='selectedicone selGear selMorphGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-		                }	
-	            	}else{
-	                    $htmlResult .= "		<label class='morphGear' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addMorphGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
-	            	}
-	            	$htmlResult .= "</li>";
-            	}
-            }
-            return $htmlResult;
-        }
-        
-        function isGearLegal($morph,$gear){
-        	//if($morph->morphType == EPMorph::$INFOMORPH) return false;
-        	//Removed so infomorphs can buy gear
-	        if($gear->gearRestriction == EPGear::$CAN_USE_EVERYBODY) return true;
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_CREATE_ONLY) return false;//this check hides gear that you want to exist, but not render on the list
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_BIO){
-		        if($morph->morphType == EPMorph::$BIOMORPH) return true;
-		        else return false;
-	        }
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH){
-		        if($morph->morphType == EPMorph::$SYNTHMORPH) return true;
-		        else return false;
-	        }
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_POD){
-		        if($morph->morphType == EPMorph::$PODMORPH) return true;
-		        else return false;
-	        }
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_BIO_POD){
-		        if($morph->morphType == EPMorph::$BIOMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
-		        else return false;
-	        }
-	        else if($gear->gearRestriction == EPGear::$CAN_USE_SYNTH_POD){
-		        if($morph->morphType == EPMorph::$SYNTHMORPH || $morph->morphType == EPMorph::$PODMORPH) return true;
-		        else return false;
-	        }
-	        return false;
-	    }
+ 		echo "</ul>";
 	?>
 </ul>
