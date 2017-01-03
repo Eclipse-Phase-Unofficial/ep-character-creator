@@ -681,7 +681,7 @@ $(document).ready(function(){
     	});
     	
     	//hover on morph
-		 $(document).on('click', '.addMorph,.remMorph' ,function () {
+		 $(document).on('click', '.addRemMorph' ,function () {
 		 	do_ajax( {
                             morphHover : $(this).attr('id')
                     },

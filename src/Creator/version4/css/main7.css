@@ -746,56 +746,6 @@ a.active .btnhelp{
 		
 }
 
-
-#morphs .remMorphIcone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#morphs .remMorphIcone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
-#morphs .addMorphIcone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#morphs .addMorphIcone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-	
-
 #morphs a{
 	display: block;
 	height:  3em;

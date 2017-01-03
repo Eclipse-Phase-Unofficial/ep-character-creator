@@ -1,6 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-include('../other/bookPageLayer.php');
+require_once('../other/bookPageLayer.php');
 session_start();
 ?>
 <ul class="mainlist" id="morphs">
@@ -83,8 +83,10 @@ session_start();
 	         	}                        
 
 	         	$htmlBlock .= "<li>";
+                $htmlBlock .= "		<span class='addRemMorph' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</span>";
+                $htmlBlock .= "		<span class='costInfo'>(".$cost_string.")</span>";
             	if(isMorphOnlist($currentList,$m)){
-            		$htmlBlock .= "		<label class='remMorph' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$cost_string.")</label><span class='remMorphIcone' id='".$m->name."' data-icon='&#x3b;'></span>";
+            		$htmlBlock .= "		<span class='addOrSelectedIcon remMorphIcone' id='".$m->name."' data-icon='&#x3b;'></span>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
             		$htmlBlock .= "		<a class='morph-BMD' id='".$m->name."' href='#'><span class='icone' data-icon='&#x22;'></span>Bonus & Description</a>";
@@ -129,9 +131,7 @@ session_start();
             		$htmlBlock .= "</li>";
             	}
             	else{
-            		$htmlBlock .= "		<span class='addMorph' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</span>";
-            		$htmlBlock .= "		<span class='costInfo'>(".$cost_string.")</span>";
-            		$htmlBlock .= "		<span class='addMorphIcone' id='".$m->name."' data-icon='&#x3a;'></span>";
+            		$htmlBlock .= "		<span class='addOrSelectedIcon addMorphIcone' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}  	
             	$htmlBlock .= "</li>";
             }
