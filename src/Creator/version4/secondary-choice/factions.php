@@ -4,29 +4,22 @@ include('../other/bookPageLayer.php');
 session_start();
 ?>
 <ul class="mainlist" id="factions">
-	<?php
-		$currentFac = $_SESSION['cc']->getCurrentFaction();
+    <?php
+        $currentFac = $_SESSION['cc']->getCurrentFaction();
+
          foreach($_SESSION['cc']->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$FACTION){
-            	echo "<li>";
-            	if($currentFac != null && $currentFac->name == $m->name){
-            		echo "		<label class='fac facSelected' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><span class='selectedicone facSelected' data-icon='&#x2b;'></span>";
-            	}
-            	else{
-            		echo "		<label class='fac' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label>";
-            	}
-            	
-            	echo "</li>";
+                echo "<li class='fac' id='".$m->name."'>";
+                echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
+                if(isset($currentFac) && $currentFac->name == $m->name){
+                    echo "<span class='addOrSelectedIcon' data-icon='&#x2b;'></span>";
+                }
+                else{
+                    echo "<span class='addOrSelectedIcon'></span>";
+                }
+
+                echo "</li>";
             }
          }
-	?>
+    ?>
 </ul>
-
-
-
-
-
-
-
-
-
