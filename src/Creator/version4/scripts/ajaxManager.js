@@ -1018,7 +1018,7 @@ $(document).ready(function(){
     	});
     	
     	//click on ai
-        $(document).on('click', '.addAiIcon,.selAiIcon' , function () {
+        $(document).on('click', '.addSelAiIcon' , function () {
                 do_ajax( {
                             ai : $(this).attr('id'),
                             getCrePoint : 'get'
@@ -1047,7 +1047,7 @@ $(document).ready(function(){
         });
         
         //click on soft
-        $(document).on('click', '.addSoftGearIcon,.selSoftGearIcon' , function () {
+        $(document).on('click', '.addSelSoftGearIcon' , function () {
                 do_ajax( {
                             softg : $(this).attr('id'),
                             getCrePoint : 'get'

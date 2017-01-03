@@ -10,7 +10,7 @@ class EPAi extends EPAtom{
     public $skills;
     public $stats;
     public $bonusMalus;
-        
+
     function getSavePack(){
         $savePack = parent::getSavePack();
 
@@ -68,6 +68,16 @@ class EPAi extends EPAtom{
         $this->stats = $stats;
         $this->cost = $costType;
         $this->bonusMalus = array();
+    }
+
+    // AI is unique by name only.
+    //
+    // This is more expensive than EPAtom's version, but catches duplicate AIs with different Uids
+    public function match($item){
+        if (strcasecmp($item->name,$this->name) == 0){
+            return true;
+        }
+        return false;
     }
 }
 ?>

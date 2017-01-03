@@ -1,6 +1,8 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-include('../other/bookPageLayer.php');
+require_once('../other/bookPageLayer.php');
+require_once('../other/gearHelper.php');
+
 session_start();
 ?>
 <ul class="mainlist" id="soft">
@@ -14,15 +16,13 @@ session_start();
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
          foreach($_SESSION['cc']->getAis() as $m){
-            	echo "<li>";
-            	if(isOnlist($defaultAi,$m)){
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(Granted)</label><span class='selectedicone selAi selAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-            	}
-            	else if(isOnlist($currentAis,$m)){
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selAi selAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-            	}
-            	else{
-            		echo "		<label class='ai' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addAiIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
+            	echo "<li class='ai' id='".$m->name."'>";
+            	echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
+            	echo getCostHtml($m->getCost(), $m->isInArray($defaultAi));
+            	if($m->isInArray($defaultAi) || $m->isInArray($currentAis)){
+            		echo "<span class='addOrSelectedIcon addSelAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+            	}else{
+            		echo "<span class='addOrSelectedIcon addSelAiIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}
             	
             	echo "</li>";
@@ -37,12 +37,14 @@ session_start();
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($_SESSION['cc']->getGears() as $m){
          		if($m->gearType == EPGear::$SOFT_GEAR){
-	            	echo "<li>";
-	            	if(isOnlist($currentSoftGear,$m)){
-	            		echo "		<label class='softG' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone selSoftG selSoftGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+	            	echo "<li class='softG' id='".$m->name."'>";
+	            	echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
+	            	echo getCostHtml($m->getCost(), false);
+	            	if($m->isInArray($currentSoftGear)){
+	            		echo "<span class='addOrSelectedIcon addSelSoftGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
 	            	}
 	            	else{
-	            		echo "		<label class='softG' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addIcon addSoftGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
+	            		echo "<span class='addOrSelectedIcon addSelSoftGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
 	            	}
 	            	
 	            	echo "</li>";
@@ -77,25 +79,5 @@ session_start();
  		 	}
  		}
  		echo "</ul>";
-
-         
-         
-         
-         function isOnlist($list,$item){
-	         foreach($list as $m){
-	         	if($m->name == $item->name) return true;
-	         	
-	         }
-	         return false;
-         }
 	?>
 </ul>
-
-
-
-
-
-
-
-
-
