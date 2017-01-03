@@ -421,7 +421,7 @@ $(document).ready(function(){
 			return false;
 		});
 		//click on psi
-        $(document).on('click', '.addPsySleightIcon,.selPsySleightIcon' ,function () {
+        $(document).on('click', '.addSelPsySleightIcon' ,function () {
                 do_ajax( {
                             psyS : $(this).attr('id'),
                             getCrePoint : 'get'

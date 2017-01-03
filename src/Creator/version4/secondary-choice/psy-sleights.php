@@ -1,6 +1,7 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-include('../other/bookPageLayer.php');
+require_once('../other/bookPageLayer.php');
+require_once('../other/gearHelper.php');
 session_start();
 ?>
 <ul class="mainlist" id="psyS">
@@ -52,39 +53,22 @@ session_start();
 		 	echo "</li>";
 	 	} 
 		 
- 		function getFormatedPsySleight($list,$currentPsyS){
- 			 $result = "";
-	         foreach($list as $m){
-	            	$result .=  "<li>";
-	            	if(isPsySOnlist($currentPsyS,$m)){
-	            		$result .= "		<label class='psyS selPsyS' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(5 cp)</label><span class='selectedicone selPsyS selPsySleightIcon' id='".$m->name."'' data-icon='&#x2b;'></span>";
-	            	}
-	            	else{
-	            		$result .=   "		<label class='psyS' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</label><label class='costInfo'>(5 cp)</label><span class='addIcon addPsySleightIcon' id='".$m->name."'data-icon='&#x3a;'></span>";
-	            	}
-	            	
-	            	$result .=  "</li>";
-	          }
-	          return $result;
-         }
-         
-         
-          function isPsySOnlist($list,$psyS){
-	         foreach($list as $m){
-	         	if($m->name == $psyS->name) return true;
-	         	
-	         }
-	         return false;
-         }
+        function getFormatedPsySleight($list,$currentPsyS){
+                $result = "";
+                foreach($list as $m){
+                    $result .= "<li class='psyS' id='".$m->name."'>";
+                    $result .= "<span>".$m->name.getListStampHtml($m->name)."</span>";
+                    $result .= getCostHtml(5,false);
+                    if($m->isInArray($currentPsyS)){
+                        $result .= "<span class='addOrSelectedIcon addSelPsySleightIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
+                    }
+                    else{
+                        $result .= "<span class='addOrSelectedIcon addSelPsySleightIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
+                    }
 
+                    $result .= "</li>";
+                }
+                return $result;
+            }
 	?>
 </ul>
-
-
-
-
-
-
-
-
-
