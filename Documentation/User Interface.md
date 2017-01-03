@@ -1,12 +1,12 @@
-#User Interface Documentation
+# User Interface Documentation
 
-#High Level Design
+# High Level Design
 
 All UI is shown on `index.php`.
 User actions are almost all done through ajax calls.
 The sole exception to this is file loading, which is still mostly ajax, but uses an iframe to upload the user selected file.
 
-##index.php
+## index.php
 `index.php` has the following features:
 
 * 4 vertical content panes.
