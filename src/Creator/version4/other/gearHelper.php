@@ -12,19 +12,35 @@ function getCostHtml($cost,$isDefault){
     return "<span class='costInfo'>".$costDisplay."</span>";
 }
 
+// Generate a generic li element used for selecting/deselecting an item
+//
+// $item:       The item being selected or deselected
+// $itemClass:  Used to determine what javascript function is activated when the item is clicked
+// $cpCost:     How much the item costs
+// $granted:    If the item is a default (non-removable)
+// $checked:    If the item is checked, or has a plus icon
+// $iconClass:  used to determine what javascript function is activated when the check or plus icon is selected
+function getFormattedLi($item,$itemClass,$cpCost,$granted,$checked,$iconClass){
+    $htmlResult  = "";
+    $htmlResult .= "<li class='".$itemClass."' id='".$item->name."'>";
+    $htmlResult .= "<span class='paddedLeft'>".$item->name."</span>";
+    $htmlResult .= getListStampHtml($item->name);
+    $htmlResult .= getCostHtml($cpCost,$granted);
+    if($checked){
+        $htmlResult .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$item->name."' data-icon='&#x2b;'></span>";
+    }
+    else{
+        $htmlResult .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$item->name."' data-icon='&#x3a;'></span>";
+    }
+    $htmlResult .= "</li>";
+    return $htmlResult;
+}
+
 function getFormatedGearList($listFiltered,$morph,$iconClass){
     $htmlResult = "";
     foreach($listFiltered as $m){
         if(isGearLegal($morph,$m)){
-            $htmlResult .=  "<li class='morphGear' id='".$m->name."'>";
-            $htmlResult .=  "<span>".$m->name.getListStampHtml($m->name)."</span>";
-            $htmlResult .=  getCostHtml($m->getCost(),$m->isInArray($_SESSION['cc']->getCurrentDefaultMorphGear($morph)));
-            if($_SESSION['cc']->haveGearOnMorph($m,$morph)){
-                $htmlResult .=  "<span class='addOrSelectedIcon ".$iconClass."' id='".$m->name."' data-icon='&#x2b;'></span>";
-            }else{
-                $htmlResult .=  "<span class='addOrSelectedIcon ".$iconClass."' id='".$m->name."' data-icon='&#x3a;'></span>";
-            }
-            $htmlResult .=  "</li>";
+            $htmlResult .= getFormattedLi($m, 'morphGear', $m->getCost(), $m->isInArray($_SESSION['cc']->getCurrentDefaultMorphGear($morph)), $_SESSION['cc']->haveGearOnMorph($m,$morph),$iconClass);
         }
     }
     return $htmlResult;

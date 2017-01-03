@@ -56,17 +56,7 @@ session_start();
         function getFormatedPsySleight($list,$currentPsyS){
                 $result = "";
                 foreach($list as $m){
-                    $result .= "<li class='psyS' id='".$m->name."'>";
-                    $result .= "<span>".$m->name.getListStampHtml($m->name)."</span>";
-                    $result .= getCostHtml(5,false);
-                    if($m->isInArray($currentPsyS)){
-                        $result .= "<span class='addOrSelectedIcon addSelPsySleightIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-                    }
-                    else{
-                        $result .= "<span class='addOrSelectedIcon addSelPsySleightIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
-                    }
-
-                    $result .= "</li>";
+                    $result .= getFormattedLi($m, 'psyS', 5, false, $m->isInArray($currentPsyS), 'addSelPsySleightIcon');
                 }
                 return $result;
             }

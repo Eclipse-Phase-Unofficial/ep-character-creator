@@ -23,17 +23,7 @@ function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$ico
         $defaultTraits = array();
     }
 
-    echo "<li class='".$traitClass."' id='".$trait->name."'>";
-    echo "  <span class='paddedLeft'>".$trait->name."</span>";
-    echo "  ".getListStampHtml($trait->name);
-    echo getCostHtml($trait->cpCost,$trait->isInArray($defaultTraits));
-    if($trait->isInArray($currentTraits)){
-        echo "  <span class='addOrSelectedIcon ".$iconClass."' id='".$trait->name."' data-icon='&#x2b;'></span>";
-    }
-    else{
-        echo "  <span class='addOrSelectedIcon ".$iconClass."' id='".$trait->name."' data-icon='&#x3a;'></span>";
-    }
-    echo "</li>";
+    echo getFormattedLi($trait, $traitClass, $trait->cpCost, $trait->isInArray($defaultTraits), $trait->isInArray($currentTraits), $iconClass);
 }
 
 function isTraitLegal($morph,$trait){

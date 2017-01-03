@@ -16,16 +16,7 @@ session_start();
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
          foreach($_SESSION['cc']->getAis() as $m){
-            	echo "<li class='ai' id='".$m->name."'>";
-            	echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
-            	echo getCostHtml($m->getCost(), $m->isInArray($defaultAi));
-            	if($m->isInArray($defaultAi) || $m->isInArray($currentAis)){
-            		echo "<span class='addOrSelectedIcon addSelAiIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-            	}else{
-            		echo "<span class='addOrSelectedIcon addSelAiIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
-            	}
-            	
-            	echo "</li>";
+                echo getFormattedLi($m, 'ai', $m->getCost(), $m->isInArray($defaultAi), $m->isInArray($defaultAi) || $m->isInArray($currentAis), 'addSelAiIcon');
           }
           echo "</ul>";
           
@@ -37,17 +28,7 @@ session_start();
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($_SESSION['cc']->getGears() as $m){
          		if($m->gearType == EPGear::$SOFT_GEAR){
-	            	echo "<li class='softG' id='".$m->name."'>";
-	            	echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
-	            	echo getCostHtml($m->getCost(), false);
-	            	if($m->isInArray($currentSoftGear)){
-	            		echo "<span class='addOrSelectedIcon addSelSoftGearIcon' id='".$m->name."' data-icon='&#x2b;'></span>";
-	            	}
-	            	else{
-	            		echo "<span class='addOrSelectedIcon addSelSoftGearIcon' id='".$m->name."' data-icon='&#x3a;'></span>";
-	            	}
-	            	
-	            	echo "</li>";
+                    echo getFormattedLi($m, 'softG', $m->getCost(), false, $m->isInArray($currentSoftGear), 'addSelSoftGearIcon');
             	}
           }
           echo "</ul>";

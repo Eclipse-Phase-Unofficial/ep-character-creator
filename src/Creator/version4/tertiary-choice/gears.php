@@ -1,7 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
 require_once '../other/gearHelper.php';
-include('../other/bookPageLayer.php');
 session_start();
 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
