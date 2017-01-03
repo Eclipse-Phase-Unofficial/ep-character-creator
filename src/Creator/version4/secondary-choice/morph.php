@@ -82,8 +82,9 @@ session_start();
                             $cost_string = $m->getCost()." credits";
 	         	}                        
 
-	         	$htmlBlock .= "<li>";
-                $htmlBlock .= "		<span class='addRemMorph' id='".$m->name."'>".$m->name.getListStampHtml($m->name)."</span>";
+                $htmlBlock .= "<li class='addRemMorph' id='".$m->name."'>";
+                $htmlBlock .= "		<span>".$m->name."</span>";
+                $htmlBlock .= getListStampHtml($m->name);
                 $htmlBlock .= "		<span class='costInfo'>(".$cost_string.")</span>";
             	if(isMorphOnlist($currentList,$m)){
             		$htmlBlock .= "		<span class='addOrSelectedIcon remMorphIcone' id='".$m->name."' data-icon='&#x3b;'></span>";

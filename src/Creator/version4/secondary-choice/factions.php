@@ -10,14 +10,14 @@ session_start();
          foreach($_SESSION['cc']->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$FACTION){
                 echo "<li class='fac' id='".$m->name."'>";
-                echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
+                echo "<span>".$m->name."</span>";
+                echo getListStampHtml($m->name);
                 if(isset($currentFac) && $currentFac->name == $m->name){
                     echo "<span class='addOrSelectedIcon' data-icon='&#x2b;'></span>";
                 }
                 else{
                     echo "<span class='addOrSelectedIcon'></span>";
                 }
-
                 echo "</li>";
             }
          }
