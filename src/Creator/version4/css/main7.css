@@ -300,37 +300,11 @@ a.active .btnhelp{
 	color: rgb(186, 0, 80);
 }
 
-/* Was .addIcon and .selectedicone */
+/* All Plus or Checked icons */
 .addOrSelectedIcon{
     float: right;
     padding-right: 1em;
     opacity: 1;
-}
-
-.addIcon{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
-}
-
-.selectedicone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
 }
 
 .betweenPlusMinus{
@@ -385,19 +359,6 @@ a.active .btnhelp{
 #backgrounds li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);		
-}
-
-.selectedicone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
 }
 
 /*factions*/
@@ -1023,19 +984,6 @@ a.active .btnhelp{
     background: rgba(242, 242, 242, .8);
 }
 
-.selectedicone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
-}
-
 #tertiary_infos{
 	visibility: hidden;
 	color: hsl(200,10%,40%);
@@ -1295,19 +1243,6 @@ ul#implants li:hover{
 .bmMultiSelected{
 	color: rgb(186, 0, 80);
     background: rgba(242, 242, 242, .8);
-}
-
-.selectedicone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: 1;
 }
 
 /*remaining points*/

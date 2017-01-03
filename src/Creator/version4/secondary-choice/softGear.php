@@ -55,7 +55,7 @@ session_start();
 			
  		 	if($m->gearType == EPGear::$FREE_GEAR){
      		 	echo "<li>";
-                echo "		<label class='egoFreeGear remFreeEgoGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='selectedicone remFGear' data-icon='&#x39;'></span>";
+                echo "		<label class='egoFreeGear remFreeEgoGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addOrSelectedIcon remFGear' data-icon='&#x39;'></span>";
 				echo "</li>"; 		
  		 	}
  		}

@@ -13,7 +13,7 @@ session_start();
                 echo "<li class='bck' id='".$m->name."'>";
                 echo "<span>".$m->name.getListStampHtml($m->name)."</span>";
                 if(isset($currentBck) && $currentBck->name == $m->name){
-                    echo "<span class='selectedicone' data-icon='&#x2b;'></span>";
+                    echo "<span class='addOrSelectedIcon' data-icon='&#x2b;'></span>";
                 }
                 else{
                     echo "<span class='addOrSelectedIcon'></span>";
