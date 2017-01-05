@@ -1271,7 +1271,7 @@ $(document).ready(function(){
         
         //Bonus Malus Description
         //click on addButton from a skill BM  choice
-    	$(document).on('click', '.iconebmChoice,.iconebmSimpleChoice' ,function () {
+    	$(document).on('click', '.iconebmChoice' ,function () {
     			var targetId = $(this).attr('id');
     			var parentId = $("#"+targetId+"ParentId").val();
     			if(parentId != null){
@@ -1321,7 +1321,7 @@ $(document).ready(function(){
         
         });
         //click on removeButton from a skill BM  choice
-    	$(document).on('click', '.iconebmRemChoice,.iconebmSimpleRemChoice' ,function () {
+    	$(document).on('click', '.iconebmRemChoice' ,function () {
     			var targetId = $(this).attr('id');
     			var parentId = $("#"+targetId+"ParentId").val();
     			if(parentId != null){

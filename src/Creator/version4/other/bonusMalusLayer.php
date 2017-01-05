@@ -61,30 +61,24 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 							if($_SESSION['cc']->getSelectedOnMulti($bm) == $bm->multi_occurence){
 								foreach($bm->bonusMalusTypes as $bmMulti){
 									if($bmMulti->selected){
+										echo "<li>";
 										if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-											echo "<li>";
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
+											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-											echo "<li>";
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
+											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-											echo "<li>";
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
+											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else{
-											echo "<li>";
 											echo "		<label class='bmGranted' id='".$bmMulti->getUid()."'>".$bmMulti->name."</label>";
-											echo "		<span class='iconebmSimpleRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
+											echo "		<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
+										echo "</li>";
 									}
 									echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
 									echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
@@ -111,20 +105,16 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 										printReputationOptions($bmMulti);
 									}
 									else{
+										echo "<li>";
+										echo "<label class='bmGranted'>".$bmMulti->name."</label>";
+										echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
 										if($bmMulti->selected){
-											echo "<li>";
-											echo "		<label class='bmGranted'>".$bmMulti->name."</label>";
-											echo "		<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
-											echo "		<span class='iconebmSimpleRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-											echo "</li>";
+											echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else{
-											echo "<li>";
-											echo "		<label class='bmGranted'>".$bmMulti->name."</label>";
-											echo "		<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
-											echo "		<span class='iconebmSimpleChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-											echo "</li>";
+											echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
 										}
+										echo "</li>";
 										echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
 									}
 
@@ -154,28 +144,28 @@ function printSkillOptions($bm, $skill_list, $prefix_skill=false){
 		$skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
 	}
 
-	echo "<li>";
+	echo "<li><label class='bmChoiceInput'>";
 	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-		echo "	 <label class='bmChoiceInput'>".$bm->name;
+		echo $bm->name;
 		if(!empty($skill_list)){
 			echo "	 <select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
 			foreach($skill_list as $skill){
 				echo "	 <option value='".$skill->getUid()."'>".$skill->getPrintableName()."</option>";
 			}
-			echo "	 </select></label>";
-			echo "	 <span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+			echo "</select>";
+			echo "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
 		}
 		else{
-			echo "		<label class='bmGrantedDesc'>Create an appropriate skill (skills menus)</label></label>";
+			echo "Create an appropriate skill (skills menus)";
 		}
 	}
 	else{
 		$skill = getAtomByUid($skill_list,$bm->forTargetNamed);
-		echo "		<label class='bmChoiceInput''> +".$bm->value." ".$skill->getPrintableName()."</label>";
-		echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+		echo "+".$bm->value." ".$skill->getPrintableName();
+		echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
 	}
-	echo "</li>";
+	echo "</label></li>";
 	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
 }
 
@@ -203,11 +193,11 @@ function printAptitudeOptions($bm,$parentName,$parentType){
 			}
 		}
 		echo "		</select></label>";
-		echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+		echo "		<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
 	}
 	else{
 		echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
-		echo "		<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+		echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
 	}
 	echo "</li>";
@@ -225,7 +215,7 @@ function printReputationOptions($bm){
 			echo "<option value='".$apt->name."'>".$apt->name."</option>";
 		}
 		echo "		</select></label>";
-		echo "		<span class='iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+		echo "		<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
 	}
 	else{
 		echo "		<label class='bmChoiceInput''> +".$bm->value." on ".$bm->forTargetNamed."</label>";
