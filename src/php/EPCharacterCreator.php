@@ -1895,7 +1895,7 @@ class EPCharacterCreator {
     function getCreationPointFromTrait(){
         $ret = 0;
         foreach ($this->character->ego->additionalTraits as $t) {
-            if (strcmp($t->traitPosNeg,  EPTrait::$POSITIVE_TRAIT) == 0){
+            if ($t->isPositive()){
                 $ret -= $t->cpCost;
             }else{
                 $ret += $t->cpCost;
@@ -1903,7 +1903,7 @@ class EPCharacterCreator {
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->additionalTraits as $t) {
-                if (strcmp($t->traitPosNeg,  EPTrait::$POSITIVE_TRAIT) == 0){
+                if ($t->isPositive()){
                     $ret -= $t->cpCost;
                 }else{
                     $ret += $t->cpCost;
