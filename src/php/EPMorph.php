@@ -159,6 +159,16 @@ class EPMorph extends EPAtom {
         }
 
     }
+
+    // All the traits, both user added, and from morph default
+    function getTraits(){
+        return array_merge($this->traits,$this->additionalTraits);
+    }
+
+    // All gear, both user added, and from morph default
+    function getGear(){
+        return array_merge($this->gears,$this->additionalGears);
+    }
 }
 
 ?>

@@ -249,7 +249,7 @@ class EPEgo {
 
     // All the traits, both user added, and from background/faction
     function getTraits(){
-	    return array_merge($this->traits,$this->additionalTraits);
+        return array_merge($this->traits,$this->additionalTraits);
     }
 }
 

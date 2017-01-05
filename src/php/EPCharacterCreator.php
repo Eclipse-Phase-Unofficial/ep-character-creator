@@ -224,20 +224,21 @@ class EPCharacterCreator {
                 $this->validation->items[EPValidation::$KNOWLEDGE_SKILLS_MIN] &&
                 $this->validation->items[EPValidation::$CREDIT_AMOUNT_ENOUGH];
     }
+
+    //Get all the traits for either the current morph or the ego
     function getCurrentTraits($morph = false){
         if ($morph){
             $m = $this->getCurrentMorph();
-            
             if (isset($m)){
-                return array_merge($m->traits,$m->additionalTraits);
+                return $m->getTraits();
             }else{
                 return null;
             }
         }
-        return array_merge($this->character->ego->traits,$this->character->ego->additionalTraits);
+        return $this->character->ego->getTraits();
     }
 
-    // All the traits the morph has on it by default
+    // All the traits a morph has on it by default
     //
     // AKA, all the traits that can't be removed from the morph.
     function getCurrentDefaultMorphTraits($morph){
@@ -250,33 +251,30 @@ class EPCharacterCreator {
     function getCurrentDefaultEgoTraits(){
         return $this->character->ego->traits;
     }
-    
+
+    // All possible traits
+    //
+    // Generated from database at session start, not saved in a file.
+    // This means trait UIDs will change between sessions!
     function getTraits(){
         return $this->traits;
-    }    
+    }
+
+    // Get all traits a morph has on it (both default and user generated)
     function getCurrentMorphTraits($morphName){
         $m = $this->getCurrentMorphsByName($morphName);
-        if (!isset($m)){
-            return null;
-        }
-        $res = array();
-        if (is_array($m->traits) && count($m->traits) > 0){
-            $res = $m->traits;
-        }
-        if (is_array($m->additionalTraits) && count($m->additionalTraits) > 0){
-            $res = array_merge($res,$m->additionalTraits);
-        }
-        if (count($res) > 0){
-            return $res;
+        if (isset($m)){
+            return $m->getTraits();
         }
         return null;
     }
+
     function getAptitudePoint(){
         if ($this->creationMode){
             return $this->aptitudePoints;
         }else{
             return 'N/A';
-        }        
+        }
     }
 
     // All the gear the morph has on it by default
@@ -286,23 +284,15 @@ class EPCharacterCreator {
         return $morph->gears;
     }
 
+    // All the gear the morph has (both default and user generated)
     function getCurrentMorphGears($morphName){
         $m = $this->getCurrentMorphsByName($morphName);
-        if (!isset($m)){
-            return null;
-        }
-        $res = array();
-        if (is_array($m->gears) && count($m->gears) > 0){
-             $res = $m->gears;
-        }
-        if (is_array($m->additionalGears) && count($m->additionalGears) > 0){
-             $res = array_merge($res,$m->additionalGears);
-        }        
-        if (count($res) > 0){
-            return $res;
+        if (isset($m)){
+            return $m->getGear();
         }
         return null;
     }
+
     function getCurrentMorphsByName($name){
         return getAtomByName($this->character->morphs,$name);
     }
@@ -320,19 +310,15 @@ class EPCharacterCreator {
         return false;                
     }
 
-    // If the morph has the trait
-    //
-    // Searches both default traits, and used added traits
+    // If the morph has the trait (includes default and user added traits)
     function haveTraitOnMorph($trait,$morph){
-        if ($trait->isInArray($morph->traits)){
-            return true;
-        }
-        if ($trait->isInArray($morph->additionalTraits)){
+        if ($trait->isInArray($morph->getTraits())){
             return true;
         }
         return false;
     }
 
+    // If the morph has a particular piece of gear on it (includes default and user added gear)
     function haveGearOnMorph($gear,$morph){
         if (!isset($morph)){
             return false;
@@ -340,21 +326,7 @@ class EPCharacterCreator {
         if (!isset($gear)){
             return false;
         }
-        if (is_array($morph->gears)){
-            foreach ($morph->gears as $g){
-                if (strcmp($g->name, $gear->name) == 0){
-                    return true;
-                }
-            }
-        }
-        if (is_array($morph->additionalGears)){
-            foreach ($morph->additionalGears as $g){
-                if (strcmp($g->name, $gear->name) == 0){
-                    return true;
-                }
-            }            
-        }
-        return false;         
+        return $gear->isInArray($morph->getGear());
     }
 
     function removeAI($ai){
