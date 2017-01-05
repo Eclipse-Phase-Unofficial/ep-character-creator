@@ -393,7 +393,7 @@ if(isset($_POST['skill'])){
 }
 
 //ADD TMP ACTIVE SKILL
-if(isset($_POST['newTmpActSkill'])){
+if( isset($_POST['newTmpActSkill']) && !empty($_POST['newTmpActSkill']) ){
 	//error_log("adding active skill \"" . $_POST['newTmpSkillPrefix'] . "\": \"" . $_POST['newTmpActSkill']."\"");
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpActSkill'], 
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
@@ -405,7 +405,7 @@ if(isset($_POST['newTmpActSkill'])){
 }
 
 //ADD TMP KNOWLEDGE SKILL
-if(isset($_POST['newTmpKnoSkill'])){
+if( isset($_POST['newTmpKnoSkill']) && !empty($_POST['newTmpKnoSkill']) ){
 	//error_log("adding knowledge skill  \"" . $_POST['newTmpSkillPrefix'] . "\": \"" . $_POST['newTmpKnoSkill']."\"");
 	if(!$_SESSION['cc']->addSkill($_POST['newTmpKnoSkill']." ", 
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
@@ -417,7 +417,7 @@ if(isset($_POST['newTmpKnoSkill'])){
 }
 
 //ADD NATIVE LANGUAGE SKILL
-if(isset($_POST['newNatLanguageSkill'])){
+if( isset($_POST['newNatLanguageSkill']) && !empty($_POST['newNatLanguageSkill']) ){
 	if(!$_SESSION['cc']->addSkill($_POST['newNatLanguageSkill'], 
 									  $provider->getAptForPrefix('Language'),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE, 

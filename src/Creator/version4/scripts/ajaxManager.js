@@ -475,6 +475,10 @@ $(document).ready(function(){
 		
 		//add a temp active skill
 		$(document).on('click', '#addActSkill' ,function () {
+            if(!$('#actToAdd').val()){
+                displayRulesMessage("Attempting to add a blank skill!");
+                return false;
+            }
                 do_ajax( {
                             newTmpActSkill : $('#actToAdd').val(),
                             newTmpSkillPrefix : $('#actprefix').val()
@@ -545,6 +549,10 @@ $(document).ready(function(){
 		});
 		//Add the native language
 		$(document).on('click', '#addNativeLanguage' ,function () {
+            if(!$('#langToAdd').val()){
+                displayRulesMessage("Attempting to add a blank skill!");
+                return false;
+            }
                 do_ajax( {
                             newNatLanguageSkill : $('#langToAdd').val()
                     },
@@ -569,6 +577,10 @@ $(document).ready(function(){
 		
 		//add a temp knowledge  skill
 		$(document).on('click', '#addKnowSkill' ,function () {
+            if(!$('#addKnowSkill').val()){
+                displayRulesMessage("Attempting to add a blank skill!");
+                return false;
+            }
                 do_ajax( {
                             newTmpKnoSkill : $('#knoToAdd').val(),
                             newTmpSkillPrefix : $('#knoprefix').val()
