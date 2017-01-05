@@ -50,7 +50,7 @@
 			<tbody>
 			<?php		         
 				 $lineNumeber = 1;
-		         foreach($_SESSION['cc']->getKnowledgeSkills() as $m){
+		         foreach($_SESSION['cc']->character->ego->getKnowledgeSkills() as $m){
 		        	$prefix = $m->prefix;
 		        	$spe = $m->specialization;
 					$name = $m->getPrintableName();

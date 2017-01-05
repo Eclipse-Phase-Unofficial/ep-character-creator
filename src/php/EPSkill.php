@@ -191,6 +191,14 @@ class EPSkill extends EPAtom{
         }
         return $nameStr;
     }
+
+    //Standard getters to save some comparison operators
+    public function isKnowledge(){
+        return $this->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE;
+    }
+    public function isActive(){
+        return $this->skillType == EPSkill::$ACTIVE_SKILL_TYPE;
+    }
 }
 
 //Skills are unique by name AND prefix

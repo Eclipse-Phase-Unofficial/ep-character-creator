@@ -1,4 +1,6 @@
 <?php
+require_once("EPSkill.php");
+
 /**
  * Description of EPEgo
  *
@@ -250,6 +252,36 @@ class EPEgo {
     // All the traits, both user added, and from background/faction
     function getTraits(){
         return array_merge($this->traits,$this->additionalTraits);
+    }
+
+    // Get all the knowledge skills
+    function getKnowledgeSkills(){
+        $res = array();
+
+        foreach ($this->skills as $s){
+            if ($s->isKnowledge()){
+                array_push($res, $s);
+            }
+        }
+
+        usort($res, "compSkilByPrefixName");
+        return $res;
+    }
+
+    // Get all the active skills
+    function getActiveSkills(){
+        $res = array();
+
+        foreach ($this->skills as $s){
+            if ($s->isActive()){
+                array_push($res, $s);
+            }
+        }
+
+
+        usort($res, "compSkilByPrefixName");
+
+        return $res;
     }
 }
 

@@ -42,7 +42,7 @@ session_start();
 			<tbody>
 			<?php				 
 				$lineNumeber = 1;
-				 foreach($_SESSION['cc']->getActiveSkills() as $m){
+				 foreach($_SESSION['cc']->character->ego->getActiveSkills() as $m){
 		         	$prefix = $m->prefix;
 		         	$spe = $m->specialization;
 					$name = $m->getPrintableName();

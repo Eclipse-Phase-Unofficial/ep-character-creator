@@ -4,8 +4,8 @@ require_once '../../../php/EPAtom.php';
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		$provider = new EPListProvider('../../../php/config.ini');
 		$prefixList =  $provider->getListPrefix();
-		$activeSkillList = $_SESSION['cc']->getActiveSkills();
-		$knowledgeSkillList = $_SESSION['cc']->getKnowledgeSkills();
+		$activeSkillList = $_SESSION['cc']->character->ego->getActiveSkills();
+		$knowledgeSkillList = $_SESSION['cc']->character->ego->getKnowledgeSkills();
 		$totalSkills = array_merge($activeSkillList,$knowledgeSkillList);
 		//GRANTED BM
 		if(grantedExist($bonusMalusArray)){

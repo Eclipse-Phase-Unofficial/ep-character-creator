@@ -469,7 +469,7 @@
             if($skill->baseValue > 0 || $skill->defaultable == EPSkill::$DEFAULTABLE)
             {
                 //set the active or knowledge skill token
-                if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE)
+                if($skill->isKnowledge())
                     $skillType = "K";
                 else
                     $skillType = "A";

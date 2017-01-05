@@ -1079,19 +1079,7 @@ class EPCharacterCreator {
         }
         return max(0,$need);
     }
-    function getActiveSkills(){
-        $res = array();
-        
-        foreach ($this->character->ego->skills as $s){
-            if (strcmp($s->skillType,EPSkill::$ACTIVE_SKILL_TYPE) == 0){
-                array_push($res, $s);
-            }
-        }
-        
-        usort($res, "compSkilByPrefixName");
-        
-        return $res;
-    }
+
     function getAiAptitudeByAbbreviation($ai,$abbrev){
         foreach ($ai->aptitudes as $a){
             if (strcmp($a->abbreviation,$abbrev) == 0){
@@ -1234,18 +1222,7 @@ class EPCharacterCreator {
         }
         return $res;
     }
-    
-    function getKnowledgeSkills(){
-        $res = array();
-        
-        foreach ($this->character->ego->skills as $s){
-            if (strcmp($s->skillType,EPSkill::$KNOWLEDGE_SKILL_TYPE) == 0){
-                array_push($res, $s);
-            }
-        }
-        usort($res, "compSkilByPrefixName"); 
-        return $res;        
-    }
+
     function getLastError(){
         $nbError = count($this->errorList);
         

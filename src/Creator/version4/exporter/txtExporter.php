@@ -169,7 +169,7 @@
 					$skillCompleteName .= $skill->name;
 					if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) $skillCompleteName .= " *";
 					$skillType = "A";
-					if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) {
+					if($skill->isKnowledge()) {
 						$skillType = "K";
 
 						if($skill->getValue() == 0)
@@ -475,7 +475,7 @@
 							$skillType = "A";
 
 							# ignore knowledge skills with an empty value as the player didn't pick the skill
-							if($skill->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE) {
+							if($skill->isKnowledge()) {
 								$skillType = "K";
 
 								if($skill->getValue() == 0)
