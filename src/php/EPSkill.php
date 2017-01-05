@@ -173,7 +173,7 @@ class EPSkill extends EPAtom{
     // Check for duplicate skills by name AND prefix.
     // This is safe, and prevents users from adding duplicate skills
     public function match($skill){
-        if (strcasecmp($l->name,$this->name) == 0 && strcasecmp($l->prefix,$this->prefix) == 0){
+        if (strcasecmp($skill->name,$this->name) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
             return true;
         }
         return false;
