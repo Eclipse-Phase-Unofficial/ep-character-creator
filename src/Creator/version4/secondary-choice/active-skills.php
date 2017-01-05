@@ -22,7 +22,7 @@ session_start();
 		?>
 		</select>
 		<input  type='text' id='actToAdd' placeholder='Enter a field' />
-		<span class="icone" id="addActSkill" data-icon="&#x3a;"></span>
+		<span class="addOrSelectedIcon" id="addActSkill" data-icon="&#x3a;"></span>
 	</li>
 </ul>
 <div id="actSklDiv">
@@ -59,11 +59,11 @@ session_start();
 
 		        	if($spe != null || $spe != ""){
 						echo "<br><label class='speLabel'>spe : ".$spe."</label></td>\n";
-						echo "		<td align='center'><span class='icone remSpeSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></span></td>\n";
+						echo "		<td align='center'><span class='remSpeSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></span></td>\n";
 		        	}
 		        	else{
 						echo "</td>\n";
-						echo "		<td align='center'><span class='icone addSkillSpec' atomic='".$m->getUid()."' data-icon='&#x3a;'></span></td>\n";
+						echo "		<td align='center'><span class='addSkillSpec' atomic='".$m->getUid()."' data-icon='&#x3a;'></span></td>\n";
 		        	}
 
 					echo "		<td><input class='actskillbase' type='number' atomic='".$m->getUid()."' min=0 step=5 value='".$m->baseValue."'/></td>\n";
@@ -72,7 +72,7 @@ session_start();
 /* 		        	echo "		<td>".$other."</td>"; */
 		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>\n";
 		        	if($m->tempSkill){
-						echo "		<td><span class='icone remActSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></td>\n";
+						echo "		<td><span class='remActSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></td>\n";
 		        	}
 		        	else{
 			        	echo "		<td></td>\n";

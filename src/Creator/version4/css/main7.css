@@ -428,17 +428,8 @@ a.active .btnhelp{
 		
 }
 
-/*active and knowledge skill*/
 #enterSkill input{
-	width: 9em;
-}
-
-#knoSklDiv {  
-	font-family: 'Lato', sans-serif;	
-} 
-
-#actSklDiv {  
-	font-family: 'Lato', sans-serif;	
+    width: 7.5em;
 }
 
 .addSkillSpec{
