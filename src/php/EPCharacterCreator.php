@@ -229,11 +229,7 @@ class EPCharacterCreator {
     function getCurrentTraits($morph = false){
         if ($morph){
             $m = $this->getCurrentMorph();
-            if (isset($m)){
-                return $m->getTraits();
-            }else{
-                return null;
-            }
+            return $m->getTraits();
         }
         return $this->character->ego->getTraits();
     }
@@ -263,10 +259,7 @@ class EPCharacterCreator {
     // Get all traits a morph has on it (both default and user generated)
     function getCurrentMorphTraits($morphName){
         $m = $this->getCurrentMorphsByName($morphName);
-        if (isset($m)){
-            return $m->getTraits();
-        }
-        return null;
+        return $m->getTraits();
     }
 
     function getAptitudePoint(){
@@ -287,10 +280,17 @@ class EPCharacterCreator {
     // All the gear the morph has (both default and user generated)
     function getCurrentMorphGears($morphName){
         $m = $this->getCurrentMorphsByName($morphName);
-        if (isset($m)){
-            return $m->getGear();
-        }
-        return null;
+        return $m->getGear();
+    }
+
+    function getGearForCurrentMorph(){
+        $m = $this->getCurrentMorph();
+        return $m->getGear();
+    }
+
+    function getGearForMorphName($morphName){
+        $m = $this->getMorphByName($morphName);
+        return $m->getGear();
     }
 
     function getCurrentMorphsByName($name){
@@ -312,20 +312,11 @@ class EPCharacterCreator {
 
     // If the morph has the trait (includes default and user added traits)
     function haveTraitOnMorph($trait,$morph){
-        if ($trait->isInArray($morph->getTraits())){
-            return true;
-        }
-        return false;
+        return $trait->isInArray($morph->getTraits());
     }
 
     // If the morph has a particular piece of gear on it (includes default and user added gear)
     function haveGearOnMorph($gear,$morph){
-        if (!isset($morph)){
-            return false;
-        }
-        if (!isset($gear)){
-            return false;
-        }
         return $gear->isInArray($morph->getGear());
     }
 
@@ -1009,16 +1000,11 @@ class EPCharacterCreator {
     }
  
     function getCurrentMorph(){
-        if (strcmp($this->character->currentMorphUid,'') == 0){
-            return null;
+        $ret = getAtomByUid($this->character->morphs,$this->character->currentMorphUid);
+        if($ret === null){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
-        foreach ($this->character->morphs as $m){
-            if (strcmp($m->getUid(),$this->character->currentMorphUid) == 0){
-                return $m;
-            }
-        }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return null;
+        return $ret;
     }
     function getCredit(){
         if ($this->creationMode){
@@ -1032,31 +1018,15 @@ class EPCharacterCreator {
         if (isset($this->character->ego->background)){
             return $this->character->ego->background;
         }
-        
+
         return null;
     }
     function getCurrentFaction(){
         if (isset($this->character->ego->faction)){
             return $this->character->ego->faction;
         }
-        
-        return null;   
-    }
-    function getGearForCurrentMorph(){
-        $m = $this->getCurrentMorph();
-        if (!isset($m)){
-            return null;
-        }
-        
-        return array_merge($m->gears,$m->additionalGears);
-    }
-    function getGearForMorphName($morphName){
-        $m = $this->getMorphByName($morphName);
-        if (!isset($m)){
-            return null;
-        }
-        
-        return array_merge($m->gears,$m->additionalGears);
+
+        return null;
     }
     function getErrorList(){
         return $this->errorList;
@@ -1331,22 +1301,23 @@ class EPCharacterCreator {
     function getMotivations(){
         return $this->character->ego->motivations;
     }
+
     function getMorphByName($name){
-        if (is_array($this->morphs)){
-            foreach ($this->morphs as $m) {
-                if (strcmp($m->name,$name) == 0){
-                    return $m;
-                }                
-            }
-        }
-        return null;
-    }    
+        return getAtomByName($this->morphs,$name);
+    }
+
+    // All possible morphs
+    //
+    // This is generated from the database at session creation, so UIDs will vary from session to session.
     function getMorphs(){
         return $this->morphs;
     }
+
+    // All morphs the character has
     function getCurrentMorphs(){
         return $this->character->morphs;
     }
+
     function getStats(){
 	    return $this->character->ego->stats;
     }
