@@ -947,14 +947,18 @@ if(isset($_POST['addTargetTo'])){
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
 		if($candidatParent == null){
-			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (1)",EPCreatorErrors::$SYSTEM_ERROR));
+			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Unkown Parent!",EPCreatorErrors::$SYSTEM_ERROR));
 		}
 		$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
 		if($candidat == null){
-			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Multi Unknow",EPCreatorErrors::$SYSTEM_ERROR));
+			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Could not find Bonus Malus",EPCreatorErrors::$SYSTEM_ERROR));
 		}
 		if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
 			$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+            // Database skills (non user selectable) use name/prefix instead of Uid
+            if($skill == null){
+                $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+            }
 			if($skill == null){
 				treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
 			}
@@ -970,6 +974,10 @@ if(isset($_POST['addTargetTo'])){
                 $candidat->forTargetNamed = $_POST['targetVal'];
                 if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
                     $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+                    // Database skills (non user selectable) use name/prefix instead of Uid
+                    if($skill == null){
+                        $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+                    }
                     if($skill == null){
                         treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
                     }

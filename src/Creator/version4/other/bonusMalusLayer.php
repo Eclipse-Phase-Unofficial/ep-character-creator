@@ -56,7 +56,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 						}
 						else if($bm->targetForChoice == EPBonusMalus::$MULTIPLE){
 							echo "<li>";
-							echo "		<label class='listSection'>Choose <span class='costInfo'>".$_SESSION['cc']->getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span></label>";
+							echo "		<label class='listSection'>Choose <span class='betweenPlusMinus'>".$_SESSION['cc']->getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span></label>";
 							echo "</li>";
 							if($_SESSION['cc']->getSelectedOnMulti($bm) == $bm->multi_occurence){
 								foreach($bm->bonusMalusTypes as $bmMulti){
@@ -64,20 +64,17 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 										echo "<li>";
 										if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
 											echo "		<label class='bmChoiceInput''> +".$bmMulti->value." on ".$bmMulti->forTargetNamed."</label>";
-											echo "		<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else{
 											echo "		<label class='bmGranted' id='".$bmMulti->getUid()."'>".$bmMulti->name."</label>";
-											echo "		<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
+										echo "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										echo "</li>";
 									}
 									echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
@@ -109,7 +106,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 										echo "<label class='bmGranted'>".$bmMulti->name."</label>";
 										echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
 										if($bmMulti->selected){
-											echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
+											echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
 										}
 										else{
 											echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
