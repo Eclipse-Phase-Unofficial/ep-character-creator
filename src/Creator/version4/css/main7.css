@@ -156,15 +156,6 @@ section.panel {
 	background-color: rgba(242, 242, 242, .8);
 }
 
-#main-nav .icone{
-	display: inline-block;
-	width: 3em;
-	text-align: center;
-	border-right: 1px solid rgba(148,155,153,.6);
-	margin-right: 1em;
-}
-
-
 #main-nav a:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);
@@ -232,6 +223,14 @@ section.panel {
 
 .slowTransition:hover{
 	opacity: 1;
+}
+
+.icone{
+    display: inline-block;
+    width: 3em;
+    text-align: center;
+    border-right: 1px solid rgba(148,155,153,.6);
+    margin-right: 1em;
 }
 
 .btnhelp{
@@ -360,31 +359,6 @@ a.active .btnhelp{
 	padding-right: 1em;
 }
 
-
-#freeGear .icone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: -0.5em;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-}
-
-#motivation .icone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-
-
 /*reputations*/
 #reputations label{
 	padding-left: 1em;
@@ -459,82 +433,12 @@ a.active .btnhelp{
 	width: 9em;
 }
 
-#enterSkill .icone{
-	display: block;
-	line-height: 3em;
-	width: 3em;
-	height:3em;
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#enterSkill .icone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-	
 #knoSklDiv {  
 	font-family: 'Lato', sans-serif;	
 } 
 
-#knoSklDiv .icone{
-	display: block;
-	line-height: 1em;
-	width: 1em;
-	height:1em;
-	text-align: left;
-	position: relative;
-	right: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#knoSklDiv .icone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}	
-	
 #actSklDiv {  
 	font-family: 'Lato', sans-serif;	
-}
-
-#actSklDiv .icone{
-	display: block;
-	line-height: 1em;
-	width: 1em;
-	height:1em;
-	text-align: left;
-	position: relative;
-	right: 0;
-	padding-right: 1em;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-	
-}
-
-#actSklDiv .icone:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
 }
 
 .addSkillSpec{
@@ -678,16 +582,6 @@ a.active .btnhelp{
 	border-bottom: 1px solid rgba(148,155,153,.6);
 	background-color: rgba(242, 242, 242, .8);
 }
-
-#morphs .icone{
-	display: inline-block;
-	line-height: 2em;
-	width: 3em;
-	text-align: center;
-	border-right: 1px solid rgba(148,155,153,.6);
-	margin-right: 1em;
-}
-
 
 #morphs a:hover{
 	color: rgb(186, 0, 80);
