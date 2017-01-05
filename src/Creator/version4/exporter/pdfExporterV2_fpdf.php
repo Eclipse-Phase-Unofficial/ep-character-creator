@@ -120,14 +120,14 @@
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
-                $egoNegTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(), EPTrait::$NEGATIVE_TRAIT);
+                $egoNegTraits = filterPosNegTrait($_SESSION['cc']->character->ego->getTraits(), EPTrait::$NEGATIVE_TRAIT);
                 $formattedNegTraits = formatGearData($egoNegTraits,$p);
                 $pdf->setXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
                 writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
-                $egoPosTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(), EPTrait::$POSITIVE_TRAIT);
+                $egoPosTraits = filterPosNegTrait($_SESSION['cc']->character->ego->getTraits(), EPTrait::$POSITIVE_TRAIT);
                 $formattedPosTraits = formatGearData($egoPosTraits,$p);
                 $pdf->setXY(116,102);
                 $format = setTwoColFormat(25,15,1,8,7);
