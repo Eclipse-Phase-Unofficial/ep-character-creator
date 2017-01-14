@@ -40,19 +40,13 @@ session_start();
 				</tr>
 			</thead>
 			<tbody>
-			<?php				 
-				$lineNumeber = 1;
+			<?php
 				 foreach($_SESSION['cc']->character->ego->getActiveSkills() as $m){
 		         	$prefix = $m->prefix;
 		         	$spe = $m->specialization;
 					$name = $m->getPrintableName();
 
-		         	if($lineNumeber%2 == 0){
-		        		echo "<tr>\n";
-		        	}
-		        	else{
-			        	echo "<tr class='alternateLine'>\n";
-		        	}
+					echo "<tr>\n";
 
 					echo "		<td class='skName' id='".$m->getUid()."' atomic='".$m->getUid()."'><div class='spezBox' id='spezBox".$m->getUid()."'><input class='spezInt' type='text' id='spe_".$m->getUid()."' /></div>";
 					echo $name;
@@ -70,7 +64,7 @@ session_start();
 		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
-		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>\n";
+		        	echo "		<td class='skillTotal'>".$m->getValue()."</td>\n";
 		        	if($m->tempSkill){
 						echo "		<td><span class='remActSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></td>\n";
 		        	}
@@ -78,7 +72,6 @@ session_start();
 			        	echo "		<td></td>\n";
 		        	}
 		        	echo "</tr>\n";
-		        	$lineNumeber++;
 		         }
 			?>
 			</tbody>

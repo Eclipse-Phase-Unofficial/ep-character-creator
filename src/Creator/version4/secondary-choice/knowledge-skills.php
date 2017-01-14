@@ -48,19 +48,13 @@
 				</tr>
 			</thead>
 			<tbody>
-			<?php		         
-				 $lineNumeber = 1;
+			<?php
 		         foreach($_SESSION['cc']->character->ego->getKnowledgeSkills() as $m){
 		        	$prefix = $m->prefix;
 		        	$spe = $m->specialization;
 					$name = $m->getPrintableName();
 
-		        	if($lineNumeber%2 == 0){
-		        		echo "<tr>";
-		        	}
-		        	else{
-			        	echo "<tr class='alternateLine'>";
-		        	}
+					echo "<tr>\n";
 
 					echo "		<td class='skName' id='".$m->getUid()."' atomic='".$m->getUid()."'><div class='spezBox' id='spezBox".$m->getUid()."'><input class='spezInt' type='text' id='spe_".$m->getUid()."' /></div>";
 					echo $name;
@@ -78,7 +72,7 @@
 		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
-		        	echo "		<td id='skillTotalCol'>".$m->getValue()."</td>\n";
+		        	echo "		<td class='skillTotal'>".$m->getValue()."</td>\n";
 		        	if($m->tempSkill){
 						echo "		<td><span class='remKnowSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></td>\n";
 		        	}
@@ -86,7 +80,6 @@
 			        	echo "		<td></td>\n";
 		        	}
 		        	echo "</tr>";
-		        	$lineNumeber++;
 		         }
 			?>
 			</tbody>

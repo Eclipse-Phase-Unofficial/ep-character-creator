@@ -301,11 +301,6 @@ a.active .btnhelp{
 	text-align: center;
 }
 
-#aptitudes .aptMorph:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
-}
-
 /*reputations*/
 #reputations input{
 	width: 3em;
@@ -317,68 +312,30 @@ a.active .btnhelp{
 	text-align: center;
 }
 
-/*psy sleigths*/
+/*skills*/
 
 #enterSkill input{
     width: 7.5em;
 }
 
-.addSkillSpec{
-	display: block;
-	width: 1em;
-	height:1em;
-	text-align: center;
-	opacity: .8;
-	-webkit-transition: opacity .3s ease .2s;
-	   -moz-transition: opacity .3s ease .2s;
-	    -ms-transition: opacity .3s ease .2s;
-	     -o-transition: opacity .3s ease .2s;
-	        transition: opacity .3s ease .2s;
-
-}
-
-.addSkillSpec:hover{
-	opacity: 1;
-	color: rgb(186, 0, 80);
-}
-	
-.skills { 
-	font-family: 'Lato', sans-serif;
-	text-align: left; 
-	width: 100%; 
-	background: rgba(242, 242, 242, .8); 
-	overflow: hidden; 
-	text-decoration: none;
+.skills {
 	color: hsl(200,10%,40%);
+	background: rgba(242, 242, 242, .8);
 	text-transform: uppercase;
-} 
-
-.skills #alternateLine{
-	background-color: rgba(200, 195, 196, .9);
 }
 
+/* Skill Specialization */
 .speLabel{
 	font-size: x-small;
 }
 
-.skills thead th {
-	color:hsl(200,10%,40%); 
-} 
-
-.skills tbody td { 
-	color: hsl(200,10%,40%); 
-	font-size: 15px;
+.skills tbody td {
+	font-size: small;
 }
 
+.actskillbase,
 .knoskillbase{
 	width: 3em;
-	line-height: 1em;
-	text-align: center;
-}
-
-.actskillbase{
-	width: 3em;
-	line-height: 1em;
 	text-align: center;
 }
 
@@ -387,23 +344,11 @@ a.active .btnhelp{
 	background-color: rgba(254, 254, 254, .85);		
 }
 
-.skName:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-}
-
-.iconeSkill{
-	display: block;
-	width: 1em;
-	height:1em;
-	text-align: center;
-	opacity: .8;
-}
-
-#skillTotalCol{
+.skillTotal{
   font-weight: bold;
 }
 
+/* Popup box for skill Specialization */
 .spezBox {
     background: #fff;
     border-radius: 12px;
@@ -416,9 +361,10 @@ a.active .btnhelp{
 }
 
 .spezInt {
-	width: 97%;
+    width: 97%;
 }
 
+/* Aptitudes and Stats with morph */
 .score {
     width: 3em;
     float: right;
