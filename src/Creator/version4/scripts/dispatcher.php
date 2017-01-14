@@ -816,32 +816,22 @@ if(isset($_POST['hoverAi'])){
 
 //SET REMOVE SOFT GEAR
 if(isset($_POST['softg'])){
-	//error_log(print_r($_POST,true));
+//     error_log(print_r($_POST,true));
     $soft = $_SESSION['cc']->getGearByName($_POST['softg']);
-    
+    $return['desc'] = $soft->description;
+    $_SESSION['currentSoftName'] = $soft->name;
+
     if (isset($soft)){
        if ($_SESSION['cc']->haveSoftGear($soft)){
-           if ($_SESSION['cc']->removeSoftGear($soft)){
-               $return['desc'] = $soft->description;
-               $_SESSION['currentSoftName'] = $soft->name;
-           }else{
+           if (!$_SESSION['cc']->removeSoftGear($soft)){
                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-           }        
+           }
         }else{
-            if (!$_SESSION['cc']->haveSoftGear($soft)){
-                if ($_SESSION['cc']->addSoftGear($soft)){
-                    $return['desc'] = $soft->description;
-                    $_SESSION['currentSoftName'] = $soft->name;
-                }else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }                      
+            if (!$_SESSION['cc']->addSoftGear($soft)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
             }
-            else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-            } 
-    
-       }       
-    }else{       
+       }
+    }else{
         treatCreatorErrors($return, "Soft gear does not exist (".$_SESSION['softg'].")"); 
     }
 }

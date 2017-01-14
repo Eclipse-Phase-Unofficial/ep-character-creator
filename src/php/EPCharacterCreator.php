@@ -581,57 +581,46 @@ class EPCharacterCreator {
             return $this->removeMorphUpdateMode($morph);
         }
     }
+
     function addSpecialization($name,$skill){
-        if ($this->creationMode){                     
-            if (empty($skill->specialization)){
-                $skill->specialization = $name;
-                return true;
-            }else{
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill already have a specialization !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }            
-        }else{
-            if (empty($skill->specialization)){
-                $skill->specialization = $name;
-                $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SpecializationCost');
-                return true;
-            }else{
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill already have a specialization !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }            
-        }   
-    }
-    function addSoftGear($sg){
-        if (!$this->creationMode){
-            $this->evoCrePoint -= $sg->getCost();
+        if (!empty($skill->specialization)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill already has a specialization!)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
         }
+        if ($this->creationMode){
+            $this->evoCrePoint -= $this->configValues->getValue('RulesValues','SpecializationCost');
+        }else{
+            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SpecializationCost');
+        }
+        $skill->specialization = $name;
+        return true;
+    }
+    function removeSpecialization($skill){
+        if (empty($skill->specialization)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No specialization to remove!)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
+        if ($this->creationMode){
+            $this->evoCrePoint += $this->configValues->getValue('RulesValues','SpecializationCost');
+        }else{
+            $this->evoRezPoint += $this->configValues->getValue('RulesValues','SpecializationCost');
+        }
+        $skill->specialization = '';
+        return true;
+    }
+
+    function addSoftGear($sg){
         $sg->addToArray($this->character->ego->softGears);
         $this->adjustAll();
         return true;
     }
     function removeSoftGear($sg){
-        if ($this->creationMode){
-            foreach ($this->character->ego->softGears as $s){
-                if ($s->name == $sg->name){
-                    $sg->removeFromArray($this->character->ego->softGears);
-                    $this->adjustAll();
-                    return true;
-                }
-            }
+        if(!$sg->removeFromArray($this->character->ego->softGears)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Soft gear not exist in character softGear list !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;            
-        }else{
-            foreach ($this->character->ego->softGears as $s){
-                if ($s->name == $sg->name){
-                    $this->evoCrePoint += $s->getCost() * $s->occurence;
-                    $sg->removeFromArray($this->character->ego->softGears);
-                    $this->adjustAll();
-                    return true;
-                }
-            }
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Soft gear not exist in character softGear list !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;            
+            return false;
         }
+        $this->adjustAll();
+        return true;
     }
     function addMotivation($motiv){
          array_push($this->character->ego->motivations, $motiv);
@@ -958,32 +947,6 @@ class EPCharacterCreator {
         }
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
-    }
-    function removeSpecialization($skill){
-        if ($this->creationMode){
-            if (!empty($skill->specialization)){
-                $skill->specialization = '';
-                return true;
-            }else{
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No specialization to remove !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }            
-        }else{
-            $oldSk = $this->back->getSkillByAtomUid($skill->getUid());
-            if (!empty($skill->specialization)){
-                if (empty($oldSk->specialization)){
-                    $skill->specialization = '';
-                    $this->evoRezPoint += $this->configValues->getValue('RulesValues','SpecializationCost');
-                    return true;                    
-                }else{
-                    $skill->specialization = '';
-                    return true;
-                }            
-            }else{
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No specialization to remove !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }                
-        }
     }
     function clearErrorList(){
         $this->errorList = array();
