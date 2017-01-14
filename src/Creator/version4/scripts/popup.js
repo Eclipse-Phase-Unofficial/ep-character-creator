@@ -16,8 +16,7 @@ function endLoading(){
 //**********Popup Helpers**********
 
 function closeAllPopup(){
-    if($('#popup').data('name') == 'reload_popup' ||
-        $('#popup').data('name') == 'error_popup'){
+    if($('#popup').data('reloadOnClose')){
         location.reload();
     }
     $('#popup').data('name','');
@@ -30,11 +29,13 @@ function closeAllPopup(){
 // If attempting to reload the same popup instead close it.
 // Note: A popup name of "reload_popup" or "error_popup" is treated in a special manner.
 //       If this popup is ever closed the page will reload.
-function loadPopup(popup_name,url){
+function loadPopup(popup_name,url,clickToClose=false,reloadOnClose=false){
     //Let an already loaded popup close instead of reloading it
     if($('#popup').data('name') != popup_name){
         closeAllPopup();
-        $('#popup').data('name',popup_name)
+        $('#popup').data('name',popup_name);
+        $('#popup').data('clickToClose',clickToClose);
+        $('#popup').data('reloadOnClose',reloadOnClose);
         $('#popup').load(url);
         $('#popup').css('opacity',1);
         $('#popup').css('visibility','visible');
@@ -59,7 +60,7 @@ $("#saveButton").click(function() {
 
 // Check button
 $("#validateButton").click(function() {
-        loadPopup("#validation_popup", "popup-contents/validation.php");
+        loadPopup("#validation_popup", "popup-contents/validation.php",true);
 });
 
 // Txt export button
@@ -74,22 +75,20 @@ $("#exportButton").click(function() {
 
 // Reset button
 $("#settingsButton").click(function() {
-        loadPopup("reload_popup","popup-contents/reset.php");
+        loadPopup("reload_popup","popup-contents/reset.php",false,true);
 });
 
 // About button
 $("#aboutButton").click(function() {
-        loadPopup("#about_popup", "popup-contents/about.php");
+        loadPopup("#about_popup", "popup-contents/about.php",true);
 });
 
 //**************************************************
 
-// Close about, check, and error popups by clicking on them
+// Close some popups by clicking on them
 $("#popup").click(function() {
     var popup_name = $('#popup').data('name');
-    if(popup_name == '#about_popup' ||
-       popup_name == '#validation_popup' ||
-       popup_name == 'error_popup'){
+    if($('#popup').data('clickToClose')){
         closeAllPopup();
     }
 });
