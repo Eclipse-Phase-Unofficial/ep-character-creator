@@ -12,16 +12,16 @@
 }
 
 .popupButton{
-    height: 55px;
-    width: 100px;
+    height: 3.5em;
+    width: 6em;
     font-family: 'Lato', sans-serif;
     text-align: left;
     text-transform: uppercase;
-    padding-left: 25px;
+    padding-left: 1.25em;
 /*  Make the button oval shaped */
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
+    border-radius: 2.5em;
+    -moz-border-radius: 2.5em;
+    -webkit-border-radius: 2.5em;
     color: hsl(200,10%,40%);
     background-color: rgba(242, 242, 242, .8);
 /*  No top/bottom button shadow */
