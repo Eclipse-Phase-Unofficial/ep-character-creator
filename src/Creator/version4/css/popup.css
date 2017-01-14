@@ -1,21 +1,33 @@
+/* All CSS relating to popups */
+
 /*===============POPUP BUTTONS=====================*/
+
+/* All the buttons */
+#menu{
+    width: 100px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 3;
+}
 
 .popupButton{
     height: 55px;
     width: 100px;
     font-family: 'Lato', sans-serif;
     text-align: left;
-    text-decoration: none;
-	text-transform: uppercase;
-    padding: 10px 25px;
+    text-transform: uppercase;
+    padding-left: 25px;
+/*  Make the button oval shaped */
+    border-radius: 40px;
     -moz-border-radius: 40px;
     -webkit-border-radius: 40px;
-    border-radius: 40px;
     color: hsl(200,10%,40%);
     background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-    z-index: 3;
+/*  No top/bottom button shadow */
+    border-top: 0;
+    border-bottom: 0;
+    margin: 1px;
 }
 
 .popupButton:hover {
@@ -36,48 +48,6 @@
 	opacity: 1;
 }
 
-#loadButton{
-	bottom: 370px;
-	right: 0px;
-	position: absolute;
-}
-
-#saveButton{
-	bottom: 310px;
-	right: 0px;
-	position: absolute;
-}
-
-#validateButton{
-  	bottom: 250px;
-  	right: 0px;
-  	position: absolute;
-}
-
-#exportTxtButton{
-	bottom: 190px;
-	right: 0px;
-	position: absolute;
-}
-
-#exportButton{
-	bottom: 130px;
-	right: 0px;
-	position: absolute;
-}
-
-#settingsButton{
-	bottom: 70px;
-	right: 0px;
-	position: absolute;
-}
-
-#aboutButton{
-    bottom: 10px;
-    right: 0px;
-    position: absolute;
-}
-
 .popupInnerButton{
     height: 55px;
     width: 150px;
@@ -86,9 +56,10 @@
     text-decoration: none;
     text-transform: uppercase;
     padding: 10px 25px;
+/*  Make the button oval shaped */
+    border-radius: 40px;
     -moz-border-radius: 40px;
     -webkit-border-radius: 40px;
-    border-radius: 40px;
     color: hsl(200,10%,40%);
     background-color: rgba(242, 242, 242, .8);
     border-top: 1px solid rgba(245, 245, 245, .8);
@@ -143,7 +114,7 @@
     transition: opacity .5s;
 }
 
-.loadingPopup {
+#loading_popup {
     /* centered */
     position: fixed;
     right: 50%;

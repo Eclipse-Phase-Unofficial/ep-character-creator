@@ -22,7 +22,7 @@
 
         <!-- POPUP  -- DYNAMIC CONTENT -->
         <div id="popup" data-name=""></div>
-        <div class="loadingPopup" id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
+        <div id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
 
         <div id="container">
 
@@ -88,34 +88,36 @@
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>
-        	<!-- SAVE BUTTON-->
-			<button class="popupButton" id="saveButton">
-	       			save<!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
-        	</button>
-        	<!-- LOAD BUTTON-->
-			<button class="popupButton" id="loadButton">
-	       			load<!-- <span class="button_icone" data-icon="&#x30;"></span> -->
-        	</button>
-        	<!-- VALIDATE BUTTON-->
-        	<button class="popupButton" id="validateButton">
-	       		check<!-- <span class="button_icone" data-icon="&#x2b;"></span> -->
-        	</button>
-        	<!-- EXPORT TXT BUTTON-->
-        	<button class="popupButton" id="exportTxtButton">
-	       		TXT<!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
-        	</button>
-        	<!-- EXPORT PDF BUTTON-->
-        	<button class="popupButton" id="exportButton">
-	       		PDF<!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
-        	</button>
-        	<!-- RESET BUTTON-->
-        	<button class="popupButton" id="settingsButton">
-	       		reset<!-- <span class="button_icone" data-icon="&#x21;"></span> -->
-        	</button>
-            <!-- ABOUT BUTTON-->
-            <button class="popupButton" id="aboutButton">
-                about<!-- <span class="button_icone" data-icon="&#x21;"></span> -->
-            </button>
+            <div id="menu">
+                <button class="popupButton" id="saveButton">
+                    <!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
+                    Save
+                </button>
+                <button class="popupButton" id="loadButton">
+                    <!-- <span class="button_icone" data-icon="&#x30;"></span> -->
+                    Load
+                </button>
+                <button class="popupButton" id="validateButton">
+                    <!-- <span class="button_icone" data-icon="&#x2b;"></span> -->
+                    Check
+                </button>
+                <button class="popupButton" id="exportTxtButton">
+                    <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
+                    TXT
+                </button>
+                <button class="popupButton" id="exportButton">
+                    <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
+                    PDF
+                </button>
+                <button class="popupButton" id="settingsButton">
+                    <!-- <span class="button_icone" data-icon="&#x21;"></span> -->
+                    Reset
+                </button>
+                <button class="popupButton" id="aboutButton">
+                    <!-- <span class="button_icone" data-icon="&#x21;"></span> -->
+                    About
+                </button>
+            </div>
         </div>
 
         <style><?php include "css/popup.css"; ?></style>
