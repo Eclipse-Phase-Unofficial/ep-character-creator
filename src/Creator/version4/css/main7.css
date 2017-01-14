@@ -194,6 +194,11 @@ section.panel {
 	border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
+.panel li:hover{
+	color: rgb(186, 0, 80);
+	background-color: rgba(254, 254, 254, .85);
+}
+
 .mainlist{
 	padding: 0;
 	margin: 0;
@@ -296,38 +301,12 @@ a.active .btnhelp{
 	text-align: center;
 }
 
-#aptitudes li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
-}
-
 #aptitudes .aptMorph:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);		
 }
 
-
-
-/*backgrounds*/
-
-#backgrounds li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
-}
-
-/*factions*/
-#factions li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
 /*reputations*/
-#reputations li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
-}
-
 #reputations input{
 	width: 3em;
 	height: 1em;
@@ -338,30 +317,7 @@ a.active .btnhelp{
 	text-align: center;
 }
 
-
-/*positive traits*/
-
-#postraits li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
-/*negative traits*/
-
-#negtraits li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
 /*psy sleigths*/
-
-#psyS li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
 
 #enterSkill input{
     width: 7.5em;
@@ -482,12 +438,6 @@ a.active .btnhelp{
 
 /*morphs*/
 
-#morphs li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
 #morphs a{
 	display: block;
 	height:  3em;
@@ -516,23 +466,10 @@ a.active .btnhelp{
 
 /* stats */
 
-
-#stats li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-}
-
 #stats .statMorph:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);
 		
-}
-
-/*Ai and softgear*/
-
-#soft li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
 }
 
 /*Last details*/
@@ -672,32 +609,6 @@ a.active .btnhelp{
 	width: 6em;
 	line-height: 1em;
 	text-align: left;
-}
-
-#morphPostraits li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);	
-}
-
-#morphNegtraits li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
-ul#implants li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);	
-}
-
-#gears li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);	
-}
-
-#statWithMorph li:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
 }
 
 /*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
