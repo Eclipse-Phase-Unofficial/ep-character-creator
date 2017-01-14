@@ -285,13 +285,6 @@ a.active .btnhelp{
 /*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 /*aptitudes*/
-#aptitudes label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-	
 
 #aptitudes input{
 	width: 3em;
@@ -316,12 +309,6 @@ a.active .btnhelp{
 
 
 /*backgrounds*/
-#backgrounds label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;	
-}	
 
 #backgrounds li:hover{
 	color: rgb(186, 0, 80);
@@ -329,44 +316,13 @@ a.active .btnhelp{
 }
 
 /*factions*/
-#factions label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
-
 #factions li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);
 		
-}	
-
-/* motivations */
-#motivation label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-
-/*free gear*/
-#freeGear label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
 }
 
 /*reputations*/
-#reputations label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-	
 #reputations li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);		
@@ -384,13 +340,6 @@ a.active .btnhelp{
 
 
 /*positive traits*/
-#postraits label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
 
 #postraits li:hover{
 	color: rgb(186, 0, 80);
@@ -399,13 +348,6 @@ a.active .btnhelp{
 }
 
 /*negative traits*/
-#negtraits label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
 
 #negtraits li:hover{
 	color: rgb(186, 0, 80);
@@ -414,13 +356,6 @@ a.active .btnhelp{
 }
 
 /*psy sleigths*/
-#psyS label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
 
 #psyS li:hover{
 	color: rgb(186, 0, 80);
@@ -546,13 +481,6 @@ a.active .btnhelp{
 
 
 /*morphs*/
-#morphs label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
 
 #morphs li:hover{
 	color: rgb(186, 0, 80);
@@ -601,12 +529,6 @@ a.active .btnhelp{
 }
 
 /*Ai and softgear*/
-#soft label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;	
-}	
 
 #soft li:hover{
 	color: rgb(186, 0, 80);
@@ -618,12 +540,6 @@ a.active .btnhelp{
 #lastDetails{
 	width: 20em;
 }
-
-#lastDetails label{
-	float: left;
-	padding-left: 1em;
-	width: 45%;
-}	
 
 #lastDetails input[type="text"]{
 	width: 8em;
@@ -740,12 +656,6 @@ a.active .btnhelp{
 	padding: 1em;
 }
 
-#morph-settings label{
-	float: left;
-	padding-left: 1em;
-	width: 45%;
-}	
-
 #morph-settings input[type="text"]{
 	width: 8em;
 	line-height: 1em;
@@ -764,24 +674,10 @@ a.active .btnhelp{
 	text-align: left;
 }
 
-#morphPostraits label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;	
-}	
-
 #morphPostraits li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);	
 }
-
-#morphNegtraits label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}	
 
 #morphNegtraits li:hover{
 	color: rgb(186, 0, 80);
@@ -789,48 +685,19 @@ a.active .btnhelp{
 		
 }
 
-ul#implants label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}	
-
 ul#implants li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);	
 }
-
-#gears label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-	
-}	
 
 #gears li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);	
 }
 
-#statWithMorph label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-
 #statWithMorph li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);		
-}
-
-#aptsWithMorph label{
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
 }
 
 /*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
