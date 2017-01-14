@@ -79,11 +79,11 @@ if (isset($_POST['load_char'])) {
             $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
 
             // Save pack and user both say we are in creation mode
-            if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == true ){
+            if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == "true" ){
                 $_SESSION['cc']->creationMode = true; //We stay in creation mode
             }else{
                 // We force evo mode
-                $_SESSION['creationMode'] = false;
+                $_SESSION['cc']->creationMode = false;
                 $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
                 $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
                 $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
