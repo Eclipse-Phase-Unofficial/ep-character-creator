@@ -1456,6 +1456,16 @@ function hideErrorsMsg(){
 
 
 function setRemainingPoint(ajaxData){
+    // Hide creation data if not in creation mode, and Rez points if not in rez mode
+    if(ajaxData.creation_remain == "N/A")
+    {
+        $("#CP").css('display','none');
+        $("#AP").css('display','none');
+        $("#ASR").css('display','none');
+        $("#KSR").css('display','none');
+    }else{
+        $("#RZ").css('display','none');
+    }
      $("#creation_remain").html(ajaxData.creation_remain);
      $("#credit_remain").html(ajaxData.credit_remain);
      $("#aptitude_remain").html(ajaxData.aptitude_remain);

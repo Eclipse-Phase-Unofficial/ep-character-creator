@@ -623,7 +623,6 @@ a.active .btnhelp{
 	margin:0;
     background-color: rgba(242, 242, 242, .8);
 	width: 120px;
-	height:200px;
     border-bottom: 1px solid rgba(148,155,153,.6);
     border-top: 1px solid rgba(245, 245, 245, .6);
 	font-size:1.25em;

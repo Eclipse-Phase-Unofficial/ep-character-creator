@@ -78,13 +78,17 @@
         	
         	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
         	<section class="points">
-            		CP <span id="creation_remain" class="rest"></span><br>  
-            		AP <span id="aptitude_remain" class="rest"></span><br>
-            		RP <span id="reputation_remain" class="rest"></span><br>
-            		CR <span id="credit_remain" class="rest"></span><br>
-                    ASR <span id="asr_remain" class="rest"></span><br>
-                    KSR <span id="ksr_remain" class="rest"></span><span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span><br>
-                    RZ <span id="rez_remain" class="rest"></span><br>
+                <div id='RZ'>RZ <span id="rez_remain" class="rest"></span>
+                    <span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span></span>
+                </div>
+                <div id='CP'>CP <span id="creation_remain" class="rest"></span>
+                    <span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span></span>
+                </div>
+                <div id='AP'>AP <span id="aptitude_remain" class="rest"></span></div>
+                <div id='ASR'>ASR <span id="asr_remain" class="rest"></span></div>
+                <div id='KSR'>KSR <span id="ksr_remain" class="rest"></span></div>
+                <div id='RP'>RP <span id="reputation_remain" class="rest"></span></div>
+                <div id='CR'>CR <span id="credit_remain" class="rest"></span></div>
         	</section>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>

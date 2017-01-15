@@ -268,11 +268,7 @@ class EPCharacterCreator {
     }
 
     function getAptitudePoint(){
-        if ($this->creationMode){
-            return $this->aptitudePoints;
-        }else{
-            return 'N/A';
-        }
+        return $this->aptitudePoints;
     }
 
     // All the gear the morph has on it by default
