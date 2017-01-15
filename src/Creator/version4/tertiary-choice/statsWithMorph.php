@@ -1,6 +1,16 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
 session_start();
+
+function printStat($abbreviation){
+    $stat = $_SESSION['cc']->getStatByAbbreviation($abbreviation);
+    echo "<li id='".$abbreviation."' class='statMorph'>";
+    echo "  <span class='paddedLeft'>".$stat->name."</span>";
+    echo "  <span class='btnhelp slowTransition' data-icon='&#x2a;' title='".$stat->description."'></span>";
+    echo "  <span class='score'>[".$stat->getValue()."]</span>";
+    echo "</li>";
+
+}
 ?>
 <ul class="mainlist" id="statWithMorph">
     <?php
@@ -9,14 +19,14 @@ session_start();
         echo "<li>";
 		echo "		<span class='listSection'>".$morph->name."</span>";
 		echo "</li>";
-		echo "<li id='TT' class='statMorph'><span class='paddedLeft'>TRAUMA THRESHOLD</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("TT")->getValue()."]</span></li>";
-		echo "<li id='LUC' class='statMorph'><span class='paddedLeft'>LUCIDITY</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("LUC")->getValue()."]</span></li>";
-		echo "<li id='IR' class='statMorph'><span class='paddedLeft'>INSANITY RATING</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("IR")->getValue()."]</span></li>";
-		echo "<li id='WT' class='statMorph'><span class='paddedLeft'>WOUND THRESHOLD</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("WT")->getValue()."]</span></li>";
-		echo "<li id='DUR' class='statMorph'><span class='paddedLeft'>DURABILITY</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("DUR")->getValue()."]</span></li>";
-		echo "<li id='DR' class='statMorph'><span class='paddedLeft'>DEATH RATING</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("DR")->getValue()."]</span></li>";
-		echo "<li id='INI' class='statMorph'><span class='paddedLeft'>INITIATIVE</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("INI")->getValue()."]</span></li>";
-		echo "<li id='SPD' class='statMorph'><span class='paddedLeft'>SPEED</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("SPD")->getValue()."]</span></li>";
-		echo "<li id='DB' class='statMorph'><span class='paddedLeft'>DAMAGE BONUS</span><span class='score'>[".$_SESSION['cc']->getStatByAbbreviation("DB")->getValue()."]</span></li>";
+		printStat("TT");
+		printStat("LUC");
+		printStat("IR");
+		printStat("WT");
+		printStat("DUR");
+		printStat("DR");
+		printStat("INI");
+		printStat("SPD");
+		printStat("DB");
 	?>
 </ul>

@@ -6,13 +6,15 @@ session_start();
     <?php
         $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
         $_SESSION['cc']->activateMorph($morph);
-        
+
         echo "<li>";
 		echo "		<span class='listSection'>".$morph->name."</span>";
 		echo "</li>";
 		foreach($_SESSION['cc']->getAptitudes() as $m){
         	echo "<li>";
-        	echo "		<span class='paddedLeft'>".$m->name."</span><span class='score'>[".$m->getValue()."] </span>";
+        	echo "		<span class='paddedLeft'>".$m->name."</span>";
+        	echo '		<span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';
+        	echo "		<span class='score'>[".$m->getValue()."] </span>";
         	echo "</li>";
         	
          }

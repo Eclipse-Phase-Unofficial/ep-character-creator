@@ -410,14 +410,6 @@ a.active .btnhelp{
 	width: 100%;
 }
 
-/* stats */
-
-#stats .statMorph:hover{
-	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);
-		
-}
-
 /*Last details*/
 
 #lastDetails{

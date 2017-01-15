@@ -313,17 +313,6 @@ if(isset($_POST['cog']) && isset($_POST['coo']) && isset($_POST['int']) &&
     }
 }
 
-//GET APTITUDE DESC
-if(isset($_POST['apt'])){
-	$aptitude = $_SESSION['cc']->getAptitudeByAbbreviation($_POST['apt']);
-	if(isset($aptitude)){
-		$return['desc'] = $aptitude->description;
-	}
-	else{
-		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
-}
-
 //SET REPUTATION
 if(isset($_POST['atrep']) && isset($_POST['grep']) && isset($_POST['crep']) &&
    isset($_POST['irep']) && isset($_POST['erep']) && isset($_POST['rrep']) &&
@@ -363,21 +352,11 @@ if(isset($_POST['atrep']) && isset($_POST['grep']) && isset($_POST['crep']) &&
     }
 }
 
-//GET REPUTATION DESC
-if(isset($_POST['rep'])){
-	$reputation = $_SESSION['cc']->getReputationByName($_POST['rep']);
-	if(isset($reputation)){
-		$return['desc'] = $reputation->description;
-	}
-	else{
-		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
-}
-
 //GET SKILL DECRIPTION
 if(isset($_POST['skill'])){
 	$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['skill']);
-	//error_log("Getting skill id: " . $_POST['skill']. " -> " . $skill->name);
+	//error_log("Getting skill id: " . $_POST['skill']. " -> " . $skill->getPrintableName());
+	$return['title'] = $skill->getPrintableName();
 	if($skill->description == null || $skill->description == ""){
 		$prefix = $skill->prefix;
 		if($prefix != null || $prefix != ""){
@@ -870,18 +849,6 @@ if(isset($_POST['mox'])){
 		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 	}
 }
-
-//GET STAT DESC
-if(isset($_POST['stat'])){
-	$stat = $_SESSION['cc']->getStatByAbbreviation($_POST['stat']);
-	if(isset($stat)){
-		$return['desc'] = $stat->description;
-	}
-	else{
-		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
-}
-
 
 //SET LAST DETAILS
 if (isset($_POST['lastDetailsChange'])) {   

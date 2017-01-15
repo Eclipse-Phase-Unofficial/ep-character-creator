@@ -23,6 +23,7 @@ session_start();
         	echo "<li id='".$m->abbreviation."Def' class='apt'>";
         	echo "		<label>".$m->name."</label>";
         	echo "		<input type='number' min=0 step=5 id='".$m->abbreviation."' value='".$m->value."'/>";
+            echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';
         	echo "</li>";
         	
          }

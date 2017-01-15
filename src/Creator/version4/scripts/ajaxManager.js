@@ -191,22 +191,7 @@ $(document).ready(function(){
 				return false;
         
         });
-        
-        //click on a aptitude for description
-    	$(document).on('click', '.apt' ,function () {
-    			hideErrorsMsg();
-        		var aptNameTotal = $(this).attr('id');
-        		var aptName = aptNameTotal.substr(0, 3);
-                do_ajax( {
-                            apt :aptName             
-                    },
-                    function(response){
-                    		 	displayMessageOnTertiary(response.desc);
-                    });
-				return false;
-        
-        });
-        
+
          //click on a morph for apts
     	$(document).on('click', '.aptMorph' ,function () {
     			hideErrorsMsg();
@@ -277,22 +262,7 @@ $(document).ready(function(){
 	            });
 			return false;
 		});
-		
-		//click on a reputation for description
-    	$(document).on('click', '.rep' ,function () {
-    			hideErrorsMsg();
-        		var repNameTotal = $(this).attr('id');	
-        		var repName = repNameTotal.substr(0, 5);
-                do_ajax( {
-                            rep :repName             
-                    },
-                    function(response){
-                    		 	displayMessageOnTertiary(response.desc);
-                    });
-				return false;
-        
-        });
-		
+
     	//POSITIVE TRAITS
     	//click on mainmenu
     	$("a.positive-traits").click(function(){
@@ -588,7 +558,7 @@ $(document).ready(function(){
                             skill : $(this).attr('atomic')
 					},
                     function(response){
-                    			displayMessageOnTertiary(response.desc);
+                    			displayMessageOnTertiary(response.desc,response.title);
 								setRemainingPoint(response);
                     });
 				return false;
@@ -758,7 +728,6 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			//displayMessageOnQuaternary(response.desc);
 								loadTertiary("tertiary-choice/morphPosTraits.php");
 								loadQuaternary("quaternary-choice/traitMorphBMD.php");
 								setRemainingPoint(response);
@@ -786,7 +755,6 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			//displayMessageOnQuaternary(response.desc);
 								loadTertiary("tertiary-choice/morphNeuTraits.php");
 								loadQuaternary("quaternary-choice/traitMorphBMD.php");
 								setRemainingPoint(response);
@@ -813,7 +781,6 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			//displayMessageOnQuaternary(response.desc);
 								loadTertiary("tertiary-choice/morphNegTraits.php");
 								loadQuaternary("quaternary-choice/traitMorphBMD.php");
 								setRemainingPoint(response);
@@ -855,7 +822,6 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			//displayMessageOnQuaternary(response.desc);
 								loadTertiary("tertiary-choice/implants.php");
 								loadQuaternary("quaternary-choice/gearMorphBMD.php");
 								setRemainingPoint(response);
@@ -887,7 +853,6 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			//displayMessageOnQuaternary(response.desc);
 								$("#tertiary").load("tertiary-choice/gears.php", function(){
 					    			setupFoldingList();
 					    		});
@@ -1163,21 +1128,6 @@ $(document).ready(function(){
 				return false;
         });
 
-        
-        //click on a stat for description
-    	$(document).on('click', '.statMorph' ,function () {
-    			//hideErrorsMsg();
-        		var statName = $(this).attr('id');	
-                do_ajax( {
-                            stat :statName             
-                    },
-                    function(response){
-                    		 	displayMessageOnQuaternary(response.desc);
-                    });
-				return false;
-        });
-
-        
           //click on remove Button
     	$(document).on('click', '#removeMoxie' ,function () {
                 do_ajax( {
@@ -1466,7 +1416,6 @@ function displayMessageOnQuaternary(msg){
 	$("#quaternary").html(QUATERNARY_INFO_HTML);
 	$("#quaternary_infos").html(msg);
     $("#quaternary_infos").css('visibility','visible');
-
 }
 
 function loadSecondary(url){
