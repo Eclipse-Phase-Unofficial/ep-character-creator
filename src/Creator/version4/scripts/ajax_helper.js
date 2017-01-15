@@ -101,7 +101,9 @@ function displayMessageOnQuaternary(msg){
 function loadSecondary(url){
     hideTertiary();
     hideQuaternary();
-    $("#secondary").load(url);
+    $("#secondary").load(url, function(){
+        setupFoldingList();
+    });
 }
 
 function loadTertiary(url){

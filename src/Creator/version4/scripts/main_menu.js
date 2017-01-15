@@ -4,10 +4,13 @@
 //BACKGROUND
 $("a.backgrounds").click(function(){
     loadSecondary("secondary-choice/backgrounds.php");
-    do_ajax({getBcg : 'get'},function(response){
-        if(response.currentBcg != null){
-            loadTertiary("tertiary-choice/backgroundBMD.php");
-        }
+    do_ajax({
+            getBcg : 'get'
+        },
+        function(response){
+            if(response.currentBcg != null){
+                loadTertiary("tertiary-choice/backgroundBMD.php");
+            }
     });
     return false;
 });
@@ -29,84 +32,56 @@ $("a.faction").click(function(){
 //MOTIVATION
 $("a.motivations").click(function(){
     loadSecondary("secondary-choice/motivations.php");
-    return false;
 });
 
 //APTITUDES
 $("a.aptitudes").click(function(){
     loadSecondary("secondary-choice/aptitudes.php");
-    return false;
 });
 
 //REPUTATIONS
 $("a.rep").click(function(){
-    do_ajax( {
-            getCrePoint : 'get'
-        },
-        function(response){
-            setRemainingPoint(response);
-            loadSecondary("secondary-choice/reputations.php");
-        });
-
-    return false;
+    loadSecondary("secondary-choice/reputations.php");
 });
 
 //POSITIVE TRAITS
 $("a.posTrait").click(function(){
     loadSecondary("secondary-choice/positive-traits.php");
-    return false;
 });
 
 //NEUTRAL TRAITS
 $("a.neuTrait").click(function(){
     loadSecondary("secondary-choice/neutral-traits.php");
-    return false;
 });
 
 //NEGATIVE TRAITS
 $("a.negTrait").click(function(){
     loadSecondary("secondary-choice/negative-traits.php");
-    return false;
 });
 
 //ACTIVE SKILLS
 $("a.activeSkills").click(function(){
     loadSecondary("secondary-choice/active-skills.php");
-    return false;
 });
 
 //KNOWLEDGE SKILLS
 $("a.knowledgeSkills").click(function(){
     loadSecondary("secondary-choice/knowledge-skills.php");
-    return false;
 });
 
 //MORPHS
 $("a.morph").click(function(){
-    hideErrorsMsg();
-    $("#secondary").load("secondary-choice/morph.php", function(){
-        setupFoldingList();
-    });
+    loadSecondary("secondary-choice/morph.php");
 });
 
 //SOFT GEAR AI
 $("a.soft").click(function(){
-    hideErrorsMsg();
-    $("#secondary").load("secondary-choice/softGear.php", function(){
-        setupFoldingList();
-    });
-
-    return false;
+    loadSecondary("secondary-choice/softGear.php");
 });
 
 //PSI SLEIGHTS
 $("a.psy").click(function(){
-    hideErrorsMsg();
-    $("#secondary").load("secondary-choice/psy-sleights.php", function(){
-        setupFoldingList();
-    });
-
-    return false;
+    loadSecondary("secondary-choice/psy-sleights.php");
 });
 
 //CREDIT
