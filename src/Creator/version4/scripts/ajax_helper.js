@@ -108,11 +108,15 @@ function loadSecondary(url){
 
 function loadTertiary(url){
     hideQuaternary();
-    $("#tertiary").load(url);
+    $("#tertiary").load(url, function(){
+        setupFoldingList();
+    });
 }
 
 function loadQuaternary(url){
-    $("#quaternary").load(url);
+    $("#quaternary").load(url, function(){
+        setupFoldingList();
+    });
 }
 
 function hideSecondary(){

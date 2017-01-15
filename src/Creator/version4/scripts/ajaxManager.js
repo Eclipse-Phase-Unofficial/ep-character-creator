@@ -304,10 +304,7 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-                    			$("#secondary").load("secondary-choice/psy-sleights.php", function(){
-					    			setupFoldingList();
-					    		});
-
+                                loadSecondary("secondary-choice/psy-sleights.php");
                     			loadTertiary("tertiary-choice/psySleightBDM.php");
 								setRemainingPoint(response);
                     });
@@ -533,10 +530,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
+                                loadSecondary("secondary-choice/morph.php");
                                 displayMessageOnTertiary(response.desc, response.title);
-								$("#secondary").load("secondary-choice/morph.php", function(){
-					    			setupFoldingList();
-					    		});
 								setRemainingPoint(response);
                     });
 				return false;
@@ -550,10 +545,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/morph.php", function(){
-					    			setupFoldingList();
-					    		});
-								setRemainingPoint(response);
+                        loadSecondary("secondary-choice/morph.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -735,9 +728,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-	                            $("#tertiary").load("tertiary-choice/gears.php", function(){
-					    			setupFoldingList();
-					    		});
+                        loadTertiary("tertiary-choice/gears.php");
                     });
 				return false;
         });
@@ -750,12 +741,9 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#tertiary").load("tertiary-choice/gears.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								loadQuaternary("quaternary-choice/gearMorphBMD.php");
-								setRemainingPoint(response);
+                        loadTertiary("tertiary-choice/gears.php");
+                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -769,10 +757,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#tertiary").load("tertiary-choice/gears.php", function(){
-					    			setupFoldingList();
-					    		});
-								setRemainingPoint(response);
+                        loadTertiary("tertiary-choice/gears.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -787,12 +773,9 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#tertiary").load("tertiary-choice/gears.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								loadQuaternary("quaternary-choice/gearMorphBMD.php");
-								setRemainingPoint(response);
+                        loadTertiary("tertiary-choice/gears.php");
+                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -807,12 +790,9 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#tertiary").load("tertiary-choice/gears.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								loadQuaternary("quaternary-choice/gearMorphBMD.php");
-								setRemainingPoint(response);
+                        loadTertiary("tertiary-choice/gears.php");
+                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                        setRemainingPoint(response);
                     });
 				return false;
 
@@ -840,12 +820,9 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/softGear.php", function(){
-					    			setupFoldingList();
-					    		});
-								loadTertiary("tertiary-choice/aiBMD.php");
-
-								setRemainingPoint(response);
+                        loadSecondary("secondary-choice/softGear.php");
+                        loadTertiary("tertiary-choice/aiBMD.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -868,9 +845,7 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/softGear.php", function(){
-					    			setupFoldingList();
-					    		});
+                                loadSecondary("secondary-choice/softGear.php");
 								loadTertiary("tertiary-choice/softGearBMD.php");
 								setRemainingPoint(response);
                     });
@@ -897,11 +872,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/softGear.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								setRemainingPoint(response);
+                        loadSecondary("secondary-choice/softGear.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -917,11 +889,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/softGear.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								setRemainingPoint(response);
+                        loadSecondary("secondary-choice/softGear.php");
+                        setRemainingPoint(response);
                     });
 				return false;
         });
@@ -936,11 +905,8 @@ $(document).ready(function(){
                             getCrePoint : 'get'
                     },
                     function(response){
-								$("#secondary").load("secondary-choice/softGear.php", function(){
-					    			setupFoldingList();
-					    		});
-
-								setRemainingPoint(response);
+                        loadSecondary("secondary-choice/softGear.php");
+                        setRemainingPoint(response);
                     });
 				return false;			
 			}
