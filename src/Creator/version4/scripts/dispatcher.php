@@ -82,11 +82,19 @@ if (isset($_POST['load_char'])) {
             if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == "true" ){
                 $_SESSION['cc']->creationMode = true; //We stay in creation mode
             }else{
-                // We force evo mode
-                $_SESSION['cc']->creationMode = false;
-                $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
-                $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
-                $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
+                // Make sure it's a valid character for play
+                if ($_SESSION['cc']->checkValidation()){
+                    // Switch to Evo Mode
+                    $_SESSION['cc']->creationMode = false;
+                    $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
+                    $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
+                    $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
+                }else{
+                    // Stay in creation mode
+                    $_SESSION['cc']->creationMode = true;
+                    //treatCreatorErrors($return,new EPCreatorErrors("File is not valid for play!  Staying in creation mode!",EPCreatorErrors::$RULE_ERROR));
+                }
+
             }
 
             if (!empty($_SESSION['cc']->character->morphs)){
