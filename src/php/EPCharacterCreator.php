@@ -59,15 +59,20 @@ class EPCharacterCreator {
     
     public $back;
     
-    function getReputationPointsForCostCp(){
-        return $this->reputationPoints + $this->reputationPointsMorphMod + $this->reputationPointsTraitMod + $this->reputationPointsFactionMod + $this->reputationPointsBackgroundMod + $this->reputationPointsSoftGearMod + $this->reputationPointsPsyMod - $this->getSumRepPoints();        
+    // How many reputation points are remaining after all the modifyers are taken into account
+    function getReputationPointsRemaining(){
+            return $this->reputationPoints +
+                   $this->reputationPointsMorphMod +
+                   $this->reputationPointsTraitMod +
+                   $this->reputationPointsFactionMod +
+                   $this->reputationPointsBackgroundMod +
+                   $this->reputationPointsSoftGearMod +
+                   $this->reputationPointsPsyMod +
+                   $this->evoRepPoint
+                   - $this->getSumRepPoints();
     }
     function getReputationPoints(){
-        if ($this->creationMode){
-            return max(0,$this->reputationPoints + $this->reputationPointsMorphMod + $this->reputationPointsTraitMod + $this->reputationPointsFactionMod + $this->reputationPointsBackgroundMod + $this->reputationPointsSoftGearMod + $this->reputationPointsPsyMod - $this->getSumRepPoints()); 
-        }else{
-            return $this->evoRepPoint;
-        }           
+        return max(0,$this->getReputationPointsRemaining());
     }
 
     function getSavePack(){
@@ -1531,55 +1536,38 @@ class EPCharacterCreator {
         return false;
       }        
     }            
+
+    // Set the new reputation value
+    //
+    // Note:  This does allow players to remove reputation from a different faction, and gain them back as rep points
     function setReputation($name,$newValue){
         $rep = $this->getReputationByName($name);
-      
-        if ($this->creationMode){
-            if (!isset($rep)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;           
-            }
-            if ($rep->value == $newValue){
-                return true;
-            }
-            if ($newValue > $rep->getMaxValue()){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }
-            if ($newValue > $rep->getAbsoluteValue()){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }        
-            if ($newValue < 0){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }        
-            $rep->value = $newValue; 
-            return true;            
-        }else{
-            if (!isset($rep)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;           
-            }
-            if ($newValue > $rep->getMaxValue()){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }       
-            if ($newValue < 0){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }                           
-            $diff = $this->getDiffCostBetweenNewAndOldReputations();
-            $this->evoRezPoint += max(0,$diff - $this->back->evoRepPoint) * $this->configValues->getValue('RulesValues','RepPointCost');
-            
-            $rep->value = $newValue;
-            
-            $diff = $this->getDiffCostBetweenNewAndOldReputations();
-            $this->evoRepPoint = max(0,$this->back->evoRepPoint - $diff);
-            $this->evoRezPoint -= max(0,$diff - $this->back->evoRepPoint) * $this->configValues->getValue('RulesValues','RepPointCost');
-        
+
+        if (!isset($rep)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
+        if ($newValue > $rep->getMaxValue()){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
+            return false;
+        }
+        if ($newValue < 0){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
+            return false;
+        }
+        if ($rep->value == $newValue){
             return true;
         }
+
+
+        if ($this->creationMode){
+            if ($newValue > $rep->getAbsoluteValue()){
+                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for this Reputation outdated !)', EPCreatorErrors::$RULE_ERROR));
+                return false;
+            }
+        }
+        $rep->value = $newValue;
+        return true;
     }
     function setMaxRepValue($newValue){
         foreach ($this->character->ego->reputations as $r) {
@@ -1807,7 +1795,7 @@ class EPCharacterCreator {
             return 'N/A';
         }else{
             $rez = $this->evoRezPoint;
-            
+            $rez -= $this->getCostForReputation();
             $rez -= $this->evoCrePointPurchased * $this->configValues->getValue('RulesValues','CreditPointCost');
             
             
@@ -2473,13 +2461,13 @@ class EPCharacterCreator {
         }
         return $cost;
     }
+    // If all Reputation points are spent, then CP/RP is used to make up the difference
     function getCostForReputation(){
-        $c = $this->getReputationPointsForCostCp();
+        $c = $this->getReputationPointsRemaining();
         if ($c < 0){
             return abs($c) * $this->configValues->getValue('RulesValues','RepPointCost'); 
         }
-        
-        return 0;       
+        return 0;
     }
     function getCostForSkills(){
         $cost = 0;
@@ -2536,15 +2524,7 @@ class EPCharacterCreator {
     function getReputations(){
         return $this->character->ego->reputations;
     }
-    public function getDiffCostBetweenNewAndOldReputations(){
-        if (empty($this->back)) return 0;
-        $diff = 0;
-        
-        foreach ($this->character->ego->reputations as $rnew) {
-            $diff += max(0,$rnew->value - $this->back->getReputationByName($rnew->name)->value);
-        }
-        return $diff;        
-    }
+
     private function getDiffCost($sk,$value){
         $val = $sk->baseValue;
         $vStart = $this->getRealCPCostForSkill($sk);
