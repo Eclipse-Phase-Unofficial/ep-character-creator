@@ -163,6 +163,10 @@
 	text-transform: uppercase;
 }
 
+.popup_contents{
+    text-align:center;
+}
+
 .popup_table input{
 	height: 1em;
 }

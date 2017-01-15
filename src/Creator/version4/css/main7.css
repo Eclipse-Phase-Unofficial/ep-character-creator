@@ -734,7 +734,7 @@ a.active .btnhelp{
     clear: both;
 }
 
-input#saveName {
+#saveName {
     width: 296px;
 }
 
