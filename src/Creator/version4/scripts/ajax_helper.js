@@ -69,7 +69,7 @@ function hideRulesMessage(){
     $("#user-messages").fadeOut();
 }
 
-//Should be in popup.js, but preventing circular dependencies
+// Should be in popup.js, but preventing circular dependencies
 function displayError(error_message){
     $("#popup").html(error_message);
     $('#popup').data('name','error_popup');
@@ -77,4 +77,59 @@ function displayError(error_message){
     $('#popup').data('reloadOnClose',true);
     $("#popup").css('opacity',1);
     $("#popup").css('visibility','visible');
+}
+
+//*** Display items on the panels ***//
+function displayMessageOnTertiary(msg,title){
+    var titleHtml = '';
+
+    if (title) {
+        titleHtml = '<label class="descriptionTitle">' + title + '</label>';
+    }
+
+	$("#tertiary").html(titleHtml + TERTIARY_INFO_HTML);
+	$("#tertiary_infos").html(msg);
+    $("#tertiary_infos").css('visibility','visible');
+}
+
+function displayMessageOnQuaternary(msg){
+	$("#quaternary").html(QUATERNARY_INFO_HTML);
+	$("#quaternary_infos").html(msg);
+    $("#quaternary_infos").css('visibility','visible');
+}
+
+function loadSecondary(url){
+    hideTertiary();
+    hideQuaternary();
+    $("#secondary").load(url);
+}
+
+function loadTertiary(url){
+    hideQuaternary();
+    $("#tertiary").load(url);
+}
+
+function loadQuaternary(url){
+    $("#quaternary").load(url);
+}
+
+function hideSecondary(){
+    $("#secondary").html(TERTIARY_INFO_HTML);
+    $("#secondary_infos").css('visibility','hidden');
+}
+
+function hideTertiary(){
+    $("#tertiary").html(TERTIARY_INFO_HTML);
+    $("#tertiary_infos").css('visibility','hidden');
+}
+
+function hideQuaternary(){
+    $("#quaternary").html(QUATERNARY_INFO_HTML);
+    $("#quaternary_infos").css('visibility','hidden');
+}
+
+function hideErrorsMsg(){
+	hideRulesMessage();
+	hideQuaternary();
+	hideTertiary();
 }

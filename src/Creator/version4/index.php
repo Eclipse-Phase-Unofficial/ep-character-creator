@@ -32,30 +32,30 @@
     			<ul>
                     <?php
                     $main_menu = array(
-                        array("background","&#x2f;","Background","backgrounds"),
-                        array("faction","&#x30;","Faction","faction"),
-                        array("motivations","&#x28;","Motivations","motivations"),
-                        array("aptitudes","&#x21;","Aptitudes","aptitudes"),
+                        array("backgrounds","&#x2f;","Background"),
+                        array("faction","&#x30;","Faction"),
+                        array("motivations","&#x28;","Motivations"),
+                        array("aptitudes","&#x21;","Aptitudes"),
                         array("rep","&#x24;","Rep","rep"),
-                        array("positive-traits","&#x35;","ego pos. traits","posTrait"),
-//                         array("neutral-traits","&#x34;","ego neutral traits","neuTrait"),
-                        array("negative-traits","&#x36;","ego neg. traits","negTrait"),
-                        array("active-skills","&#x2d;","Active Skills","activeSkills"),
-                        array("knowledge-skills","&#x2e;","Knowledge Skills","knowledgeSkills"),
+                        array("posTrait","&#x35;","ego pos. traits"),
+//                         array("neuTrait","&#x34;","ego neutral traits"),
+                        array("negTrait","&#x36;","ego neg. traits"),
+                        array("activeSkills","&#x2d;","Active Skills"),
+                        array("knowledgeSkills","&#x2e;","Knowledge Skills"),
                         array("morph","&#x32;","Morph","morph"),
-                        array("soft","&#x33;","Ai's & Soft Gear","soft"),
-                        array("psy","&#x34;","Psi Sleights","psy"),
-                        array("credit","&#x38;","Credit","credit"),
-                        array("stat","&#x37;","Stat","moxie"),
-                        array("lastdetails","&#x27;","Last Details","lastdetails")
+                        array("soft","&#x33;","Ai's & Soft Gear"),
+                        array("psy","&#x34;","Psi Sleights"),
+                        array("credit","&#x38;","Credit"),
+                        array("moxie","&#x37;","Stat"),
+                        array("lastdetails","&#x27;","Last Details")
                         );
-                    function createElement($item_class,$icon,$display_name,$help_id){
+                    function createElement($item_class,$icon,$display_name){
                         global $provider;
                         echo '<li>';
                         echo '  <a class="'.$item_class.'" href="#">';
                         echo '      <span class="icone" data-icon="'.$icon.'"></span>';
                         echo        $display_name;
-                        echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$provider->getInfosById($help_id).'"></span>';
+                        echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$provider->getInfosById($item_class).'"></span>';
                         echo '  </a>';
                         echo '</li>';
                     };
@@ -136,6 +136,7 @@
         <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
         <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
         <script><?php include "scripts/ajax_helper.js"; ?></script>
+        <script><?php include "scripts/main_menu.js"; ?></script>
         <script><?php include "scripts/ajaxManager.js"; ?></script>
         <script><?php include "scripts/popup.js"; ?></script>
         <script>

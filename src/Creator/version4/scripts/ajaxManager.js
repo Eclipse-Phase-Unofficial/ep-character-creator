@@ -47,18 +47,6 @@ $(document).ready(function(){
         });
 
         //BACKGROUND
-        //click on main menu
-        $("a.background").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/backgrounds.php");
-            do_ajax({getBcg : 'get'},function(response){
-                if(response.currentBcg != null){
-                    loadTertiary("tertiary-choice/backgroundBMD.php");
-                }
-            });
-			return false;
-    	});
-    	
     	//click on background
         $(document).on('click', '.bck' , function () {
             do_ajax({
@@ -74,21 +62,7 @@ $(document).ready(function(){
         });
                
         //FACTION
-        //click on main menu
-        $("a.faction").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/factions.php");
-    		do_ajax({
-                            getFac : 'get'
-                    },
-                    function(response){
-                        if(response.currentFac != null){
-                            loadTertiary("tertiary-choice/factionBMD.php");
-                        }
-            });
-    		return false;
-    	});
-		
+
 		//click on faction
         $(document).on('click', '.fac' ,function () {
                 do_ajax( {
@@ -104,12 +78,7 @@ $(document).ready(function(){
         
         });
         //MOTIVATION
-        //click on main menu
-        $("a.motivations").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/motivations.php");
-    		return false;
-    	});
+
         function addMotivation() {
             do_ajax( {
                         newMot : $('#motToAdd').val()
@@ -142,13 +111,6 @@ $(document).ready(function(){
         });
     	
         //APTITUDES
-        //click on main menu
-        $("a.aptitudes").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/aptitudes.php");
-			return false;
-    	});
-    	
     	//before apt chage get the focused html element
         $(document).on('focusin', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
         		focusOn = "#"+($(this).attr('id'));
@@ -207,22 +169,7 @@ $(document).ready(function(){
         });
 
         
-        
         //REPUTATIONS
-        //click on main menu
-        $("a.rep").click(function(){
-        	hideErrorsMsg();
-        	do_ajax( {
-	                    getCrePoint : 'get'
-	            },
-	            function(response){
-							setRemainingPoint(response);
-							loadSecondary("secondary-choice/reputations.php");
-	            });
-
-			return false;
-		});
-		
 		//before rep chage get the focused html element
         $(document).on('focusin', '#\\@-Rep,#G-Rep,#C-Rep,#I-Rep,#E-Rep,#R-Rep,#F-Rep' ,function (e) {
         		focusOn = "#"+($(this).attr('id'));
@@ -264,12 +211,6 @@ $(document).ready(function(){
 		});
 
     	//POSITIVE TRAITS
-    	//click on mainmenu
-    	$("a.positive-traits").click(function(){
-    		hideErrorsMsg();
-    		loadSecondary("secondary-choice/positive-traits.php");
-			return false;
-		});
 		//hover on pos trait
 		 $(document).on('click', '.posTrait' ,function () {
 		 	do_ajax( {
@@ -299,12 +240,6 @@ $(document).ready(function(){
         
         });
         //NEGATIVE TRAITS
-    	//click on mainmenu
-    	$("a.negative-traits").click(function(){
-    		hideErrorsMsg();
-    		loadSecondary("secondary-choice/negative-traits.php");
-   			return false;
-		});
 		//hover on neg trait
 		 $(document).on('click', '.negTrait' ,function () {
 		 	do_ajax( {
@@ -333,12 +268,7 @@ $(document).ready(function(){
         });
         
          //NEUTRAL TRAITS
-    	//click on mainmenu
-    	$("a.neutral-traits").click(function(){
-    		hideErrorsMsg();
-    		loadSecondary("secondary-choice/neutral-traits.php");
-   			return false;
-		});
+
 		//hover on neu trait
 		 $(document).on('mouseover', '.neuTrait' ,function () {
 		 	do_ajax( {
@@ -349,7 +279,7 @@ $(document).ready(function(){
                     });
 
 		 	return false;
-        
+
         });
 
 		//click on neu trait
@@ -366,17 +296,7 @@ $(document).ready(function(){
 				return false;
         });
 
-        
         //PSI SLEIGHTS  
-        //click on mainmenu
-    	$("a.psy").click(function(){
-    		hideErrorsMsg();
-    		$("#secondary").load("secondary-choice/psy-sleights.php", function(){
-    			setupFoldingList();
-    		});
-
-			return false;
-		});
 		//click on psi
         $(document).on('click', '.addSelPsySleightIcon' ,function () {
                 do_ajax( {
@@ -407,16 +327,7 @@ $(document).ready(function(){
         
         });
         
-        
 		//ACTIVE SKILLS
-    	//click on mainmenu
-    	$("a.active-skills").click(function(){
-    		hideErrorsMsg();
-    		loadSecondary("secondary-choice/active-skills.php");
-			return false;
-		});
-		
-		
 		//before active skill change get the focused html element
         $(document).on('focusin', '.actskillbase' ,function (e) {
         		focusOnSkill = "[id='"+$(this).attr('id')+"']";
@@ -477,16 +388,9 @@ $(document).ready(function(){
 	                });
 				return false;
         });
-       
 		
 		//KNOWLEDGE SKILLS
-		//click on mainmenu
-    	$("a.knowledge-skills").click(function(){
-    		hideErrorsMsg();
-    		loadSecondary("secondary-choice/knowledge-skills.php");
-			return false;
-		});
-		
+
 		//before knowlege skill change get the focused html element
         $(document).on('focusin', '.knoskillbase' ,function (e) {
         		focusOnSkill = "[id='"+$(this).attr('id')+"']";
@@ -606,14 +510,7 @@ $(document).ready(function(){
         });
         
         //MORPHS
-        //click on main menu
-        $("a.morph").click(function(){
-        	hideErrorsMsg();
-    		$("#secondary").load("secondary-choice/morph.php", function(){
-    			setupFoldingList();
-    		});
-    	});
-    	
+
     	//hover on morph
 		 $(document).on('click', '.addRemMorph' ,function () {
 		 	do_ajax( {
@@ -936,16 +833,6 @@ $(document).ready(function(){
         });
 
 		//SOFT GEAR AI
-        //click on main menu
-        $("a.soft").click(function(){
-        	hideErrorsMsg();
-    		$("#secondary").load("secondary-choice/softGear.php", function(){
-    			setupFoldingList();
-    		});
-
-			return false;
-    	});
-    	
     	//click on ai
         $(document).on('click', '.addSelAiIcon' , function () {
                 do_ajax( {
@@ -1059,15 +946,7 @@ $(document).ready(function(){
 			}
         });
 
-        
-        
         //CREDIT
-        //click on main menu
-        $("a.credit").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/credits.php");
-    	});
-        
         //click on addButton
     	$(document).on('click', '#addCredit' ,function () {
                 do_ajax( {
@@ -1097,12 +976,6 @@ $(document).ready(function(){
         });
 
          //STATS
-        //click on main menu
-        $("a.stat").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/stats.php");
-    	});
-    	
     	//click on addButton
     	$(document).on('click', '#addMoxie' ,function () {
                 do_ajax( {
@@ -1157,14 +1030,8 @@ $(document).ready(function(){
         
         });
         
-        
         //LAST DETAILS
-        //click on main menu
-        $("a.lastdetails").click(function(){
-        	hideErrorsMsg();
-    		loadSecondary("secondary-choice/last-details.php");
-    	});
-    	
+
     	//last details settings changes
          $(document).on('change', '#mPlayerName,#mCharacterName,#mRealAge,#mBirthGender,#mNote' ,function () {
           do_ajax( {
@@ -1398,62 +1265,6 @@ function removeSkill(node, after) {
                     loadSecondary(after);
         });
 }
-
-function displayMessageOnTertiary(msg,title){
-    var titleHtml = '';
-
-    if (title) {
-        titleHtml = '<label class="descriptionTitle">' + title + '</label>';
-    }
-
-	$("#tertiary").html(titleHtml + TERTIARY_INFO_HTML);
-	$("#tertiary_infos").html(msg);
-    $("#tertiary_infos").css('visibility','visible');
-
-}
-
-function displayMessageOnQuaternary(msg){
-	$("#quaternary").html(QUATERNARY_INFO_HTML);
-	$("#quaternary_infos").html(msg);
-    $("#quaternary_infos").css('visibility','visible');
-}
-
-function loadSecondary(url){
-    hideTertiary();
-    hideQuaternary();
-    $("#secondary").load(url);
-}
-
-function loadTertiary(url){
-    hideQuaternary();
-    $("#tertiary").load(url);
-}
-
-function loadQuaternary(url){
-    $("#quaternary").load(url);
-}
-
-function hideSecondary(){
-    $("#secondary").html(TERTIARY_INFO_HTML);
-    $("#secondary_infos").css('visibility','hidden');
-}
-
-function hideTertiary(){
-    $("#tertiary").html(TERTIARY_INFO_HTML);
-    $("#tertiary_infos").css('visibility','hidden');
-}
-
-function hideQuaternary(){
-    $("#quaternary").html(QUATERNARY_INFO_HTML);
-    $("#quaternary_infos").css('visibility','hidden');
-}
-
-function hideErrorsMsg(){
-	hideRulesMessage();
-	hideQuaternary();
-	hideTertiary();
-}
-
 
 function setRemainingPoint(ajaxData){
     // Hide creation data if not in creation mode, and Rez points if not in rez mode
