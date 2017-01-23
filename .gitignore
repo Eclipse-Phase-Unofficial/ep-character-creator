@@ -17,3 +17,11 @@
 
 #Kdevelop project files
 *.kdev4
+
+#Generated API documenation
+Documentation/api/
+
+#Ignore all composer files
+composer.json
+composer.lock
+vendor/
