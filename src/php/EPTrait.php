@@ -115,4 +115,32 @@ class EPTrait extends EPAtom{
     }
 }
 
+//**********HELPER FUNCTIONS**********//
+
+/**
+ * Get all positive traits from an array
+ */
+function getPosTraits($array){
+    $result = array();
+    foreach($array as $t)
+    {
+        if($t->isPositive())
+            array_push($result, $t);
+    }
+    return $result;
+}
+
+/**
+ * Get all negative traits from an array
+ */
+function getNegTraits($array){
+    $result = array();
+    foreach($array as $t)
+    {
+        if($t->isNegative())
+            array_push($result, $t);
+    }
+    return $result;
+}
+
 ?>

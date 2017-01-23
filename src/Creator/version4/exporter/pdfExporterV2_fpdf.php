@@ -120,14 +120,14 @@
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
-                $egoNegTraits = filterPosNegTrait($_SESSION['cc']->character->ego->getTraits(), EPTrait::$NEGATIVE_TRAIT);
+                $egoNegTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
                 $formattedNegTraits = formatGearData($egoNegTraits,$p);
                 $pdf->setXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
                 writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
-                $egoPosTraits = filterPosNegTrait($_SESSION['cc']->character->ego->getTraits(), EPTrait::$POSITIVE_TRAIT);
+                $egoPosTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
                 $formattedPosTraits = formatGearData($egoPosTraits,$p);
                 $pdf->setXY(116,102);
                 $format = setTwoColFormat(25,15,1,8,7);
@@ -248,14 +248,14 @@
 						$pdf->Text(140, 26, formatIt($morph->gender));//morph gender
 
                         //MORPH NEG TRAIT
-                        $morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$NEGATIVE_TRAIT);
+                        $morphNegTraits = getNegTraits($_SESSION['cc']->getCurrentTraits($morph));
                         $formattedNegTraits = formatGearData($morphNegTraits,$p);
                         $pdf->setXY(5,43);
                         writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
 
                         //MORPH POS TRAIT
-                        $morphPosTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph), EPTrait::$POSITIVE_TRAIT);
+                        $morphPosTraits = getPosTraits($_SESSION['cc']->getCurrentTraits($morph));
                         $formattedPosTraits = formatGearData($morphPosTraits,$p);
                         $pdf->setXY(52,43);
                         writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
@@ -714,17 +714,6 @@
 			$final .= $m->name . "*";
 		}
 		return $final;
-	}
-	
-	function filterPosNegTrait($traits, $type)
-	{
-		$result = array();
-		foreach($traits as $t)
-		{
-			if($t->traitPosNeg == $type)
-				array_push($result, $t);
-		}
-		return $result;
 	}
 	
 	function getDescOnlyBM($bonusMalus)

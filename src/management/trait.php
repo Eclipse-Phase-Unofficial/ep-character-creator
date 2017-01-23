@@ -133,13 +133,13 @@
                     echo "<tr>";
                     echo "<td>".$m->name."</td>"; 
                     echo "<td>".$m->description."</td>";
-                        if($m->traitPosNeg == EPTrait::$POSITIVE_TRAIT) $type = "Positive";
-                        else if($m->traitPosNeg == EPTrait::$NEGATIVE_TRAIT) $type = "Negative";
+                        if($m->isPositive()) $type = "Positive";
+                        else if($m->isNegative()) $type = "Negative";
                         else $type = "ERROR !";
                     echo "<td>".$type."</td>";
                     
-                        if($m->traitEgoMorph == EPTrait::$EGO_TRAIT) $cost = "Ego";
-                        else if($m->traitEgoMorph == EPTrait::$MORPH_TRAIT) $cost = "Morph";
+                        if($m->isEgo()) $cost = "Ego";
+                        else if($m->isMorph()) $cost = "Morph";
                         else $cost = "ERROR !";
                     echo "<td>".$cost."</td>";
                     

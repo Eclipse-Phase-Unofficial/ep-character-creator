@@ -201,7 +201,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(),EPTrait::$NEGATIVE_TRAIT);
+				$egoNegTraits = getNegTraits($_SESSION['cc']->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					echo formatResult($trait->name)
 					.$tab
@@ -217,7 +217,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = filterPosNegTrait($_SESSION['cc']->ego->getTraits(),EPTrait::$POSITIVE_TRAIT);
+				$egoNegTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					 echo formatResult($trait->name)
 					.$tab
@@ -379,7 +379,7 @@
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph),EPTrait::$NEGATIVE_TRAIT);
+						$morphNegTraits = getNegTraits($_SESSION['cc']->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							echo formatResult($trait->name)
 							.$tab
@@ -395,7 +395,7 @@
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = filterPosNegTrait($_SESSION['cc']->getCurrentTraits($morph),EPTrait::$POSITIVE_TRAIT);
+						$morphNegTraits = getPosTraits($_SESSION['cc']->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							 echo formatResult($trait->name)
 							.$tab
@@ -703,16 +703,6 @@
 			$final .= $m->name."*";
 		}
 		return $final;
-	}
-	
-	function filterPosNegTrait($traits,$type){
-		$result = array();
-		foreach($traits as $t){
-			if($t->traitPosNeg == $type){
-				array_push($result, $t);
-			}
-		}
-		return $result;
 	}
 	
 	function getDescOnlyBM($bonusMalus){
