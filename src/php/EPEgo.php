@@ -2,7 +2,10 @@
 require_once("EPSkill.php");
 
 /**
- * Description of EPEgo
+ * The Character's Ego.
+ *
+ * Everything that's intinsic to the character.
+ * This is everything that.
  *
  * @author reinhardt
  */

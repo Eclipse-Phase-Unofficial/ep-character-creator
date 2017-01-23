@@ -1,12 +1,9 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of EPReputation
+ * The players reputation with a single faction
+ *
+ * This is how much a particular factionion likes you and can be used like a currency.
  *
  * @author reinhardt
  */

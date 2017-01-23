@@ -1,17 +1,11 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once 'EPAtom.php';
 
 /**
- * Description of EPSkill
+ * A skill used by the player.
  *
  * @author reinhardt
  */
-require_once 'EPAtom.php';
-
 class EPSkill extends EPAtom{
     
      static $ACTIVE_SKILL_TYPE = "AST";

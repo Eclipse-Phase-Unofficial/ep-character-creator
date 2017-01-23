@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of EPCreaatorErrors
+ * Error Class
  *
  * @author reinhardt
  */

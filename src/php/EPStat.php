@@ -1,16 +1,11 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once 'EPCharacterCreator.php';
 
 /**
- * Description of EPStat
+ * Calculated Stats & Moxie.
  *
  * @author reinhardt
  */
-require_once 'EPCharacterCreator.php';
 class EPStat extends EPAtom{
     
     static $MOXIE = 'MOX';

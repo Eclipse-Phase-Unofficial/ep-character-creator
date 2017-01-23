@@ -1,11 +1,4 @@
 <?php
-
-/*
- * Character managment class
- * 
- * @author Jigé
- */
-
 require_once 'EPConfigFile.php';
 require_once 'EPCharacter.php';
 require_once 'EPEgo.php';
@@ -19,6 +12,11 @@ require_once 'EPValidation.php';
 require_once 'EPCreatorErrors.php';
 require_once 'EPCreditCost.php';
 
+/**
+ * Character managment class
+ *
+ * @author Jigé
+ */
 class EPCharacterCreator {
     static $PSY_CHI_TRAIT_NAME = "Psi I";
     static $PSY_GAMMA_TRAIT_NAME = "Psi II";

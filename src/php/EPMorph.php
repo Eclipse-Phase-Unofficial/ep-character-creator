@@ -1,18 +1,13 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once 'EPAtom.php';
 
 /**
- * Description of EPMorph
+ * The character's morph.
+ *
+ * This is the character's body, and contains all their (physical) stuff.
  *
  * @author reinhardt
  */
-//require_once 'EPGear.php';
-require_once 'EPAtom.php';
-
 class EPMorph extends EPAtom {
    
     static $BIOMORPH = 'biomorph';

@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of EPCreditCost
+ * Simple data struct to translate cost levels into actual values
  *
  * @author reinhardt
  */

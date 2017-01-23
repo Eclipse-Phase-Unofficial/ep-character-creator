@@ -1,10 +1,13 @@
 <?php
+require_once 'EPAtom.php';
 /**
- * Description of EPAptitude
+ * A character's Aptitude
+ *
+ * This determines unskilled rolls, and is the base value for skills.
+ * Normally has a default max of 30, but can be modified by many things.
  *
  * @author reinhardt
  */
-require_once 'EPAtom.php';
 class EPAptitude extends EPAtom{
     static $COGNITION = 'COG';
     static $COORDINATION = 'COO';

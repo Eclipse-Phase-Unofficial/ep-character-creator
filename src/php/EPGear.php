@@ -1,15 +1,13 @@
 <?php
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+require_once 'EPAtom.php';
 
 /**
- * Description of EPGear
+ * The character's gear.
+ *
+ * This includes morph implants, soft-gear used by the ego, and any additional item on anything.
  *
  * @author reinhardt
- */         
+ */
 class EPGear extends EPAtom{
             
     static $SOFT_GEAR = "SOF";

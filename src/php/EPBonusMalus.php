@@ -1,6 +1,7 @@
 <?php
+require_once 'EPAtom.php';
 /**
- * Description of EPBonusMalus
+ * All the plus and minuses, buffs and debuffs applied to many different things.
  *
  * @author reinhardt
  */
@@ -61,8 +62,8 @@ class EPBonusMalus extends EPAtom{
     public $typeTarget; //fex : Networing, pilot if no choice get the prefix
     public $onCost; //true if this is a cost modificator
     
-    public $bonusMalusTypes; //array() bonus malus (3 bonus on 6 different target, 2 on 5, etc....)
-    public $multi_occurence; // 1 sur 3 ,... (with $bonusMalusTypes)
+    public $bonusMalusTypes; // Recursive structure holding an array of EPBonusMalus
+    public $multi_occurence; // How many $bonusMalusTypes the user is to select
     public $selected; // same a radio button group .... ( O X X O O X O) 
     
     function getSavePack(){

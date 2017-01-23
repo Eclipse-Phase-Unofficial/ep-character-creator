@@ -1,10 +1,12 @@
 <?php
+require_once 'EPAtom.php';
 /**
- * Description of EPAi
+ * AIs and Muses the player can use.
+ *
+ * These can be treated as sub characters in their own right.
  *
  * @author reinhardt
  */
-require_once 'EPAtom.php';
 class EPAi extends EPAtom{   
     public $aptitudes;
     public $skills;

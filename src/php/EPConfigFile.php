@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Class manager for config file
  * 
  * @author Jigé

@@ -1,6 +1,7 @@
 <?php
+require_once 'EPAtom.php';
 /**
- * Description of EPBackground / Faction
+ * The Character's Background and Faction
  *
  * @author reinhardt
  */

@@ -1,9 +1,4 @@
 <?php
-
-/*
- * Provide all list of EPAtom object needed by EPCharacterCreator
- * 
- */
 require_once 'EPAptitude.php';
 require_once 'EPStat.php';
 require_once 'EPReputation.php';
@@ -15,6 +10,14 @@ require_once 'EPGear.php';
 require_once 'EPAi.php';
 require_once 'EPPsySleight.php';
 
+/**
+ * Provide all list of EPAtom object needed by EPCharacterCreator
+ *
+ * This is what interacts with the database, and actually creates all the PHP Objects from the db.
+ *
+ * @author Russell Bewley
+ * @author Arthur Moore
+ */
 class EPListProvider {
     
     static $BOOK_RIMWARD 		= "Rimward";

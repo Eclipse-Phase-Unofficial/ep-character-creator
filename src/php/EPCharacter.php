@@ -1,12 +1,11 @@
 <?php
+require_once 'EPEgo.php';
+require_once 'EPMorph.php';
 /**
- * Description of EPCharacter
+ * The character's general information.
  *
  * @author reinhardt
  */
-require_once 'EPEgo.php';
-require_once 'EPMorph.php';
-
 class EPCharacter {
     public $ego;
     public $currentMorphUid;
