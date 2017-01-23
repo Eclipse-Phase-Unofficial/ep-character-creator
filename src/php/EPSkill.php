@@ -164,8 +164,13 @@ class EPSkill extends EPAtom{
          $this->nativeTongueBonus = 0;
      }
 
-    // Check for duplicate skills by name AND prefix.
-    // This is safe, and prevents users from adding duplicate skills
+    /**
+     * Match identical Skills, even if atom Uids differ
+     *
+     * Skills are unique by name AND prefix.
+     * This is more expensive than EPAtom's version, but catches duplicate skills with different Uids.
+     * This is especially important as it prevents users from adding duplicate skills.
+     */
     public function match($skill){
         if (strcasecmp($skill->name,$this->name) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
             return true;
@@ -195,7 +200,13 @@ class EPSkill extends EPAtom{
     }
 }
 
-//Skills are unique by name AND prefix
+//**********HELPER FUNCTIONS**********//
+
+/**
+ * Find a skill in an array.
+ *
+ * Skills are unique by name AND prefix, so both are important.
+ */
 function getSkill($list,$name,$prefix=''){
     if (is_array($list)){
         foreach ($list as $l){
@@ -208,9 +219,11 @@ function getSkill($list,$name,$prefix=''){
 }
 
 
-// Use with usort to sort skills
-//
-// Usage:  usort($res, "compSkilByPrefixName")
+/**
+ * Use with usort to sort skills
+ *
+ * Usage:  usort($res, "compSkilByPrefixName")
+ */
 function compSkilByPrefixName($a, $b){
     $an = $a->prefix.$a->name;
     $bn = $b->prefix.$b->name;

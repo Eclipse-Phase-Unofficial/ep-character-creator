@@ -95,10 +95,12 @@ class EPPsySleight extends EPAtom{
         $this->buyInCreationMode = true;        
     }
 
-    // Psy is unique by name, psyType, and psyLevel.
-    //
-    // This is more expensive than EPAtom's version, but catches duplicate gear with different Uids
-    // Check if two atoms are the same
+    /**
+     * Match identical Psy Sleights, even if atom Uids differ
+     *
+     * Psy is unique by name, psyType, and psyLevel.
+     * This is more expensive than EPAtom's version, but catches duplicate Psy with different Uids.
+     */
     public function match($item){
         if (strcasecmp($item->name,$this->name) == 0 &&
             $item->psyType===$this->psyType &&

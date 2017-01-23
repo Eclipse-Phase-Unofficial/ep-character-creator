@@ -213,10 +213,12 @@ class EPGear extends EPAtom{
         return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod; 
     }
 
-    // Gear is unique by name, gearType, and gearRestriction.
-    //
-    // This is more expensive than EPAtom's version, but catches duplicate gear with different Uids
-    // Check if two atoms are the same
+    /**
+     * Match identical gear, even if atom Uids differ
+     *
+     * Gear is unique by name, gearType, and gearRestriction.
+     * This is more expensive than EPAtom's version, but catches duplicate gear with different Uids.
+     */
     public function match($gear){
         if (strcasecmp($gear->name,$this->name) == 0 &&
             $gear->gearType===$this->gearType &&

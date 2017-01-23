@@ -72,9 +72,12 @@ class EPAi extends EPAtom{
         $this->bonusMalus = array();
     }
 
-    // AI is unique by name only.
-    //
-    // This is more expensive than EPAtom's version, but catches duplicate AIs with different Uids
+    /**
+     * Match identical AIs, even if atom Uids differ
+     *
+     * AIs are unique by name only.
+     * This is more expensive than EPAtom's version, but catches duplicate AIs with different Uids.
+     */
     public function match($item){
         if (strcasecmp($item->name,$this->name) == 0){
             return true;

@@ -124,7 +124,11 @@ class EPAtom {
         return preg_replace($replace_char, '_', $input);
     }
 
-    //Check if two atoms are the same
+    /**
+     * Check if this and another atom are identical
+     *
+     * It does this via checking if Uids are the same or different.
+     */
     function match($atom){
         if (strcmp($atom->getUid(),$this->atomUid) == 0){
             return true;
@@ -132,7 +136,9 @@ class EPAtom {
         return false;
     }
 
-    // Check if this Atom is in the array
+    /**
+     * Check if this Atom is in an array
+     */
     public function isInArray($array){
         if (!empty($array)){
             foreach ($array as $item){
@@ -144,7 +150,11 @@ class EPAtom {
         return false;
     }
 
-    // Add this Atom to an array, returns true when done, or if this atom was already in the array
+    /**
+     * Add this Atom to an array
+     *
+     * @return true if successful, false if this atom was already in the array
+     */
     public function addToArray(&$array){
         if (is_array($array) && !$this->isInArray($array)){
             array_push($array, $this);
@@ -153,11 +163,15 @@ class EPAtom {
         return false;
     }
 
-    // Remove this Atom from an array, returns false on failure
+    /**
+     * Remove this Atom from an array
+     *
+     * @return true if successful, returns false on failure
+     */
     public function removeFromArray(&$array){
         if (!$this->isInArray($array)){
             error_log("Not in array!");
-            return false;
+
         }else{
             $index = 0;
             foreach ($array as $item) {
@@ -170,12 +184,15 @@ class EPAtom {
             array_splice($array, $index, 1);
             return true;
         }
+        return false;
     }
 }
 
 //**********HELPER FUNCTIONS**********//
 
-// Find an Atom with a particular name (potentially dangerous, do not use for skills)
+/**
+ * Find an Atom with a particular name (potentially dangerous, do not use for skills)
+ */
 function getAtomByName($array,$name){
     if(!empty($array)){
         foreach ($array as $a){
@@ -187,7 +204,9 @@ function getAtomByName($array,$name){
     return null;
 }
 
-// Find an atom by unique id (safe)
+/**
+ * Find an atom by unique id (safe)
+ */
 function getAtomByUid($array,$id){
     if(!empty($array)){
         foreach ($array as $a){
