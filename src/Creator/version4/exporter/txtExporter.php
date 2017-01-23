@@ -2,6 +2,7 @@
 
 	require_once '../../../php/EPCharacterCreator.php';
     require_once '../../../php/EPFileUtility.php';
+    require_once '../../../php/EPBook.php';
 	session_start();
 	
 	if(isset($_SESSION['cc']))
@@ -12,8 +13,6 @@
         header("Content-type: text/plain");
         header('Content-Disposition: attachment; filename="'.$filename.'"');
 		
-		//provider for book pages
-		$p = new EPListProvider('../../../php/config.ini');	
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
 
 		//TXT EXPORT ================================================================
@@ -55,14 +54,14 @@
 				.": "
 				.formatResult($_SESSION['cc']->getCurrentBackground()->name)
 				.$tab
-				.setBookLink($_SESSION['cc']->getCurrentBackground()->name,$p)
+				.setBookLink($_SESSION['cc']->getCurrentBackground()->name)
 				.$carriageReturn
 				.formatTitle("Faction")
 				.$tab
 				.": "
 				.formatResult($_SESSION['cc']->getCurrentFaction()->name)
 				.$tab
-				.setBookLink($_SESSION['cc']->getCurrentFaction()->name,$p)
+				.setBookLink($_SESSION['cc']->getCurrentFaction()->name)
 				.$carriageReturn
 				.$line.$carriageReturn;
 				
@@ -205,7 +204,7 @@
 				foreach($egoNegTraits as $trait){
 					echo formatResult($trait->name)
 					.$tab
-					.setBookLink($trait->name,$p)
+					.setBookLink($trait->name)
 					.$carriageReturn;
 				}	
 						
@@ -221,7 +220,7 @@
 				foreach($egoNegTraits as $trait){
 					 echo formatResult($trait->name)
 					.$tab
-					.setBookLink($trait->name,$p)
+					.setBookLink($trait->name)
 					.$carriageReturn;
 				}	
 						
@@ -239,7 +238,7 @@
 					 if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) $type="(A)";
 					 echo formatResult($type." ".$sleight->name)
 					.$tab
-					.setBookLink($sleight->name,$p)
+					.setBookLink($sleight->name)
 					.$carriageReturn;
 				}	
 						
@@ -259,7 +258,7 @@
 					else $occ = "";
 					echo formatResult($occ." ".$gear->name)
 					.$tab
-					.setBookLink($gear->name,$p)
+					.setBookLink($gear->name)
 					.$carriageReturn;
 				}	
 						
@@ -277,7 +276,7 @@
 					else $occ = "";
 					echo formatResult($occ." ".$ai->name)
 					.$tab
-					.setBookLink($ai->name,$p)
+					.setBookLink($ai->name)
 					.$carriageReturn
 					.$carriageReturn;
 					
@@ -345,7 +344,7 @@
 						.$tab
 						.": "
 						.formatResult($morph->name." ".$type)
-						.setBookLink($morph->name,$p)
+						.setBookLink($morph->name)
 						.$carriageReturn
 						.formatTitle("Nickname")
 						.$tab
@@ -383,7 +382,7 @@
 						foreach($morphNegTraits as $trait){
 							echo formatResult($trait->name)
 							.$tab
-							.setBookLink($trait->name,$p)
+							.setBookLink($trait->name)
 							.$carriageReturn;
 						}	
 								
@@ -399,7 +398,7 @@
 						foreach($morphNegTraits as $trait){
 							 echo formatResult($trait->name)
 							.$tab
-							.setBookLink($trait->name,$p)
+							.setBookLink($trait->name)
 							.$carriageReturn;
 						}	
 								
@@ -525,7 +524,7 @@
 							
 							echo formatResultXL("[".$type."] ".$occ.$w->name."  "."DV: ".$w->degat."  "."AP : ".$w->armorPenetration)//Weapon type 
 							.$tab
-							.setBookLink($w->name,$p)
+							.setBookLink($w->name)
 							.$carriageReturn;
 						}
 						
@@ -558,7 +557,7 @@
 							.$tab
 							.$protec
 							.$tab
-							.setBookLink($a->name,$p)
+							.setBookLink($a->name)
 							.$carriageReturn;
 						}
 						
@@ -585,7 +584,7 @@
 							
 							echo formatResult($occ." ".$g->name)
 							.$tab
-							.setBookLink($g->name,$p)
+							.setBookLink($g->name)
 							.$carriageReturn;
 						}	
 								
@@ -605,7 +604,7 @@
 							
 							echo formatResult($occ.$i->name)
 							.$tab
-							.setBookLink($i->name,$p)
+							.setBookLink($i->name)
 							.$carriageReturn;
 						}	
 								
@@ -793,17 +792,9 @@
 		return $result;
 	}
 	
-	function setBookLink($atomeName,$provider){
-		$bookFullName = $provider->getBookForName($atomeName);
-		if($bookFullName == EPListProvider::$BOOK_ECLIPSEPHASE) $book = "EP";
-		else if($bookFullName == EPListProvider::$BOOK_TRANSHUMAN) $book = "TH";
-		else if($bookFullName == EPListProvider::$BOOK_GATECRASHING) $book = "GC";
-		else if($bookFullName == EPListProvider::$BOOK_SUNWARD) $book = "SW";
-		else if($bookFullName == EPListProvider::$BOOK_PANOPTICON) $book = "PAN";
-		else if($bookFullName == EPListProvider::$BOOK_RIMWARD) $book = "RW";
-		else $book = "??";
-		$page = $provider->getPageForName($atomeName);
-		return "   (".$book." p.".$page.")";
+	function setBookLink($atomeName){
+        $book = new EPBook($atomeName);
+		return $book->getPrintableName();
 	}
 	
 	

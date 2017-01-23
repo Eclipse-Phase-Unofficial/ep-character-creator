@@ -1,7 +1,8 @@
 <?php
 	
 	require_once '../../../php/EPCharacterCreator.php';
-	require_once '../../../php/EPFileUtility.php';	
+	require_once '../../../php/EPFileUtility.php';
+	require_once '../../../php/EPBook.php';
 	require_once './fpdf/fpdf.php';	
 	session_start();
 	
@@ -19,9 +20,6 @@
 	
 	if(isset($_SESSION['cc']))
 	{ 
-		//provider for book pages
-		$p = new EPListProvider('../../../php/config.ini');
-		
 		$pdf = new FPDF();
 		$ovf = new Overflow();
 
@@ -63,8 +61,8 @@
 				$pdf->Text(37, 33, formatIt($_SESSION['cc']->getCurrentFaction()->name)); //Faction
 				
 				$pdf->SetFont('Lato-LigIta', '', 7);
-				writeBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $p, $pdf);//Background bookLink
-				writeBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $p, $pdf);//Faction bookLink
+				writeBookLink($_SESSION['cc']->getCurrentBackground()->name, 85, 27, $pdf);//Background bookLink
+				writeBookLink($_SESSION['cc']->getCurrentFaction()->name, 85, 34, $pdf);//Faction bookLink
 				
 				//AGE - SEX
 				$pdf->SetFont('Lato-Lig', '', 10);
@@ -121,14 +119,14 @@
 
                 //EGO NEG TRAIT
                 $egoNegTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
-                $formattedNegTraits = formatGearData($egoNegTraits,$p);
+                $formattedNegTraits = formatGearData($egoNegTraits);
                 $pdf->setXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
                 writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
                 $egoPosTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
-                $formattedPosTraits = formatGearData($egoPosTraits,$p);
+                $formattedPosTraits = formatGearData($egoPosTraits);
                 $pdf->setXY(116,102);
                 $format = setTwoColFormat(25,15,1,8,7);
                 writeTwoColumns($pdf,$formattedPosTraits,$format,3);
@@ -138,6 +136,7 @@
                 $formattedPsi = array();
                 foreach($psySleights as $sleight)
                 {
+                    $book = new EPBook($sleight->name);
                     $item = array();
                     //set the slight token to active or passive
                     if($sleight->psyType == EPPsySleight::$ACTIVE_PSY)
@@ -146,14 +145,14 @@
                         $type = "(P) ";
 
                     $item[0] = formatIt($type . $sleight->name);
-                    $item[2] = getBookLink($sleight->name,$p);
+                    $item[2] = $book->getPrintableName();
                     array_push($formattedPsi,$item);
                 }
                 $pdf->setXY(158,102);
                 writeTwoColumns($pdf,$formattedPsi,$traitFormat,3);
 
                 //SOFT GEAR
-                $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears(),$p);
+                $softGears = formatGearData($_SESSION['cc']->getEgoSoftGears());
                 $pdf->SetXY(85,152);
                 writeTwoColumns($pdf,$softGears,$traitFormat,3);
 
@@ -174,7 +173,7 @@
 					$pdf->Text($apt_x, $apt_y, formatIt($occ . $ai->name));//ai name
 					
 					$pdf->SetFont('Lato-LigIta', '', 6);
-					writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $p, $pdf);//ai bookLink
+					writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $pdf);//ai bookLink
 					
 					$skillAptNonformated = "";
 					foreach($ai->aptitudes as $aiApt)
@@ -238,7 +237,7 @@
 						$pdf->Text(55, 11.5, formatIt($morph->name . " " . $type));//morph Name type
 						
 						$pdf->SetFont('Lato-LigIta', '', 5);
-						writeBookLink($morph->name, 105, 11.5, $p, $pdf);//morph bookLink
+						writeBookLink($morph->name, 105, 11.5, $pdf);//morph bookLink
 						
 						$pdf->SetFont('Lato-Lig', '', 8);
 						$pdf->Text(140, 12, formatIt($morph->nickname));//morph nickname
@@ -249,14 +248,14 @@
 
                         //MORPH NEG TRAIT
                         $morphNegTraits = getNegTraits($_SESSION['cc']->getCurrentTraits($morph));
-                        $formattedNegTraits = formatGearData($morphNegTraits,$p);
+                        $formattedNegTraits = formatGearData($morphNegTraits);
                         $pdf->setXY(5,43);
                         writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
 
                         //MORPH POS TRAIT
                         $morphPosTraits = getPosTraits($_SESSION['cc']->getCurrentTraits($morph));
-                        $formattedPosTraits = formatGearData($morphPosTraits,$p);
+                        $formattedPosTraits = formatGearData($morphPosTraits);
                         $pdf->setXY(52,43);
                         writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
 
@@ -335,7 +334,7 @@
 							$pdf->Text(($apt_x + 97), $apt_y, formatIt("AP : " . $w->armorPenetration));//Weapon Armor penetration 
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							writeBookLink($w->name, ($apt_x + 108), $apt_y, $p, $pdf);//Weapon bookLink
+							writeBookLink($w->name, ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
 							
 							$apt_y += $y_space;
 						}
@@ -379,21 +378,21 @@
 							}
 							
 							$pdf->SetFont('Lato-LigIta', '', 6);
-							writeBookLink($a->name, ($apt_x + 108), $apt_y, $p, $pdf);//Armor bookLink
+							writeBookLink($a->name, ($apt_x + 108), $apt_y, $pdf);//Armor bookLink
 							
 							$apt_y += $y_space;
 						}
 							
                         //GEAR
                         $gear = filterGeneralOnly($morphGear);
-                        $formattedGear = formatGearData($gear,$p);
+                        $formattedGear = formatGearData($gear);
                         $pdf->SetXY(83,168);
                         $format = setTwoColFormat(35,18,1,7,7);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
 
                         //IMPLANTS
                         $implants = filterImplantOnly($morphGear);
-                        $formattedImplants = formatGearData($implants,$p);
+                        $formattedImplants = formatGearData($implants);
                         $pdf->SetXY(140,168);
                         $format = setTwoColFormat(40,20,1,7,7);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
@@ -509,18 +508,19 @@
     }
 
     //Prepare gear/item/trait data for printing
-    function formatGearData($gears,$provider)
+    function formatGearData($gears)
     {
         $data = array();
         foreach($gears as $g)
         {
+            $book = new EPBook($g->name);
             $item = array();
             $occ = "";
             if($g->occurence > 1)
                 $occ = "(" . $g->occurence . ") ";
 
             $item[0] = formatIt($occ . $g->name);
-            $item[2] = getBookLink($g->name,$provider);
+            $item[2] = $book->getPrintableName();
             array_push($data,$item);
         }
         return $data;
@@ -813,23 +813,9 @@
 		return $result;
 	}
 
-	function getBookLink($atomeName, $provider)
+	function writeBookLink($atomeName, $x, $y, $pdf)
 	{
-		$bookFullName = $provider->getBookForName($atomeName);
-		if($bookFullName == EPListProvider::$BOOK_ECLIPSEPHASE) $book = "EP";
-		else if($bookFullName == EPListProvider::$BOOK_TRANSHUMAN) $book = "TH";
-		else if($bookFullName == EPListProvider::$BOOK_GATECRASHING) $book = "GC";
-		else if($bookFullName == EPListProvider::$BOOK_SUNWARD) $book = "SW";
-		else if($bookFullName == EPListProvider::$BOOK_PANOPTICON) $book = "PAN";
-		else if($bookFullName == EPListProvider::$BOOK_RIMWARD) $book = "RW";
-		else $book = "??";
-
-		$page = $provider->getPageForName($atomeName);
-		return "(" . $book . " p." . $page . ")";
-	}
-
-	function writeBookLink($atomeName, $x, $y, $provider, $pdf)
-	{
-		$pdf->Text($x, $y, getBookLink($atomeName,$provider));
+        $book = new EPBook($atomeName);
+		$pdf->Text($x, $y, $book->getPrintableName());
 	}
 ?>

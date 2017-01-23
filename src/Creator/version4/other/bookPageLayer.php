@@ -1,4 +1,5 @@
 <?php
+require_once('../../../php/EPBook.php');
 function getBPHtml($atomName){
 		$provider = new EPListProvider('../../../php/config.ini'); 
 		
@@ -29,21 +30,8 @@ function getBPHtml($atomName){
 }
 
 function getListStampHtml($atomName){
-		$provider = new EPListProvider('../../../php/config.ini');
-		$book = $provider->getBookForName($atomName);
-
-		$supPastille = "<span class='bookIcon ";
-		 
-		if($book == EPListProvider::$BOOK_RIMWARD) $supPastille .=  "RW";
-		else if($book == EPListProvider::$BOOK_PANOPTICON) $supPastille .=  "PAN";
-		else if($book == EPListProvider::$BOOK_SUNWARD) $supPastille .=  "SW";
-		else if($book == EPListProvider::$BOOK_GATECRASHING) $supPastille .=  "GC";
-		else if($book == EPListProvider::$BOOK_TRANSHUMAN) $supPastille .=  "TH";
-		else if($book == EPListProvider::$BOOK_ECLIPSEPHASE) $supPastille .=  "EP";
-
-		$supPastille .= "'></span>";
-
-		return $supPastille;
+    $book = new EPBook($atomName);
+    return "<span class='bookIcon ".$book->getAbbreviation()."'></span>";
 }
 
 
