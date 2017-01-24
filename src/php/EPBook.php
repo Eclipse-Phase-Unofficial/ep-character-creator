@@ -47,10 +47,17 @@ class EPBook {
     }
 
     /**
-     * Get book info suitable for printing.
+     * Get book info suitable for printing. (short form)
      */
      function getPrintableName(){
         return "(".$this->shortBook." p.".$this->page.")";
+     }
+
+     /**
+     * Get book info suitable for printing. (long form)
+     */
+     function getPrintableNameL(){
+        return $this->bookName." P. ".$this->page;
      }
 }
 ?>
