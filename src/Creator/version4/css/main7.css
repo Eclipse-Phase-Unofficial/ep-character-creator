@@ -7,8 +7,8 @@ button,
 input,
 select,
 textarea {
-    color: #222;
     height: 100%;
+    color: hsl(200,10%,40%);
 }
 
 body {
@@ -16,36 +16,13 @@ body {
     line-height: 1.4;
 }
 
-hr {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid #ccc;
-    margin: 1em 0;
-    padding: 0;
-}
-
 img {
     vertical-align: middle;
-}
-
-fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
 }
 
 textarea {
     resize: vertical;
 }
-
-.chromeframe {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
-
 
 /* ==========================================================================
    Author's custom styles
@@ -70,7 +47,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /************Book Icons************/
 
-span.bookIcon{
+.bookIcon{
     display: block;
     width:25px;
     height:25px;
@@ -82,27 +59,27 @@ span.bookIcon{
     transform: translate(0,-50%);
 }
 
-span.SW{
-	background-position: 0px -60px;
+.RW{
 }
 
-span.RW{
+.PAN{
+    background-position: 0 -30px;
 }
 
-span.PAN{
-	background-position: 0px -30px;
+.SW{
+    background-position: 0 -60px;
 }
 
-span.GC{
-	background-position: 0px -90px;
+.GC{
+    background-position: 0 -90px;
 }
 
-span.TH{
-	background-position: 0px -120px;
+.TH{
+    background-position: 0 -120px;
 }
 
-span.EP{
-	background-position: 0px -150px;
+.EP{
+    background-position: 0 -150px;
 }
 
 /* PRIMARY, SECONDAY, TERTIARY and QUATERNARY panels */
@@ -119,7 +96,7 @@ section.panel {
 
 /*PRIMARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 #primary{
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 
@@ -188,7 +165,6 @@ section.panel {
 	vertical-align: middle;
 	text-decoration: none;
 	text-transform: uppercase;
-	color: hsl(200,10%,40%);
 	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
@@ -376,7 +352,7 @@ a.active .btnhelp{
 	text-align: right;
 	position: absolute;
 	right: 10em;
-	top: 0em;
+	top: 0;
 	padding-right: 1em;
 }
 
@@ -447,12 +423,8 @@ a.active .btnhelp{
 
 /*TERTIARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-.bmGranted{
-	font-size: x-small;
-}
-
 .bmGrantedDesc{
-	font-size: xx-small;
+	font-size: x-small;
 	text-transform:none;
 	text-align: justify;
 	color: hsl(200,10%,40%);
@@ -643,7 +615,6 @@ a.active .btnhelp{
 	font-size:1.25em;
 	color: hsl(200,10%,40%);
 	text-align: center;
-	font-size: small;
 	vertical-align: middle;
 	display: none;
 	z-index: 100; /* This should be on top of everything else */
@@ -667,72 +638,9 @@ a.active .btnhelp{
 
 }
 
-/*
-@media print,
-       (-o-min-device-pixel-ratio: 5/4),
-       (-webkit-min-device-pixel-ratio: 1.25),
-       (min-resolution: 120dpi) {
-
-}
-*/
-
 /* ==========================================================================
    Helper classes
    ========================================================================== */
-
-.ir {
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-/*     text-indent: -9999px; */
-}
-
-.ir:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 150%;
-}
-
-.hidden {
-    display: none !important;
-    visibility: hidden;
-}
-
-.visuallyhidden {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-}
-
-.visuallyhidden.focusable:active,
-.visuallyhidden.focusable:focus {
-    clip: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    position: static;
-    width: auto;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-.clearfix:before,
-.clearfix:after {
-    content: " ";
-    display: table;
-}
-
-.clearfix:after {
-    clear: both;
-}
 
 #saveName {
     width: 296px;
