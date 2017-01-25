@@ -48,7 +48,7 @@ session_start();
  		echo "					<option value=".EPCreditCost::$VERY_EXPENSIVE.">".EPCreditCost::$VERY_EXPENSIVE."</option>";
  		echo "					<option value=".EPCreditCost::$EXTREMELY_EXPENSIVE.">".EPCreditCost::$EXTREMELY_EXPENSIVE."</option>";
  		echo "			</select>";
-		echo "			<span class='icone' id='addFreeEgoGear' data-icon='&#x3a;'></span>";
+		echo "			<span class='addOrSelectedIcon' id='addFreeEgoGear' data-icon='&#x3a;'></span>";
 		echo "	</li>";
 		$freeGear = $_SESSION['cc']->getEgoSoftGears();
 		foreach($freeGear as $m){

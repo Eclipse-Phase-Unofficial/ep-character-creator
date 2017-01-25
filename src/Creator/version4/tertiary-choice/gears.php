@@ -275,7 +275,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "					<option value=".EPCreditCost::$VERY_EXPENSIVE.">".EPCreditCost::$VERY_EXPENSIVE."</option>";
  		echo "					<option value=".EPCreditCost::$EXTREMELY_EXPENSIVE.">".EPCreditCost::$EXTREMELY_EXPENSIVE."</option>";
  		echo "			</select>";
-		echo "			<span class='icone' id='addFreeMorphGear' data-icon='&#x3a;'></span>";
+		echo "			<span class='addOrSelectedIcon' id='addFreeMorphGear' data-icon='&#x3a;'></span>";
 		echo "	</li>";
 		$freeGear = $_SESSION['cc']->getCurrentMorphGears($morph->name);
 		foreach($freeGear as $m){
