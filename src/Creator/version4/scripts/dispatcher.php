@@ -196,9 +196,9 @@ if(isset($_POST['posTrait'])){
     }
 }
 
-//HOVER POS TRAIT
-if(isset($_POST['posTraitHover'])){
-	$trait = $_SESSION['cc']->getTraitByName($_POST['posTraitHover']);
+//HOVER POS/NEG TRAIT
+if(isset($_POST['traitHover'])){
+	$trait = $_SESSION['cc']->getTraitByName($_POST['traitHover']);
 	if($trait != null){
 	        $_SESSION['currentTraitName'] = $trait->name;
 	}
@@ -254,14 +254,6 @@ if(isset($_POST['negTrait'])){
 	    }
     }
 
-}
-
-//HOVER NEG TRAIT
-if(isset($_POST['negTraitHover'])){
-	$trait = $_SESSION['cc']->getTraitByName($_POST['negTraitHover']);
-	if($trait != null){
-	        $_SESSION['currentTraitName'] = $trait->name;
-	}
 }
 
 //SET MOTIVATION

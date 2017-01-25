@@ -98,25 +98,50 @@ function displayMessageOnQuaternary(msg){
     $("#quaternary_infos").css('visibility','visible');
 }
 
+/**
+ * Reload the current panel an element is under.
+ *
+ * Does NOT close out any elements to the right of the current panel!
+ */
+function reloadPanel(element){
+    var panel = $(element).parents('.panel');
+    loadPanel(panel,panel.attr('src'));
+}
+
+/**
+ * Load the contents of a url into a specific panel.
+ */
+function loadPanel(id,url){
+    $(id).load(url, function(){
+        setupFoldingList();
+    });
+    $(id).attr('src',url);
+}
+
+/**
+ * Hide all panels to the right of Secondary, then load a url into it.
+ */
 function loadSecondary(url){
     hideTertiary();
     hideQuaternary();
-    $("#secondary").load(url, function(){
-        setupFoldingList();
-    });
+    loadPanel("#secondary",url);
 }
 
+/**
+ * Hide all panels to the right of Tertiary, then load a url into it.
+ */
 function loadTertiary(url){
     hideQuaternary();
-    $("#tertiary").load(url, function(){
-        setupFoldingList();
-    });
+    loadPanel("#tertiary",url);
 }
 
+/**
+ * Load a url in Quaternary.
+ *
+ * There are no panels to the right, so there's nothing to hide.
+ */
 function loadQuaternary(url){
-    $("#quaternary").load(url, function(){
-        setupFoldingList();
-    });
+    loadPanel("#quaternary",url);
 }
 
 function hideSecondary(){

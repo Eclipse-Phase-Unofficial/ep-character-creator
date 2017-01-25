@@ -9,7 +9,7 @@ session_start();
         $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
          foreach($_SESSION['cc']->getTraits() as $m){
             if($m->isEgo() && $m->cpCost == 0){
-                getDynamicTraitLi($m,$currentTraits,$defaultTraits,'neuTrait','selNeuTrait');
+                getDynamicTraitLi($m,$currentTraits,$defaultTraits,'neuTrait','addSelNeuTrait');
             }
          }
     ?>

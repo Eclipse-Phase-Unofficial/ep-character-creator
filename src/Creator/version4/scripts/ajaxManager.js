@@ -49,14 +49,15 @@ $(document).ready(function(){
         //BACKGROUND
     	//click on background
         $(document).on('click', '.bck' , function () {
+            var me = this;
             do_ajax({
                         origine : $(this).attr('id'),
                         getCrePoint : 'get'
                 },
                 function(response){
-                            loadSecondary("secondary-choice/backgrounds.php");
-                            loadTertiary("tertiary-choice/backgroundBMD.php");
-                            setRemainingPoint(response);
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/backgroundBMD.php");
+                    setRemainingPoint(response);
             });
             return false;
         });
@@ -65,26 +66,28 @@ $(document).ready(function(){
 
 		//click on faction
         $(document).on('click', '.fac' ,function () {
-                do_ajax( {
-                            faction : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                    			loadSecondary("secondary-choice/factions.php");
-								loadTertiary("tertiary-choice/factionBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                        faction : $(this).attr('id'),
+                        getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/factionBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         
         });
         //MOTIVATION
 
         function addMotivation() {
+            var me = this;
             do_ajax( {
-                        newMot : $('#motToAdd').val()
+                    newMot : $('#motToAdd').val()
                 },
                 function(response){
-                            loadSecondary("secondary-choice/motivations.php");
+                    reloadPanel(me);
                 });
             return false;
         }
@@ -100,14 +103,14 @@ $(document).ready(function(){
     	$(document).on('click', '#addMotiv' ,addMotivation);
         //click on removeButton
     	$(document).on('click', '.remMotiv' ,function () {
-                do_ajax( {
-                            remMot : $(this).attr('id')
-                    },
-                    function(response){
-                    			loadSecondary("secondary-choice/motivations.php");
-                    });
-				return false;
-        
+            var me = this;
+            do_ajax( {
+                    remMot : $(this).attr('id')
+                },
+                function(response){
+                    reloadPanel(me);
+                });
+            return false;
         });
     	
         //APTITUDES
@@ -211,105 +214,80 @@ $(document).ready(function(){
 		});
 
     	//POSITIVE TRAITS
-		//hover on pos trait
-		 $(document).on('click', '.posTrait' ,function () {
-		 	do_ajax( {
-                            posTraitHover : $(this).attr('id')
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/traitBMD.php");
-                    });
-
-		 	return false;
-        
+        //click on any trait
+        $(document).on('click', '.posTrait, .negTrait, .neuTrait' ,function () {
+            do_ajax( {
+                    traitHover : $(this).attr('id')
+                },
+                function(response){
+                    loadTertiary("tertiary-choice/traitBMD.php");
+                });
+            return false;
         });
         
         
 		//click on pos trait
         $(document).on('click', '.addSelPosTraitIcon' ,function () {
-                do_ajax( {
-                            posTrait : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                    			loadSecondary("secondary-choice/positive-traits.php");
-                    			loadTertiary("tertiary-choice/traitBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    posTrait : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/traitBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         
         });
         //NEGATIVE TRAITS
-		//hover on neg trait
-		 $(document).on('click', '.negTrait' ,function () {
-		 	do_ajax( {
-                            negTraitHover : $(this).attr('id')
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/traitBMD.php");
-                    });
-
-		 	return false;
-        
-        });
-
 		//click on neg trait
         $(document).on('click', '.addSelNegTraitIcon' ,function () {
-                do_ajax( {
-                            negTrait : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadSecondary("secondary-choice/negative-traits.php");
-								loadTertiary("tertiary-choice/traitBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                negTrait : $(this).attr('id'),
+                getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/traitBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
          //NEUTRAL TRAITS
 
-		//hover on neu trait
-		 $(document).on('mouseover', '.neuTrait' ,function () {
-		 	do_ajax( {
-                            negTraitHover : $(this).attr('id')
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/traitBMD.php");
-                    });
-
-		 	return false;
-
-        });
-
 		//click on neu trait
-        $(document).on('click', '.neuTrait' ,function () {
-                do_ajax( {
-                            negTrait : $(this).attr('id'), //use negTrait, but dont matter, cost = 0
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadSecondary("secondary-choice/neutral-traits.php");
-								loadTertiary("tertiary-choice/traitBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+        $(document).on('click', '.addSelNeuTrait' ,function () {
+            var me = this;
+            do_ajax( {
+                negTrait : $(this).attr('id'), //use negTrait, but dont matter, cost = 0
+                getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/traitBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
         //PSI SLEIGHTS  
 		//click on psi
         $(document).on('click', '.addSelPsySleightIcon' ,function () {
-                do_ajax( {
-                            psyS : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                                loadSecondary("secondary-choice/psy-sleights.php");
-                    			loadTertiary("tertiary-choice/psySleightBDM.php");
-								setRemainingPoint(response);
-                    });
-				return false;
-        
+            var me = this;
+            do_ajax( {
+                        psyS : $(this).attr('id'),
+                        getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/psySleightBDM.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //hover on psi
@@ -343,12 +321,13 @@ $(document).ready(function(){
                 displayRulesMessage("Attempting to add a blank skill!");
                 return false;
             }
+            var me = this;
             do_ajax( {
-                        newTmpActSkill : $('#actToAdd').val(),
-                        newTmpSkillPrefix : $('#actprefix').val()
+                    newTmpActSkill : $('#actToAdd').val(),
+                    newTmpSkillPrefix : $('#actprefix').val()
                 },
                 function(response){
-                            loadSecondary("secondary-choice/active-skills.php");
+                    reloadPanel(me);
                 });
             return false;
         }
@@ -363,7 +342,7 @@ $(document).ready(function(){
         
         //remove a temp active skill
         $(document).on('click', '.remActSkill' ,function () {
-            removeSkill($(this), "secondary-choice/active-skills.php");
+            removeSkill($(this));
             return false;
         });
         
@@ -448,7 +427,7 @@ $(document).ready(function(){
         
         //remove a temp knowlege skill
         $(document).on('click', '.remKnowSkill' ,function () {
-            removeSkill($(this), "secondary-choice/knowledge-skills.php");
+            removeSkill($(this));
             return false;
         });
 		
@@ -478,19 +457,14 @@ $(document).ready(function(){
                 var speVal = $(speId).val();
 
                 if(speVal != null || speVal != ""){
+                    var me=this;
                     do_ajax( {
                             addSpe : speVal,
                             addSpeSkill : $(this).attr('atomic'),
                             getCrePoint : 'get'
                         },
                         function(response){
-                            var comeFrom = $('.skills').attr('id');
-                            if(comeFrom == "actSkills"){
-                                loadSecondary("secondary-choice/active-skills.php");
-                            }
-                            else{
-                                loadSecondary("secondary-choice/knowledge-skills.php");
-                            }
+                            reloadPanel(me);
                             setRemainingPoint(response);
                         });
                 }
@@ -501,7 +475,7 @@ $(document).ready(function(){
         //enter on the input text
         $(document).on('keypress','.skName',function (e) {
             if (e.which == 13) {
-                addSkillSpec();
+                addSkillSpec.call(this);
                 return false;
             }
         });
@@ -524,31 +498,33 @@ $(document).ready(function(){
     	
     	//click on add morph
         $(document).on('click','.addMorphIcone' ,function () {
-        		hideErrorsMsg();
-                do_ajax( {
-                            addMorph : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                                loadSecondary("secondary-choice/morph.php");
-                                displayMessageOnTertiary(response.desc, response.title);
-								setRemainingPoint(response);
-                    });
-				return false;
+            hideErrorsMsg();
+            var me = this;
+            do_ajax( {
+                    addMorph : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    displayMessageOnTertiary(response.desc, response.title);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //click on remove morph
         $(document).on('click','.remMorphIcone' ,function () {
-        		hideErrorsMsg();
-                do_ajax( {
-                            remMorph : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadSecondary("secondary-choice/morph.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
+            hideErrorsMsg();
+            var me = this;
+            do_ajax( {
+                        remMorph : $(this).attr('id'),
+                        getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
          //click on morph bonus and description
@@ -613,16 +589,17 @@ $(document).ready(function(){
         
         //click on morph pos trait for selection deselection
         $(document).on('click', '.addSelMorphPosTraitIcon' ,function () {
-                do_ajax( {
-                            morphPosTrait : $(this).attr('id').trim(),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadTertiary("tertiary-choice/morphPosTraits.php");
-								loadQuaternary("quaternary-choice/traitMorphBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    morphPosTrait : $(this).attr('id').trim(),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
          //click on morph neutral traits button
@@ -640,16 +617,17 @@ $(document).ready(function(){
         
         //click on morph neutral trait for selection deselection
         $(document).on('click', '.addSelMorphNeuTraitIcon' ,function () {
-                do_ajax( {
-                            morphPosTrait : $(this).attr('id'), //keep call to posTrait, it's the same anyway
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadTertiary("tertiary-choice/morphNeuTraits.php");
-								loadQuaternary("quaternary-choice/traitMorphBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    morphPosTrait : $(this).attr('id'), //keep call to posTrait, it's the same anyway
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //click on morph neg traits button
@@ -666,16 +644,17 @@ $(document).ready(function(){
         });
         //click on morph neg trait for selection deselection
         $(document).on('click', '.addSelMorphNegTraitIcon' ,function () {
-                do_ajax( {
-                            morphNegTrait : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadTertiary("tertiary-choice/morphNegTraits.php");
-								loadQuaternary("quaternary-choice/traitMorphBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    morphNegTrait : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //hover on morph pos or neg or neu trait
@@ -684,11 +663,9 @@ $(document).ready(function(){
                     morphTraitHover : $(this).attr('id')
                 },
                 function(response){
-                        loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
                 });
-
             return false;
-
         });
 
         
@@ -707,16 +684,17 @@ $(document).ready(function(){
         
          //click on implants for selection deselection
         $(document).on('click', '.addSelMorphImplantIcon',function () {
-                do_ajax( {
-                            morphImplant : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-								loadTertiary("tertiary-choice/implants.php");
-								loadQuaternary("quaternary-choice/gearMorphBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    morphImplant : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         
@@ -736,67 +714,60 @@ $(document).ready(function(){
        
          //click on gears for selection deselection
         $(document).on('click', '.addSelMorphGearIcon' ,function () {
-                do_ajax( {
-                            morphGear : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadTertiary("tertiary-choice/gears.php");
-                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    morphGear : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //remove free morph gear
          $(document).on('click', '.remFreeGear' ,function () {
-        		var name = $(this).attr('id');
-                do_ajax( {
-                            morphFreeGear : name,
-                            morphFreePrice : 0,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadTertiary("tertiary-choice/gears.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            var name = $(this).attr('id');
+            do_ajax( {
+                    morphFreeGear : name,
+                    morphFreePrice : 0,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
         //add free morph gear
-        $(document).on('click', '#addFreeMorphGear' ,function () {
-        		var name = $("#freeMorphGearToAdd").val();
-        		var price = $("#freeMorphGearPrice").val();
-                do_ajax( {
-                            morphFreeGear : name,
-                            morphFreePrice : price,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadTertiary("tertiary-choice/gears.php");
-                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
-        });
+        function addFreeMorphGear(){
+            var me = this;
+            var name = $("#freeMorphGearToAdd").val();
+            var price = $("#freeMorphGearPrice").val();
+            do_ajax( {
+                    morphFreeGear : name,
+                    morphFreePrice : price,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
+        }
+        //Click on the button
+        $(document).on('click', '#addFreeMorphGear' ,addFreeMorphGear);
         //return on the free morph gear text
         $(document).on('keydown', '#freeMorphGearToAdd' ,function (e) {
-    		if(e.keyCode == 13) {
-    	 		var name = $("#freeMorphGearToAdd").val();
-        		var price = $("#freeMorphGearPrice").val();
-                do_ajax( {
-                            morphFreeGear : name,
-                            morphFreePrice : price,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadTertiary("tertiary-choice/gears.php");
-                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
-
-			}
+            if(e.keyCode == 13) {
+                addFreeMorphGear.call(this);
+                return false;
+            }
         });
 
 
@@ -815,16 +786,17 @@ $(document).ready(function(){
 		//SOFT GEAR AI
     	//click on ai
         $(document).on('click', '.addSelAiIcon' , function () {
-                do_ajax( {
-                            ai : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadSecondary("secondary-choice/softGear.php");
-                        loadTertiary("tertiary-choice/aiBMD.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    ai : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/aiBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //hover on ai
@@ -840,16 +812,17 @@ $(document).ready(function(){
         
         //click on soft
         $(document).on('click', '.addSelSoftGearIcon' , function () {
-                do_ajax( {
-                            softg : $(this).attr('id'),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                                loadSecondary("secondary-choice/softGear.php");
-								loadTertiary("tertiary-choice/softGearBMD.php");
-								setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            do_ajax( {
+                    softg : $(this).attr('id'),
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    loadTertiary("tertiary-choice/softGearBMD.php");
+                    setRemainingPoint(response);
+                });
+            return false;
         });
         
         //Hover on soft gear
@@ -879,109 +852,101 @@ $(document).ready(function(){
         });
 
         
-         //add free ego gear
-        $(document).on('click', '#addFreeEgoGear' ,function () {
-        		var name = $("#freeEgoGearToAdd").val();
-        		var price = $("#freeEgoGearPrice").val();
-                do_ajax( {
-                            egoFreeGear : name,
-                            egoFreePrice : price,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadSecondary("secondary-choice/softGear.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
-        });
+        //add free ego gear
+        function addFreeEgoGear(){
+            var me = this;
+            var name = $("#freeEgoGearToAdd").val();
+            var price = $("#freeEgoGearPrice").val();
+            do_ajax( {
+                    egoFreeGear : name,
+                    egoFreePrice : price,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
+        }
+        // Click on the icon
+        $(document).on('click', '#addFreeEgoGear' ,addFreeEgoGear);
         //return on the free ego gear text
         $(document).on('keydown', '#freeEgoGearToAdd' ,function (e) {
-    		if(e.keyCode == 13) {
-    	 		var name = $("#freeEgoGearToAdd").val();
-        		var price = $("#freeEgoGearPrice").val();
-                do_ajax( {
-                            egoFreeGear : name,
-                            egoFreePrice : price,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadSecondary("secondary-choice/softGear.php");
-                        setRemainingPoint(response);
-                    });
-				return false;			
-			}
+            if(e.keyCode == 13) {
+                addFreeEgoGear.call(this);
+                return false;
+            }
         });
 
         //CREDIT
         //click on addButton
-    	$(document).on('click', '#addCredit' ,function () {
-                do_ajax( {
-                            addCredit :'get',
-                            getCrePoint : 'get'                   
-                    },
-                    function(response){
-                    		 	loadSecondary("secondary-choice/credits.php");
-                    		 	setRemainingPoint(response);
-                    });
-				return false;
-        
-        });
-        
-          //click on remove Button
-    	$(document).on('click', '#removeCredit' ,function () {
-                do_ajax( {
-                            remCredit :'get',
-                            getCrePoint : 'get'                   
-                    },
-                    function(response){
-                    		 	loadSecondary("secondary-choice/credits.php");
-                    		 	setRemainingPoint(response);
-                    });
-				return false;
-        
+        $(document).on('click', '#addCredit' ,function () {
+            var me = this;
+            do_ajax( {
+                    addCredit :'get',
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
-         //STATS
-    	//click on addButton
-    	$(document).on('click', '#addMoxie' ,function () {
-                do_ajax( {
-                            addMoxie :'get',
-                            getCrePoint : 'get'                   
-                    },
-                    function(response){
-                    		 	loadSecondary("secondary-choice/stats.php");
-                    		 	setRemainingPoint(response);
-                    });
-				return false;
-        
-        });
-        
-         //click on moxie for description
-    	$(document).on('click', '.descMoxie' ,function () {
-                do_ajax( {
-                            mox : true
-                    },
-                    function(response){
-                    		 	displayMessageOnTertiary(response.desc);
-                    });
-				return false;
+        //click on remove Button
+        $(document).on('click', '#removeCredit' ,function () {
+            var me = this;
+            do_ajax( {
+                    remCredit :'get',
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
-          //click on remove Button
-    	$(document).on('click', '#removeMoxie' ,function () {
-                do_ajax( {
-                            remMoxie :'get',
-                            getCrePoint : 'get'                   
-                    },
-                    function(response){
-                    		 	loadSecondary("secondary-choice/stats.php");
-                    		 	setRemainingPoint(response);
-                    });
-				return false;
-        
+        //STATS
+        //click on addButton
+        $(document).on('click', '#addMoxie' ,function () {
+            var me = this;
+            do_ajax( {
+                    addMoxie :'get',
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
-    	
+        //click on moxie for description
+        $(document).on('click', '.descMoxie' ,function () {
+            do_ajax( {
+                    mox : true
+                },
+                function(response){
+                    displayMessageOnTertiary(response.desc);
+                });
+            return false;
+        });
+
+        //click on remove Button
+        $(document).on('click', '#removeMoxie' ,function () {
+            var me = this;
+            do_ajax( {
+                    remMoxie :'get',
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
+        });
+
     	 //click on a morph for stat
     	$(document).on('click', '.callStatMorph' ,function () {
     			hideErrorsMsg();
@@ -1114,79 +1079,58 @@ $(document).ready(function(){
 				return false;
         
         });
-        
+
         //Click on occurence button ADD and REMOVE
+        function addOccurence(occurenceId){
+            var me = this;
+            do_ajax( {
+                    addOccurence : occurenceId,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
+        }
+        function remOccurence(occurenceId){
+            var me = this;
+            do_ajax( {
+                    remOccurence : occurenceId,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
+        }
         //AI
         $(document).on('click', '#addOccurence_AI' ,function () {
-    		    do_ajax( {
-                            addOccurence : 'AI' ,
-                            getCrePoint : 'get'              
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/aiBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
+            addOccurence.call(this,'AI');
+            return false;
         });
         $(document).on('click', '#removeOccurence_AI' ,function () {
-    		    do_ajax( {
-                            remOccurence : 'AI'  ,
-                            getCrePoint : 'get'             
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/aiBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
-        
+            remOccurence.call(this,'AI');
+            return false;
         });
-		//SOFT
-		 $(document).on('click', '#addOccurence_SOFT' ,function () {
-    		    do_ajax( {
-                            addOccurence : 'SOFT' ,
-                            getCrePoint : 'get'              
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/softGearBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
+        //SOFT
+        $(document).on('click', '#addOccurence_SOFT' ,function () {
+            addOccurence.call(this,'SOFT');
+            return false;
         });
         $(document).on('click', '#removeOccurence_SOFT' ,function () {
-    		    do_ajax( {
-                            remOccurence : 'SOFT'  ,
-                            getCrePoint : 'get'             
-                    },
-                    function(response){
-                    			loadTertiary("tertiary-choice/softGearBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
-        
+            remOccurence.call(this,'SOFT');
+            return false;
         });
         //MORPH
-         $(document).on('click', '#addOccurence_MORPH' ,function () {
-    		    do_ajax( {
-                            addOccurence : 'MORPH' ,
-                            getCrePoint : 'get'              
-                    },
-                    function(response){
-                    			loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
+        $(document).on('click', '#addOccurence_MORPH' ,function () {
+            addOccurence.call(this,'MORPH');
+            return false;
         });
         $(document).on('click', '#removeOccurence_MORPH' ,function () {
-    		    do_ajax( {
-                            remOccurence : 'MORPH'  ,
-                            getCrePoint : 'get'             
-                    },
-                    function(response){
-                    			loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                    			setRemainingPoint(response);
-                    });
-				return false;
-        
+            remOccurence.call(this,'MORPH');
+            return false;
         });
 
         //FOLDING LIST MANAGEMENT
@@ -1222,13 +1166,15 @@ function changeSkill(node, after) {
         });
 }
 
-function removeSkill(node, after) {
-    //remove a temp active skill
+/**
+ * Remove a temporary skill
+ */
+function removeSkill(node) {
     do_ajax( {
                 remSkill : node.attr('atomic')
         },
         function(response){
-                    loadSecondary(after);
+                    reloadPanel(node);
         });
 }
 
