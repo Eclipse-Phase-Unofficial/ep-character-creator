@@ -146,6 +146,7 @@ $(document).ready(function(){
                     		}
                     		else {
                     			setRemainingPoint(response);
+                                $("#secondary").attr('src',"secondary-choice/aptitudes.php");
                     			$("#secondary").load("secondary-choice/aptitudes.php" , function(){
                     				//console.log("change"+focusOn);
 	                    			$(focusOn).focus();
@@ -205,6 +206,7 @@ $(document).ready(function(){
 						}
                 		else {
 							setRemainingPoint(response);
+                            $("#secondary").attr('src',"secondary-choice/reputations.php");
 							$("#secondary").load("secondary-choice/reputations.php", function(){
 	                    			$(focusOn).focus();
                     		});
@@ -547,6 +549,7 @@ $(document).ready(function(){
                             currentMorphUsed : $(this).attr('id')
                     },
                     function(response){
+                                $("#tertiary").attr('src',"tertiary-choice/morphSettings.php");
 								$("#tertiary").load("tertiary-choice/morphSettings.php", function(){
 									$("#morphName").attr('value',response.morphName);									
 									$("#mNickname").val(response.nickname);
@@ -1159,6 +1162,7 @@ function changeSkill(node, after) {
         },
         function(response){
                 $("[id="+skId+"]").css("background-color", "#FEFEFE");
+                $("#secondary").attr('src',after);
                 $("#secondary").load(after, function(){
                     $(focusOnSkill).focus();
                 });
