@@ -9,257 +9,44 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
     <?php
         $morph = $currentMorph;
         $gears = $_SESSION['cc']->getGears();
-        
-        
-        //WEAPON KINETIC SECTION
- 		echo "<li class='foldingListSection' id='kinW'>";
- 		echo "Kinetic Weapons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_KINETIC_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo "<ul class='mainlist foldingList kinW'>";
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		//WEAPON ENERGY SECTION
- 		echo "<li class='foldingListSection' id='engW'>";
- 		echo "Energy Weapons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_ENERGY_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList engW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		//WEAPON SPRAY SECTION
- 		echo "<li class='foldingListSection' id='sprW'>";
- 		echo "Spray Weapons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_SPRAY_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList sprW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		//WEAPON SEEKER SECTION
- 		echo "<li class='foldingListSection' id='seeW'>";
- 		echo "Seeker Weapons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_SEEKER_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList seeW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		//WEAPON MELEE SECTION
- 		echo "<li class='foldingListSection' id='meeW'>";
- 		echo "Melee Weapons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_MELEE_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList meeW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//AMMUNITION SECTION
- 		echo "<li class='foldingListSection' id='ammo'>";
- 		echo "Ammunition";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_AMMUNITION){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList ammo'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		//WEAPON EXPLOSIVE SECTION
- 		echo "<li class='foldingListSection' id='expW'>";
- 		echo "Grenades and missiles";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$WEAPON_EXPLOSIVE_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList expW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
 
- 		//WEAPON ACCESSORY SECTION
- 		echo "<li class='foldingListSection' id='accW'>";
- 		echo "Weapon Accessories";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 			if($m->gearType == EPGear::$WEAPON_ACCESSORY){
- 				array_push($listFiltered, $m);
- 			}
- 		}
- 		echo "<ul class='mainlist foldingList accW'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
-        
-        //ARMOR SECTION
- 		echo "<li class='foldingListSection' id='armor'>";
- 		echo "Armor";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$ARMOR_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList armor'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//DRUG SECTION
- 		echo "<li class='foldingListSection' id='drug'>";
- 		echo "Drugs";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$DRUG_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList drug'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
+        function printGear($gears,$morph,$gearType,$sectionName){
+            //Generate a HTML valid Id from the section name
+            $id = preg_replace("/[^A-z]/","",$sectionName);
 
- 		//POISON SECTION
- 		echo "<li class='foldingListSection' id='poison'>";
- 		echo "Poisons";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$POISON_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList poison'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//CHEMICALS SECTION
- 		echo "<li class='foldingListSection' id='chem'>";
- 		echo "Chemicals";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$CHEMICALS_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList chem'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//PET SECTION
- 		echo "<li class='foldingListSection' id='pets'>";
- 		echo "Pets";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$PET_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList pets'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//VEHICLES SECTION
- 		echo "<li class='foldingListSection' id='vehi'>";
- 		echo "Vehicles";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$VEHICLES_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList vehi'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//ROBOTS SECTION
- 		echo "<li class='foldingListSection' id='rob'>";
- 		echo "Robots";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$ROBOT_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList rob'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
- 		
- 		//MISC. SECTION
- 		echo "<li class='foldingListSection' id='misc'>";
- 		echo "Misc.";
- 		echo "</li>";
- 		$listFiltered = array();
- 		foreach($gears as $m){
- 		 	if($m->gearType == EPGear::$STANDARD_GEAR){
-     		 	array_push($listFiltered, $m);
- 		 	}
- 		}
- 		echo "<ul class='mainlist foldingList misc'>";
- 		$formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
- 		echo $formatedHtml;
- 		echo "</ul>";
- 		
+            $listFiltered = array();
+            foreach($gears as $m){
+                if($m->gearType == $gearType){
+                    array_push($listFiltered, $m);
+                }
+            }
+            $formatedHtml = getFormatedGearList($listFiltered,$morph,'addSelMorphGearIcon');
+
+            echo "<li class='foldingListSection' id='".$id."'>";
+            echo $sectionName;
+            echo "</li>";
+            echo "<ul class='mainlist foldingList ".$id."''>";
+            echo $formatedHtml;
+            echo "</ul>";
+        }
+
+        printGear($gears,$morph,EPGear::$WEAPON_KINETIC_GEAR,"Kinetic Weapons");
+        printGear($gears,$morph,EPGear::$WEAPON_ENERGY_GEAR,"Energy Weapons");
+        printGear($gears,$morph,EPGear::$WEAPON_SPRAY_GEAR,"Spray Weapons");
+        printGear($gears,$morph,EPGear::$WEAPON_SEEKER_GEAR,"Seeker Weapons");
+        printGear($gears,$morph,EPGear::$WEAPON_MELEE_GEAR,"Melee Weapons");
+        printGear($gears,$morph,EPGear::$WEAPON_AMMUNITION,"Ammunition");
+        printGear($gears,$morph,EPGear::$WEAPON_EXPLOSIVE_GEAR,"Grenades and Missiles");
+        printGear($gears,$morph,EPGear::$WEAPON_ACCESSORY,"Weapon Accessories");
+        printGear($gears,$morph,EPGear::$ARMOR_GEAR,"Armor");
+        printGear($gears,$morph,EPGear::$DRUG_GEAR,"Drugs");
+        printGear($gears,$morph,EPGear::$POISON_GEAR,"Poisons");
+        printGear($gears,$morph,EPGear::$CHEMICALS_GEAR,"Chemicals");
+        printGear($gears,$morph,EPGear::$PET_GEAR,"Pets");
+        printGear($gears,$morph,EPGear::$VEHICLES_GEAR,"Vehicles");
+        printGear($gears,$morph,EPGear::$ROBOT_GEAR,"Robots");
+        printGear($gears,$morph,EPGear::$STANDARD_GEAR,"Misc.");
+
  		//FREE GEAR SECTION
  		echo "<li class='foldingListSection' id='free'>";
  		echo "Free Gear";
