@@ -6,7 +6,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="implants">
-    <li><label class='foldingListSection'>Implants</label></li>
+    <li class='foldingListSection'>Implants</li>
     <?php
         $listFiltered = array();
         foreach($_SESSION['cc']->getGears() as $m){

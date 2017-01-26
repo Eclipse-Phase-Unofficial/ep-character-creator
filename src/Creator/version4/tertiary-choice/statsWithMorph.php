@@ -5,7 +5,7 @@ session_start();
 function printStat($abbreviation){
     $stat = $_SESSION['cc']->getStatByAbbreviation($abbreviation);
     echo "<li id='".$abbreviation."' class='statMorph'>";
-    echo "  <span class='paddedLeft'>".$stat->name."</span>";
+    echo "  ".$stat->name;
     echo "  <span class='btnhelp slowTransition' data-icon='&#x2a;' title='".$stat->description."'></span>";
     echo "  <span class='score'>[".$stat->getValue()."]</span>";
     echo "</li>";
@@ -16,8 +16,8 @@ function printStat($abbreviation){
     <?php
         $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
         $_SESSION['cc']->activateMorph($morph);
-        echo "<li>";
-		echo "		<span class='listSection'>".$morph->name."</span>";
+        echo "<li class='listSection'>";
+		echo $morph->name;
 		echo "</li>";
 		printStat("TT");
 		printStat("LUC");

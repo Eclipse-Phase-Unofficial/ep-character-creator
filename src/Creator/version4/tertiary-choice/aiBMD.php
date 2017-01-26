@@ -17,8 +17,8 @@ $currentAi = $_SESSION['cc']->getAisByName($_SESSION['currentAiName']);
 		  
 		  getBMHtml($currentAi->bonusMalus,$currentAi->name,'ai');
 		  getAIHtml($currentAi);
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentAi->description."</label>";

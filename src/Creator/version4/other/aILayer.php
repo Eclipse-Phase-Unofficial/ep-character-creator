@@ -2,8 +2,8 @@
 function getAIHtml($ai){
 
 	if(!empty($ai->aptitudes)){
-		echo "<li>";
-		echo "		<label class='listSection'>Aptitudes</label>";
+		echo "<li class='listSection'>";
+		echo "Aptitudes";
 		echo "</li>"; 
 	}
 	
@@ -14,8 +14,8 @@ function getAIHtml($ai){
 	}
 	
 	if(!empty($ai->skills)){
-		echo "<li>";
-		echo "		<label class='listSection'>Skills</label>";
+		echo "<li class='listSection'>";
+		echo "Skills";
 		echo "</li>"; 
 	}
 	

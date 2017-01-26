@@ -3,11 +3,11 @@ require_once '../../../php/EPCharacterCreator.php';
 session_start();
 ?>
 <ul class="mainlist">
-	<li>
-		<label class='listSection'>1 creation point = 1000 credits</label>
+	<li class='listSection'>
+		1 creation point = 1000 credits
 	</li>
 	<li>
-		<span class="paddedLeft">Current Credit</span>
+		Current Credit
 		<span class='iconPlusMinus slowTransition' id='removeCredit' data-icon='&#x3b;'></span>
 		<?php
 			$currentCredit = $_SESSION['cc']->getCredit();

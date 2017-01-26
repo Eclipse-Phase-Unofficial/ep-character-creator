@@ -23,7 +23,7 @@ function getCostHtml($cost,$isDefault){
 function getFormattedLi($item,$itemClass,$cpCost,$granted,$checked,$iconClass){
     $htmlResult  = "";
     $htmlResult .= "<li class='".$itemClass."' id='".$item->name."'>";
-    $htmlResult .= "<span class='paddedLeft'>".$item->name."</span>";
+    $htmlResult .= $item->name;
     $htmlResult .= getListStampHtml($item->name);
     $htmlResult .= getCostHtml($cpCost,$granted);
     if($checked){

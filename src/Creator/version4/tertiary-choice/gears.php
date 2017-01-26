@@ -12,8 +12,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
         
         
         //WEAPON KINETIC SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='kinW'>Kinetic Weapon</label>";
+ 		echo "<li class='foldingListSection' id='kinW'>";
+ 		echo "Kinetic Weapons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -27,8 +27,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//WEAPON ENERGY SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='engW'>Energy Weapon</label>";
+ 		echo "<li class='foldingListSection' id='engW'>";
+ 		echo "Energy Weapons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -42,8 +42,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//WEAPON SPRAY SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='sprW'>Spray Weapon</label>";
+ 		echo "<li class='foldingListSection' id='sprW'>";
+ 		echo "Spray Weapons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -57,8 +57,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//WEAPON SEEKER SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='seeW'>Seeker Weapon</label>";
+ 		echo "<li class='foldingListSection' id='seeW'>";
+ 		echo "Seeker Weapons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -72,8 +72,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//WEAPON MELEE SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='meeW'>Melee Weapon</label>";
+ 		echo "<li class='foldingListSection' id='meeW'>";
+ 		echo "Melee Weapons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -88,8 +88,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//AMMUNITION SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='ammo'>Ammunition</label>";
+ 		echo "<li class='foldingListSection' id='ammo'>";
+ 		echo "Ammunition";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -103,8 +103,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//WEAPON EXPLOSIVE SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='expW'>Grenades and missiles</label>";
+ 		echo "<li class='foldingListSection' id='expW'>";
+ 		echo "Grenades and missiles";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -118,8 +118,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
 
  		//WEAPON ACCESSORY SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='accW'>Weapon Accessories</label>";
+ 		echo "<li class='foldingListSection' id='accW'>";
+ 		echo "Weapon Accessories";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -134,8 +134,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
         
         //ARMOR SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='armor'>Armor</label>";
+ 		echo "<li class='foldingListSection' id='armor'>";
+ 		echo "Armor";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -150,8 +150,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//DRUG SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='drug'>Drug</label>";
+ 		echo "<li class='foldingListSection' id='drug'>";
+ 		echo "Drugs";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -166,8 +166,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
 
  		//POISON SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='poison'>Poison</label>";
+ 		echo "<li class='foldingListSection' id='poison'>";
+ 		echo "Poisons";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -182,8 +182,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//CHEMICALS SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='chem'>Chemicals</label>";
+ 		echo "<li class='foldingListSection' id='chem'>";
+ 		echo "Chemicals";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -198,8 +198,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//PET SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='pets'>Pets</label>";
+ 		echo "<li class='foldingListSection' id='pets'>";
+ 		echo "Pets";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -214,8 +214,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//VEHICLES SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='vehi'>Vehicles</label>";
+ 		echo "<li class='foldingListSection' id='vehi'>";
+ 		echo "Vehicles";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -230,8 +230,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//ROBOTS SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='rob'>Robots</label>";
+ 		echo "<li class='foldingListSection' id='rob'>";
+ 		echo "Robots";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -246,8 +246,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		
  		
  		//MISC. SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='misc'>Misc.</label>";
+ 		echo "<li class='foldingListSection' id='misc'>";
+ 		echo "Misc.";
  		echo "</li>";
  		$listFiltered = array();
  		foreach($gears as $m){
@@ -261,8 +261,8 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
  		echo "</ul>";
  		
  		//FREE GEAR SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='free'>Free gear</label>";
+ 		echo "<li class='foldingListSection' id='free'>";
+ 		echo "Free Gear";
  		echo "</li>";
  		echo "<ul class='mainlist foldingList free' id='freeGear'>";
  		echo "	<li>";

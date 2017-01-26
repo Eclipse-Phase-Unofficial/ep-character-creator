@@ -10,8 +10,8 @@ session_start();
 		 
          
          		//BIOMORPH SECTION
-         		echo "<li>";
-         		echo "		<label class='foldingListSection' id='bio'>biomorphs</label>";
+         		echo "<li class='foldingListSection' id='bio'>";
+         		echo "Biomorphs";
          		echo "</li>";
          		$listBiomorphs = array();
          		foreach($listMorphs as $m){
@@ -25,8 +25,8 @@ session_start();
          		echo "</ul>";
          		
          		//POD SECTION
-         		echo "<li>";
-         		echo "		<label class='foldingListSection' id='pod'>pods</label>";
+         		echo "<li class='foldingListSection' id='pod'>";
+         		echo "Pods";
          		echo "</li>";
          		$listPods = array();
          		foreach($listMorphs as $m){
@@ -40,8 +40,8 @@ session_start();
          		echo "</ul>";
          		
          		//SYNTHMORPH SECTION
-         		echo "<li>";
-         		echo "		<label class='foldingListSection' id='synth'>synthmorphs</label>";
+         		echo "<li class='foldingListSection' id='synth'>";
+         		echo "Synthmorphs";
          		echo "</li>";
          		$listsyns = array();
          		foreach($listMorphs as $m){
@@ -55,8 +55,8 @@ session_start();
          		echo "</ul>";
          		
          		//INFOMORPH SECTION
-         		echo "<li>";
-         		echo "		<label class='foldingListSection' id='info'>infomorphs</label>";
+         		echo "<li class='foldingListSection' id='info'>";
+         		echo "Infomorphs";
          		echo "</li>";
          		$listinfo = array();
          		foreach($listMorphs as $m){

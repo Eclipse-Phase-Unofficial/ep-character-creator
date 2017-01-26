@@ -6,7 +6,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="morphPostraits">
-    <li><label class='foldingListSection'>Morph Pos. Traits</label></li>
+    <li class='foldingListSection'>Morph Pos. Traits</li>
     <?php
         $currentTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
         $defaultTraits = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);

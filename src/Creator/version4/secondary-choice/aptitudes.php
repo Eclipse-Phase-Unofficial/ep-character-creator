@@ -6,13 +6,13 @@ session_start();
 	<?php
 		 
 		 if($_SESSION['cc']->getAptitudePoint() > 0){
-			  echo "<li>";
-			  echo "		<label class='listSection'>cost : 1 Aptitude point</label>";
+			  echo "<li class='listSection'>";
+			  echo "Cost : 1 Aptitude point";
 			  echo "</li>";
 		 }
 		 else{
-			 echo "<li>";
-			  echo "		<label class='listSection'>cost : 10 Creation points</label>";
+			 echo "<li class='listSection'>";
+			  echo "Cost : 10 Creation points";
 			  echo "</li>";
 		 }
 		 
@@ -28,8 +28,8 @@ session_start();
         	
          }
          
-         echo "<li>";
-		 echo "		<label class='listSection'>aptitudes with morph : </label>";
+         echo "<li class='listSection'>";
+		 echo "Aptitudes with morph :";
 		 echo "</li>";
 		 if(isset($currentMorphs) && count($currentMorphs) > 0){
 			 foreach($currentMorphs as $m){

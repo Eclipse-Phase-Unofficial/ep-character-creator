@@ -4,8 +4,8 @@ require_once '../../../php/EPAtom.php';
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		//GRANTED BM
 		if(grantedExist($bonusMalusArray)){
-			echo "<li>";
-			echo "		<label class='listSection'>Granted</label>";
+			echo "<li class='listSection'>";
+			echo "Granted";
 			echo "</li>";
 			foreach($bonusMalusArray as $bm){
 					if($bm->targetForChoice == ""){
@@ -26,15 +26,15 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		}
 		if(choiceExist($bonusMalusArray)){
 			//CHOICE BM
-			echo "<li>";
-			echo "		<label class='listSection'>Define</label>";
+			echo "<li class='listSection'>";
+			echo "Define";
 			echo "</li>";
 			foreach($bonusMalusArray as $bm){
 					if($bm->targetForChoice != ""){
 						choosePrintOption($bm,$parentName,$parentType);
 						if($bm->targetForChoice == EPBonusMalus::$MULTIPLE){
-							echo "<li>";
-							echo "		<label class='listSection'>Choose <span class='betweenPlusMinus'>".$_SESSION['cc']->getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span></label>";
+							echo "<li class='listSection'>";
+							echo "Choose <span class='betweenPlusMinus'>".$_SESSION['cc']->getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
 							echo "</li>";
 							if($_SESSION['cc']->getSelectedOnMulti($bm) == $bm->multi_occurence){
 								foreach($bm->bonusMalusTypes as $bmMulti){

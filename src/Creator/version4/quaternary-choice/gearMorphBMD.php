@@ -25,8 +25,8 @@ if($currentGear == null){
 		 
 		  getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear');
 		  getADHtml($currentGear);
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentGear->description."</label>";

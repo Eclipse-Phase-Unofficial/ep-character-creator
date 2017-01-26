@@ -18,8 +18,8 @@ if($currentTrait == null){
 		  getBPHtml($currentTrait->name);
 		  
 		  getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'morphTrait');
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentTrait->description."</label>";

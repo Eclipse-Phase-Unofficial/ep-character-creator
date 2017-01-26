@@ -39,10 +39,10 @@ html, body{
 	height: 100%;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /************Book Icons************/
@@ -116,7 +116,7 @@ section.panel {
 	position: relative;
 	margin: 0;
 	padding: 0;
-	
+
 }
 
 #main-nav a{
@@ -146,18 +146,9 @@ section.panel {
 }
 
 /************SHARED************/
-.listSection{
-	font-size: x-small;
-	color: rgb(186, 0, 80);
-	background-color: rgba(202,194,194,0.61);
-	padding-left: 1em;
-	display: block;
-	line-height:3em;
-	padding-right: 1em;
-}
-
 .panel li{
 	padding: 0;
+	padding-left: 1em;
 	margin: 0;
 	position: relative;
 	display: block;
@@ -173,6 +164,12 @@ section.panel {
 .panel li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);
+}
+
+.listSection{
+	font-size: x-small;
+	color: rgb(186, 0, 80);
+	background-color: rgba(202,194,194,0.61);
 }
 
 .mainlist{
@@ -250,10 +247,6 @@ a.active .btnhelp{
 	float: right;
 }
 
-.paddedLeft{
-	padding-left: 1em;
-}
-
 .costInfo {
     font-size: x-small;
     display: block;
@@ -317,7 +310,7 @@ a.active .btnhelp{
 
 .skills tbody tr:hover{
 	color: rgb(186, 0, 80);
-	background-color: rgba(254, 254, 254, .85);		
+	background-color: rgba(254, 254, 254, .85);
 }
 
 .skillTotal{
@@ -462,7 +455,7 @@ a.active .btnhelp{
 	height: 1.5em;
 	width: 20em;
 	position: absolute;
-	color: #000000;	
+	color: #000000;
 }
 
 .bmChoiceSelect{
@@ -567,7 +560,7 @@ a.active .btnhelp{
 	height: 1.5em;
 	width: 20em;
 	position: absolute;
-	color: #000000;	
+	color: #000000;
 }
 
 .bmDesc{

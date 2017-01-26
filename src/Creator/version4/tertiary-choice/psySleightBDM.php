@@ -13,8 +13,8 @@ session_start();
 		  getBPHtml($currentPsiS->name);
 		  
 		  getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi');
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentPsiS->description."</label>";

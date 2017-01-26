@@ -16,16 +16,16 @@ if($currentMorph == null){
 		  getBPHtml($currentMorph->name);
 		  
 		  getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph');
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentMorph->description."</label>";
           echo "</li>";
           $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
           if(!empty($traits)){
-			  echo "<li>";
-	          echo "		<label class='listSection'>Traits</label>";
+			  echo "<li class='listSection'>";
+	          echo "Traits";
 	          echo "</li>"; 
                   
 	          foreach($traits as $t){
@@ -35,8 +35,8 @@ if($currentMorph == null){
 	          }
           }
            if(!empty($currentMorph->gears)){
-			  echo "<li>";
-	          echo "		<label class='listSection'>Implants</label>";
+			  echo "<li class='listSection'>";
+	          echo "Implants";
 	          echo "</li>"; 
 	          foreach($currentMorph->gears as $g){
 		          echo "<li>";

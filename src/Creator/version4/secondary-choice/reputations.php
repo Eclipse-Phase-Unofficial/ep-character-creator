@@ -6,13 +6,13 @@ session_start();
 	<?php
 		
 		 if($_SESSION['cc']->getReputationPoints() > 0){
-			  echo "<li>";
-			  echo "		<label class='listSection'>cost : 1 reputation point</label>";
+			  echo "<li class='listSection'>";
+			  echo "Cost : 1 reputation point";
 			  echo "</li>";
 		 }
 		 else{
-			 echo "<li>";
-			  echo "		<label class='listSection'>cost : 0.1 Creation point</label>";
+			 echo "<li class='listSection'>";
+			  echo "Cost : 0.1 Creation point";
 			  echo "</li>";
 		 }
 		

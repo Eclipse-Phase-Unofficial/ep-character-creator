@@ -13,8 +13,8 @@ $currentFaction = $_SESSION['cc']->getCurrentFaction();
 	<?php
 		  getBPHtml($currentFaction->name);
 		  
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentFaction->description."</label>";

@@ -4,8 +4,8 @@ require_once('gearHelper.php');
 
 function getStaticTraitHtml($traits){
 //     if(!empty($traits)){
-        echo "<li>";
-        echo "		<label class='listSection'>Traits</label>";
+        echo "<li class='listSection'>";
+        echo "Traits";
         echo "</li>";
         foreach($traits as $t){
             echo "<li>";

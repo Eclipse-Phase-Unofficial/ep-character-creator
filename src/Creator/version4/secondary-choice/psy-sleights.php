@@ -10,8 +10,8 @@ session_start();
 		 $listPsyS = $_SESSION['cc']->getPsySleights();
 		 
 		 //CHI SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='chi'>chi sleight</label>";
+ 		echo "<li class='foldingListSection' id='chi'>";
+ 		echo "Chi Sleight";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyChi()){
 	 		$lishtChi = array();
@@ -32,8 +32,8 @@ session_start();
 	 	}
  		
  		//GAMMA SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='gamma'>gamma sleight</label>";
+ 		echo "<li class='foldingListSection' id='gamma'>";
+ 		echo "Gamma Sleight";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyGamma()){
  			$listGamma = array();

@@ -7,7 +7,7 @@ session_start();
 			if(count($_SESSION['cc']->getMotivations()) < 10) {
 			
 				echo "<li>
-						<span class='paddedLeft'><input type='text' id='motToAdd' placeholder='Enter a motivation'/></span>
+						<input type='text' id='motToAdd' placeholder='Enter a motivation'/>
 						<span class='slowTransition iconPlusMinus' id='addMotiv' data-icon='&#x3a;'></span>
 					  </li>";
 					  
@@ -18,7 +18,7 @@ session_start();
 			if($_SESSION['cc']->getMotivations() != null){
 				$motForm = "";
 				foreach($_SESSION['cc']->getMotivations() as $m){
-					echo "<li><span class='paddedLeft'>".$m."</span><span class='remMotiv slowTransition iconPlusMinus' id='".$m."' data-icon='&#x39;'></span></li>";
+					echo "<li>".$m."</span><span class='remMotiv slowTransition iconPlusMinus' id='".$m."' data-icon='&#x39;'></li>";
 				}
 			}
 			else{

@@ -11,8 +11,8 @@ session_start();
 		 //AI GEAR
 		 $currentAis = $_SESSION['cc']->getEgoAi();
 		 $defaultAi = $_SESSION['cc']->getDefaultEgoAi();
-		 echo "<li>";
- 		 echo "		<label class='foldingListSection' id='ai'>Ai's and Muses</label>";
+		 echo "<li class='foldingListSection' id='ai'>";
+ 		 echo "Ai's and Muses";
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
          foreach($_SESSION['cc']->getAis() as $m){
@@ -22,8 +22,8 @@ session_start();
           
          //SOFT GEAR 
          $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
-		 echo "<li>";
- 		 echo "		<label class='foldingListSection' id='softLst'>Software</label>";
+		 echo "<li class='foldingListSection' id='softLst'>";
+ 		 echo "Software";
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($_SESSION['cc']->getGears() as $m){
@@ -34,8 +34,8 @@ session_start();
           echo "</ul>";
          
          //FREE GEAR SECTION
- 		echo "<li>";
- 		echo "		<label class='foldingListSection' id='free'>Free gear</label>";
+ 		echo "<li class='foldingListSection' id='free'>";
+ 		echo "Free Gear";
  		echo "</li>";
  		echo "<ul class='mainlist foldingList free' id='freeGear'>";
  		echo "	<li>";

@@ -17,8 +17,8 @@ $currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
 		  
 		  getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft');
 		  getADHtml($currentGear);
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentGear->description."</label>";

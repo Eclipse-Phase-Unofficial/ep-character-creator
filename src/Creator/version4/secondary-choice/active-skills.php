@@ -5,9 +5,9 @@ require_once '../../../php/EPCharacterCreator.php';
 session_start();
 ?>
 <ul class="mainlist" id="enterSkill">
-	<li>
-		<label class='listSection'> 1 creation points < 60 % < 2 creation points</label>
-		<label class='listSection'> SPE cost 5 creation points</label>
+	<li class='listSection'>
+		<div>1 creation points < 60 % < 2 creation points</div>
+		<div>Specialization: 5 creation points</div>
 	</li>
 	<li>
 		<select id="actprefix">

@@ -13,8 +13,8 @@ $currentBck = $_SESSION['cc']->getCurrentBackground();
 	<?php
 		  getBPHtml($currentBck->name);
 		  
-		  echo "<li>";
-          echo "		<label class='listSection'>Description</label>";
+		  echo "<li class='listSection'>";
+          echo "Description";
           echo "</li>"; 
           echo "<li>";
           echo "		<label class='bmDesc'>".$currentBck->description."</label>";
