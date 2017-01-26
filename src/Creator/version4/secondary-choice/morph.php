@@ -8,69 +8,31 @@ session_start();
 		 $listMorphs = $_SESSION['cc']->getMorphs();
 		 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
 		 
-         
-         		//BIOMORPH SECTION
-         		echo "<li class='foldingListSection' id='bio'>";
-         		echo "Biomorphs";
-         		echo "</li>";
-         		$listBiomorphs = array();
-         		foreach($listMorphs as $m){
-         		 	if($m->morphType == EPMorph::$BIOMORPH){
-	         		 	array_push($listBiomorphs, $m);
-         		 	}
-         		}
-         		$biomorphHtml = getFormatedMorphList($listBiomorphs,$currentMorphs);
-         		echo "<ul class='mainlist foldingList bio'>";
-         		echo $biomorphHtml;
-         		echo "</ul>";
-         		
-         		//POD SECTION
-         		echo "<li class='foldingListSection' id='pod'>";
-         		echo "Pods";
-         		echo "</li>";
-         		$listPods = array();
-         		foreach($listMorphs as $m){
-         		 	if($m->morphType == EPMorph::$PODMORPH){
-	         		 	array_push($listPods, $m);
-         		 	}
-         		}
-         		$podHtml = getFormatedMorphList($listPods,$currentMorphs);
-         		echo "<ul class='mainlist foldingList pod'>";
-         		echo $podHtml;
-         		echo "</ul>";
-         		
-         		//SYNTHMORPH SECTION
-         		echo "<li class='foldingListSection' id='synth'>";
-         		echo "Synthmorphs";
-         		echo "</li>";
-         		$listsyns = array();
-         		foreach($listMorphs as $m){
-         		 	if($m->morphType == EPMorph::$SYNTHMORPH){
-	         		 	array_push($listsyns, $m);
-         		 	}
-         		}
-         		$synHtml = getFormatedMorphList($listsyns,$currentMorphs);
-         		echo "<ul class='mainlist foldingList synth'>";
-         		echo $synHtml;
-         		echo "</ul>";
-         		
-         		//INFOMORPH SECTION
-         		echo "<li class='foldingListSection' id='info'>";
-         		echo "Infomorphs";
-         		echo "</li>";
-         		$listinfo = array();
-         		foreach($listMorphs as $m){
-         		 	if($m->morphType == EPMorph::$INFOMORPH){
-	         		 	array_push($listinfo, $m);
-         		 	}
-         		}
-         		$infoHtml = getFormatedMorphList($listinfo,$currentMorphs);
-         		echo "<ul class='mainlist foldingList info'>";
-         		echo $infoHtml;
-         		echo "</ul>";
-         		
-        
-         
+         function printMorph($listMorphs,$currentMorphs,$morphType,$sectionName){
+            //Generate a HTML valid Id from the section name
+            $id = preg_replace("/[^A-z]/","",$sectionName);
+
+            $listFiltered = array();
+            foreach($listMorphs as $m){
+                if($m->morphType == $morphType){
+                    array_push($listFiltered, $m);
+                }
+            }
+            $formatedHtml = getFormatedMorphList($listFiltered,$currentMorphs);
+
+            echo "<li class='foldingListSection' id='".$id."'>";
+            echo $sectionName;
+            echo "</li>";
+            echo "<ul class='mainlist foldingList ".$id."'>";
+            echo $formatedHtml;
+            echo "</ul>";
+         }
+
+         printMorph($listMorphs,$currentMorphs,EPMorph::$BIOMORPH,"Biomorphs");
+         printMorph($listMorphs,$currentMorphs,EPMorph::$PODMORPH,"Pods");
+         printMorph($listMorphs,$currentMorphs,EPMorph::$SYNTHMORPH,"Synthmorphs");
+         printMorph($listMorphs,$currentMorphs,EPMorph::$INFOMORPH,"Infomorphs");
+
          function getFormatedMorphList($totalMorphList,$currentList){
              $provider = new EPListProvider('../../../php/config.ini');
 	         $htmlBlock = "";
