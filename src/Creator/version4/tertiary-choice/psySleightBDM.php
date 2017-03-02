@@ -6,8 +6,10 @@ require_once('../other/panelHelper.php');
 session_start();
 $currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName']);
 
-echo startDescriptivePanel($currentPsiS->name);
-echo descriptionLi($currentPsiS->description);
+$myPanel = new Panel();
+$myPanel->startDescriptivePanel($currentPsiS->name);
+$myPanel->addDescription($currentPsiS->description);
+echo $myPanel->getHtml();
 getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi');
 echo endPanel();
 ?>

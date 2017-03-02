@@ -1,15 +1,15 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 include('../other/bonusMalusLayer.php');
-include('../other/armorDegatsLayer.php');
 require_once('../other/panelHelper.php');
-include('../other/occurencesLayer.php');
 session_start();
 $currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
 
-echo startDescriptivePanel($currentGear->name);
-echo descriptionLi($currentGear->description);
+$myPanel = new Panel();
+$myPanel->startDescriptivePanel($currentGear->name);
+$myPanel->addDescription($currentGear->description);
+$myPanel->addArmor($currentGear);
+echo $myPanel->getHtml();
 getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft');
-getADHtml($currentGear);
 echo endPanel();
 ?>

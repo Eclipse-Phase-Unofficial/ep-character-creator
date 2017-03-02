@@ -12,8 +12,10 @@ if($currentTrait == null){
     $currentTrait = $_SESSION['cc']->getTraitByName($_SESSION['currentTraitName']);
 }
 
-echo startDescriptivePanel($currentTrait->name);
-echo descriptionLi($currentTrait->description);
+$myPanel = new Panel();
+$myPanel->startDescriptivePanel($currentTrait->name);
+$myPanel->addDescription($currentTrait->description);
+echo $myPanel->getHtml();
 getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'trait');
 echo endPanel();
 ?>

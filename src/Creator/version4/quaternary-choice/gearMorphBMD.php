@@ -2,9 +2,7 @@
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 require_once '../../../php/EPAtom.php';
 include('../other/bonusMalusLayer.php');
-include('../other/armorDegatsLayer.php');
 require_once('../other/panelHelper.php');
-include('../other/occurencesLayer.php');
 
 session_start();
 
@@ -16,11 +14,12 @@ if($currentGear == null){
     // $hint = "--debug:general";
 }
 
-
-echo startDescriptivePanel($currentGear->name);
-getOccurenceHtml($currentGear,"MORPH");
-echo descriptionLi($currentGear->description);
+$myPanel = new Panel();
+$myPanel->startDescriptivePanel($currentGear->name);
+$myPanel->addBuySell($currentGear,"MORPH");
+$myPanel->addDescription($currentGear->description);
+$myPanel->addArmor($currentGear);
+echo $myPanel->getHtml();
 getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear');
-getADHtml($currentGear);
 echo endPanel();
 ?>
