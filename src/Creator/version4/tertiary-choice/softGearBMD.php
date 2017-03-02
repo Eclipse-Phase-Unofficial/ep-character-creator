@@ -7,7 +7,7 @@ include('../other/occurencesLayer.php');
 session_start();
 $currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
 
-echo startPanel($currentGear->name,"bmdList");
+echo startDescriptivePanel($currentGear->name);
 echo descriptionLi($currentGear->description);
 getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft');
 getADHtml($currentGear);

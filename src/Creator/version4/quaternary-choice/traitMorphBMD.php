@@ -12,7 +12,7 @@ if($currentTrait == null){
     $currentTrait =  $_SESSION['cc']->getTraitByName($_SESSION['currentMorphTraitName']);
 }
 
-echo startPanel($currentTrait->name,"bmdList");
+echo startDescriptivePanel($currentTrait->name);
 echo descriptionLi($currentTrait->description);
 getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'morphTrait');
 echo endPanel();

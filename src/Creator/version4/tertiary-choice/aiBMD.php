@@ -8,7 +8,7 @@ require_once('../other/panelHelper.php');
 session_start();
 $currentAi = $_SESSION['cc']->getAisByName($_SESSION['currentAiName']);
 
-echo startPanel($currentAi->name,"bmdList");
+echo startDescriptivePanel($currentAi->name);
 getOccurenceHtml($currentAi,"AI");
 getAIHtml($currentAi);
 echo descriptionLi($currentAi->description);

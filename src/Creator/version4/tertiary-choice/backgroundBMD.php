@@ -8,7 +8,7 @@ session_start();
 
 $currentBck = $_SESSION['cc']->getCurrentBackground();
 
-echo startPanel($currentBck->name,"bmdList");
+echo startDescriptivePanel($currentBck->name);
 echo descriptionLi($currentBck->description);
 echo getStaticTraitHtml($currentBck->traits);
 getBMHtml($currentBck->bonusMalus,$currentBck->name,'origine');

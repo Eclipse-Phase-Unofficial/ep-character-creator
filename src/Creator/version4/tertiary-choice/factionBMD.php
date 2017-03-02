@@ -8,7 +8,7 @@ session_start();
 
 $currentFaction = $_SESSION['cc']->getCurrentFaction();
 
-echo startPanel($currentFaction->name,"bmdList");
+echo startDescriptivePanel($currentFaction->name);
 echo descriptionLi($currentFaction->description);
 echo getStaticTraitHtml($currentFaction->traits);
 getBMHtml($currentFaction->bonusMalus,$currentFaction->name,'faction');

@@ -8,11 +8,23 @@
 require_once('../other/bookPageLayer.php');
 
 /**
- *  Start a panel (with a title, and a book link).
+ *  Start an empty panel.
+ *
+ * @param $id - The panel's id.
  */
-function startPanel($atomName,$id){
-    $output = "<span class='descriptionTitle'>".$atomName."</span>";
+function startPanel($id){
     $output .= "<ul class='mainlist' id='".$id."'>";
+    return $output;
+}
+
+/**
+ *  Start a panel (with a title, and a book link).
+ *
+ *  @param $id - The item being described
+ */
+function startDescriptivePanel($atomName){
+    $output = "<span class='descriptionTitle'>".$atomName."</span>";
+    $output .= "<ul class='mainlist' id='bmdList'>";
     $output .= getBPHtml($atomName);
     return $output;
 }

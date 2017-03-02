@@ -14,7 +14,7 @@ if($currentMorph == null){
 
 $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
 
-echo startPanel($currentMorph->name,"bmdList");
+echo startDescriptivePanel($currentMorph->name);
 echo descriptionLi($currentMorph->description);
 getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph');
 echo getStaticTraitHtml($traits);

@@ -17,7 +17,7 @@ if($currentGear == null){
 }
 
 
-echo startPanel($currentGear->name,"bmdList");
+echo startDescriptivePanel($currentGear->name);
 getOccurenceHtml($currentGear,"MORPH");
 echo descriptionLi($currentGear->description);
 getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear');
