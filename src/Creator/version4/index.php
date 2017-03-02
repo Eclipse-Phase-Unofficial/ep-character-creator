@@ -66,16 +66,12 @@
     			</ul>
     			</nav>
         	</section>
-        	
-        	<!-- SECONDARY PANNEL - DYNAMIC CONTENT -->
-        	<section id="secondary" class="panel"></section>	
-        	
-        	<!-- TERTIARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="tertiary" class="panel"></section>	
-        	
-        	<!-- QUATERNARY PANNEL - DYNAMIC CONTENT-->
-        	<section id="quaternary" class="panel"></section>	
-        	
+
+            <!-- AJAX Panels-->
+            <section id="secondary" class="panel"></section>
+            <section id="tertiary" class="panel"></section>
+            <section id="quaternary" class="panel"></section>
+
         	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
         	<section class="points">
                 <div id='RZ'>RZ <span id="rez_remain" class="rest"></span>

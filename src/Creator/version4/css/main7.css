@@ -520,21 +520,6 @@ a.active .btnhelp{
     background: rgba(242, 242, 242, .8);
 }
 
-/*remaining points*/
-.points{
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin:0;
-    background-color: rgba(242, 242, 242, .8);
-	width: 120px;
-    border-bottom: 1px solid rgba(148,155,153,.6);
-    border-top: 1px solid rgba(245, 245, 245, .6);
-	font-size:1.25em;
-	color: hsl(200,10%,40%);
-	text-align: justify;
-}
-
 /*messages*/
 #messages{
 	position: absolute;
