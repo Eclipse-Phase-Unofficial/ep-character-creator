@@ -8,12 +8,13 @@ require_once('../../../php/EPBook.php');
  */
 function getBPHtml($atomName){
     $book = new EPBook($atomName);
-    echo "<li class='listSection'>";
-    echo "Find more at";
-    echo "</li>";
-    echo "<li>";
-    echo "<span class='bmDesc'>".$book->getPrintableNameL()."</span>";
-    echo "</li>";
+    $output = "<li class='listSection'>";
+    $output .= "Find more at";
+    $output .= "</li>";
+    $output .= "<li>";
+    $output .= "<span class='bmDesc'>".$book->getPrintableNameL()."</span>";
+    $output .= "</li>";
+    return $output;
 }
 
 /**

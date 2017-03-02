@@ -2,7 +2,7 @@
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 require_once '../../../php/EPAtom.php';
 include('../other/bonusMalusLayer.php');
-include('../other/bookPageLayer.php');
+require_once('../other/panelHelper.php');
 
 session_start();
 
@@ -11,18 +11,9 @@ $currentTrait = getAtomByName($currentMorphTraits,$_SESSION['currentMorphTraitNa
 if($currentTrait == null){
     $currentTrait =  $_SESSION['cc']->getTraitByName($_SESSION['currentMorphTraitName']);
 }
+
+echo startPanel($currentTrait->name,"bmdList");
+echo descriptionLi($currentTrait->description);
+getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'morphTrait');
+echo endPanel();
 ?>
-<label class="descriptionTitle"><?php echo $currentTrait->name; ?></label>
-<ul class="mainlist" id="bmdList">
-	<?php
-		  getBPHtml($currentTrait->name);
-		  
-		  getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'morphTrait');
-		  echo "<li class='listSection'>";
-          echo "Description";
-          echo "</li>"; 
-          echo "<li>";
-          echo "		<label class='bmDesc'>".$currentTrait->description."</label>";
-          echo "</li>";
-	?>
-</ul>

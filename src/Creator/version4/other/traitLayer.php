@@ -3,16 +3,18 @@ require_once('bookPageLayer.php');
 require_once('gearHelper.php');
 
 function getStaticTraitHtml($traits){
+    $output = "";
 //     if(!empty($traits)){
-        echo "<li class='listSection'>";
-        echo "Traits";
-        echo "</li>";
+        $output .= "<li class='listSection'>";
+        $output .= "Traits";
+        $output .= "</li>";
         foreach($traits as $t){
-            echo "<li>";
-            echo "		<label class='bmGranted'>".$t->name."</label>";
-            echo "</li>";
+            $output .= "<li>";
+            $output .= "		<label class='bmGranted'>".$t->name."</label>";
+            $output .= "</li>";
         }
-//         }
+//     }
+    return $output;
 }
 
 function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$iconClass){

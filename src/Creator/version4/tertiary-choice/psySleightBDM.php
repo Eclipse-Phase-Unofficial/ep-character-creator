@@ -1,23 +1,13 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
 include('../other/bonusMalusLayer.php');
-include('../other/bookPageLayer.php');
+require_once('../other/panelHelper.php');
 
 session_start();
+$currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName']);
+
+echo startPanel($currentPsiS->name,"bmdList");
+echo descriptionLi($currentPsiS->description);
+getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi');
+echo endPanel();
 ?>
-<label class="descriptionTitle"><?php echo $_SESSION['currentPsiSName']; ?></label>
-<ul class="mainlist" id="bmdList">
-	<?php
-		  $currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName']);
-		  
-		  getBPHtml($currentPsiS->name);
-		  
-		  getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi');
-		  echo "<li class='listSection'>";
-          echo "Description";
-          echo "</li>"; 
-          echo "<li>";
-          echo "		<label class='bmDesc'>".$currentPsiS->description."</label>";
-          echo "</li>";
-	?>
-</ul>
