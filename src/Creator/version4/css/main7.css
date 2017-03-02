@@ -472,9 +472,7 @@ a.active .btnhelp{
 	border-bottom: 1px solid rgba(148,155,153,.8);
 	padding: 1em;
 	text-transform:none;
-	display: block;
 	line-height:1em;
-	text-align: justify;
 }
 
 .bmMultiSelected{
