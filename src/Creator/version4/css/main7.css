@@ -563,18 +563,6 @@ a.active .btnhelp{
 	color: #000000;
 }
 
-.bmDesc{
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	border-top: 1px solid rgba(245, 245, 245, .8);
-	border-bottom: 1px solid rgba(148,155,153,.8);
-	padding: 1em;
-	text-transform:none;
-	display: block;
-	line-height:1em;
-	text-align: justify;
-}
-
 .bmMultiSelected{
 	color: rgb(186, 0, 80);
     background: rgba(242, 242, 242, .8);
