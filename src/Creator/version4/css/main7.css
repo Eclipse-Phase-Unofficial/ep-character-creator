@@ -544,25 +544,6 @@ a.active .btnhelp{
 	padding-right: 1em;
 }
 
-.bmChoiceInput{
-	font-size: x-small;
-	color: hsl(200,10%,40%);
-	background-color: rgba(242, 242, 242, .8);
-	padding-left: 1em;
-	display: block;
-	line-height:6em;
-	padding-right: 1em;
-}
-
-.bmChoiceInput input{
-	top: 3.5em;
-	left: 1em;
-	height: 1.5em;
-	width: 20em;
-	position: absolute;
-	color: #000000;
-}
-
 .bmMultiSelected{
 	color: rgb(186, 0, 80);
     background: rgba(242, 242, 242, .8);
