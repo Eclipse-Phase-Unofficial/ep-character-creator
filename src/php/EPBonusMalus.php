@@ -155,9 +155,26 @@ class EPBonusMalus extends EPAtom{
      */
     function isMultipleChoice(): bool
     {
-        if($this->targetForChoice == EPBonusMalus::$MULTIPLE){
-            return True;
+        if ($this->targetForChoice == EPBonusMalus::$MULTIPLE) {
+            return true;
         }
-        return False;
+        return false;
+    }
+
+    /**
+     * If this affects a skill.
+     *
+     * It's more convenient than checking directly, since there are multiple BonusMalus skill types.
+     * @return bool
+     */
+    function isSkill()
+    {
+        if ($this->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
+            $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE ||
+            $this->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
+            $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE) {
+            return true;
+        }
+        return false;
     }
 }
