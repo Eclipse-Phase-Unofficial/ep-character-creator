@@ -87,10 +87,11 @@ section.panel {
 	position: relative;
 	float: left;
 	height: 100%;
-	/*background-color: rgba(242, 242, 242, .2);*/
-	overflow: auto;
 	margin-left: 1px;
 	width: 20em;
+	/*background-color: rgba(242, 242, 242, .2);*/
+	overflow: auto;
+	text-transform: uppercase;
 	z-index: 1;
 }
 
@@ -146,22 +147,25 @@ section.panel {
 }
 
 /************SHARED************/
-.panel li{
+/* There's one of each of these per panel */
+.mainlist{
 	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	background-color: rgba(242, 242, 242, .8);
+	line-height:3em;
+}
+
+.mainlist li{
 	padding-left: 1em;
 	margin: 0;
 	position: relative;
-	display: block;
-	line-height:3em;
 	vertical-align: middle;
-	text-decoration: none;
-	text-transform: uppercase;
-	background-color: rgba(242, 242, 242, .8);
 	border-top: 1px solid rgba(245, 245, 245, .8);
 	border-bottom: 1px solid rgba(148,155,153,.8);
 }
 
-.panel li:hover{
+.mainlist li:hover{
 	color: rgb(186, 0, 80);
 	background-color: rgba(254, 254, 254, .85);
 }
@@ -171,15 +175,6 @@ section.panel {
 	color: rgb(186, 0, 80);
 	background-color: rgba(202,194,194,0.61);
 }
-
-.mainlist{
-	padding: 0;
-	margin: 0;
-}
-
-/*.mainlist li{
-	padding-left: 1em;
-}*/
 
 .foldingListSection{
 	font-size: x-small;
