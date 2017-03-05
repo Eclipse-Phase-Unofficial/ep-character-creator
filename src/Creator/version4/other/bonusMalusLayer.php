@@ -1,6 +1,10 @@
 <?php
 require_once '../../../php/EPAtom.php';
 
+
+/**
+ * @param $parentType - Good values are (origine, faction, trait, morph, morphTrait)
+ */
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
 		//GRANTED BM
 		if(grantedExist($bonusMalusArray)){
