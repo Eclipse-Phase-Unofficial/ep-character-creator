@@ -175,4 +175,80 @@ function endPanel(){
     return "</ul>";
 }
 
+/**
+ * Used to generate an li element.
+ *
+ * This element can have plenty of fun extras.  Like a cost, book logo, and add/remove button.
+ */
+class li{
+    private $html;
+    private $id;
+
+    /**
+     * Creat an li element.
+     *
+     * @param $id    - The li's id. (Also displays this to the user)
+     * @param $class - The li's class. (defaults to "")
+     */
+    function __construct($id,$class = ""){
+        $this->id = $id;
+        $this->html  = "<li class='".$class."' id='".$id."'>";
+        $this->html .= $id;
+    }
+
+    /**
+     * Tell the user how much the li costs.
+     *
+     * @param $cost      - The item's cost. (if 0, nothing is displayed)
+     * @param $isDefault - If the item is automatically given to the player. (if true, "(Granted)" is displayed; takes precidence over $isDefault)
+     * @param $units     - What is being charged
+     *
+     * @example $item->addCost(1): Gives "(1 cp)"
+    */
+    function addCost($cost,$isDefault = False, $units = "cp"){
+        $costDisplay = "(".$cost." ".$units.")";
+        if($cost == 0){
+            $costDisplay = "";
+        }
+        if($isDefault){
+            $costDisplay = "(Granted)";
+        }
+        $this->html .=  "<span class='costInfo'>".$costDisplay."</span>";
+    }
+
+    /**
+     * Add a book icon to the li.
+     *
+     * @param $id - The id used to look up what icon to use.
+     */
+    function addBookIcon($id){
+        $this->html .= getListStampHtml($id);
+    }
+
+    /**
+     * Add a plus or checked icon.
+     *
+     * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
+     *
+     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param $isPlus    - Display the plus icon, or the checked icon.
+     */
+     function addPlusChecked($iconClass,$isChecked = False){
+        if($isChecked){
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        }
+        else{
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        }
+     }
+
+    /**
+     * Get the final html of the li.
+     */
+    function getHtml(){
+        return $this->html . "</li>";
+    }
+}
+
+
 ?>

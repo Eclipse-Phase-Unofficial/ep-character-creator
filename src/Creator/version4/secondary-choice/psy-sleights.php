@@ -1,7 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-require_once('../other/bookPageLayer.php');
-require_once('../other/gearHelper.php');
+require_once('../other/panelHelper.php');
 session_start();
 ?>
 <ul class="mainlist" id="psyS">
@@ -56,7 +55,11 @@ session_start();
         function getFormatedPsySleight($list,$currentPsyS){
                 $result = "";
                 foreach($list as $m){
-                    $result .= getFormattedLi($m, 'psyS', 5, false, $m->isInArray($currentPsyS), 'addSelPsySleightIcon');
+                    $li = new li($m->name,'psyS');
+                    $li->addCost(5);
+                    $li->addBookIcon($m->name);
+                    $li->addPlusChecked('addSelPsySleightIcon',$m->isInArray($currentPsyS));
+                    $result .= $li->getHtml();
                 }
                 return $result;
             }

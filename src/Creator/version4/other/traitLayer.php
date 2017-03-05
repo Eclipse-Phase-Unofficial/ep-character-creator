@@ -1,6 +1,5 @@
 <?php
-require_once('bookPageLayer.php');
-require_once('gearHelper.php');
+require_once('panelHelper.php');
 
 function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$iconClass){
     if($currentTraits == null){
@@ -10,7 +9,11 @@ function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$ico
         $defaultTraits = array();
     }
 
-    echo getFormattedLi($trait, $traitClass, $trait->cpCost, $trait->isInArray($defaultTraits), $trait->isInArray($currentTraits), $iconClass);
+    $li = new li($trait->name,$traitClass);
+    $li->addCost($trait->cpCost,$trait->isInArray($defaultTraits));
+    $li->addBookIcon($trait->name);
+    $li->addPlusChecked($iconClass,$trait->isInArray($currentTraits));
+    echo $li->getHtml();
 }
 
 function isTraitLegal($morph,$trait){
