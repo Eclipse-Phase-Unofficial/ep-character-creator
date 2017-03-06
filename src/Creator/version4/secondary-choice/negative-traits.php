@@ -10,7 +10,7 @@ session_start();
          foreach($_SESSION['cc']->getTraits() as $m){
             if($m->isNegative() &&
                $m->isEgo() && $m->cpCost > 0){
-                getDynamicTraitLi($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon');
+                echo getDynamicTraitLi($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon');
             }
          }
     ?>

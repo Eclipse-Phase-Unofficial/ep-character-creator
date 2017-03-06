@@ -13,7 +13,7 @@ function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$ico
     $li->addCost($trait->cpCost,$trait->isInArray($defaultTraits));
     $li->addBookIcon($trait->name);
     $li->addPlusChecked($iconClass,$trait->isInArray($currentTraits));
-    echo $li->getHtml();
+    return $li->getHtml();
 }
 
 function isTraitLegal($morph,$trait){

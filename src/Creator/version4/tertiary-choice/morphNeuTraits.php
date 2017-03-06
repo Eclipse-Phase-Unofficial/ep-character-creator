@@ -14,7 +14,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
             if($m->isMorph()  &&
                isTraitLegal($currentMorph,$m) &&
                $m->cpCost == 0){
-                getDynamicTraitLi($m,$currentTraits,$defaultTraits,'morphNeuTrait','addSelMorphNeuTraitIcon');
+                echo getDynamicTraitLi($m,$currentTraits,$defaultTraits,'morphNeuTrait','addSelMorphNeuTraitIcon');
             }
          }
     ?>
