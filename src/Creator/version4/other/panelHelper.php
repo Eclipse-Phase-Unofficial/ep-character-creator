@@ -242,6 +242,23 @@ class li{
         }
      }
 
+     /**
+     * Add a checked icon, or blank space.
+     *
+     * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
+     *
+     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param $isChecked - Display the checked icon, or a blank space.
+     */
+     function addCheckedBlank($iconClass,$isChecked = False){
+        if($isChecked){
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        }
+        else{
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."'></span>";
+        }
+     }
+
     /**
      * Get the final html of the li.
      */

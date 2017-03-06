@@ -1,6 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-include('../other/bookPageLayer.php');
+require_once('../other/panelHelper.php');
 
 session_start();
 ?>
@@ -10,16 +10,10 @@ session_start();
 
          foreach($_SESSION['cc']->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$ORIGIN){
-                echo "<li class='bck' id='".$m->name."'>";
-                echo "<span>".$m->name."</span>";
-                echo getListStampHtml($m->name);
-                if(isset($currentBck) && $currentBck->name == $m->name){
-                    echo "<span class='addOrSelectedIcon' data-icon='&#x2b;'></span>";
-                }
-                else{
-                    echo "<span class='addOrSelectedIcon'></span>";
-                }
-                echo "</li>";
+                $li = new li($m->name,'bck');
+                $li->addBookIcon($m->name);
+                $li->addCheckedBlank("",isset($currentBck) && $currentBck->name == $m->name);
+                echo $li->getHtml();
             }
          }
     ?>
