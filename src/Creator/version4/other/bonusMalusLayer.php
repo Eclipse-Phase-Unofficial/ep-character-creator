@@ -107,23 +107,21 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
  * Choose which item to print based on the BM type.
  */
 function choosePrintOption($bm,$parentName,$parentType){
+    $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
+    $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
     if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-        $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
-        $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
         printSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills),true);
         return true;
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
-        printSkillOptions($bm,$_SESSION['cc']->character->ego->getActiveSkills());
+        printSkillOptions($bm,$activeSkills);
         return true;
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE){
-        printSkillOptions($bm,$_SESSION['cc']->character->ego->getKnowledgeSkills());
+        printSkillOptions($bm,$knowledgeSkills);
         return true;
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE){
-        $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
-        $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
         printSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills));
         return true;
     }
