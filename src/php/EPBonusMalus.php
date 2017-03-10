@@ -115,5 +115,15 @@ class EPBonusMalus extends EPAtom{
         $this->multi_occurence = $multiOccur; // 1 sur 3 ,...
         $this->selected = false;
     }
+
+    /**
+     * If the BM is granted to the player, or if the player has to make a choice
+     */
+    function isGranted(){
+        if($this->targetForChoice == ""){
+            return True;
+        }
+        return False;
+    }
 }
 ?>

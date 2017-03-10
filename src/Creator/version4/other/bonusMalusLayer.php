@@ -1,5 +1,5 @@
 <?php
-require_once '../../../php/EPAtom.php';
+require_once '../../../php/EPBonusMalus.php';
 
 
 /**
@@ -12,19 +12,16 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 			echo "Granted";
 			echo "</li>";
 			foreach($bonusMalusArray as $bm){
-					if($bm->targetForChoice == ""){
+					if($bm->isGranted()){
+                        echo "<li>";
 						if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
-							echo "<li>";
 							echo "		<label class='bmGranted'>".$bm->name."</label>";
 							echo "		<label class='bmGrantedDesc'>".$bm->description."</label>";
-							echo "</li>";
-
 						}
 						else{
-								echo "<li>";
 								echo "		<label class='bmGranted'>".$bm->name."</label>";
-								echo "</li>";
 						}
+                        echo "</li>";
 					}
 			}
 		}
@@ -34,7 +31,7 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 			echo "Define";
 			echo "</li>";
 			foreach($bonusMalusArray as $bm){
-					if($bm->targetForChoice != ""){
+					if(!$bm->isGranted()){
 						choosePrintOption($bm,$parentName,$parentType);
 						if($bm->targetForChoice == EPBonusMalus::$MULTIPLE){
 							echo "<li class='listSection'>";
@@ -227,13 +224,13 @@ function printReputationOptions($bm){
 
 function grantedExist($bmArray){
 		foreach($bmArray as $bm){
-			if($bm->targetForChoice == "") return true;
+			if($bm->isGranted()) return true;
 		}
 		return false;
 }
 function choiceExist($bmArray){
 	foreach($bmArray as $bm){
-		if($bm->targetForChoice != "") return true;
+		if(!$bm->isGranted()) return true;
 	}
 	return false;
 }
