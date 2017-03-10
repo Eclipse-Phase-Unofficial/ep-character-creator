@@ -2691,6 +2691,20 @@ class EPCharacterCreator {
     function getPsySleightsByName($name){
         return getAtomByName($this->psySleights,$name);
     }
+
+    /**
+     * Thousand plus line function for applying bonusMalus to everything!
+     *
+     * @param bm        - The bonusMalus in question.
+     * @param source    - Where the bonusMalus is coming from.
+     *                      Acceptable values are:
+     *                          EPBonusMalus::$FROM_MORPH
+     *                          EPBonusMalus::$FROM_TRAIT
+     *                          EPBonusMalus::$FROM_FACTION
+     *                          EPBonusMalus::$FROM_BACKGROUND
+     *                          EPBonusMalus::$FROM_SOFTGEAR
+     *                          EPBonusMalus::$FROM_PSY
+     */
     private function applyBonusMalus($bm,$source){
         switch ($bm->bonusMalusType) {
             case EPBonusMalus::$ON_SPECIAL_01: // Special for Feeble negative trait
