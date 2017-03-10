@@ -14,14 +14,11 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
         foreach($bonusMalusArray as $bm){
             if($bm->isGranted()){
                 echo "<li>";
+                echo "<label class='bmGranted'>".$bm->name."</label>";
                 if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
-                    echo "<label class='bmGranted'>".$bm->name."</label>";
                     echo "<label class='bmGrantedDesc'>".$bm->description."</label>";
                 }
-                else{
-                    echo "<label class='bmGranted'>".$bm->name."</label>";
-                }
-                    echo "</li>";
+                echo "</li>";
             }
         }
     }
@@ -32,10 +29,12 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
         echo "</li>";
         foreach($bonusMalusArray as $bm){
             if($bm->isChoice()){
+                echo "<li><label class='bmChoiceInput'>";
                 choosePrintOption($bm,$parentName,$parentType);
                 echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
                 echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
                 echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
+                echo "</label></li>";
             }
         }
     }
@@ -76,20 +75,25 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
             //If there are still selections remaining
             else{
                 foreach($bm->bonusMalusTypes as $bmMulti){
-                    if(!choosePrintOption($bmMulti,$parentName,$parentType)){
-                        echo "<li>";
+                    echo "<li>";
+                    if(!$bmMulti->isChoice()){
                         echo "<label class='bmGranted'>".$bmMulti->name."</label>";
-                        echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
                         if($bmMulti->selected){
                             echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
                         }
                         else{
                             echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
                         }
-                        echo "</li>";
+                        echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
+                    }
+                    else{
+                        echo "<label class='bmChoiceInput'>";
+                        choosePrintOption($bmMulti,$parentName,$parentType);
+                        echo "</label>";
                     }
                     echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
                     echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                    echo "</li>";
                 }
             }
             echo "<li>";
@@ -145,7 +149,6 @@ function printSkillOptions($bm, $skill_list, $prefix_skill=false){
 		$skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
 	}
 
-	echo "<li><label class='bmChoiceInput'>";
 	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
 		echo $bm->name;
 		if(!empty($skill_list)){
@@ -166,7 +169,6 @@ function printSkillOptions($bm, $skill_list, $prefix_skill=false){
 		echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
 	}
-	echo "</label></li>";
 	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
 }
 
@@ -174,7 +176,6 @@ function printSkillOptions($bm, $skill_list, $prefix_skill=false){
  * Print out the options to select/deselect an aptitude
  */
 function printAptitudeOptions($bm,$parentName,$parentType){
-	echo "<li><label class='bmChoiceInput'>";
 	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
 		echo $bm->name;
 		echo "<select id='".$bm->getUid()."Sel'>";
@@ -202,7 +203,6 @@ function printAptitudeOptions($bm,$parentName,$parentType){
 		echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
 	}
-	echo "</label></li>";
 	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_APTITUDE."'>";
 }
 
@@ -210,7 +210,6 @@ function printAptitudeOptions($bm,$parentName,$parentType){
  * Print out the options to select/deselect a reputation
  */
 function printReputationOptions($bm){
-	echo "<li><label class='bmChoiceInput'>";
 	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
 		echo $bm->name;
 		echo "<select id='".$bm->getUid()."Sel'>";
@@ -225,7 +224,6 @@ function printReputationOptions($bm){
 		echo "+".$bm->value." on ".$bm->forTargetNamed;
 		echo "<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 	}
-	echo "</label></li>";
 	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_REPUTATION."'>";
 }
 
