@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#Build PHP Documentation
-apigen generate -s src -d Documentation/api
+#Build PHP Documentation (excluding the fpdf module)
+apigen generate -s src -d Documentation/api --exclude Creator/version4/exporter/fpdf/
 
 # Check for syntax errrors in all php documents
 for i in `find ./src -iname '*.php'`;
