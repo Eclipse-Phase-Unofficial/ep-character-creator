@@ -34,7 +34,7 @@ $myPanel->startDescriptivePanel($currentMorph->name);
 $myPanel->addDescription($currentMorph->description);
 $myPanel->addTraits($traits);
 $myPanel->addRawHtml( getImplantHtml($currentMorph->gears) );
+$myPanel->addRawHtml( getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph') );
 echo $myPanel->getHtml();
-getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph');
 echo endPanel();
 ?>

@@ -3,108 +3,115 @@ require_once '../../../php/EPBonusMalus.php';
 
 
 /**
+ * Get the section handling Bonuses / Detriments.
+ *
  * @param $parentType - Good values are (origine, faction, trait, morph, morphTrait)
+ *
+ * @returns The HTML of multiple \<li>s
  */
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
+    $output = "";
+
     //GRANTED BM
     if(grantedExist($bonusMalusArray)){
-        echo "<li class='listSection' id='bm_granted'>";
-        echo "Bonuses / Detriments Granted";
-        echo "</li>";
+        $output .= "<li class='listSection' id='bm_granted'>";
+        $output .= "Bonuses / Detriments Granted";
+        $output .= "</li>";
         foreach($bonusMalusArray as $bm){
             if($bm->isGranted()){
-                echo "<li>";
-                echo "<label class='bmGranted'>".$bm->name."</label>";
+                $output .= "<li>";
+                $output .= "<label class='bmGranted'>".$bm->name."</label>";
                 if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
-                    echo "<label class='bmGrantedDesc'>".$bm->description."</label>";
+                    $output .= "<label class='bmGrantedDesc'>".$bm->description."</label>";
                 }
-                echo "</li>";
+                $output .= "</li>";
             }
         }
     }
     //CHOICE BM
     if(choiceExist($bonusMalusArray)){
-        echo "<li class='listSection'>";
-        echo "Bonuses / Detriments Requiring Selection";
-        echo "</li>";
+        $output .= "<li class='listSection'>";
+        $output .= "Bonuses / Detriments Requiring Selection";
+        $output .= "</li>";
         foreach($bonusMalusArray as $bm){
             if($bm->isChoice()){
-                echo "<li><label class='bmChoiceInput'>";
-                choosePrintOption($bm,$parentName,$parentType);
-                echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
-                echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
-                echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
-                echo "</label></li>";
+                $output .= "<li><label class='bmChoiceInput'>";
+                $output .= choosePrintOption($bm,$parentName,$parentType);
+                $output .= "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
+                $output .= "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
+                $output .= "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
+                $output .= "</label></li>";
             }
         }
     }
     //Multiple Choice BM
     foreach($bonusMalusArray as $bm){
         if($bm->isMultipleChoice()){
-            echo "<li class='listSection'>";
-            echo "Choose <span class='betweenPlusMinus'>".getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
-            echo "</li>";
+            $output .= "<li class='listSection'>";
+            $output .= "Choose <span class='betweenPlusMinus'>".getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
+            $output .= "</li>";
             // If all the selections are made, only print out the selected BMs
             if(getSelectedOnMulti($bm) == $bm->multi_occurence){
                 foreach($bm->bonusMalusTypes as $bmMulti){
                     if($bmMulti->selected){
-                        echo "<li><label class='bmChoiceInput'>";
+                        $output .= "<li><label class='bmChoiceInput'>";
                         if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
                             $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
                             $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
                             $skill = getAtomByUid(array_merge($activeSkills,$knowledgeSkills),$bmMulti->forTargetNamed);
-                            echo "+".$bmMulti->value." ".$skill->getPrintableName();
+                            $output .= "+".$bmMulti->value." ".$skill->getPrintableName();
                         }
                         else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-                            echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
+                            $output .= "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
                         }
                         else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-                            echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
+                            $output .= "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
                         }
                         else{
-                            echo $bmMulti->name;
+                            $output .= $bmMulti->name;
                         }
-                        echo "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-                        echo "</label>";
-                        echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
-                        echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
-                        echo "</li>";
+                        $output .= "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
+                        $output .= "</label>";
+                        $output .= "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+                        $output .= "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                        $output .= "</li>";
                     }
                 }
             }
             //If there are still selections remaining
             else{
                 foreach($bm->bonusMalusTypes as $bmMulti){
-                    echo "<li>";
+                    $output .= "<li>";
                     if(!$bmMulti->isChoice()){
-                        echo "<label class='bmGranted'>".$bmMulti->name."</label>";
+                        $output .= "<label class='bmGranted'>".$bmMulti->name."</label>";
                         if($bmMulti->selected){
-                            echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
+                            $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
                         }
                         else{
-                            echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
+                            $output .= "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
                         }
-                        echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
+                        $output .= "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
                     }
                     else{
-                        echo "<label class='bmChoiceInput'>";
-                        choosePrintOption($bmMulti,$parentName,$parentType);
-                        echo "</label>";
+                        $output .= "<label class='bmChoiceInput'>";
+                        $output .= choosePrintOption($bmMulti,$parentName,$parentType);
+                        $output .= "</label>";
                     }
-                    echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
-                    echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
-                    echo "</li>";
+                    $output .= "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+                    $output .= "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                    $output .= "</li>";
                 }
             }
-            echo "<li>";
-            echo "		<label class='listSectionClose'>-</label>";
-            echo "</li>";
-            echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$MULTIPLE."'>";
-            echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
-            echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
-            echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
+            $output .= "<li>";
+            $output .= "		<label class='listSectionClose'>-</label>";
+            $output .= "</li>";
+            $output .= "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$MULTIPLE."'>";
+            $output .= "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
+            $output .= "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
+            $output .= "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
         }
     }
+    return $output;
 }
 
 /**
@@ -114,117 +121,121 @@ function choosePrintOption($bm,$parentName,$parentType){
     $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
     $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
     if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-        printSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills),true);
-        return true;
+        return getSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills),true);
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE){
-        printSkillOptions($bm,$activeSkills);
-        return true;
+        return getSkillOptions($bm,$activeSkills);
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE){
-        printSkillOptions($bm,$knowledgeSkills);
-        return true;
+        return getSkillOptions($bm,$knowledgeSkills);
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE){
-        printSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills));
-        return true;
+        return getSkillOptions($bm,array_merge($activeSkills,$knowledgeSkills));
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-        printAptitudeOptions($bm,$parentName,$parentType);
-        return true;
+        return getAptitudeOptions($bm,$parentName,$parentType);
     }
     else if($bm->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-        printReputationOptions($bm);
-        return true;
+        return getReputationOptions($bm);
     }
-    return false;
+    error_log("choosePrintOption:  $bm->targetForChoice (".$bm->targetForChoice.") is unkown!");
+    return    "choosePrintOption:  $bm->targetForChoice (".$bm->targetForChoice.") is unkown!";
 }
 
 /**
- * Print out the options to select/deselect a skill
+ * Get the options to select/deselect a skill
  */
-function printSkillOptions($bm, $skill_list, $prefix_skill=false){
-	//Handle Prefix only skill selection
-	if( $prefix_skill == true && !empty($bm->typeTarget)){
-		$skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
-	}
+function getSkillOptions($bm, $skill_list, $prefix_skill=false){
+    //Handle Prefix only skill selection
+    if( $prefix_skill == true && !empty($bm->typeTarget)){
+        $skill_list = skillsWithPrefix($skill_list,$bm->typeTarget);
+    }
 
-	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-		echo $bm->name;
-		if(!empty($skill_list)){
-			echo "<select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
-			foreach($skill_list as $skill){
-				echo "<option value='".$skill->getUid()."'>".$skill->getPrintableName()."</option>";
-			}
-			echo "</select>";
-			echo "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-		}
-		else{
-			echo "Please create an appropriate skill.";
-		}
-	}else{
+    $output = "";
+
+    if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+        $output .= $bm->name;
+        if(!empty($skill_list)){
+            $output .= "<select class='bmChoiceSelect' id='".$bm->getUid()."Sel'>";
+            foreach($skill_list as $skill){
+                $output .= "<option value='".$skill->getUid()."'>".$skill->getPrintableName()."</option>";
+            }
+            $output .= "</select>";
+            $output .= "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+        }
+        else{
+            $output .= "Please create an appropriate skill.";
+        }
+    }else{
         //If a skill has already been selected, display the deselect option
-		$skill = getAtomByUid($skill_list,$bm->forTargetNamed);
-		echo "+".$bm->value." ".$skill->getPrintableName();
-		echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+        $skill = getAtomByUid($skill_list,$bm->forTargetNamed);
+        $output .= "+".$bm->value." ".$skill->getPrintableName();
+        $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
-	}
-	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+    }
+    $output .= "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_SKILL."'>";
+    return $output;
 }
 
 /**
- * Print out the options to select/deselect an aptitude
+ * Get the options to select/deselect an aptitude
  */
-function printAptitudeOptions($bm,$parentName,$parentType){
-	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-		echo $bm->name;
-		echo "<select id='".$bm->getUid()."Sel'>";
-		if($parentType == 'morph'){
-			$morph = $_SESSION['cc']->getMorphByName($parentName);
-			if(!empty($morph)){
-				$banedAptNameList = $_SESSION['cc']->getMorphGrantedBMApptitudesNameList($morph);
-				foreach($_SESSION['cc']->getAptitudes() as $apt){
-					if(!isNameOnList($apt->name, $banedAptNameList)){
-						echo "<option value='".$apt->name."'>".$apt->name."</option>";
-					}
-				}
-			}
-		}
-		else{
-			foreach($_SESSION['cc']->getAptitudes() as $apt){
-				echo "<option value='".$apt->name."'>".$apt->name."</option>";
-			}
-		}
-		echo "</select>";
-		echo "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-	}else{
+function getAptitudeOptions($bm,$parentName,$parentType){
+    $output = "";
+
+    if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+        $output .= $bm->name;
+        $output .= "<select id='".$bm->getUid()."Sel'>";
+        if($parentType == 'morph'){
+            $morph = $_SESSION['cc']->getMorphByName($parentName);
+            if(!empty($morph)){
+                $banedAptNameList = $_SESSION['cc']->getMorphGrantedBMApptitudesNameList($morph);
+                foreach($_SESSION['cc']->getAptitudes() as $apt){
+                    if(!isNameOnList($apt->name, $banedAptNameList)){
+                        $output .= "<option value='".$apt->name."'>".$apt->name."</option>";
+                    }
+                }
+            }
+        }
+        else{
+            foreach($_SESSION['cc']->getAptitudes() as $apt){
+                $output .= "<option value='".$apt->name."'>".$apt->name."</option>";
+            }
+        }
+        $output .= "</select>";
+        $output .= "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+    }else{
         //If an aptitude has already been selected, display the deselect option
-		echo "+".$bm->value." on ".$bm->forTargetNamed;
-		echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+        $output .= "+".$bm->value." on ".$bm->forTargetNamed;
+        $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
 
-	}
-	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_APTITUDE."'>";
+    }
+    $output .= "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_APTITUDE."'>";
+    return $output;
 }
 
 /**
- * Print out the options to select/deselect a reputation
+ * Get the options to select/deselect a reputation
  */
-function printReputationOptions($bm){
-	if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
-		echo $bm->name;
-		echo "<select id='".$bm->getUid()."Sel'>";
-		foreach($_SESSION['cc']->getReputations() as $apt){
-			echo "<option value='".$apt->name."'>".$apt->name."</option>";
-		}
-		echo "</select>";
-		echo "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
-	}
-	else{
+function getReputationOptions($bm){
+    $output = "";
+
+    if($bm->forTargetNamed == null || $bm->forTargetNamed == ""){
+        $output .= $bm->name;
+        $output .= "<select id='".$bm->getUid()."Sel'>";
+        foreach($_SESSION['cc']->getReputations() as $apt){
+            $output .= "<option value='".$apt->name."'>".$apt->name."</option>";
+        }
+        $output .= "</select>";
+        $output .= "<span class='iconPlusMinus iconebmChoice'  id='".$bm->getUid()."' data-icon='&#x3a;'></span>";
+    }
+    else{
         //If a reputation has already been selected, display the deselect option
-		echo "+".$bm->value." on ".$bm->forTargetNamed;
-		echo "<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
-	}
-	echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_REPUTATION."'>";
+        $output .= "+".$bm->value." on ".$bm->forTargetNamed;
+        $output .= "<span class='iconebmRemChoice'  id='".$bm->getUid()."' data-icon='&#x39;'></span>";
+    }
+    $output .= "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$ON_REPUTATION."'>";
+    return $output;
 }
 
 function grantedExist($bmArray){

@@ -11,7 +11,7 @@ $myPanel->startDescriptivePanel($currentAi->name);
 $myPanel->addBuySell($currentAi,"AI");
 $myPanel->addDescription($currentAi->description);
 $myPanel->addAi($currentAi);
+$myPanel->addRawHtml( getBMHtml($currentAi->bonusMalus,$currentAi->name,'ai') ); // 'ai' is not a valid value, so any choose options WILL FAIL
 echo $myPanel->getHtml();
-getBMHtml($currentAi->bonusMalus,$currentAi->name,'ai'); // 'ai' is not a valid value, so any choose options WILL FAIL
 echo endPanel();
 ?>

@@ -15,7 +15,7 @@ if($currentTrait == null){
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentTrait->name);
 $myPanel->addDescription($currentTrait->description);
+$myPanel->addRawHtml( getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'trait') );
 echo $myPanel->getHtml();
-getBMHtml($currentTrait->bonusMalus,$currentTrait->name,'trait');
 echo endPanel();
 ?>

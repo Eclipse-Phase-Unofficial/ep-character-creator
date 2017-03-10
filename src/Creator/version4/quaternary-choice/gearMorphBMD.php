@@ -19,7 +19,7 @@ $myPanel->startDescriptivePanel($currentGear->name);
 $myPanel->addBuySell($currentGear,"MORPH");
 $myPanel->addDescription($currentGear->description);
 $myPanel->addArmor($currentGear);
+$myPanel->addRawHtml( getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear') );
 echo $myPanel->getHtml();
-getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear');
 echo endPanel();
 ?>

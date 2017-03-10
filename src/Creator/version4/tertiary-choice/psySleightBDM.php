@@ -9,7 +9,7 @@ $currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName'
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentPsiS->name);
 $myPanel->addDescription($currentPsiS->description);
+$myPanel->addRawHtml( getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi') );
 echo $myPanel->getHtml();
-getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi');
 echo endPanel();
 ?>

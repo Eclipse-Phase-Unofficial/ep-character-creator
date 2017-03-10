@@ -9,7 +9,7 @@ $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentGear->name);
 $myPanel->addDescription($currentGear->description);
 $myPanel->addArmor($currentGear);
+$myPanel->addRawHtml( getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft') );
 echo $myPanel->getHtml();
-getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft');
 echo endPanel();
 ?>
