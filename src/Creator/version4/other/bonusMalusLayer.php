@@ -6,38 +6,47 @@ require_once '../../../php/EPBonusMalus.php';
  * @param $parentType - Good values are (origine, faction, trait, morph, morphTrait)
  */
 function getBMHtml($bonusMalusArray,$parentName,$parentType){
-		//GRANTED BM
-		if(grantedExist($bonusMalusArray)){
-			echo "<li class='listSection'>";
-			echo "Granted";
-			echo "</li>";
-			foreach($bonusMalusArray as $bm){
-					if($bm->isGranted()){
-                        echo "<li>";
-						if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
-							echo "		<label class='bmGranted'>".$bm->name."</label>";
-							echo "		<label class='bmGrantedDesc'>".$bm->description."</label>";
-						}
-						else{
-								echo "		<label class='bmGranted'>".$bm->name."</label>";
-						}
-                        echo "</li>";
-					}
-			}
-		}
-		if(choiceExist($bonusMalusArray)){
-			//CHOICE BM
-			echo "<li class='listSection'>";
-			echo "Define";
-			echo "</li>";
-			foreach($bonusMalusArray as $bm){
-					if(!$bm->isGranted()){
-						choosePrintOption($bm,$parentName,$parentType);
-						if($bm->targetForChoice == EPBonusMalus::$MULTIPLE){
-							echo "<li class='listSection'>";
-							echo "Choose <span class='betweenPlusMinus'>".$_SESSION['cc']->getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
-							echo "</li>";
-							if($_SESSION['cc']->getSelectedOnMulti($bm) == $bm->multi_occurence){
+    //GRANTED BM
+    if(grantedExist($bonusMalusArray)){
+        echo "<li class='listSection' id='bm_granted'>";
+        echo "Bonuses / Detriments Granted";
+        echo "</li>";
+        foreach($bonusMalusArray as $bm){
+            if($bm->isGranted()){
+                echo "<li>";
+                if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
+                    echo "<label class='bmGranted'>".$bm->name."</label>";
+                    echo "<label class='bmGrantedDesc'>".$bm->description."</label>";
+                }
+                else{
+                    echo "<label class='bmGranted'>".$bm->name."</label>";
+                }
+                    echo "</li>";
+            }
+        }
+    }
+    //CHOICE BM
+    if(choiceExist($bonusMalusArray)){
+        echo "<li class='listSection'>";
+        echo "Bonuses / Detriments Requiring Selection";
+        echo "</li>";
+        foreach($bonusMalusArray as $bm){
+            if($bm->isChoice()){
+                choosePrintOption($bm,$parentName,$parentType);
+                echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
+                echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
+                echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
+            }
+        }
+    }
+    //Multiple Choice BM
+    foreach($bonusMalusArray as $bm){
+        if($bm->isMultipleChoice()){
+            echo "<li class='listSection'>";
+            echo "Choose <span class='betweenPlusMinus'>".getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
+            echo "</li>";
+            // If all the selections are made
+            if(getSelectedOnMulti($bm) == $bm->multi_occurence){
 								foreach($bm->bonusMalusTypes as $bmMulti){
 									if($bmMulti->selected){
 										echo "<li><label class='bmChoiceInput'>";
@@ -59,8 +68,9 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 									echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
 									echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
 								}
-							}
-							else{
+            }
+            //If there are still selections remaining
+            else{
 								foreach($bm->bonusMalusTypes as $bmMulti){
 									if(!choosePrintOption($bmMulti,$parentName,$parentType)){
 										echo "<li>";
@@ -78,20 +88,16 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 
 									echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
 								}
-							}
-							echo "<li>";
-							echo "		<label class='listSectionClose'>-</label>";
-							echo "</li>";
-							echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$MULTIPLE."'>";
-						}
-						echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
-						echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
-						echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
-
-					}
-			}
-
-		}
+            }
+            echo "<li>";
+            echo "		<label class='listSectionClose'>-</label>";
+            echo "</li>";
+            echo "<input id='".$bm->getUid()."Case' type='hidden' value='".EPBonusMalus::$MULTIPLE."'>";
+            echo "<input id='".$bm->getUid()."Parent' type='hidden' value='".$parentName."'>";
+            echo "<input id='".$bm->getUid()."Type' type='hidden' value='".$parentType."'>";
+            echo "<input id='".$bm->getUid()."BmName' type='hidden' value='".$bm->name."'>";
+        }
+    }
 }
 
 /**
@@ -230,7 +236,7 @@ function grantedExist($bmArray){
 }
 function choiceExist($bmArray){
 	foreach($bmArray as $bm){
-		if(!$bm->isGranted()) return true;
+		if($bm->isChoice()) return true;
 	}
 	return false;
 }
@@ -251,5 +257,15 @@ function isNameOnList($name,$list){
 		if($name == $s) return true;
 	}
 	return false;
+}
+
+function getSelectedOnMulti($bmMulti){
+    $count = 0;
+    foreach($bmMulti->bonusMalusTypes as $bm){
+        if($bm->selected){
+            $count++;
+        }
+    }
+    return $count;
 }
 ?>

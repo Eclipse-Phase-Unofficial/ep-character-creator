@@ -117,10 +117,35 @@ class EPBonusMalus extends EPAtom{
     }
 
     /**
-     * If the BM is granted to the player, or if the player has to make a choice
+     * If the BM is granted to the player.
      */
     function isGranted(){
         if($this->targetForChoice == ""){
+            return True;
+        }
+        return False;
+    }
+
+    /**
+     * If the BM requires the player to make a *single* choice.
+     */
+    function isChoice(){
+        if($this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE ||
+           $this->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
+           $this->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
+           $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE ||
+           $this->targetForChoice == EPBonusMalus::$ON_REPUTATION ||
+           $this->targetForChoice == EPBonusMalus::$ON_APTITUDE){
+            return True;
+        }
+        return False;
+    }
+
+    /**
+     * If the BM requires the player to choose between several sub BMs
+     */
+    function isMultipleChoice(){
+        if($this->targetForChoice == EPBonusMalus::$MULTIPLE){
             return True;
         }
         return False;

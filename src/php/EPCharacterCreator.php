@@ -3909,15 +3909,6 @@ class EPCharacterCreator {
 		 }
 		 return $wLastWord;
 	}
-	function getSelectedOnMulti($bmMulti){
-		$count = 0;
-		foreach($bmMulti->bonusMalusTypes as $bm){
-			if($bm->selected){
-				$count++;
-			}
-		}
-		return $count;
-	}
 	
 	function getMorphGrantedBMApptitudesNameList($morph){
 		$aptNameList = array();
