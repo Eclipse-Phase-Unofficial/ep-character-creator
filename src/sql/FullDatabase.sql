@@ -2719,7 +2719,7 @@ INSERT INTO "bonusMalus" VALUES('+1 Speed','give +1 to speed stat','OSA','Speed'
 INSERT INTO "bonusMalus" VALUES('+10  Academics [Field]','get a +10 on a Academics field','OS','',10.0,'SWP','Academics','false','0');
 INSERT INTO "bonusMalus" VALUES('+10  Art [Field]','get a +10 on a Art field','OS','',10.0,'SWP','Art','false','0');
 INSERT INTO "bonusMalus" VALUES('+10  Hardware [Field]','get a +10 on a Hardware field','OS','',10.0,'SWP','Hardware','false','0');
-INSERT INTO "bonusMalus" VALUES('+10 2 Networking Skill','get a +10 on 2 Networking Skill of your choice','MUL','',0.0,'','','false','2');
+INSERT INTO "bonusMalus" VALUES('+10 2 Networking Skill','get a +10 on 2 Networking Skill of your choice','MUL','',0.0,'MUL','','false','2');
 INSERT INTO "bonusMalus" VALUES('+10 2 Technical / Academic ','+10 to two Technical or Academic skills of your choice','MUL','',0.0,'MUL','','false','2');
 INSERT INTO "bonusMalus" VALUES('+10 2 weapon skill','+10 to two weapon skills of your choice','MUL','',0.0,'MUL','','false','2');
 INSERT INTO "bonusMalus" VALUES('+10 Animal Handling skill','get a +10 bonus on Animal Handling skill','OS','Animal Handling',10.0,'','','false','0');
@@ -2827,7 +2827,7 @@ INSERT INTO "bonusMalus" VALUES('+20 Networking: Media skill','get a +20 to the 
 INSERT INTO "bonusMalus" VALUES('+20 Networking: Scientists skill','get a +20 to the Networking: Scientists skill','OS','Scientists',20.0,'','Networking','false','0');
 INSERT INTO "bonusMalus" VALUES('+20 on flexibility tests','+20 modifier to escaping from bonds, fitting into narrow confines, and other acts relying on contortion or flexibility','DO','',0.0,'','','false','0');
 INSERT INTO "bonusMalus" VALUES('+20 on one Exotic Skill','+20 to one Exotic Melee: [Field] or Exotic Ranged','OA','',0.0,'','','false','1');
-INSERT INTO "bonusMalus" VALUES('+20 one Combat Skill','get a +20 on one combat skill of your choice','MUL','',0.0,'','','false','1');
+INSERT INTO "bonusMalus" VALUES('+20 one Combat Skill','get a +20 on one combat skill of your choice','MUL','',0.0,'MUL','','false','1');
 INSERT INTO "bonusMalus" VALUES('+20 Pilot: Aircraft skill','get a +20 to the Pilot: Aircraft skill','OS','Aircraft',20.0,'','Pilot','false','0');
 INSERT INTO "bonusMalus" VALUES('+20 Pilot: Spacecraft skill','get a +20 on your Pilot: Spacecraft skill','OS','Spacecraft',20.0,'','Pilot','false','0');
 INSERT INTO "bonusMalus" VALUES('+20 Profession : Mining','get a +20 on Profession : Mining skill','OS','Mining',20.0,'','','false','0');
