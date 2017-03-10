@@ -66,31 +66,31 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
                             echo $bmMulti->name;
                         }
                         echo "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-                        echo "</label></li>";
+                        echo "</label>";
                         echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
                         echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                        echo "</li>";
                     }
                 }
             }
             //If there are still selections remaining
             else{
-								foreach($bm->bonusMalusTypes as $bmMulti){
-									if(!choosePrintOption($bmMulti,$parentName,$parentType)){
-										echo "<li>";
-										echo "<label class='bmGranted'>".$bmMulti->name."</label>";
-										echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
-										if($bmMulti->selected){
-											echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-										}
-										else{
-											echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
-										}
-										echo "</li>";
-										echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
-									}
-
-									echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
-								}
+                foreach($bm->bonusMalusTypes as $bmMulti){
+                    if(!choosePrintOption($bmMulti,$parentName,$parentType)){
+                        echo "<li>";
+                        echo "<label class='bmGranted'>".$bmMulti->name."</label>";
+                        echo "<input id='".$bmMulti->getUid()."Sel' type='hidden' value='".$bmMulti->forTargetNamed."'>";
+                        if($bmMulti->selected){
+                            echo "<span class='iconPlusMinus iconebmRemChoice'  id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
+                        }
+                        else{
+                            echo "<span class='iconPlusMinus iconebmChoice'  id='".$bmMulti->getUid()."' data-icon='&#x3a;'></span>";
+                        }
+                        echo "</li>";
+                    }
+                    echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+                    echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                }
             }
             echo "<li>";
             echo "		<label class='listSectionClose'>-</label>";
