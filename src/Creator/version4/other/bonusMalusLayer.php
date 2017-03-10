@@ -45,29 +45,32 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
             echo "<li class='listSection'>";
             echo "Choose <span class='betweenPlusMinus'>".getSelectedOnMulti($bm)." / ".$bm->multi_occurence."</span>";
             echo "</li>";
-            // If all the selections are made
+            // If all the selections are made, only print out the selected BMs
             if(getSelectedOnMulti($bm) == $bm->multi_occurence){
-								foreach($bm->bonusMalusTypes as $bmMulti){
-									if($bmMulti->selected){
-										echo "<li><label class='bmChoiceInput'>";
-										if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
-											echo "+".$bmMulti->value." ".$bmMulti->typeTarget." : ".$bmMulti->forTargetNamed;
-										}
-										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-											echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
-										}
-										else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
-											echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
-										}
-										else{
-											echo $bmMulti->name;
-										}
-										echo "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
-										echo "</label></li>";
-									}
-									echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
-									echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
-								}
+                foreach($bm->bonusMalusTypes as $bmMulti){
+                    if($bmMulti->selected){
+                        echo "<li><label class='bmChoiceInput'>";
+                        if($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX){
+                            $activeSkills = $_SESSION['cc']->character->ego->getActiveSkills();
+                            $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
+                            $skill = getAtomByUid(array_merge($activeSkills,$knowledgeSkills),$bmMulti->forTargetNamed);
+                            echo "+".$bmMulti->value." ".$skill->getPrintableName();
+                        }
+                        else if($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE){
+                            echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
+                        }
+                        else if($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION){
+                            echo "+".$bmMulti->value." on ".$bmMulti->forTargetNamed;
+                        }
+                        else{
+                            echo $bmMulti->name;
+                        }
+                        echo "<span class='iconPlusMinus iconebmRemChoice' id='".$bmMulti->getUid()."' data-icon='&#x39;'></span>";
+                        echo "</label></li>";
+                        echo "<input id='".$bmMulti->getUid()."MultiName' type='hidden' value='".$bmMulti->name."'>";
+                        echo "<input id='".$bmMulti->getUid()."ParentId' type='hidden' value='".$bm->getUid()."'>";
+                    }
+                }
             }
             //If there are still selections remaining
             else{
