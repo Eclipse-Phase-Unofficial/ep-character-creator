@@ -14,13 +14,13 @@ function getBMHtml($bonusMalusArray,$parentName,$parentType){
 
     //GRANTED BM
     if(grantedExist($bonusMalusArray)){
-        $output .= "<li class='listSection' id='bm_granted'>";
+        $output .= "<li class='listSection'>";
         $output .= "Bonuses / Detriments Granted";
         $output .= "</li>";
         foreach($bonusMalusArray as $bm){
             if($bm->isGranted()){
-                $output .= "<li>";
-                $output .= "<label class='bmGranted'>".$bm->name."</label>";
+                $output .= "<li class='bmDesc'>";
+                $output .= $bm->name;
                 if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
                     $output .= "<label class='bmGrantedDesc'>".$bm->description."</label>";
                 }
