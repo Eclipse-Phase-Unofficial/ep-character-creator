@@ -66,49 +66,47 @@ $provider = new EPListProvider('../../../php/config.ini');
 
 //if a file to load LOAD FILE
 if (isset($_POST['load_char'])) {
-    if(isset($_SESSION['fileToLoad'])){
-        $saveFile = json_decode($_SESSION['fileToLoad'],true);
-
-        if (!empty($saveFile['versionNumber']) && floatval($saveFile['versionNumber']) >= $_SESSION['cc']->configValues->getValue('GeneralValues','versionNumberMin')){
-            $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
-            $_SESSION['cc']->back = new EPCharacterCreator("../../../php/config.ini");
-
-            $_SESSION['cc']->loadSavePack($saveFile);
-            $_SESSION['cc']->back->loadSavePack($saveFile);
-            $_SESSION['cc']->back->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-            $_SESSION['cc']->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-            $_SESSION['cc']->back->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-            $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-
-            // Save pack and user both say we are in creation mode
-            if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == "true" ){
-                $_SESSION['cc']->creationMode = true; //We stay in creation mode
-            }else{
-                // Make sure it's a valid character for play
-                if ($_SESSION['cc']->checkValidation()){
-                    // Switch to Evo Mode
-                    $_SESSION['cc']->creationMode = false;
-                    $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
-                    $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
-                    $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
-                }else{
-                    // Stay in creation mode
-                    $_SESSION['cc']->creationMode = true;
-                    //treatCreatorErrors($return,new EPCreatorErrors("File is not valid for play!  Staying in creation mode!",EPCreatorErrors::$RULE_ERROR));
-                }
-
-            }
-
-            if (!empty($_SESSION['cc']->character->morphs)){
-                $_SESSION['cc']->activateMorph($_SESSION['cc']->character->morphs[0]);
-            }
-            $_SESSION['cc']->adjustAll();
-        }else{
-            treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
-        }
-    }else{
+    if(!isset($_SESSION['fileToLoad'])){
         treatCreatorErrors($return,new EPCreatorErrors("No File Selected!",EPCreatorErrors::$SYSTEM_ERROR));
     }
+    $saveFile = json_decode($_SESSION['fileToLoad'],true);
+
+    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $_SESSION['cc']->configValues->getValue('GeneralValues','versionNumberMin')){
+        treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
+    }
+    $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
+    $_SESSION['cc']->back = new EPCharacterCreator("../../../php/config.ini");
+
+    $_SESSION['cc']->loadSavePack($saveFile);
+    $_SESSION['cc']->back->loadSavePack($saveFile);
+    $_SESSION['cc']->back->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
+    $_SESSION['cc']->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
+    $_SESSION['cc']->back->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+    $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+
+    // Save pack and user both say we are in creation mode
+    if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == "true" ){
+        $_SESSION['cc']->creationMode = true; //We stay in creation mode
+    }else{
+        // Make sure it's a valid character for play
+        if ($_SESSION['cc']->checkValidation()){
+            // Switch to Evo Mode
+            $_SESSION['cc']->creationMode = false;
+            $_SESSION['cc']->evoRezPoint += $_POST['rezPoints'];
+            $_SESSION['cc']->evoRepPoint += $_POST['repPoints'];
+            $_SESSION['cc']->evoCrePoint += $_POST['credPoints'];
+        }else{
+            // Stay in creation mode
+            $_SESSION['cc']->creationMode = true;
+            //treatCreatorErrors($return,new EPCreatorErrors("File is not valid for play!  Staying in creation mode!",EPCreatorErrors::$RULE_ERROR));
+        }
+
+    }
+
+    if (!empty($_SESSION['cc']->character->morphs)){
+        $_SESSION['cc']->activateMorph($_SESSION['cc']->character->morphs[0]);
+    }
+    $_SESSION['cc']->adjustAll();
 }
 
 //FIRST RUN
@@ -144,7 +142,7 @@ if(isset($_POST['getBcg'])){
 if (isset($_POST['origine'])) {
     if($_SESSION['cc']->getBackgroundByName($_POST['origine']) != null &&
        $_SESSION['cc']->setBackground($_SESSION['cc']->getBackgroundByName($_POST['origine']))){
-       $_SESSION['currentOrigineName'] = $_POST['origine'];
+        $_SESSION['currentOrigineName'] = $_POST['origine'];
         //$return['desc'] = $_SESSION['cc']->getBackgroundByName($_POST['origine'])->description;
     }
     else{
@@ -177,25 +175,21 @@ if(isset($_POST['faction'])){
 
 //SET POS TRAIT
 if(isset($_POST['posTrait'])){
-	$trait = $_SESSION['cc']->getTraitByName($_POST['posTrait']);
-	if($trait != null){
-		if( $trait->isInArray( $_SESSION['cc']->getCurrentTraits() ) ){
-			if($_SESSION['cc']->removeTrait($trait)){
-				$_SESSION['currentTraitName'] = $trait->name;
-	        	$return['desc'] = $trait->description;
-		    }
-		    else{
-		        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-		    }
-		}
-	    else if($_SESSION['cc']->addTrait($trait)){
-	    	$_SESSION['currentTraitName'] = $trait->name;
-	        $return['desc'] = $trait->description;
-	    }
-	    else{
-	        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	    }
+    $trait = $_SESSION['cc']->getTraitByName($_POST['posTrait']);
+    if(!isset($trait)){
+        treatCreatorErrors($return,"Trait ".$_POST['posTrait']." does not exist!");
     }
+
+    if( $trait->isInArray( $_SESSION['cc']->getCurrentTraits() ) ){
+        if(!$_SESSION['cc']->removeTrait($trait)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    else if(!$_SESSION['cc']->addTrait($trait)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $_SESSION['currentTraitName'] = $trait->name;
+    $return['desc'] = $trait->description;
 }
 
 //HOVER POS/NEG TRAIT
@@ -208,25 +202,21 @@ if(isset($_POST['traitHover'])){
 
 //SET PSY SLEIGHT
 if(isset($_POST['psyS'])){
-	$psyS = $_SESSION['cc']->getPsySleightsByName($_POST['psyS']);
-	if($psyS != null){
-		if( $psyS->isInArray( $_SESSION['cc']->getCurrentPsySleights() ) ){
-			if($_SESSION['cc']->removePsySleight($psyS)){
-	        	$return['desc'] = $psyS->description;
-	        	$_SESSION['currentPsiSName'] = $psyS->name;
-		    }
-		    else{
-		        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-		    }
-		}
-	    else if($_SESSION['cc']->addPsySleight($psyS)){
-	        $return['desc'] = $psyS->description;
-	        $_SESSION['currentPsiSName'] = $psyS->name;
-	    }
-	    else{
-	        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	    }
+    $psyS = $_SESSION['cc']->getPsySleightsByName($_POST['psyS']);
+    if(!isset($psyS)){
+        treatCreatorErrors($return,"Psy Sleight ".$_POST['psyS']." does not exist!");
     }
+
+    if( $psyS->isInArray( $_SESSION['cc']->getCurrentPsySleights() ) ){
+        if(!$_SESSION['cc']->removePsySleight($psyS)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    else if(!$_SESSION['cc']->addPsySleight($psyS)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $return['desc'] = $psyS->description;
+    $_SESSION['currentPsiSName'] = $psyS->name;
 }
 //HOVER PSY SLEIGHT
 if(isset($_POST['hoverPsyS'])){
@@ -236,26 +226,21 @@ if(isset($_POST['hoverPsyS'])){
 
 //SET NEG TRAIT
 if(isset($_POST['negTrait'])){
-	$trait = $_SESSION['cc']->getTraitByName($_POST['negTrait']);
-	if($trait != null){
-		if($trait->isInArray($_SESSION['cc']->getCurrentTraits())){
-                    if($_SESSION['cc']->removeTrait($trait)){
-			$_SESSION['currentTraitName'] = $trait->name;
-	        	$return['desc'] = $trait->description;
-		    }
-		    else{
-		        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-		    }
-		}
-	    else if($_SESSION['cc']->addTrait($trait)){
-	    	$_SESSION['currentTraitName'] = $trait->name;
-	        $return['desc'] = $trait->description;
-	    }
-	    else{
-	        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	    }
+    $trait = $_SESSION['cc']->getTraitByName($_POST['negTrait']);
+    if(!isset($trait)){
+        treatCreatorErrors($return,"Trait ".$_POST['negTrait']." does not exist!");
     }
 
+    if($trait->isInArray($_SESSION['cc']->getCurrentTraits())){
+        if(!$_SESSION['cc']->removeTrait($trait)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    else if(!$_SESSION['cc']->addTrait($trait)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $_SESSION['currentTraitName'] = $trait->name;
+    $return['desc'] = $trait->description;
 }
 
 //SET MOTIVATION
@@ -308,7 +293,7 @@ if(isset($_POST['cog']) && isset($_POST['coo']) && isset($_POST['int']) &&
 		$errorOnApt = true;
 		$return['aptError'] = 'WIL';
     }
-    
+
     if($errorOnApt) {
         //error_log('ERROR :'.$_SESSION['cc']->getLastError()->typeError);
          treatCreatorErrors($return, $_SESSION['cc']->getLastError());
@@ -492,20 +477,18 @@ if (isset($_POST['remMorph'])) {
 
 //GET MORPH SETTINGS
 if (isset($_POST['morphSettings'])) {
-	   $morph = getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
-	   if($morph != null){
-	   		 $_SESSION['currentMorph'] =  $_POST['morphSettings'];
-	   		 $return['morphName'] = $morph->name;
-		     $return['nickname'] = $morph->nickname;
-		     $return['location'] = $morph->location;
-		     $return['age'] = $morph->age;
-		     $return['gender'] = $morph->gender;
-		     $return['morphDur'] = $morph->durability;
-		     $return['morphMaxApt'] = $morph->maxApptitude;
-	   }
-	   else{
-			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
+    $morph = getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
+    if(!isset($morph)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $_SESSION['currentMorph'] =  $_POST['morphSettings'];
+    $return['morphName'] = $morph->name;
+    $return['nickname'] = $morph->nickname;
+    $return['location'] = $morph->location;
+    $return['age'] = $morph->age;
+    $return['gender'] = $morph->gender;
+    $return['morphDur'] = $morph->durability;
+    $return['morphMaxApt'] = $morph->maxApptitude;
 }
 
 //MORPH SELECTED ON GUI
@@ -516,73 +499,63 @@ if (isset($_POST['currentMorphUsed'])) {
 
 //SET MORPH SETTINGS
 if (isset($_POST['morphSettingsChange'])) {
-	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
-	   if($morph != null){
-	   		 $_SESSION['currentMorph'] =  $_POST['morphSettingsChange'];
-		     $morph->nickname = $_POST['morphNickname'];
-		     $morph->location = $_POST['morphLocation'];
-		     $morph->age = $_POST['morphAge'];
-		     $morph->gender = $_POST['morphGender'];
-	   }
-	   else{
-			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
+    $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
+    if(!isset($morph)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $_SESSION['currentMorph'] =  $_POST['morphSettingsChange'];
+    $morph->nickname = $_POST['morphNickname'];
+    $morph->location = $_POST['morphLocation'];
+    $morph->age = $_POST['morphAge'];
+    $morph->gender = $_POST['morphGender'];
 }
 
 //SET REMOVE MORPH POS TRAIT
 if(isset($_POST['morphPosTrait'])){
     $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
     $trait = $_SESSION['cc']->getTraitByName($_POST['morphPosTrait']);
-    
-    if (isset($morph)){
-        if (isset($trait)){
-           if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
-                if (!$_SESSION['cc']->removeTrait($trait,$morph)){
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }        
-            }else{
-                if (!$_SESSION['cc']->addTrait($trait,$morph)){
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }      
-            }
-            $return['desc'] = $trait->description;
-            $_SESSION['currentMorphTraitName'] = $trait->name;
-        }else{    
-            treatCreatorErrors($return, "Trait does not exist (".$_POST['morphPosTrait'].")");            
-        }        
-    }else{       
-        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
+
+    if (!isset($morph)){
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
+    if (!isset($trait)){
+        treatCreatorErrors($return, "Trait does not exist (".$_POST['morphPosTrait'].")");
+    }
+    if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
+        if (!$_SESSION['cc']->removeTrait($trait,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->addTrait($trait,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    $return['desc'] = $trait->description;
+    $_SESSION['currentMorphTraitName'] = $trait->name;
 }
 
 //SET REMOVE MORPH NEG TRAIT
 if(isset($_POST['morphNegTrait'])){
     $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
     $trait = $_SESSION['cc']->getTraitByName($_POST['morphNegTrait']);
-    
-    if (isset($morph)){
-        if (isset($trait)){
-           if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
-                if ($_SESSION['cc']->removeTrait($trait,$morph)){
-                    $return['desc'] = $trait->description;
-                    $_SESSION['currentMorphTraitName'] = $trait->name;
-                }else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }        
-            }else{
-                if ($_SESSION['cc']->addTrait($trait,$morph)){
-                    $return['desc'] = $trait->description;
-                    $_SESSION['currentMorphTraitName'] = $trait->name;
-                }else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }      
-            }
-        }else{    
-            treatCreatorErrors($return, "Trait does not exist (".$_POST['morphNegTrait'].")");            
-        }        
-    }else{       
-        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
+
+    if (!isset($morph)){
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
+    if (!isset($trait)){
+        treatCreatorErrors($return, "Trait does not exist (".$_POST['morphPosTrait'].")");
+    }
+    if ($_SESSION['cc']->haveTraitOnMorph($trait,$morph)){
+        if (!$_SESSION['cc']->removeTrait($trait,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->addTrait($trait,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    $return['desc'] = $trait->description;
+    $_SESSION['currentMorphTraitName'] = $trait->name;
 }
 
 //HOVER MORPH NEG-POS TRAIT
@@ -594,144 +567,113 @@ if(isset($_POST['morphTraitHover'])){
 if(isset($_POST['morphImplant'])){
     $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
     $gear = $_SESSION['cc']->getGearByName($_POST['morphImplant']);
-    
-    if (isset($morph)){
-        if (isset($gear)){
-           if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
-               if ($_SESSION['cc']->removeGear($gear,$morph)){
-                   $return['desc'] = $gear->description;
-                   $_SESSION['currentMorphGearName'] = $gear->name;
-               }else{
-                   treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-               }        
-            }else{
-                if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
-                    if ($_SESSION['cc']->addGear($gear,$morph)){
-                        $return['desc'] = $gear->description;
-                        $_SESSION['currentMorphGearName'] = $gear->name;
-                    }else{
-                        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                    }                      
-                }
-                else{
-	                   $return['desc'] = $gear->description;
-                        $_SESSION['currentMorphGearName'] = $gear->name;
-	            } 
-    
-            }
-        }else{    
-            treatCreatorErrors($return, "Implant does not exist (".$_POST['morphImplant'].")");            
-        }        
-    }else{       
-        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
+
+    if (!isset($morph)){
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
+    if (!isset($gear)){
+        treatCreatorErrors($return, "Implant does not exist (".$_POST['morphImplant'].")");
+    }
+    if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
+        if (!$_SESSION['cc']->removeGear($gear,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
+            if (!$_SESSION['cc']->addGear($gear,$morph)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+            }
+        }else{
+            treatCreatorErrors($return, "Can not remove permanent Implants!");
+        }
+    }
+    $return['desc'] = $gear->description;
+    $_SESSION['currentMorphGearName'] = $gear->name;
 }
 
 //SET REMOVE MORPH GEAR
 if(isset($_POST['morphGear'])){
     $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
     $gear = $_SESSION['cc']->getGearByName($_POST['morphGear']);
-    
-    if (isset($morph)){
-        if (isset($gear)){
-           if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
-               if ($_SESSION['cc']->removeGear($gear,$morph)){
-                   $return['desc'] = $gear->description;
-                   $_SESSION['currentMorphGearName'] = $gear->name;
-               }else{
-                   treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-               }        
-            }else{
-                if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
-                    if ($_SESSION['cc']->addGear($gear,$morph)){
-                        $return['desc'] = $gear->description;
-                        $_SESSION['currentMorphGearName'] = $gear->name;
-                    }else{
-                        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                    }                      
-                }
-                else{
-	                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	            } 
-    
-            }
-        }else{    
-            treatCreatorErrors($return, "Gear does not exist (".$_POST['morphGear'].")");            
-        }        
-    }else{       
-        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
+
+    if (!isset($morph)){
+        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
+    if (!isset($gear)){
+        treatCreatorErrors($return, "Gear does not exist (".$_POST['morphGear'].")");
+    }
+    if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
+        if (!$_SESSION['cc']->removeGear($gear,$morph)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
+            if (!$_SESSION['cc']->addGear($gear,$morph)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+            }
+        }else{
+            treatCreatorErrors($return, "Can not remove permanent Gear!");
+        }
+    }
+    $return['desc'] = $gear->description;
+    $_SESSION['currentMorphGearName'] = $gear->name;
 }
 
 //SET REMOVE FREE MORPH GEAR
 if(isset($_POST['morphFreeGear'])){
-	if(!empty($_POST['morphFreeGear'])){
-	    $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
-	    $gear = new EPGear($_POST['morphFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['morphFreePrice']));
-	   //error_log(print_r($gear,true));
-	    if (isset($morph)){
-	        if (isset($gear)){
-	           if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
-	               if ($_SESSION['cc']->removeGear($gear,$morph)){
-	                   $return['desc'] = $gear->description;
-	                   $_SESSION['currentMorphGearName'] = $gear->name;
-	               }else{
-	                   treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	               }        
-	            }else{
-	                if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
-	                    if ($_SESSION['cc']->addFreeGear($gear,$morph)){
-	                        $return['desc'] = $gear->description;
-	                        $_SESSION['currentMorphGearName'] = $gear->name;
-	                    }else{
-	                        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	                    }                      
-	                }
-	                else{
-		                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-		            } 
-	    
-	            }
-	        }else{    
-	            treatCreatorErrors($return, "Gear not set (".$_POST['morphFreeGear'].")");            
-	        }        
-	    }else{       
-	        treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")"); 
-	    }
+    //In case someone hits enter/clicks the '+' icon without putting a gear name in
+    if(!empty($_POST['morphFreeGear'])){
+        $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
+        $gear = new EPGear($_POST['morphFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['morphFreePrice']));
+
+        if (!isset($morph)){
+            treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
+        }
+        if (!isset($gear)){
+            treatCreatorErrors($return, "Gear does not exist (".$_POST['morphFreeGear'].")");
+        }
+        //error_log(print_r($gear,true));
+
+        if ($_SESSION['cc']->haveAdditionalGear($gear,$morph)){
+            if (!$_SESSION['cc']->removeGear($gear,$morph)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+            }
+        }else{
+            if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
+                if (!$_SESSION['cc']->addFreeGear($gear,$morph)){
+                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+                }
+            }else{
+                treatCreatorErrors($return, "Can not remove permanent Gear!");
+            }
+        }
+        $return['desc'] = $gear->description;
+        $_SESSION['currentMorphGearName'] = $gear->name;
     }
 }
 
 //SET REMOVE FREE EGO GEAR
-if(isset($_POST['egoFreeGear'])){    
+if(isset($_POST['egoFreeGear'])){
+    //In case someone hits enter/clicks the '+' icon without putting a gear name in
     if(!empty($_POST['egoFreeGear'])){
-	    $soft = new EPGear($_POST['egoFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['egoFreePrice']));
-    
-	    if (isset($soft)){
-	       if ($_SESSION['cc']->haveSoftGear($soft)){
-	           if ($_SESSION['cc']->removeSoftGear($soft)){
-	               $return['desc'] = $soft->description;
-	               $_SESSION['currentSoftName'] = $soft->name;
-	           }else{
-	               treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	           }        
-	        }else{
-	            if (!$_SESSION['cc']->haveSoftGear($soft)){
-	                if ($_SESSION['cc']->addSoftGear($soft)){
-	                    $return['desc'] = $soft->description;
-	                    $_SESSION['currentSoftName'] = $soft->name;
-	                }else{
-	                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	                }                      
-	            }
-	            else{
-	                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	            } 
-	    
-	       }       
-	    }else{       
-	        treatCreatorErrors($return, "Soft gear not instancied (".$_POST['egoFreeGear'].")"); 
-	    }
-	}
+        $soft = new EPGear($_POST['egoFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['egoFreePrice']));
+
+        if (!isset($soft)){
+            treatCreatorErrors($return, "Gear does not exist (".$_POST['egoFreeGear'].")");
+        }
+
+        if ($_SESSION['cc']->haveSoftGear($soft)){
+            if (!$_SESSION['cc']->removeSoftGear($soft)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+            }
+        }else{
+            if (!$_SESSION['cc']->addSoftGear($soft)){
+                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+            }
+        }
+        $return['desc'] = $soft->description;
+        $_SESSION['currentSoftName'] = $soft->name;
+    }
 }
 
 
@@ -760,32 +702,21 @@ if(isset($_POST['remCredit'])){
 //SET REMOVE AI
 if(isset($_POST['ai'])){
     $ai = $_SESSION['cc']->getAisByName($_POST['ai']);
-    
-    if (isset($ai)){
-       if ($_SESSION['cc']->haveAi($ai)){
-           if ($_SESSION['cc']->removeAI($ai)){
-               $return['desc'] = $ai->description;
-               $_SESSION['currentAiName'] = $ai->name;
-           }else{
-               treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-           }        
-        }else{
-            if (!$_SESSION['cc']->haveAi($ai)){
-                if ($_SESSION['cc']->addAI($ai)){
-                    $return['desc'] = $ai->description;
-                    $_SESSION['currentAiName'] = $ai->name;
-                }else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }                      
-            }
-            else{
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-            } 
-    
-       }       
-    }else{       
-        treatCreatorErrors($return, "Ai does not exist (".$_SESSION['ai'].")"); 
+
+    if (!isset($ai)){
+        treatCreatorErrors($return, "Ai does not exist (".$_SESSION['ai'].")");
     }
+    if ($_SESSION['cc']->haveAi($ai)){
+        if (!$_SESSION['cc']->removeAI($ai)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->addAI($ai)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
+    $return['desc'] = $ai->description;
+    $_SESSION['currentAiName'] = $ai->name;
 }
 
 //HOVER AI
@@ -799,22 +730,21 @@ if(isset($_POST['hoverAi'])){
 if(isset($_POST['softg'])){
 //     error_log(print_r($_POST,true));
     $soft = $_SESSION['cc']->getGearByName($_POST['softg']);
+
+    if (!isset($soft)){
+        treatCreatorErrors($return, "Soft gear does not exist (".$_POST['softg'].")");
+    }
+    if ($_SESSION['cc']->haveSoftGear($soft)){
+        if (!$_SESSION['cc']->removeSoftGear($soft)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }else{
+        if (!$_SESSION['cc']->addSoftGear($soft)){
+            treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+        }
+    }
     $return['desc'] = $soft->description;
     $_SESSION['currentSoftName'] = $soft->name;
-
-    if (isset($soft)){
-       if ($_SESSION['cc']->haveSoftGear($soft)){
-           if (!$_SESSION['cc']->removeSoftGear($soft)){
-               treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-           }
-        }else{
-            if (!$_SESSION['cc']->addSoftGear($soft)){
-                treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-            }
-       }
-    }else{
-        treatCreatorErrors($return, "Soft gear does not exist (".$_SESSION['softg'].")"); 
-    }
 }
 
 //HOVER ON SOFT GEAR
@@ -843,13 +773,11 @@ if(isset($_POST['remMoxie'])){
 
 //DESC MOXIE
 if(isset($_POST['mox'])){
-	$moxie = $_SESSION['cc']->getStatByAbbreviation(EPStat::$MOXIE);
-	if(isset($moxie)){
-		$return['desc'] = $moxie->description;
-	}
-	else{
-		treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	}
+    $moxie = $_SESSION['cc']->getStatByAbbreviation(EPStat::$MOXIE);
+    if(!isset($moxie)){
+        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
+    }
+    $return['desc'] = $moxie->description;
 }
 
 //SET LAST DETAILS
@@ -905,49 +833,48 @@ if(isset($_POST['addTargetTo'])){
 	
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
-		if($candidatParent == null){
+        if(!isset($candidatParent)){
 			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Unkown Parent!",EPCreatorErrors::$SYSTEM_ERROR));
 		}
 		$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
-		if($candidat == null){
+        if(!isset($candidat)){
 			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Could not find Bonus Malus",EPCreatorErrors::$SYSTEM_ERROR));
 		}
 		if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
 			$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
             // Database skills (non user selectable) use name/prefix instead of Uid
-            if($skill == null){
+            if(!isset($skill)){
                 $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
             }
-			if($skill == null){
+            if(!isset($skill)){
 				treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
 			}
 			$candidat->typeTarget = $skill->prefix;
 		}
 		$candidat->forTargetNamed = $_POST['targetVal'];
 		$candidat->selected = true;
-		$_SESSION['cc']->adjustAll();
 	}
 	else{
-            $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
-            if($candidat != null){
-                $candidat->forTargetNamed = $_POST['targetVal'];
-                if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
-                    $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
-                    // Database skills (non user selectable) use name/prefix instead of Uid
-                    if($skill == null){
-                        $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
-                    }
-                    if($skill == null){
-                        treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
-                    }
-                    $candidat->typeTarget = $skill->prefix;
-                }
-                $_SESSION['cc']->adjustAll();
+        $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
+
+        if(!isset($candidat)){
+            treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
+        }
+
+        $candidat->forTargetNamed = $_POST['targetVal'];
+        if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
+            $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
+            // Database skills (non user selectable) use name/prefix instead of Uid
+            if(!isset($skill)){
+                $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
             }
-            else{
-                    treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (2)",EPCreatorErrors::$SYSTEM_ERROR));
+            if(!isset($skill)){
+                treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
             }
-	}			
+            $candidat->typeTarget = $skill->prefix;
+        }
+    }
+    $_SESSION['cc']->adjustAll();
 }
 
 if(isset($_POST['removeTargetFrom'])){
@@ -981,33 +908,26 @@ if(isset($_POST['removeTargetFrom'])){
 	}
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
-		if($candidatParent != null){
-			$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
-			if($candidat != null){
-				if(!empty($candidat->targetForChoice)){
-					$candidat->forTargetNamed = "";
-				}
-				$candidat->selected = false;
-				$_SESSION['cc']->adjustAll();
-			}
-			else{
-				treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Multi Unknow",EPCreatorErrors::$SYSTEM_ERROR));
-			}
-		}
-		else{
-			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (3)",EPCreatorErrors::$SYSTEM_ERROR));
-		}
+        if(!isset($candidatParent)){
+             treatCreatorErrors($return,new EPCreatorErrors("Could not find parentBmId: ".$_POST['parentBmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
+        }
+        $candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
+        if(!isset($candidat)){
+            treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentBmId: ".$_POST['parentBmId'],EPCreatorErrors::$SYSTEM_ERROR));
+        }
+        if(!empty($candidat->targetForChoice)){
+            $candidat->forTargetNamed = "";
+        }
+        $candidat->selected = false;
 	}
 	else{
 		$candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
-		if($candidat != null){
-			$candidat->forTargetNamed = "";
-			$_SESSION['cc']->adjustAll();
-		}
-		else{
-			treatCreatorErrors($return,new EPCreatorErrors("Bonus malus Unknow (4)",EPCreatorErrors::$SYSTEM_ERROR));
-		}
+        if(!isset($candidat)){
+            treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
+        }
+        $candidat->forTargetNamed = "";
 	}
+    $_SESSION['cc']->adjustAll();
 }
 
 //ADD OCCURENCE 
