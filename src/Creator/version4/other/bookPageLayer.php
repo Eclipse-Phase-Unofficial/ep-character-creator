@@ -11,8 +11,8 @@ function getBPHtml($atomName){
     $output = "<li class='listSection'>";
     $output .= "Find more at";
     $output .= "</li>";
-    $output .= "<li>";
-    $output .= "<span class='bmDesc'>".$book->getPrintableNameL()."</span>";
+    $output .= "<li class='bmDesc'>";
+    $output .= $book->getPrintableNameL();
     $output .= "</li>";
     return $output;
 }
