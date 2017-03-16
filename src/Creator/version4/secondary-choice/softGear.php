@@ -4,6 +4,9 @@ require_once('../other/panelHelper.php');
 require_once('../other/gearHelper.php');
 
 session_start();
+
+$gears = $_SESSION['cc']->getGears();
+$currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
 ?>
 <ul class="mainlist" id="soft">
 	<?php
@@ -23,21 +26,20 @@ session_start();
             echo $li->getHtml();
           }
           echo "</ul>";
-          
-         //SOFT GEAR 
-         $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
+
+         //SOFT GEAR
 		 echo "<li class='foldingListSection' id='softLst'>";
  		 echo "Software";
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList softLst'>";
-         foreach($_SESSION['cc']->getGears() as $m){
-         		if($m->gearType == EPGear::$SOFT_GEAR){
-                    $li = new li($m->name,'softG');
-                    $li->addCost($m->getCost());
-                    $li->addBookIcon($m->name);
-                    $li->addPlusChecked('addSelSoftGearIcon',$m->isInArray($currentSoftGear));
-                    echo $li->getHtml();
-            	}
+         foreach($gears as $m){
+            if($m->gearType == EPGear::$SOFT_GEAR){
+                $li = new li($m->name,'softG');
+                $li->addCost($m->getCost());
+                $li->addBookIcon($m->name);
+                $li->addPlusChecked('addSelSoftGearIcon',$m->isInArray($currentSoftGear));
+                echo $li->getHtml();
+            }
           }
           echo "</ul>";
 

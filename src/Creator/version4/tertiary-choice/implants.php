@@ -14,7 +14,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
                 array_push($listFiltered, $m);
             }
         }
-        $formatedHtml = getFormatedGearList($listFiltered,$currentMorph,'addSelMorphImplantIcon');
+        $formatedHtml = getFormatedMorphGearList($listFiltered,$currentMorph,'addSelMorphImplantIcon');
         echo $formatedHtml;
     ?>
 </ul>

@@ -6,7 +6,7 @@ require_once('panelHelper.php');
  *
  * Filters out gear morphs can't use.
  */
-function getFormatedGearList($listFiltered,$morph,$iconClass){
+function getFormatedMorphGearList($listFiltered,$morph,$iconClass){
     $htmlResult = "";
     foreach($listFiltered as $m){
         if(isGearLegal($morph,$m)){
@@ -55,6 +55,31 @@ function getFreeGear($currentGear,$isEgo = True){
             $output .= "</li>";
         }
     }
+    $output .= "</ul>";
+    return $output;
+}
+
+/**
+ * Outputs a 'foldingListSection' for gear of a certain type.
+ */
+function getGearSection($gears,$morph,$gearType,$sectionName){
+    //Generate a HTML valid Id from the section name
+    $id = preg_replace("/[^A-z]/","",$sectionName);
+
+    $listFiltered = array();
+    foreach($gears as $m){
+        if($m->gearType == $gearType){
+            array_push($listFiltered, $m);
+        }
+    }
+    $formatedHtml = getFormatedMorphGearList($listFiltered,$morph,'addSelMorphGearIcon');
+
+    $output  = "";
+    $output .= "<li class='foldingListSection' id='".$id."'>";
+    $output .= $sectionName;
+    $output .= "</li>";
+    $output .= "<ul class='mainlist foldingList ".$id."''>";
+    $output .= $formatedHtml;
     $output .= "</ul>";
     return $output;
 }
