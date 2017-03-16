@@ -34,7 +34,7 @@ class Panel{
      *
      * If a panel previously existed, this resets the panel.
      *
-     *  @param $id - The item being described
+     *  @param $atomName - The name of the item being described (Both printed, and used to add the book page.
      */
     function startDescriptivePanel($atomName){
         $output  = "<span class='descriptionTitle'>".$atomName."</span>";

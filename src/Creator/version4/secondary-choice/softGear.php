@@ -40,33 +40,8 @@ session_start();
             	}
           }
           echo "</ul>";
-         
-         //FREE GEAR SECTION
- 		echo "<li class='foldingListSection' id='free'>";
- 		echo "Free Gear";
- 		echo "</li>";
- 		echo "<ul class='mainlist foldingList free' id='freeGear'>";
- 		echo "	<li>";
- 		echo "			<input type='text' id='freeEgoGearToAdd' placeholder='Gear Name'/>";
- 		echo "			<select id='freeEgoGearPrice'>";
- 		echo "					<option value=".EPCreditCost::$LOW.">".EPCreditCost::$LOW."</option>";
- 		echo "					<option value=".EPCreditCost::$MODERATE.">".EPCreditCost::$MODERATE."</option>";
- 		echo "					<option value=".EPCreditCost::$HIGH.">".EPCreditCost::$HIGH."</option>";
- 		echo "					<option value=".EPCreditCost::$EXPENSIVE.">".EPCreditCost::$EXPENSIVE."</option>";
- 		echo "					<option value=".EPCreditCost::$VERY_EXPENSIVE.">".EPCreditCost::$VERY_EXPENSIVE."</option>";
- 		echo "					<option value=".EPCreditCost::$EXTREMELY_EXPENSIVE.">".EPCreditCost::$EXTREMELY_EXPENSIVE."</option>";
- 		echo "			</select>";
-		echo "			<span class='addOrSelectedIcon' id='addFreeEgoGear' data-icon='&#x3a;'></span>";
-		echo "	</li>";
-		$freeGear = $_SESSION['cc']->getEgoSoftGears();
-		foreach($freeGear as $m){
-			
- 		 	if($m->gearType == EPGear::$FREE_GEAR){
-     		 	echo "<li>";
-                echo "		<label class='egoFreeGear remFreeEgoGear' id='".$m->name."'>".$m->name."</label><label class='costInfo'>(".$m->getCost()." credits)</label><span class='addOrSelectedIcon remFGear' data-icon='&#x39;'></span>";
-				echo "</li>"; 		
- 		 	}
- 		}
- 		echo "</ul>";
+
+        //FREE GEAR SECTION
+        echo getFreeGear($_SESSION['cc']->getEgoSoftGears());
 	?>
 </ul>

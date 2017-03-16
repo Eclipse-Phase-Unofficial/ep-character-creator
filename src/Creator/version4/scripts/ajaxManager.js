@@ -731,7 +731,7 @@ $(document).ready(function(){
         });
         
         //remove free morph gear
-         $(document).on('click', '.remFreeGear' ,function () {
+         $(document).on('click', '.remFreeMorphGear' ,function () {
             var me = this;
             var name = $(this).attr('id');
             do_ajax( {
@@ -838,23 +838,23 @@ $(document).ready(function(){
                     });
 				return false;
         });
-        
+
          //remove free ego gear
          $(document).on('click', '.remFreeEgoGear' ,function () {
-        		var name = $(this).attr('id');
-                do_ajax( {
-                            egoFreeGear : name,
-                            egoFreePrice : 0,
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                        loadSecondary("secondary-choice/softGear.php");
-                        setRemainingPoint(response);
-                    });
-				return false;
+            var me = this;
+            var name = $(this).attr('id');
+            do_ajax( {
+                    egoFreeGear : name,
+                    egoFreePrice : 0,
+                    getCrePoint : 'get'
+                },
+                function(response){
+                    reloadPanel(me);
+                    setRemainingPoint(response);
+                });
+            return false;
         });
 
-        
         //add free ego gear
         function addFreeEgoGear(){
             var me = this;

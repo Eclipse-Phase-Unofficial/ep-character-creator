@@ -1,6 +1,11 @@
 <?php
 require_once('panelHelper.php');
 
+/**
+ * Get the Gear list a morph can use.
+ *
+ * Filters out gear morphs can't use.
+ */
 function getFormatedGearList($listFiltered,$morph,$iconClass){
     $htmlResult = "";
     foreach($listFiltered as $m){
@@ -13,6 +18,45 @@ function getFormatedGearList($listFiltered,$morph,$iconClass){
         }
     }
     return $htmlResult;
+}
+
+/**
+ * Add/Display/Remove free gear for both morph and Ego.
+ */
+function getFreeGear($currentGear,$isEgo = True){
+    $output  = "";
+    $ego_or_morph = "Ego";
+    if(!$isEgo){
+        $ego_or_morph = "Morph";
+    }
+
+    $output .= "<li class='foldingListSection' id='free'>";
+    $output .= "Free Gear";
+    $output .= "</li>";
+    $output .= "<ul class='mainlist foldingList free' id='freeGear'>";
+    $output .= "    <li>";
+    $output .= "            <input type='text' id='free".$ego_or_morph."GearToAdd' placeholder='Gear Name'/>";
+    $output .= "            <select id='free".$ego_or_morph."GearPrice'>";
+    $output .= "                    <option value=".EPCreditCost::$LOW.">".EPCreditCost::$LOW."</option>";
+    $output .= "                    <option value=".EPCreditCost::$MODERATE.">".EPCreditCost::$MODERATE."</option>";
+    $output .= "                    <option value=".EPCreditCost::$HIGH.">".EPCreditCost::$HIGH."</option>";
+    $output .= "                    <option value=".EPCreditCost::$EXPENSIVE.">".EPCreditCost::$EXPENSIVE."</option>";
+    $output .= "                    <option value=".EPCreditCost::$VERY_EXPENSIVE.">".EPCreditCost::$VERY_EXPENSIVE."</option>";
+    $output .= "                    <option value=".EPCreditCost::$EXTREMELY_EXPENSIVE.">".EPCreditCost::$EXTREMELY_EXPENSIVE."</option>";
+    $output .= "            </select>";
+    $output .= "            <span class='addOrSelectedIcon' id='addFree".$ego_or_morph."Gear' data-icon='&#x3a;'></span>";
+    $output .= "    </li>";
+    foreach($currentGear as $m){
+        if($m->gearType == EPGear::$FREE_GEAR){
+            $output .= "<li>";
+            $output .= $m->name;
+            $output .= "<span class='costInfo'>(".$m->getCost()." credits)</span>";
+            $output .= "<span id='".$m->name."' class='addOrSelectedIcon remFree".$ego_or_morph."Gear' data-icon='&#x39;'></span>";
+            $output .= "</li>";
+        }
+    }
+    $output .= "</ul>";
+    return $output;
 }
 
 function isGearLegal($morph,$gear){
