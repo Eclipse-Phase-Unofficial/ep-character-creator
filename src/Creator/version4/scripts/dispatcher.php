@@ -48,6 +48,8 @@ function treatCreatorErrors(&$data,$creatorError){
 	else{
 		returnErrors($data,"Unknown error ? : ".$creatorError->textError);
 	}
+    echo json_encode($data);
+    exit(1);
 }
 
 //DISPATCH============================
