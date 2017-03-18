@@ -1,6 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
-require_once('../other/bookPageLayer.php');
+require_once('../other/panelHelper.php');
 session_start();
 ?>
 <ul class="mainlist" id="morphs">
@@ -37,21 +37,16 @@ session_start();
              $provider = new EPListProvider('../../../php/config.ini');
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){
-	         	$cost_string = "";
-	         	if($_SESSION['cc']->creationMode){
-                            $cost_string = $m->cpCost." cp";
-	         	}else{
-                            $cost_string = $m->getCost()." credits";
-	         	}                        
-
-                $htmlBlock .= "<li class='addRemMorph' id='".$m->name."'>";
-                $htmlBlock .= "<li class='morphHover' id='".$m->name."'>";
-                $htmlBlock .= "		<span>".$m->name."</span>";
-                $htmlBlock .= getListStampHtml($m->name);
-                $htmlBlock .= "		<span class='costInfo'>(".$cost_string.")</span>";
-            	if(isMorphOnlist($currentList,$m)){
-            		$htmlBlock .= "		<span class='addOrSelectedIcon addRemMorph' id='".$m->name."' data-icon='&#x3b;'></span>";
-            		$htmlBlock .= "</li>";
+                $li = new li($m->name,'morphHover');
+                if($_SESSION['cc']->creationMode){
+                    $li->addCost($m->cpCost,False,'cp');
+                }else{
+                    $li->addCost($m->getCost(),False,'Credits');
+                }
+                $li->addBookIcon($m->name);
+                $li->addPlusMinus('addRemMorph', !$m->isInArray($currentList) );
+                $htmlBlock .= $li->getHtml();
+                if( $m->isInArray($currentList) ){
             		$htmlBlock .= "<li>";
             		$htmlBlock .= "		<a class='morph-BMD' id='".$m->name."' href='#'><span class='icone' data-icon='&#x22;'></span>Bonus & Description</a>";
             		$htmlBlock .= "</li>";
@@ -94,10 +89,6 @@ session_start();
             		$htmlBlock .= "		</a>";
             		$htmlBlock .= "</li>";
             	}
-            	else{
-            		$htmlBlock .= "		<span class='addOrSelectedIcon addRemMorph' id='".$m->name."' data-icon='&#x3a;'></span>";
-            	}  	
-            	$htmlBlock .= "</li>";
             }
             return $htmlBlock;
          }
