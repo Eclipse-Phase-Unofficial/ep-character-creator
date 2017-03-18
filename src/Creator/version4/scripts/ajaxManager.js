@@ -94,7 +94,7 @@ $(document).ready(function(){
     	//enter key on the motivation text field
     	$(document).on('keydown', '#motToAdd' ,function (e) {
     		if(e.keyCode == 13) {
-    	 		addMotivation();
+                addMotivation.call(this);
 				return false;
 			}
         });
