@@ -242,6 +242,23 @@ class li{
         }
      }
 
+    /**
+     * Add a plus or 'X' icon.
+     *
+     * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
+     *
+     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param $isPlus    - Display the plus icon, or the 'X' icon.
+     */
+    function addPlusX($iconClass,$isPlus = True){
+        if($isPlus){
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        }
+        else{
+            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x39;'></span>";
+        }
+     }
+
      /**
      * Add a checked icon, or blank space.
      *

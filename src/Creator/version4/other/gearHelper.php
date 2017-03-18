@@ -48,11 +48,10 @@ function getFreeGear($currentGear,$isEgo = True){
     $output .= "    </li>";
     foreach($currentGear as $m){
         if($m->gearType == EPGear::$FREE_GEAR){
-            $output .= "<li>";
-            $output .= $m->name;
-            $output .= "<span class='costInfo'>(".$m->getCost()." credits)</span>";
-            $output .= "<span id='".$m->name."' class='addOrSelectedIcon remFree".$ego_or_morph."Gear' data-icon='&#x39;'></span>";
-            $output .= "</li>";
+            $li = new li($m->name);
+            $li->addCost($m->getCost(),False,'Credits');
+            $li->addPlusX("remFree".$ego_or_morph."Gear",False);
+            $output .= $li->getHtml();
         }
     }
     $output .= "</ul>";
