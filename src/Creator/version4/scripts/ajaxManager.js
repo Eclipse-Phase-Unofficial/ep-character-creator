@@ -485,7 +485,7 @@ $(document).ready(function(){
         //MORPHS
 
     	//hover on morph
-		 $(document).on('click', '.addRemMorph' ,function () {
+		 $(document).on('click', '.morphHover' ,function () {
 		 	do_ajax( {
                             morphHover : $(this).attr('id')
                     },
@@ -497,33 +497,17 @@ $(document).ready(function(){
         
         });
 
-    	
-    	//click on add morph
-        $(document).on('click','.addMorphIcone' ,function () {
+        //click on the add / remove morph button
+        $(document).on('click','.addRemMorph' ,function () {
             hideErrorsMsg();
             var me = this;
             do_ajax( {
-                    addMorph : $(this).attr('id'),
-                    getCrePoint : 'get'
-                },
-                function(response){
-                    reloadPanel(me);
-                    displayMessageOnTertiary(response.desc, response.title);
-                    setRemainingPoint(response);
-                });
-            return false;
-        });
-        
-        //click on remove morph
-        $(document).on('click','.remMorphIcone' ,function () {
-            hideErrorsMsg();
-            var me = this;
-            do_ajax( {
-                        remMorph : $(this).attr('id'),
+                        addRemMorph : $(this).attr('id'),
                         getCrePoint : 'get'
                 },
                 function(response){
                     reloadPanel(me);
+                    displayMessageOnTertiary(response.desc, response.title);
                     setRemainingPoint(response);
                 });
             return false;

@@ -45,11 +45,12 @@ session_start();
 	         	}                        
 
                 $htmlBlock .= "<li class='addRemMorph' id='".$m->name."'>";
+                $htmlBlock .= "<li class='morphHover' id='".$m->name."'>";
                 $htmlBlock .= "		<span>".$m->name."</span>";
                 $htmlBlock .= getListStampHtml($m->name);
                 $htmlBlock .= "		<span class='costInfo'>(".$cost_string.")</span>";
             	if(isMorphOnlist($currentList,$m)){
-            		$htmlBlock .= "		<span class='addOrSelectedIcon remMorphIcone' id='".$m->name."' data-icon='&#x3b;'></span>";
+            		$htmlBlock .= "		<span class='addOrSelectedIcon addRemMorph' id='".$m->name."' data-icon='&#x3b;'></span>";
             		$htmlBlock .= "</li>";
             		$htmlBlock .= "<li>";
             		$htmlBlock .= "		<a class='morph-BMD' id='".$m->name."' href='#'><span class='icone' data-icon='&#x22;'></span>Bonus & Description</a>";
@@ -94,7 +95,7 @@ session_start();
             		$htmlBlock .= "</li>";
             	}
             	else{
-            		$htmlBlock .= "		<span class='addOrSelectedIcon addMorphIcone' id='".$m->name."' data-icon='&#x3a;'></span>";
+            		$htmlBlock .= "		<span class='addOrSelectedIcon addRemMorph' id='".$m->name."' data-icon='&#x3a;'></span>";
             	}  	
             	$htmlBlock .= "</li>";
             }
