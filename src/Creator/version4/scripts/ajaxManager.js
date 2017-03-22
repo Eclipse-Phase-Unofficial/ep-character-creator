@@ -406,7 +406,7 @@ $(document).ready(function(){
 		
 		//add a temp knowledge  skill
         function addKnowSkill() {
-            if(!$('#addKnowSkill').val()){
+            if(!$('#knoToAdd').val()){
                 displayRulesMessage("Attempting to add a blank skill!");
                 return false;
             }
