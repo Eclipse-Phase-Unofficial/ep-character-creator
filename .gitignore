@@ -1,11 +1,10 @@
 #All hidden files (Vagrant, PHP Storm, Kdevelop, editor swap, etc...)
 .*
 
-# Dont ignore .gitignore (this file)
-# This is just for verbosity, you can leave it out if
-# .gitignore is already tracked or if you use -f to
-# force-add it if you just created it
+# Dont ignore .gitignore (this file), or .mailmap
+# This is just for verbosity
 !/.gitignore
+!/.mailmap
 
 #sqlite3 databases.
 #Users should create their own database from the provided .sql files
