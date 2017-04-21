@@ -26,7 +26,7 @@
 
         <div id="container">
 
-        	<!-- MAIN MENU - STATIC CONTENT-->       	
+            <!-- Ego/Morph MENU - STATIC CONTENT-->
         	<section id="primary" class="panel">
         		<nav id="main-nav">
     			<ul>
@@ -136,7 +136,7 @@
         <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
         <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
         <script><?php include "scripts/ajax_helper.js"; ?></script>
-        <script><?php include "scripts/main_menu.js"; ?></script>
+        <script><?php include "scripts/panel_1.js"; ?></script>
         <script><?php include "scripts/ajaxManager.js"; ?></script>
         <script><?php include "scripts/popup.js"; ?></script>
         <script>

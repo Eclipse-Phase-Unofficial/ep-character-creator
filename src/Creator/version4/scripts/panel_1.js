@@ -1,4 +1,4 @@
-// ================= Main Menu =================
+// ================= Panel 1 =================
 //Requires: ajax_helper.js
 
 //BACKGROUND
