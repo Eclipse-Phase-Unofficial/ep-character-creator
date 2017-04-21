@@ -105,14 +105,19 @@
                     <!-- <span class="button_icone" data-icon="&#x2b;"></span> -->
                     Check
                 </button>
-                <button class="popupButton" id="exportTxtButton">
-                    <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
-                    TXT
-                </button>
-                <button class="popupButton" id="exportButton">
-                    <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
-                    PDF
-                </button>
+                <div class='dropdown'>
+                    <button class="popupButton" id="exportButton">
+                        <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
+                        Export
+                        &#x25BC;
+                    </button>
+                    <div class='dropdown-content'>
+                        <ul>
+                            <li><a id="exportPdfButton" href="#">PDF</a></li>
+                            <li><a id="exportTxtButton" href="#">TXT</a></li>
+                        </ul>
+                    </div>
+                </div>
                 <button class="popupButton" id="settingsButton">
                     <!-- <span class="button_icone" data-icon="&#x21;"></span> -->
                     Reset

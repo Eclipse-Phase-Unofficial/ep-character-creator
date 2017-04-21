@@ -31,7 +31,7 @@ $("#exportTxtButton").click(function() {
 });
 
 // Pdf export button
-$("#exportButton").click(function() {
+$("#exportPdfButton").click(function() {
         window.open("./exporter/pdfExporterV2_fpdf.php");
 });
 
