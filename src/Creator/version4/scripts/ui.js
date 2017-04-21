@@ -78,7 +78,7 @@ var desktopSlides = [
         { src: 'img/bg/bg2.jpg'},
         { src: 'img/bg/bg3.jpg'},
         //These are all free (at least non-commercial) use images or images in the public domain
-        { src: 'https://upload.wikimedia.org/wikipedia/commons/3/34/SFO_at_night.jpg'},     //Andrew Choy from Santa Clara, California (Creative Commons Attribution-Share Alike 2.0 Generic)
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/d/d6/San_Francisco_International_Airport_at_night.jpg'},     //Andrew Choy from Santa Clara, California (Creative Commons Attribution-Share Alike 2.0 Generic)
         { src: 'https://upload.wikimedia.org/wikipedia/commons/6/62/Starsinthesky.jpg'},    //Credit ESA (This is me giving credit, per the license)
         { src: 'https://upload.wikimedia.org/wikipedia/commons/0/00/Crab_Nebula.jpg'},                  //Credit NASA
         { src: 'https://upload.wikimedia.org/wikipedia/commons/7/7f/Ngc1999.jpg'},                      //Credit NASA
