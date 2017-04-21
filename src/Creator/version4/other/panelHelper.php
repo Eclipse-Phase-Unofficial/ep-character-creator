@@ -182,7 +182,11 @@ function endPanel(){
  */
 class li{
     private $html;
-    private $id;
+    private $id;            //Translates to html 'id ='
+    private $class;         //Translates to html 'class ='
+    private $cost;          //Translates to html 'data-cost ='
+    private $cost_isDefault;//Translates to html 'data-cost_isDefault ='
+    private $cost_units;    //Translates to html 'data-cost_units ='
 
     /**
      * Creat an li element.
@@ -192,8 +196,11 @@ class li{
      */
     function __construct($id,$class = ""){
         $this->id = $id;
-        $this->html  = "<li class='".$class."' id='".$id."'>";
-        $this->html .= $id;
+        $this->class = $class;
+
+        $this->cost = "";
+        $this->cost_isDefault = "";
+        $this->cost_units = "";
     }
 
     /**
@@ -206,6 +213,11 @@ class li{
      * @example $item->addCost(1): Gives "(1 cp)"
     */
     function addCost($cost,$isDefault = False, $units = "cp"){
+        $this->cost = $cost;
+        $this->cost_isDefault = $isDefault;
+        $this->cost_units = $units;
+
+
         $costDisplay = "(".$cost." ".$units.")";
         if($cost == 0){
             $costDisplay = "";
@@ -297,7 +309,11 @@ class li{
      * Get the final html of the li.
      */
     function getHtml(){
-        return $this->html . "</li>";
+        $output  = "<li class='".$this->class."' id='".$this->id."' data-cost='".$this->cost."' data-cost_isDefault='".$this->cost_isDefault."' data-cost_units='".$this->cost_units."' >";
+        $output .= $this->id;
+        $output .= $this->html;
+        $output .= "</li>";
+        return  $output;
     }
 }
 
