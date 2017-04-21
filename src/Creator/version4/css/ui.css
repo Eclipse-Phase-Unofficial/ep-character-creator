@@ -6,7 +6,7 @@
 /* Menu buttons, and dropdowns */
 
 #menu{
-    width: 100px;
+    width: 6.1em;   /*Same as .popupButton, but with a little extra for the 1px margin .popupButton has*/
     position: absolute;
     right: 0px;
     bottom: 0px;
