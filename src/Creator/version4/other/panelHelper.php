@@ -6,6 +6,7 @@
  */
 
 require_once('../other/bookPageLayer.php');
+require_once('../other/iconHelper.php');
 
 /**
  * A class to help in panel creation.
@@ -246,12 +247,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the checked icon.
      */
      function addPlusChecked($iconClass,$isChecked = False){
-        if($isChecked){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        $icon = Icon::$checked;
+        if(!$isChecked){
+            $icon = Icon::$plus;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
@@ -263,12 +263,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the minus icon.
      */
     function addPlusMinus($iconClass,$isPlus = True){
-        if($isPlus){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        $icon = Icon::$plus;
+        if(!$isPlus){
+            $icon = Icon::$minus;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3b;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
@@ -280,12 +279,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the 'X' icon.
      */
     function addPlusX($iconClass,$isPlus = True){
-        if($isPlus){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        $icon = Icon::$plus;
+        if(!$isPlus){
+            $icon = Icon::$X;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x39;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
      /**
@@ -297,12 +295,11 @@ class li{
      * @param $isChecked - Display the checked icon, or a blank space.
      */
      function addCheckedBlank($iconClass,$isChecked = False){
-        if($isChecked){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        $icon = Icon::$checked;
+        if(!$isChecked){
+            $icon = '';
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
