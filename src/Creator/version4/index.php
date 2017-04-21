@@ -130,6 +130,7 @@
         <style><?php include "css/normalize/normalize.min.css"; ?></style>
         <style><?php include "css/lato.css"; ?></style>
         <style><?php include "css/icomoon.css"; ?></style>
+        <style><?php include "css/ui.css"; ?></style>
         <style><?php include "css/main7.css"; ?></style>
 
         <script><?php include "scripts/jquery/jquery.min.js"; ?></script>

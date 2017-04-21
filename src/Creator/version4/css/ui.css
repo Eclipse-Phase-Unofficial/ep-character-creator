@@ -1,0 +1,51 @@
+/* ================= Static UI elements =================
+ * This is for elements that the user should see regardless of where they are on the site.
+ * For example, the menu buttons, and Points remaining display
+*/
+
+/* Menu buttons, and dropdowns */
+
+#menu{
+    width: 100px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 3;
+}
+
+.popupButton{
+    height: 3.5em;
+    width: 6em;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    text-transform: uppercase;
+    padding-left: 1.25em;
+/*  Make the button oval shaped */
+    border-radius: 2.5em;
+    -moz-border-radius: 2.5em;
+    -webkit-border-radius: 2.5em;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+/*  No top/bottom button shadow */
+    border-top: 0;
+    border-bottom: 0;
+    margin: 1px;
+}
+
+.popupButton:hover {
+  color: rgb(186, 0, 80);
+  background-color: rgba(254, 254, 254, .85);
+}
+
+.button_icone{
+    display: block;
+    line-height: 3em;
+    width: 3em;
+    height:3em;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 1em;
+    opacity: 1;
+}
