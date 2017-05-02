@@ -23,13 +23,11 @@ $config = new EPConfigFile('../../../php/config.ini');
 	<tr align="center">
 		<td>
 			<input style="line-height: 1em;" id="startCP" type="number" min="800" value="1000"> Creation points.
-			<br><br>
 		</td>
 	</tr>
 	
 	<tr align="center">
 		<td>
-			<br><br>
 			<button class="startButton popupInnerButton">
 		       			Begin!
 	        </button>
