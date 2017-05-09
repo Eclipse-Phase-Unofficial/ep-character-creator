@@ -1,5 +1,6 @@
 <?php
 
+$php_dir = dirname(__FILE__) . '/../../../php/';
 require_once '../../../php/EPCharacterCreator.php';
 require_once '../../../php/EPListProvider.php';
 require_once '../../../php/EPAtom.php';
@@ -16,6 +17,7 @@ require_once '../../../php/EPPsySleight.php';
 require_once '../../../php/EPCharacter.php';
 require_once '../../../php/EPEgo.php';
 require_once '../../../php/EPMorph.php';
+require_once( $php_dir . 'EPConfigFile.php');
 
 session_start();
 
@@ -57,6 +59,7 @@ function treatCreatorErrors(&$data,$creatorError){
 //INIT
 $return = array();
 $return['error'] = false;
+$configValues = new EPConfigFile($php_dir . 'config.ini');
 $provider = new EPListProvider('../../../php/config.ini');
 
 	//error_log(print_r($_POST,true));
@@ -71,7 +74,7 @@ if (isset($_POST['load_char'])) {
     }
     $saveFile = json_decode($_SESSION['fileToLoad'],true);
 
-    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $_SESSION['cc']->configValues->getValue('GeneralValues','versionNumberMin')){
+    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $configValues->getValue('GeneralValues','versionNumberMin')){
         treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
     }
     $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
@@ -79,10 +82,10 @@ if (isset($_POST['load_char'])) {
 
     $_SESSION['cc']->loadSavePack($saveFile);
     $_SESSION['cc']->back->loadSavePack($saveFile);
-    $_SESSION['cc']->back->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-    $_SESSION['cc']->setMaxRepValue($_SESSION['cc']->configValues->getValue('RulesValues','EvoMaxRepValue'));
-    $_SESSION['cc']->back->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-    $_SESSION['cc']->setMaxSkillValue($_SESSION['cc']->configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+    $_SESSION['cc']->back->setMaxRepValue($configValues->getValue('RulesValues','EvoMaxRepValue'));
+    $_SESSION['cc']->setMaxRepValue($configValues->getValue('RulesValues','EvoMaxRepValue'));
+    $_SESSION['cc']->back->setMaxSkillValue($configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+    $_SESSION['cc']->setMaxSkillValue($configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
 
     // Save pack and user both say we are in creation mode
     if ($_SESSION['cc']->creationMode == true && $_POST['creationMode'] == "true" ){
