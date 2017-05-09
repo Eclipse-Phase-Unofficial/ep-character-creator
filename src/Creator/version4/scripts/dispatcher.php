@@ -1,22 +1,22 @@
 <?php
 
 $php_dir = dirname(__FILE__) . '/../../../php/';
-require_once '../../../php/EPCharacterCreator.php';
-require_once '../../../php/EPListProvider.php';
-require_once '../../../php/EPAtom.php';
-require_once '../../../php/EPAptitude.php';
-require_once '../../../php/EPStat.php';
-require_once '../../../php/EPReputation.php';
-require_once '../../../php/EPConfigFile.php';
-require_once '../../../php/EPBonusMalus.php';
-require_once '../../../php/EPTrait.php';
-require_once '../../../php/EPBackground.php';
-require_once '../../../php/EPGear.php';
-require_once '../../../php/EPAi.php';
-require_once '../../../php/EPPsySleight.php';
-require_once '../../../php/EPCharacter.php';
-require_once '../../../php/EPEgo.php';
-require_once '../../../php/EPMorph.php';
+require_once( $php_dir . 'EPCharacterCreator.php');
+require_once( $php_dir . 'EPListProvider.php');
+require_once( $php_dir . 'EPAtom.php');
+require_once( $php_dir . 'EPAptitude.php');
+require_once( $php_dir . 'EPStat.php');
+require_once( $php_dir . 'EPReputation.php');
+require_once( $php_dir . 'EPConfigFile.php');
+require_once( $php_dir . 'EPBonusMalus.php');
+require_once( $php_dir . 'EPTrait.php');
+require_once( $php_dir . 'EPBackground.php');
+require_once( $php_dir . 'EPGear.php');
+require_once( $php_dir . 'EPAi.php');
+require_once( $php_dir . 'EPPsySleight.php');
+require_once( $php_dir . 'EPCharacter.php');
+require_once( $php_dir . 'EPEgo.php');
+require_once( $php_dir . 'EPMorph.php');
 require_once( $php_dir . 'EPConfigFile.php');
 
 session_start();
@@ -60,7 +60,7 @@ function treatCreatorErrors(&$data,$creatorError){
 $return = array();
 $return['error'] = false;
 $configValues = new EPConfigFile($php_dir . 'config.ini');
-$provider = new EPListProvider('../../../php/config.ini');
+$provider = new EPListProvider($php_dir . 'config.ini');
 
 	//error_log(print_r($_POST,true));
 	//error_log(print_r($_FILES,true));
@@ -77,8 +77,8 @@ if (isset($_POST['load_char'])) {
     if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $configValues->getValue('GeneralValues','versionNumberMin')){
         treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
     }
-    $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini");
-    $_SESSION['cc']->back = new EPCharacterCreator("../../../php/config.ini");
+    $_SESSION['cc'] = new EPCharacterCreator($php_dir . 'config.ini');
+    $_SESSION['cc']->back = new EPCharacterCreator($php_dir . 'config.ini');
 
     $_SESSION['cc']->loadSavePack($saveFile);
     $_SESSION['cc']->back->loadSavePack($saveFile);
@@ -125,7 +125,7 @@ if (isset($_POST['firstTime'])) {
 //SET CP FOR A NEW CHARACTER
 if(isset($_POST['setCP'])){
 	//CHARACTER CREATOR
-    $_SESSION['cc'] = new EPCharacterCreator("../../../php/config.ini",$_POST['setCP']);
+    $_SESSION['cc'] = new EPCharacterCreator($php_dir . 'config.ini',$_POST['setCP']);
     $_SESSION['ccRef'] = null;
     //error_log("NEW CHAR");
 }
