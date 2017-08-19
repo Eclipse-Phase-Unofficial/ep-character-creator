@@ -49,6 +49,7 @@ You will need:
 
 1. Ensure that the webserver is pointing to the src directory.
 2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessable!
+3. Set the Google Analytics Id.
 
 #### MySql Database Setup (For publicly accessable websites)
 1. create a MySql database

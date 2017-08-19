@@ -1,0 +1,80 @@
+/* ================= Static UI elements =================
+ * This is for elements that the user should see regardless of where they are on the site.
+ * For example, the menu buttons, and Points remaining display
+*/
+
+/* Menu buttons, and dropdowns */
+
+#menu{
+    width: 6.2em;   /*Same as .popupButton, but with a little extra for the 1px margin .popupButton has*/
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    z-index: 3;
+}
+
+.popupButton{
+    height: 3.5em;
+    width: 6.1em;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+/*  Make the button oval shaped */
+    border-radius: 2.5em;
+    -moz-border-radius: 2.5em;
+    -webkit-border-radius: 2.5em;
+    color: hsl(200,10%,40%);
+    background-color: rgba(242, 242, 242, .8);
+/*  No top/bottom button shadow */
+    border-top: 0;
+    border-bottom: 0;
+    margin: 1px;
+}
+
+.popupButton:hover {
+  color: rgb(186, 0, 80);
+  background-color: rgba(254, 254, 254, .85);
+}
+
+.button_icone{
+    display: block;
+    line-height: 3em;
+    width: 3em;
+    height:3em;
+    text-align: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 1em;
+    opacity: 1;
+}
+
+/* Hide and show dropdown menus*/
+.dropdown-content{
+    display: none;
+    position: absolute; /*Allows it to hover above other items on the page*/
+    width: 6.1em;         /*Same as .popupButton*/
+    background-color: rgba(242, 242, 242, .9);
+}
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+.dropdown-content ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.dropdown-content a{
+    display: block;
+    border-top: 1px solid rgba(245, 245, 245, .6);
+    border-bottom: 1px solid rgba(148,155,153,.6);
+    height:  1.5em;
+    /* Make the text look correct */
+    text-align: center;
+    text-decoration: none;
+    color: hsl(200,10%,40%);
+}
+.dropdown-content a:hover{
+    color: rgb(186, 0, 80);
+    background-color: rgba(254, 254, 254, 1);
+}

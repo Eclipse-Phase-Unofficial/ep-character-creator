@@ -45,45 +45,6 @@ function loadPopup(popup_name,url,clickToClose=false,reloadOnClose=false){
 }
 
 //**************************************************
-//**********Popup Buttons (on main page)**********
-
-//click on button load on main page
-$("#loadButton").click(function() {
-    loadPopup("#load_popup","popup-contents/load.php");
-});
-
-// Save button
-$("#saveButton").click(function() {
-    // window.open("./other/save.php");
-    loadPopup("#save_popup","popup-contents/save_popup.php");
-});
-
-// Check button
-$("#validateButton").click(function() {
-        loadPopup("#validation_popup", "popup-contents/validation.php",true);
-});
-
-// Txt export button
-$("#exportTxtButton").click(function() {
-        window.open("./exporter/txtExporter.php");
-});
-
-// Pdf export button
-$("#exportButton").click(function() {
-        window.open("./exporter/pdfExporterV2_fpdf.php");
-});
-
-// Reset button
-$("#settingsButton").click(function() {
-        loadPopup("reload_popup","popup-contents/reset.php",false,true);
-});
-
-// About button
-$("#aboutButton").click(function() {
-        loadPopup("#about_popup", "popup-contents/about.php",true);
-});
-
-//**************************************************
 
 // Close some popups by clicking on them
 $("#popup").click(function() {

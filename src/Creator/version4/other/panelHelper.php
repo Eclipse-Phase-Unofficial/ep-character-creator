@@ -6,6 +6,7 @@
  */
 
 require_once('../other/bookPageLayer.php');
+require_once('../other/iconHelper.php');
 
 /**
  * A class to help in panel creation.
@@ -182,7 +183,11 @@ function endPanel(){
  */
 class li{
     private $html;
-    private $id;
+    private $id;            //Translates to html 'id ='
+    private $class;         //Translates to html 'class ='
+    private $cost;          //Translates to html 'data-cost ='
+    private $cost_isDefault;//Translates to html 'data-cost_isDefault ='
+    private $cost_units;    //Translates to html 'data-cost_units ='
 
     /**
      * Creat an li element.
@@ -192,8 +197,11 @@ class li{
      */
     function __construct($id,$class = ""){
         $this->id = $id;
-        $this->html  = "<li class='".$class."' id='".$id."'>";
-        $this->html .= $id;
+        $this->class = $class;
+
+        $this->cost = "";
+        $this->cost_isDefault = "";
+        $this->cost_units = "";
     }
 
     /**
@@ -206,6 +214,11 @@ class li{
      * @example $item->addCost(1): Gives "(1 cp)"
     */
     function addCost($cost,$isDefault = False, $units = "cp"){
+        $this->cost = $cost;
+        $this->cost_isDefault = $isDefault;
+        $this->cost_units = $units;
+
+
         $costDisplay = "(".$cost." ".$units.")";
         if($cost == 0){
             $costDisplay = "";
@@ -234,12 +247,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the checked icon.
      */
      function addPlusChecked($iconClass,$isChecked = False){
-        if($isChecked){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        $icon = Icon::$checked;
+        if(!$isChecked){
+            $icon = Icon::$plus;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
@@ -251,12 +263,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the minus icon.
      */
     function addPlusMinus($iconClass,$isPlus = True){
-        if($isPlus){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        $icon = Icon::$plus;
+        if(!$isPlus){
+            $icon = Icon::$minus;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3b;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
@@ -268,12 +279,11 @@ class li{
      * @param $isPlus    - Display the plus icon, or the 'X' icon.
      */
     function addPlusX($iconClass,$isPlus = True){
-        if($isPlus){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x3a;'></span>";
+        $icon = Icon::$plus;
+        if(!$isPlus){
+            $icon = Icon::$X;
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x39;'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
      /**
@@ -285,19 +295,22 @@ class li{
      * @param $isChecked - Display the checked icon, or a blank space.
      */
      function addCheckedBlank($iconClass,$isChecked = False){
-        if($isChecked){
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."' data-icon='&#x2b;'></span>";
+        $icon = Icon::$checked;
+        if(!$isChecked){
+            $icon = '';
         }
-        else{
-            $this->html .= "<span class='addOrSelectedIcon ".$iconClass."' id='".$this->id."'></span>";
-        }
+        $this->html .= Icon::getHtml('addOrSelectedIcon '.$iconClass,$this->id,$icon);
      }
 
     /**
      * Get the final html of the li.
      */
     function getHtml(){
-        return $this->html . "</li>";
+        $output  = "<li class='".$this->class."' id='".$this->id."' data-cost='".$this->cost."' data-cost_isDefault='".$this->cost_isDefault."' data-cost_units='".$this->cost_units."' >";
+        $output .= $this->id;
+        $output .= $this->html;
+        $output .= "</li>";
+        return  $output;
     }
 }
 
