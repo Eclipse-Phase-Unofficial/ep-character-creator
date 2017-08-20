@@ -29,7 +29,7 @@
             <!-- Ego/Morph MENU - STATIC CONTENT-->
         	<section id="primary" class="panel">
         		<nav id="main-nav">
-    			<ul>
+                <ul class="mainlist">
                     <?php
                     $main_menu = array(
                         array("backgrounds","&#x2f;","Background"),
