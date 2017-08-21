@@ -29,6 +29,7 @@ class EPAtom {
     static $PSY = 'psy';
     
     private $atomUid;
+    private $typeID;
     public $type;
     
     public $occurence;
@@ -49,6 +50,7 @@ class EPAtom {
     
     function __construct($atType, $atName, $atDesc) {
        $this->atomUid = uniqid('Atom_'.$this->sanitize($atName).'_');
+       $this->typeID = md5($atName);
        $this->type = $atType;  
        $this->name = $atName;
        $this->description = $atDesc;
@@ -88,6 +90,7 @@ class EPAtom {
     
     function loadSavePack($savePack,$cc = null){
         $this->atomUid = $savePack['atomUid'];
+        $this->typeID = md5($savePack['name']);
 	    $this->type = $savePack['type'];    
 	    $this->name = $savePack['name'];
 	    $this->description = $savePack['description'];
@@ -118,6 +121,10 @@ class EPAtom {
         return $this->atomUid;
     }
 
+    public function getTypeID(){
+        return $this->atomUid;
+    }
+
     //Strip any character that could cause an issue in an id tag
     private function sanitize($input){
         $replace_char = '/[^A-Z,^a-z,^0-9]/';
@@ -130,7 +137,7 @@ class EPAtom {
      * It does this via checking if Uids are the same or different.
      */
     function match($atom){
-        if (strcmp($atom->getUid(),$this->atomUid) == 0){
+        if (strcmp($atom->getTypeID(),$this->typeID) == 0){
             return true;
         }
         return false;
