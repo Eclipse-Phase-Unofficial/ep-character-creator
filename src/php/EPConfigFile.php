@@ -8,8 +8,12 @@ class EPConfigFile {
     private $configFile;
     
     function __construct($file){
+        // Allow file path to be overridden by environment.
+        if(isset($_ENV['EPCC_CONFIG_PATH'])) {
+            $file = $_ENV['EPCC_CONFIG_PATH'];
+        }
         if(file_exists($file)){
-                $this->configFile = parse_ini_file ($file,TRUE);
+            $this->configFile = parse_ini_file ($file,TRUE);
         }
         else{
             error_log("Unable to open Config File: ".$file." does not exist!");
