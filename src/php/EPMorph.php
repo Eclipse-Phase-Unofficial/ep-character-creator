@@ -141,6 +141,25 @@ class EPMorph extends EPAtom {
         $this->buyInCreationMode = true;
         $this->implantReject = false;
     }
+
+    /**
+     * Match identical morphs, even if atom Uids differ
+     *
+     * Check if *almost all* morph values match.
+     * This is more expensive than EPAtom's version, but catches duplicate morphs with different Uids.
+     */
+    public function match($morph){
+        if (strcasecmp($morph->name,$this->name) == 0 &&
+            $morph->morphType===$this->morphType &&
+            $morph->maxApptitude===$this->maxApptitude &&
+            $morph->cost===$this->cost &&
+            $morph->cpCost===$this->cpCost &&
+            $morph->durability===$this->durability){
+                return true;
+        }
+        return false;
+    }
+
     function addGear($gear){
         if (isset($gear) && $gear->type == EPAtom::$GEAR){
             array_push($this->gears, $gear);
