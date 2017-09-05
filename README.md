@@ -59,6 +59,9 @@ Look at the console output, and wait for *mysqld* to start accepting connections
 epcc-db    | 2017-09-03T00:41:29.240576Z 0 [Note] mysqld: ready for connections.
 ```
 
+In the event that the database needs to be updated, run the command `docker volume rm epcharactercreator_epcc-db-data` to delete the database.
+Docker will automatically re-build it on next run
+
 <a name="Deployment"></a>
 ## Deployment
 You will need:
