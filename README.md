@@ -27,7 +27,7 @@ There is a single configuration file for EPCC: [src/php/config.ini](https://gith
 You will need to maintain a separate version of that file outside of this repository for your production environment.
 
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
-[src/sql/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
+[src/sql/init/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
 
 ## Testing
 You will need:
@@ -38,6 +38,26 @@ You will need:
 1. Set up the sqlite database as explained in the Deployment section.
 2. From a command prompt in the `src` directory run `php -S localhost:8080`
 3. Browse to http://localhost:8080
+
+### Testing with Docker
+
+If you have [Docker](https://www.docker.com/) installed, you can use the `docker-compose` command to run EPCC:
+
+```bash
+cd ep-character-creator/
+docker-compose up
+```
+
+This will host EPCC at [http://localhost:8080](http://localhost:8080).
+
+The first time you run the command, it will take a few minutes complete, but subsequent runs will be very fast.
+
+If you experience an issue with EPCC not rendering properly, then the database is probably still being seeded.
+Look at the console output, and wait for *mysqld* to start accepting connections. The line should look like this: 
+
+```
+epcc-db    | 2017-09-03T00:41:29.240576Z 0 [Note] mysqld: ready for connections.
+```
 
 <a name="Deployment"></a>
 ## Deployment
@@ -64,7 +84,7 @@ You will need:
 2. Import the database
 
     ```
-    mysql -h localhost -u epcc_www -p'0928sdGdsfa8#_+' EclipsePhaseData < sql/FullDatabase.sql
+    mysql -h localhost -u epcc_www -p'0928sdGdsfa8#_+' EclipsePhaseData < sql/init/FullDatabase.sql
     ```
 3. configure database access in php/config.ini
 
@@ -84,5 +104,5 @@ You will need:
 3. configure database access in php/config.ini
 
     ```ini
-    databasePDO = 'sqlite:../../../sql/FullDatabase.sqlite3'
+    databasePDO = 'sqlite:../../../sql/init/FullDatabase.sqlite3'
     ````
