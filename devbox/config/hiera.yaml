@@ -1,6 +1,0 @@
-:backends:
-  - yaml
-:yaml:
-  :datadir: /vagrant/devbox/config
-:hierarchy:
-  - epcc
