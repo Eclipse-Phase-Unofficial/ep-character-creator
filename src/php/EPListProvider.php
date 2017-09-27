@@ -19,15 +19,6 @@ require_once 'EPPsySleight.php';
  * @author Arthur Moore
  */
 class EPListProvider {
-    
-    static $BOOK_RIMWARD 		= "Rimward";
-    static $BOOK_PANOPTICON 	= "Panopticon";
-    static $BOOK_SUNWARD 		= "Sunward";
-    static $BOOK_GATECRASHING 	= "Gatecrashing";
-    static $BOOK_TRANSHUMAN 	= "Transhuman";
-    static $BOOK_ECLIPSEPHASE   = "Eclipse Phase";
-    
-    
     public $errors;
     private static $database;
     private $configValues;

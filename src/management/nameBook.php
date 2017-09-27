@@ -18,6 +18,7 @@
            require_once '../php/EPListProvider.php';
            require_once '../php/EPConfigFile.php';
            
+           require_once '../php/EPBook.php';
            require_once '../php/EPBackground.php';
            require_once '../php/EPTrait.php';
            require_once '../php/EPGear.php';
@@ -98,12 +99,12 @@
     
             <label>Book </label>
             <select name="selectedBook">
-               	<option value="<?php echo EPListProvider::$BOOK_ECLIPSEPHASE ?>">"<?php echo EPListProvider::$BOOK_ECLIPSEPHASE ?>"</option> 
-                <option value="<?php echo EPListProvider::$BOOK_RIMWARD ?>">"<?php echo EPListProvider::$BOOK_RIMWARD ?>"</option> 
-                <option value="<?php echo EPListProvider::$BOOK_PANOPTICON ?>">"<?php echo EPListProvider::$BOOK_PANOPTICON ?>"</option> 
-                <option value="<?php echo EPListProvider::$BOOK_SUNWARD ?>">"<?php echo EPListProvider::$BOOK_SUNWARD ?>"</option> 
-                <option value="<?php echo EPListProvider::$BOOK_GATECRASHING ?>">"<?php echo EPListProvider::$BOOK_GATECRASHING ?>"</option> 
-                <option value="<?php echo EPListProvider::$BOOK_TRANSHUMAN ?>">"<?php echo EPListProvider::$BOOK_TRANSHUMAN ?>"</option>   
+                <option value="<?php echo EPBook::$BOOK_ECLIPSEPHASE ?>">"<?php echo EPBook::$BOOK_ECLIPSEPHASE ?>"</option>
+                <option value="<?php echo EPBook::$BOOK_RIMWARD ?>">"<?php echo EPBook::$BOOK_RIMWARD ?>"</option>
+                <option value="<?php echo EPBook::$BOOK_PANOPTICON ?>">"<?php echo EPBook::$BOOK_PANOPTICON ?>"</option>
+                <option value="<?php echo EPBook::$BOOK_SUNWARD ?>">"<?php echo EPBook::$BOOK_SUNWARD ?>"</option>
+                <option value="<?php echo EPBook::$BOOK_GATECRASHING ?>">"<?php echo EPBook::$BOOK_GATECRASHING ?>"</option>
+                <option value="<?php echo EPBook::$BOOK_TRANSHUMAN ?>">"<?php echo EPBook::$BOOK_TRANSHUMAN ?>"</option>
             </select>
             <br>
             <label>Background - faction</label>
