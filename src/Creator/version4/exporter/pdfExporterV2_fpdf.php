@@ -118,7 +118,7 @@
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
-                $egoNegTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
+                $egoNegTraits = getNegTraits($_SESSION['cc']->character->ego->getTraits());
                 $formattedNegTraits = formatGearData($egoNegTraits);
                 $pdf->setXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
