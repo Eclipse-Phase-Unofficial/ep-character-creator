@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE `ai` (
   `name` varchar(100) NOT NULL,
   `desc` text NOT NULL,

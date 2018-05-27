@@ -101,7 +101,8 @@ You will need:
 1. Create a sqlite database
 
     ```bash
-    cat FullDatabase.sql | sed 's/\\n/ /g' | sqlite3 FullDatabase.sqlite3
+    sed 's/\\n/ /g' FullDatabase.sql > tmp.sql
+    sqlite3 --init tmp.sql FullDatabase.sqlite3
     ```
 
 3. configure database access in php/config.ini
