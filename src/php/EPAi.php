@@ -1,5 +1,8 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * AIs and Muses the player can use.
  *
@@ -7,10 +10,22 @@ require_once 'EPAtom.php';
  *
  * @author reinhardt
  */
-class EPAi extends EPAtom{   
+class EPAi extends EPAtom{
+    /**
+     * @var EPAptitude[]
+     */
     public $aptitudes;
+    /**
+     * @var EPSkill[]
+     */
     public $skills;
+    /**
+     * @var EPStat[]
+     */
     public $stats;
+    /**
+     * @var EPBonusMalus[]
+     */
     public $bonusMalus;
 
     function getSavePack(){
@@ -85,4 +100,3 @@ class EPAi extends EPAtom{
         return false;
     }
 }
-?>

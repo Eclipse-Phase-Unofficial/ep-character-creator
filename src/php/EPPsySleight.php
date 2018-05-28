@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * Psy Sleights used in the game
@@ -110,5 +113,3 @@ class EPPsySleight extends EPAtom{
         return false;
     }
 }
-
-?>

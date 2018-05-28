@@ -1,7 +1,10 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-include('../other/bonusMalusLayer.php');
-require_once('../other/panelHelper.php');
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
+use EclipsePhaseCharacterCreator\Site\other\Panel;
 
 session_start();
 
@@ -11,7 +14,7 @@ $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentBck->name);
 $myPanel->addDescription($currentBck->description);
 $myPanel->addTraits($currentBck->traits);
-$myPanel->addRawHtml( getBMHtml($currentBck->bonusMalus,$currentBck->name,'origine') );
+$myPanel->addRawHtml( Helpers::getBMHtml($currentBck->bonusMalus,$currentBck->name,'origine') );
 echo $myPanel->getHtml();
-echo endPanel();
+echo Panel::endPanel();
 ?>

@@ -1,13 +1,9 @@
 <?php
+declare(strict_types=1);
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
- * Description of EPValidation
- *
  * @author Jige_SSD
  */
 class EPValidation {
@@ -41,5 +37,3 @@ class EPValidation {
         $this->items[EPValidation::$CREDIT_AMOUNT_ENOUGH] = false;
     }
 }
-
-?>

@@ -1,5 +1,10 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php';
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPValidation;
+
 session_start();
 
 $isValid = $_SESSION['cc']->checkValidation();

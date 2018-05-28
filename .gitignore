@@ -20,7 +20,5 @@
 #Generated API documenation
 Documentation/api/
 
-#Ignore all composer files
-composer.json
-composer.lock
+#Ignore composer provided files
 vendor/

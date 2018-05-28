@@ -1,5 +1,10 @@
 <?php
-    require_once '../../php/EPListProvider.php';
+declare(strict_types=1);
+
+require_once (__DIR__ . "/../../../vendor/autoload.php");
+
+use EclipsePhaseCharacterCreator\Backend\EPListProvider;
+
     error_reporting(0);
     $provider = new EPListProvider('../../php/config.ini');
     function createDataURI($image,$image_type){

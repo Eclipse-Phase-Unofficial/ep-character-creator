@@ -1,9 +1,18 @@
 <?php
+declare(strict_types=1);
 
-	require_once '../../../php/EPCharacterCreator.php';
-    require_once '../../../php/EPFileUtility.php';
-    require_once '../../../php/EPBook.php';
-	session_start();
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
+use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
+use EclipsePhaseCharacterCreator\Backend\EPBook;
+use EclipsePhaseCharacterCreator\Backend\EPGear;
+use EclipsePhaseCharacterCreator\Backend\EPMorph;
+use EclipsePhaseCharacterCreator\Backend\EPPsySleight;
+use EclipsePhaseCharacterCreator\Backend\EPSkill;
+use EclipsePhaseCharacterCreator\Backend\EPTrait;
+
+session_start();
 	
 	if(isset($_SESSION['cc']))
 	{
@@ -200,7 +209,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = getNegTraits($_SESSION['cc']->character->ego->getTraits());
+				$egoNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					echo formatResult($trait->name)
 					.$tab
@@ -216,7 +225,7 @@
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
+				$egoNegTraits = EPTrait::getPositiveTraits($_SESSION['cc']->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					 echo formatResult($trait->name)
 					.$tab
@@ -378,7 +387,7 @@
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = getNegTraits($_SESSION['cc']->getCurrentTraits($morph));
+						$morphNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							echo formatResult($trait->name)
 							.$tab
@@ -394,7 +403,7 @@
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = getPosTraits($_SESSION['cc']->getCurrentTraits($morph));
+						$morphNegTraits = EPTrait::getPositiveTraits($_SESSION['cc']->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							 echo formatResult($trait->name)
 							.$tab
@@ -796,6 +805,3 @@
         $book = new EPBook($atomeName);
 		return $book->getPrintableName();
 	}
-	
-	
-?>

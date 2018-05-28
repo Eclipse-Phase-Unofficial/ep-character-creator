@@ -1,5 +1,7 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * The character's morph.
@@ -184,5 +186,3 @@ class EPMorph extends EPAtom {
         return array_merge($this->gears,$this->additionalGears);
     }
 }
-
-?>

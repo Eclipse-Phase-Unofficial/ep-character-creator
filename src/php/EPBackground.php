@@ -1,5 +1,8 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * The Character's Background and Faction
  *
@@ -76,5 +79,3 @@ class EPBackground extends EPAtom{
         $this->obligations = $obligations;
     }
 }
-
-?>

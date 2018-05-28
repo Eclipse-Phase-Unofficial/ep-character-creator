@@ -1,5 +1,7 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * The character's gear.
@@ -228,5 +230,3 @@ class EPGear extends EPAtom{
         return false;
     }
 }
-
-?>

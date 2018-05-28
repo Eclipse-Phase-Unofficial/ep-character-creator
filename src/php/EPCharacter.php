@@ -1,6 +1,8 @@
 <?php
-require_once 'EPEgo.php';
-require_once 'EPMorph.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * The character's general information.
  *
@@ -68,5 +70,3 @@ class EPCharacter {
         $this->note = '';
     }    
 }
-
-?>

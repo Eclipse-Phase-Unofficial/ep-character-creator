@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * Class manager for config file
  * 
@@ -44,4 +48,3 @@ class EPConfigFile {
         return "Version ".$versionNumber." ".$releaseDate;
     }
 }
-?>

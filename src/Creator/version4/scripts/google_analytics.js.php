@@ -1,7 +1,13 @@
 <?php
+declare(strict_types=1);
 //PHP Is Used in this javascript file to set the tracking ID from config.ini
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
+
 $php_dir = dirname(__FILE__) . '/../../../php/';
-require_once( $php_dir . 'EPConfigFile.php');
+
 $configValues = new EPConfigFile($php_dir . 'config.ini');
 $id = $configValues->getValue('GeneralValues','googleAnalyticsId');
 ?>

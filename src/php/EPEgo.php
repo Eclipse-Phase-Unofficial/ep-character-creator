@@ -1,5 +1,7 @@
 <?php
-require_once("EPSkill.php");
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * The Character's Ego.
@@ -22,24 +24,61 @@ class EPEgo {
     public $creditSoftGearMod;
     public $creditPsyMod;  
     public $creditPurchased;
-    
-   //EPAtom object 
+
+    /**
+     * @var EPAtom
+     */
     public $faction;
+    /**
+     * @var EPAtom
+     */
     public $background;
-    
-    //array of strings
+
+    /**
+     * @var string[]
+     */
     public $motivations;
-   
-    //EPAtom objects arrays
+    /**
+     * @var EPAtom[]
+     */
     public $aptitudes;
+    /**
+     * @var EPAtom[]
+     */
     public $skills;
+    /**
+     * @var EPAtom[]
+     */
     public $reputations;
+    /**
+     * @var EPAtom[]
+     */
     public $stats;
-    public $traits;             //All the traits granted by faction and background (not user modifiable)
-    public $additionalTraits;   //All the traits the user has added
+    /**
+	 * All the traits granted by faction and background (not user modifiable)
+     * @var EPAtom[]
+     */
+    public $traits;
+    /**
+	 * All the traits the user has added
+     * @var EPAtom[]
+     */
+    public $additionalTraits;
+    /**
+     * @var EPAtom[]
+     */
     public $softGears;
+    /**
+     * @var EPAtom[]
+     */
     public $ais;
+    /**
+     * @var EPAtom[]
+     */
     public $defaultAis;
+    /**
+     * @var EPAtom[]
+     */
     public $psySleights;
     
     function getSavePack(){
@@ -267,7 +306,7 @@ class EPEgo {
             }
         }
 
-        usort($res, "compSkilByPrefixName");
+        usort($res, [EPSkill::class, 'compareSkillsByPrefixName']);
         return $res;
     }
 
@@ -282,10 +321,8 @@ class EPEgo {
         }
 
 
-        usort($res, "compSkilByPrefixName");
+        usort($res, [EPSkill::class, 'compareSkillsByPrefixName']);
 
         return $res;
     }
 }
-
-?>

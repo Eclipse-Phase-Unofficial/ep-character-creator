@@ -1,6 +1,10 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php';
-require_once('../other/traitLayer.php');
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
+
 session_start();
 ?>
 <ul class="mainlist" id="postraits">
@@ -9,7 +13,7 @@ session_start();
         $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
          foreach($_SESSION['cc']->getTraits() as $m){
             if($m->isEgo() && $m->cpCost == 0){
-                echo getDynamicTraitLi($m,$currentTraits,$defaultTraits,'neuTrait','addSelNeuTrait');
+                echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'neuTrait','addSelNeuTrait');
             }
          }
     ?>

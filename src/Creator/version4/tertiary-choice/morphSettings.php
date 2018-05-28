@@ -1,11 +1,13 @@
 <?php
-	require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-	require_once '../../../php/EPAtom.php';
-	include('../other/bonusMalusLayer.php');
-	include('../other/bookPageLayer.php');
-	session_start();
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPAtom;
+
+    session_start();
 	$currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
-	$currentMorph = getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
+	$currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 	if($currentMorph == null)
 	{
 		$currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);

@@ -1,5 +1,7 @@
 <?php
-require_once('EPListProvider.php');
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * A container for an object's book and page number.
@@ -60,4 +62,3 @@ class EPBook {
         return $this->bookName." P. ".$this->page;
      }
 }
-?>

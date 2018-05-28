@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * EPAtom is the generic object class of the character creator, almost everything is subclassed from it.
  *
@@ -186,67 +190,66 @@ class EPAtom {
         }
         return false;
     }
-}
 
-//**********HELPER FUNCTIONS**********//
 
-/**
- * Find an Atom with a particular name (potentially dangerous, do not use for skills)
- */
-function getAtomByName($array,$name){
-    if(!empty($array)){
-        foreach ($array as $a){
-            if (strcmp($a->name,$name) == 0){
-                return $a;
+    /**
+     * Find an Atom with a particular name (potentially dangerous, do not use for skills)
+     */
+    public static function getAtomByName($array,$name){
+        if(!empty($array)){
+            foreach ($array as $a){
+                if (strcmp($a->name,$name) == 0){
+                    return $a;
+                }
             }
         }
+        return null;
     }
-    return null;
-}
 
-/**
- * Find an atom by unique id (safe)
- */
-function getAtomByUid($array,$id){
-    if(!empty($array)){
-        foreach ($array as $a){
-            if (strcmp($a->getUid(),$id) == 0){
-                return $a;
+    /**
+     * Find an atom by unique id (safe)
+     */
+    public static function getAtomByUid($array,$id){
+        if(!empty($array)){
+            foreach ($array as $a){
+                if (strcmp($a->getUid(),$id) == 0){
+                    return $a;
+                }
             }
         }
+        return null;
     }
-    return null;
-}
 
-// TODO:  Make this object oriented
-function isInGroups($atom,$groups){
-    if (!empty($atom->groups)){
-        foreach ($atom->groups as $grp){
-            if (is_array($groups)){
-                foreach ($groups as $g){
-                    if (strcmp($grp,$g) == 0){
+    // TODO:  Make this non static
+    public static function isInGroups($atom,$groups){
+        if (!empty($atom->groups)){
+            foreach ($atom->groups as $grp){
+                if (is_array($groups)){
+                    foreach ($groups as $g){
+                        if (strcmp($grp,$g) == 0){
+                            return true;
+                        }
+                    }
+                }else{
+                    if (strcmp($grp,$groups) == 0){
                         return true;
                     }
                 }
-            }else{
-                if (strcmp($grp,$groups) == 0){
-                        return true;
-                }
             }
         }
+        return false;
     }
-    return false;
-}
 
-// Get all the members of a group from an array
-// May be expensive (not optimized at all)
-function getGroupMembers($array,$groups){
-    $groupArr = array();
-    foreach ($array as $i){
-        if(isInGroups($i,$groups)){
-            $i->addToArray($groupArr);
+    // Get all the members of a group from an array
+    // May be expensive (not optimized at all)
+    public static function getGroupMembers($array,$groups){
+        $groupArr = array();
+        foreach ($array as $i){
+            if(static::isInGroups($i,$groups)){
+                $i->addToArray($groupArr);
+            }
         }
+        return $groupArr;
     }
-    return $groupArr;
+
 }
-?>

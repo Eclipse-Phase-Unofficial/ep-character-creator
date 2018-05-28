@@ -1,25 +1,20 @@
 <?php
+declare(strict_types=1);
 
-$php_dir = dirname(__FILE__) . '/../../../php/';
-require_once( $php_dir . 'EPCharacterCreator.php');
-require_once( $php_dir . 'EPListProvider.php');
-require_once( $php_dir . 'EPAtom.php');
-require_once( $php_dir . 'EPAptitude.php');
-require_once( $php_dir . 'EPStat.php');
-require_once( $php_dir . 'EPReputation.php');
-require_once( $php_dir . 'EPConfigFile.php');
-require_once( $php_dir . 'EPBonusMalus.php');
-require_once( $php_dir . 'EPTrait.php');
-require_once( $php_dir . 'EPBackground.php');
-require_once( $php_dir . 'EPGear.php');
-require_once( $php_dir . 'EPAi.php');
-require_once( $php_dir . 'EPPsySleight.php');
-require_once( $php_dir . 'EPCharacter.php');
-require_once( $php_dir . 'EPEgo.php');
-require_once( $php_dir . 'EPMorph.php');
-require_once( $php_dir . 'EPConfigFile.php');
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPCharacterCreator;
+use EclipsePhaseCharacterCreator\Backend\EPCreatorErrors;
+use EclipsePhaseCharacterCreator\Backend\EPListProvider;
+use EclipsePhaseCharacterCreator\Backend\EPSkill;
+use EclipsePhaseCharacterCreator\Backend\EPStat;
+use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
+use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
+use EclipsePhaseCharacterCreator\Backend\EPGear;
+use EclipsePhaseCharacterCreator\Backend\EPAtom;
 
 session_start();
+$php_dir = dirname(__FILE__) . '/../../../php/';
 
 header('Content-type: application/json');
 
@@ -447,14 +442,14 @@ if(isset($_POST['remSpeSkill'])){
 
 //HOVER MORPH
 if (isset($_POST['morphHover'])) {
-	   $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphHover']);
+	   $morph = EPAtom::getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphHover']);
        $return['title'] = $morph->name;
 	   $return['desc'] = $morph->description;
 }
 
 //ADD / REMOVE MORPH
 if (isset($_POST['addRemMorph'])) {
-    $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['addRemMorph']);
+    $morph = EPAtom::getAtomByName($_SESSION['cc']->getMorphs(),$_POST['addRemMorph']);
     if(!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
@@ -476,7 +471,7 @@ if (isset($_POST['addRemMorph'])) {
 
 //GET MORPH SETTINGS
 if (isset($_POST['morphSettings'])) {
-    $morph = getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
+    $morph = EPAtom::getAtomByName($_SESSION['cc']->character->morphs,$_POST['morphSettings']);
     if(!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
@@ -498,7 +493,7 @@ if (isset($_POST['currentMorphUsed'])) {
 
 //SET MORPH SETTINGS
 if (isset($_POST['morphSettingsChange'])) {
-    $morph = getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
+    $morph = EPAtom::getAtomByName($_SESSION['cc']->getMorphs(),$_POST['morphSettingsChange']);
     if(!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
@@ -805,24 +800,24 @@ if(isset($_POST['addTargetTo'])){
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "trait"){
-		$currentTrait = getAtomByName($_SESSION['cc']->getCurrentTraits(),$_POST['parentName']);
+		$currentTrait = EPAtom::getAtomByName($_SESSION['cc']->getCurrentTraits(),$_POST['parentName']);
 		if(!isset($currentTrait)){
 			$currentTrait = $_SESSION['cc']->getTraitByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentTrait->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morph"){
-		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_POST['parentName']);
+		$currentMorph = EPAtom::getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_POST['parentName']);
 		if(!isset($currentMorph)){
 			$currentMorph = $_SESSION['cc']->getMorphByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
+		$currentMorph = EPAtom::getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
         $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
 		if (!empty($traits)){
-                    $currentMorphTrait = getAtomByName($traits,$_POST['parentName']);
+                    $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;          
                 }                
 	}
@@ -831,11 +826,11 @@ if(isset($_POST['addTargetTo'])){
 	}
 	
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
-		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
+		$candidatParent = EPAtom::getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
         if(!isset($candidatParent)){
 			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Unkown Parent!",EPCreatorErrors::$SYSTEM_ERROR));
 		}
-		$candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
+		$candidat = EPAtom::getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
         if(!isset($candidat)){
 			treatCreatorErrors($return,new EPCreatorErrors("Can not add Bonus Malus: Could not find Bonus Malus",EPCreatorErrors::$SYSTEM_ERROR));
 		}
@@ -843,7 +838,7 @@ if(isset($_POST['addTargetTo'])){
 			$skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
             // Database skills (non user selectable) use name/prefix instead of Uid
             if(!isset($skill)){
-                $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+                $skill = EPSkill::getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
             }
             if(!isset($skill)){
 				treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
@@ -854,7 +849,7 @@ if(isset($_POST['addTargetTo'])){
 		$candidat->selected = true;
 	}
 	else{
-        $candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
+        $candidat = EPAtom::getAtomByUid($bonusMalusArray,$_POST['bmId']);
 
         if(!isset($candidat)){
             treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
@@ -865,7 +860,7 @@ if(isset($_POST['addTargetTo'])){
             $skill = $_SESSION['cc']->getSkillByAtomUid($_POST['targetVal']);
             // Database skills (non user selectable) use name/prefix instead of Uid
             if(!isset($skill)){
-                $skill = getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+                $skill = EPSkill::getSkill($_SESSION['cc']->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
             }
             if(!isset($skill)){
                 treatCreatorErrors($return,new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
@@ -895,10 +890,10 @@ if(isset($_POST['removeTargetFrom'])){
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
+		$currentMorph = EPAtom::getAtomByName($_SESSION['cc']->getCurrentMorphs(),$_SESSION['currentMorph']);
                 $traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
                 if (!empty($traits)){
-                    $currentMorphTrait = getAtomByName($traits,$_POST['parentName']);
+                    $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;                    
                 }
 	}
@@ -906,11 +901,11 @@ if(isset($_POST['removeTargetFrom'])){
 		treatCreatorErrors($return,new EPCreatorErrors("Unknown parent type",EPCreatorErrors::$SYSTEM_ERROR));
 	}
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
-		$candidatParent = getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
+		$candidatParent = EPAtom::getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
         if(!isset($candidatParent)){
              treatCreatorErrors($return,new EPCreatorErrors("Could not find parentBmId: ".$_POST['parentBmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
         }
-        $candidat = getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
+        $candidat = EPAtom::getAtomByUid($candidatParent->bonusMalusTypes,$_POST['bmId']);
         if(!isset($candidat)){
             treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentBmId: ".$_POST['parentBmId'],EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -920,7 +915,7 @@ if(isset($_POST['removeTargetFrom'])){
         $candidat->selected = false;
 	}
 	else{
-		$candidat = getAtomByUid($bonusMalusArray,$_POST['bmId']);
+		$candidat = EPAtom::getAtomByUid($bonusMalusArray,$_POST['bmId']);
         if(!isset($candidat)){
             treatCreatorErrors($return,new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -940,14 +935,14 @@ if(isset($_POST['addOccurence'])){
 	}
 	
 	if($_POST['addOccurence'] == "SOFT"){
-		$currentOccu = getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentSoftName'],$currentOccu+1)){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
 	}
 	
 	if($_POST['addOccurence'] == "MORPH"){
-		$currentOccu = getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu+1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
@@ -967,14 +962,14 @@ if(isset($_POST['remOccurence'])){
 	}
 	
 	if($_POST['remOccurence'] == "SOFT"){
-		$currentOccu = getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName($_SESSION['cc']->getEgoSoftGears(),$_SESSION['currentSoftName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentSoftName'],$currentOccu-1)){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}
 	}
 	
 	if($_POST['remOccurence'] == "MORPH"){
-		$currentOccu = getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName($_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!$_SESSION['cc']->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu-1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, $_SESSION['cc']->getLastError());
 		}

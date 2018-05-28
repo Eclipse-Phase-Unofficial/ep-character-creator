@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * The players reputation with a single faction
@@ -92,5 +95,3 @@ class EPReputation extends EPAtom{
         
     }
 }
-
-?>

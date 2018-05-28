@@ -1,9 +1,7 @@
 <?php
-/**
- *  Icon helper functions
- *
- *  Instead of directly writing HTML, we use these helper functions whenever possible
- */
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Site\other;
 
 /**
  * A class to help in adding icons to the page
@@ -20,7 +18,7 @@ class Icon{
     /**
      * A function to enable Python style string formatting
      */
-    private function format($in_string,$vars){
+    private static function format($in_string,$vars){
         $output = $in_string;
         foreach ($vars as $key => $value) {
             $output = str_replace('{'.$key.'}',$value,$output);
@@ -37,6 +35,6 @@ class Icon{
             'id' => $id,
             'icon' => $icon
         );
-        return Icon::format(Icon::$html_template,$vars);
+        return static::format(Icon::$html_template,$vars);
     }
 }

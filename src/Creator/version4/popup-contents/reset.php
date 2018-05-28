@@ -1,5 +1,10 @@
 <?php
-require_once '../../../php/EPConfigFile.php';
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
+
 $config = new EPConfigFile('../../../php/config.ini');
 ?>
 <table class="popup_table" id="table_reset" align="center">

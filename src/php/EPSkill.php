@@ -1,5 +1,7 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * A skill used by the player.
@@ -198,37 +200,33 @@ class EPSkill extends EPAtom{
     public function isActive(){
         return $this->skillType == EPSkill::$ACTIVE_SKILL_TYPE;
     }
-}
 
-//**********HELPER FUNCTIONS**********//
-
-/**
- * Find a skill in an array.
- *
- * Skills are unique by name AND prefix, so both are important.
- */
-function getSkill($list,$name,$prefix=''){
-    if (is_array($list)){
-        foreach ($list as $l){
-            if (strcasecmp($l->name,$name) == 0 && strcasecmp($l->prefix,$prefix) == 0){
-                return $l;
+    /**
+     * Find a skill in an array.
+     *
+     * Skills are unique by name AND prefix, so both are important.
+     */
+    public static function getSkill($list,$name,$prefix=''){
+        if (is_array($list)){
+            foreach ($list as $l){
+                if (strcasecmp($l->name,$name) == 0 && strcasecmp($l->prefix,$prefix) == 0){
+                    return $l;
+                }
             }
         }
+        return null;
     }
-    return null;
+
+
+    /**
+     * Use with usort to sort skills
+     *
+     * Usage:  usort($res, [EPSkill::class, 'compareSkillsByPrefixName'])
+     */
+    public static function compareSkillsByPrefixName($a, $b){
+        $an = $a->prefix.$a->name;
+        $bn = $b->prefix.$b->name;
+
+        return strcmp($an, $bn);
+    }
 }
-
-
-/**
- * Use with usort to sort skills
- *
- * Usage:  usort($res, "compSkilByPrefixName")
- */
-function compSkilByPrefixName($a, $b){
-    $an = $a->prefix.$a->name;
-    $bn = $b->prefix.$b->name;
-
-    return strcmp($an, $bn);
-}
-
-?>

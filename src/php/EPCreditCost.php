@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * Simple data struct to translate cost levels into actual values
  *
@@ -20,5 +24,3 @@ class EPCreditCost {
         $this->value = $cost;
     }
 }
-
-?>

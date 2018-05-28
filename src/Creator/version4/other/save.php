@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
 
-require_once '../../../php/EPCharacterCreator.php';
-require_once '../../../php/EPFileUtility.php';
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
+
 session_start();
 
 $filename = $_POST["saveName"];

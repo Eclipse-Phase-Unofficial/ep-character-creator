@@ -1,12 +1,15 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php'; //BMD stand for : Bonus Malus Description
-require_once '../../../php/EPAtom.php';
-include('../other/bonusMalusLayer.php');
-require_once('../other/panelHelper.php');
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPAtom;
+use EclipsePhaseCharacterCreator\Site\other\Panel;
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
 
 session_start();
 $currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
-$currentMorph = getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
+$currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 if($currentMorph == null){
     $currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
 }
@@ -34,7 +37,6 @@ $myPanel->startDescriptivePanel($currentMorph->name);
 $myPanel->addDescription($currentMorph->description);
 $myPanel->addTraits($traits);
 $myPanel->addRawHtml( getImplantHtml($currentMorph->gears) );
-$myPanel->addRawHtml( getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph') );
+$myPanel->addRawHtml( Helpers::getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph') );
 echo $myPanel->getHtml();
-echo endPanel();
-?>
+echo Panel::endPanel();

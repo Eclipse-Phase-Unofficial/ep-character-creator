@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /*
  * To change this template, choose Tools | Templates
@@ -113,34 +116,30 @@ class EPTrait extends EPAtom{
     function isMorph(){
         return $this->traitEgoMorph == EPTrait::$MORPH_TRAIT;
     }
-}
 
-//**********HELPER FUNCTIONS**********//
-
-/**
- * Get all positive traits from an array
- */
-function getPosTraits($array){
-    $result = array();
-    foreach($array as $t)
-    {
-        if($t->isPositive())
-            array_push($result, $t);
+    /**
+     * Get all positive traits from an array
+     */
+    static function getPositiveTraits($array){
+        $result = array();
+        foreach($array as $t)
+        {
+            if($t->isPositive())
+                array_push($result, $t);
+        }
+        return $result;
     }
-    return $result;
-}
 
-/**
- * Get all negative traits from an array
- */
-function getNegTraits($array){
-    $result = array();
-    foreach($array as $t)
-    {
-        if($t->isNegative())
-            array_push($result, $t);
+    /**
+     * Get all negative traits from an array
+     */
+    static function getNegativeTraits($array){
+        $result = array();
+        foreach($array as $t)
+        {
+            if($t->isNegative())
+                array_push($result, $t);
+        }
+        return $result;
     }
-    return $result;
 }
-
-?>

@@ -1,16 +1,7 @@
 <?php
-require_once 'EPConfigFile.php';
-require_once 'EPCharacter.php';
-require_once 'EPEgo.php';
-require_once 'EPAptitude.php';
-require_once 'EPStat.php';
-require_once 'EPListProvider.php';
-require_once 'EPSkill.php';
-require_once 'EPBackground.php';
-require_once 'EPTrait.php';
-require_once 'EPValidation.php';
-require_once 'EPCreatorErrors.php';
-require_once 'EPCreditCost.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * Character managment class
@@ -293,10 +284,10 @@ class EPCharacterCreator {
     }
 
     function getCurrentMorphsByName($name){
-        return getAtomByName($this->character->morphs,$name);
+        return EPAtom::getAtomByName($this->character->morphs,$name);
     }
     function getTraitByName($name){
-        return getAtomByName($this->traits,$name);
+        return EPAtom::getAtomByName($this->traits,$name);
     }
      function havePsiSleight($psiName){
         if (is_array($this->character->ego->psySleights)){
@@ -304,9 +295,9 @@ class EPCharacterCreator {
                 if (strcmp($p->name, $psiName) == 0){
                     return true;
                 }
-            }            
+            }
         }
-        return false;                
+        return false;
     }
 
     // If the morph has the trait (includes default and user added traits)
@@ -326,95 +317,95 @@ class EPCharacterCreator {
             }
             if (!$ai->isInArray($this->character->ego->ais)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this AI !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             $ai->removeFromArray($this->character->ego->ais);
             $this->adjustAll();
-            return true;            
-        }else{            
+            return true;
+        }else{
             if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
             }
             if (!$ai->isInArray($this->character->ego->ais)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this AI !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             $ai->removeFromArray($this->character->ego->ais);
             $this->evoCrePoint += $ai->getCost() * $ai->occurence;
             $this->adjustAll();
-            return true;            
+            return true;
         }
     }
-    function addGear($gear, &$morph){   
+    function addGear($gear, &$morph){
         if ($this->creationMode){
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = $this->listProvider->getGearByName($gear->name);   
+            $gearToAdd = $this->listProvider->getGearByName($gear->name);
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
             }else{
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Implant Rejection Level II !)', EPCreatorErrors::$RULE_ERROR));
-                return false;                
+                return false;
             }
             $this->adjustAll();
-            return true;            
+            return true;
         }else{
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = $this->listProvider->getGearByName($gear->name);  
+            $gearToAdd = $this->listProvider->getGearByName($gear->name);
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
-            }            
+            }
             $this->evoCrePoint -= $gearToAdd->getCost();
             $this->adjustAll();
-            return true;            
+            return true;
         }
     }
     function addFreeGear($gear, &$morph){
         if ($this->creationMode){
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }             
+                return false;
+            }
             $gear->addToArray($morph->additionalGears);
             $this->adjustAll();
-            return true;            
+            return true;
         }else{
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }             
+                return false;
+            }
             $gear->addToArray($morph->additionalGears);
             $this->evoCrePoint -= $gear->getCost();
             $this->adjustAll();
-            return true;            
+            return true;
         }
     }
-    
+
     function getCurrentPsySleight(){
         return $this->character->ego->psySleights;
     }
@@ -423,78 +414,78 @@ class EPCharacterCreator {
         if ($this->creationMode){
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!$gear->isInArray($morph->additionalGears)){
                 if ($gear->isInArray($morph->gear)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
+                    return false;
                 }
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this additional gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }       
+                return false;
+            }
             $gear->removeFromArray($morph->additionalGears);
             $this->adjustAll();
-            return true;            
+            return true;
         }else{
             if (!isset($morph)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
+                return false;
             }
             if (!$gear->isInArray($morph->additionalGears)){
                 if ($gear->isInArray($morph->gear)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
-                    return false;                
+                    return false;
                 }
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph do not have this additional gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;            
-            }       
+                return false;
+            }
             $gear->removeFromArray($morph->additionalGears);
             $this->evoCrePoint += $gear->getCost() * $gear->occurence;
             $this->adjustAll();
-            return true;            
+            return true;
         }
     }
     function haveAdditionalGear($gear,$morph){
         return $gear->isInArray($morph->additionalGears);
     }
-    function addMorphCreationMode($morph){              
+    function addMorphCreationMode($morph){
         if ($morph->addToArray($this->character->morphs)){
             $this->activateMorph($morph);
             $this->adjustAll();
-            return true;            
+            return true;
         }
-        return false;        
+        return false;
     }
-    function addMorphUpdateMode($morph){          
+    function addMorphUpdateMode($morph){
         if ($morph->addToArray($this->character->morphs)){
             $this->evoCrePoint -= $morph->getCost();
             $this->activateMorph($morph);
             $this->adjustAll();
-            return true;            
+            return true;
         }
-        return false;        
+        return false;
     }
     function addMorph($morph){
         if (!isset($morph)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;          
+            return false;
         }
         if ($this->creationMode){
             $morph->buyInCreationMode = true;
@@ -512,8 +503,8 @@ class EPCharacterCreator {
                     if (isset($cm)){
                         if (strcmp($morph->name,$cm->name) == 0){
                             $this->activateMorph(null);
-                        }                        
-                    }         
+                        }
+                    }
                     $list = array();
                     foreach ($morph->additionalTraits as $t){
                         array_push($list, $t);
@@ -527,16 +518,16 @@ class EPCharacterCreator {
                     }
                     foreach ($list as $g){
                         $this->removeGear($g, $morph);
-                    }                    
+                    }
                     $morph->removeFromArray($this->character->morphs);
                     $this->adjustAll();
                     return true;
                 }
-            }            
+            }
         }
 
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return false;        
+        return false;
     }
     function removeMorphUpdateMode($morph){
         if (is_array($this->character->morphs)){
@@ -546,8 +537,8 @@ class EPCharacterCreator {
                     if (isset($cm)){
                         if (strcmp($morph->name,$cm->name) == 0){
                             $this->activateMorph(null);
-                        }                        
-                    }         
+                        }
+                    }
                     $list = array();
                     foreach ($morph->additionalTraits as $t){
                         array_push($list, $t);
@@ -561,19 +552,19 @@ class EPCharacterCreator {
                     }
                     foreach ($list as $g){
                         $this->removeGear($g, $morph);
-                    }             
+                    }
                     $this->evoCrePoint += $morph->getCost();
                     $morph->removeFromArray($this->character->morphs);
                     $this->adjustAll();
                     return true;
                 }
-            }            
+            }
         }
 
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
-        return false;        
+        return false;
     }
-    function removeMorph($morph){  
+    function removeMorph($morph){
         if ($this->creationMode){
             return $this->removeMorphCreationMode($morph);
         }else{
@@ -626,7 +617,7 @@ class EPCharacterCreator {
          return true;
     }
     function removeMotivation($motiv){
-      
+
 		$candidat = array();
 		foreach($this->character->ego->motivations as $m){
 			if($m != $motiv) array_push($candidat, $m);
@@ -680,7 +671,7 @@ class EPCharacterCreator {
                     $totNegTrait = $this->getSumNegMorphTraits();
                     if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTraitOnMorph')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP for morphs outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                    
+                        return false;
                     }
                 }
                 if($this->isLowerLevelBuy($trait,$morph->traits) || $this->isLowerLevelBuy($trait,$morph->additionalTraits)){
@@ -700,7 +691,7 @@ class EPCharacterCreator {
                 }
 
                 array_push($this->character->ego->additionalTraits,$trait);
-            }  
+            }
 
             $this->adjustAll();
             return true;
@@ -720,7 +711,7 @@ class EPCharacterCreator {
                 $traitToAdd = $this->listProvider->getTraitByName($trait->name);
                 $traitToAdd->addToArray($morph->additionalTraits);
             }else{
-                $listOldTraits = $this->back->getCurrentTraits(false); 
+                $listOldTraits = $this->back->getCurrentTraits(false);
                 $haveOld = $trait->isInArray($listOldTraits);
 
                 if($this->isLowerLevelBuy($trait,$this->character->ego->traits) || $this->isLowerLevelBuy($trait,$this->character->ego->additionalTraits)){
@@ -731,14 +722,14 @@ class EPCharacterCreator {
                 }
 
                 array_push($this->character->ego->additionalTraits,$trait);
-            }    
-              
+            }
+
             if (!$trait->isNegative()){
                 if (!$haveOld){
                     $this->evoRezPoint -= $trait->cpCost;
                 }
             }
-        
+
             $this->adjustAll();
             return true;
         }
@@ -794,83 +785,83 @@ class EPCharacterCreator {
         $this->adjustAll();
         return true;
     }
-    function isLowerLevelBuy($trait,$currentTraits){ 
+    function isLowerLevelBuy($trait,$currentTraits){
 	$traitName = $this->removeLastWord($trait->name);
         foreach ($currentTraits as $t){
             if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
                     $trait->level > $t->level){
                 return true;
             }
-        }            
-        
-        return false;   	 	   
+        }
+
+        return false;
     }
     function isHigherLevelBuy($trait,$currentTraits){
-    
+
 	    $traitName = $this->removeLastWord($trait->name);
 	    foreach ($currentTraits as $t){
 	        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
 	        	$trait->level < $t->level){
 	            return true;
 	        }
-	    }            
-        
-        return false;  
+	    }
+
+        return false;
     }
-    function sellLowerLevel($trait,$morph = null){  	
+    function sellLowerLevel($trait,$morph = null){
     	if(isset($morph)){
     		$traitName = $this->removeLastWord($trait->name);
 		    foreach ($morph->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 && 
+		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
 		        	$t->level < $trait->level){
 		            	$this->removeTrait($t,$morph);
 		            	break;
 		        }
-		    }                        
+		    }
     	}
     	else{
 	    	$traitName = $this->removeLastWord($trait->name);
 		    foreach ($this->character->ego->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 && 
+		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
 		        	$t->level < $trait->level){
 		            	$this->removeTrait($t,null);
 		            	break;
 		        }
-		    }  
+		    }
     	}
-    
+
     }
      function sellHigherLevel($trait,$morph = null){
-    	
+
     	if(isset($morph)){
     		$traitName = $this->removeLastWord($trait->name);
 		    foreach ($morph->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 && 
+		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
 		        	$t->level > $trait->level){
 		            	$this->removeTrait($t,$morph);
 		            	break;
 		        }
-		    }       
+		    }
     	}
     	else{
 	    	$traitName = $this->removeLastWord($trait->name);
 		    foreach ($this->character->ego->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 && 
+		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
 		        	$t->level > $trait->level){
 		            	$this->removeTrait($t,null);
 		            	break;
 		        }
-		    }  
+		    }
     	}
-    
+
     }
-    function addPsySleight($psySleight){   
+    function addPsySleight($psySleight){
         if ($this->creationMode){
             if ($this->havePsiSleight($psySleight->name)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
-            array_push($this->character->ego->psySleights,$psySleight); 
+            array_push($this->character->ego->psySleights,$psySleight);
             $this->adjustAll();
 
             return true;
@@ -880,12 +871,12 @@ class EPCharacterCreator {
                 return false;
             }
             $psySleight->buyinCreationMode = false;
-            array_push($this->character->ego->psySleights,$psySleight); 
-            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','PsyCpCost'); 
-            return true;            
-        }     
+            array_push($this->character->ego->psySleights,$psySleight);
+            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','PsyCpCost');
+            return true;
+        }
     }
-    function removePsySleight($psySleight){ 
+    function removePsySleight($psySleight){
         if ($this->creationMode){
             if (!$this->havePsiSleight($psySleight->name)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -903,8 +894,8 @@ class EPCharacterCreator {
             $psySleight->removeFromArray($this->character->ego->psySleights);
             if (!$psySleight->buyinCreationMode){
                 $this->evoRezPoint += $this->configValues->getValue('RulesValues','PsyCpCost');
-            } 
-        }                   
+            }
+        }
     }
 
     // Create a skill from a user entered name and pre-defined prefix
@@ -938,7 +929,7 @@ class EPCharacterCreator {
     function removeSkill($skill){
         if ($skill->tempSkill === false){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Impossible to remove a permanent skill !)', EPCreatorErrors::$RULE_ERROR));
-            return false;           
+            return false;
         }
         if($skill->isNativeTongue) $this->nativeLanguageSet = false;
         if($skill->removeFromArray($this->character->ego->skills)){
@@ -958,11 +949,11 @@ class EPCharacterCreator {
                 $need -= $this->getRealCPCostForSkill($sk);
             }
         }
-        return max(0,$need);        
+        return max(0,$need);
     }
- 
+
     function getCurrentMorph(){
-        $ret = getAtomByUid($this->character->morphs,$this->character->currentMorphUid);
+        $ret = EPAtom::getAtomByUid($this->character->morphs,$this->character->currentMorphUid);
         if($ret === null){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -993,47 +984,47 @@ class EPCharacterCreator {
     function getErrorList(){
         return $this->errorList;
     }
-    function getGears(){        
-        return $this->gears;       
+    function getGears(){
+        return $this->gears;
     }
-    
+
     function getAis(){        
-        return $this->ais;       
+        return $this->ais;
     }
-    
+
     function getAisByName($name){
-        return getAtomByName($this->ais,$name);
+        return EPAtom::getAtomByName($this->ais,$name);
     }
-    
+
     function haveAi($ai){
         return $ai->isInArray($this->character->ego->ais);
     }
-    
+
     function getGearByName($name){
-        return getAtomByName($this->gears,$name);
-    } 
-    
-    function getEgoSoftGears(){            
-        return $this->character->ego->softGears;     
+        return EPAtom::getAtomByName($this->gears,$name);
     }
-    
+
+    function getEgoSoftGears(){
+        return $this->character->ego->softGears;
+    }
+
     function haveSoftGear($soft){
         return $soft->isInArray($this->character->ego->softGears);
     }
-    
-    function getEgoAi(){        
+
+    function getEgoAi(){
         $res = array();
         $res = array_merge($res,$this->character->ego->ais);
         $res = array_merge($res,$this->character->ego->defaultAis);
         return $res;
     }
-    
+
     function getDefaultEgoAi(){
 	    return $this->character->ego->defaultAis;
     }
-    
+
     function getKnowledgeRestNeed(){
-        $need = $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum');  
+        $need = $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
             if ($sk->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE){
                 $need -= $this->getRealCPCostForSkill($sk);
@@ -1048,7 +1039,7 @@ class EPCharacterCreator {
                 return $a;
             }
         }
-        return null;        
+        return null;
     }
     function getAptitudeByAbbreviation($abbrev){
         foreach ($this->character->ego->aptitudes as $a){
@@ -1063,7 +1054,7 @@ class EPCharacterCreator {
         return $this->character->ego->aptitudes;
     }
     function getBackgroundByName($name){
-        $ret = getAtomByName($this->backgrounds,$name);
+        $ret = EPAtom::getAtomByName($this->backgrounds,$name);
         if($ret == null){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This background not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -1074,48 +1065,48 @@ class EPCharacterCreator {
     }
     function getBonusMalus($activeMorphOnly = true){
         $res = array();
-        
+
         if ($activeMorphOnly === true){
             $m = $this->getCurrentMorph();
             if (isset($m)){
                 $res = array_merge($res, $m->bonusMalus);
                 foreach ($m->traits as $t){
                    $res =  array_merge($res, $t->bonusMalus);
-                }  
+                }
                 foreach ($m->additionalTraits as $at){
                    $res =  array_merge($res, $at->bonusMalus);
-                }  
+                }
                 foreach ($m->gears as $g){
                     $res = array_merge($res, $g->bonusMalus);
                 }
                 foreach ($m->additionalGears as $g){
                     $res = array_merge($res, $g->bonusMalus);
-                }     
+                }
             }
         }else{
             foreach ($this->character->morphs as $m){
                 $res = array_merge($res, $m->bonusMalus);
                 foreach ($m->traits as $t){
                     $res = array_merge($res, $t->bonusMalus);
-                }  
+                }
                 foreach ($m->additionalTraits as $at){
                    $res =  array_merge($res, $at->bonusMalus);
-                } 
+                }
                 foreach ($m->gears as $g){
                    $res =  array_merge($res, $g->bonusMalus);
                 }
                 foreach ($m->additionalGears as $g){
                    $res =  array_merge($res, $g->bonusMalus);
-                } 
+                }
             }
         }
 
         foreach ($this->character->ego->traits as $t){
             $res = array_merge($res, $t->bonusMalus);
-        }  
+        }
         foreach ($this->character->ego->additionalTraits as $at){
             $res =  array_merge($res, $at->bonusMalus);
-        } 
+        }
         foreach ($this->character->ego->softGears as $g){
             $res = array_merge($res, $g->bonusMalus);
         }
@@ -1127,23 +1118,23 @@ class EPCharacterCreator {
         }
         foreach ($this->character->ego->psySleights as $p){
             $res = array_merge($res, $p->bonusMalus);
-        }   
+        }
         if (isset($this->character->ego->faction)){
             $res = array_merge($res, $this->character->ego->faction->bonusMalus);
-        } 
+        }
         if (isset($this->character->ego->background)){
             $res = array_merge($res, $this->character->ego->background->bonusMalus);
         }
-                
+
         return $res;
     }
-    
+
     function getBonusMalusForMorph($m){
     	$res = array();
 		$res = array_merge($res, $m->bonusMalus);
         foreach ($m->traits as $t){
            $res =  array_merge($res, $t->bonusMalus);
-        }  
+        }
         foreach ($m->additionalTraits as $at){
            $res =  array_merge($res, $at->bonusMalus);
         }
@@ -1153,17 +1144,17 @@ class EPCharacterCreator {
         foreach ($m->additionalGears as $g){
             $res = array_merge($res, $g->bonusMalus);
         }
-        return $res;   
+        return $res;
     }
-    
+
     function getBonusMalusEgo(){
     	$res = array();
     	foreach ($this->character->ego->traits as $t){
             $res = array_merge($res, $t->bonusMalus);
-        }  
+        }
         foreach ($this->character->ego->additionalTraits as $at){
             $res =  array_merge($res, $at->bonusMalus);
-        } 
+        }
         foreach ($this->character->ego->softGears as $g){
             $res = array_merge($res, $g->bonusMalus);
         }
@@ -1175,10 +1166,10 @@ class EPCharacterCreator {
         }
         foreach ($this->character->ego->psySleights as $p){
             $res = array_merge($res, $p->bonusMalus);
-        }   
+        }
         if (isset($this->character->ego->faction)){
             $res = array_merge($res, $this->character->ego->faction->bonusMalus);
-        } 
+        }
         if (isset($this->character->ego->background)){
             $res = array_merge($res, $this->character->ego->background->bonusMalus);
         }
@@ -1187,16 +1178,16 @@ class EPCharacterCreator {
 
     function getLastError(){
         $nbError = count($this->errorList);
-        
+
         if ($nbError > 0){
             $res = $this->errorList[$nbError-1];
             array_pop($this->errorList);
             return $res;
         }
-        
+
         return '';
     }
-    function getSkillsByPrefix($prefix){       
+    function getSkillsByPrefix($prefix){
         $res = array();
         foreach ($this->character->ego->skills as $sk){
             if (strcmp($sk->prefix,$prefix) == 0){
@@ -1207,10 +1198,10 @@ class EPCharacterCreator {
     }
     //WARNING / FIXME:  Dangerous (Skills should always be referenced by name AND prefix)
     function getAiSkillByName($ai,$name){
-        return getAtomByName($ai->skills,$name);
+        return EPAtom::getAtomByName($ai->skills,$name);
     }
     function getSkillByAtomUid($id){
-        $ret = getAtomByUid($this->character->ego->skills,$id);
+        $ret = EPAtom::getAtomByUid($this->character->ego->skills,$id);
         if($ret == null){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -1222,19 +1213,19 @@ class EPCharacterCreator {
             foreach ($sk->groups as $grp){
                 if (strcmp($grp,$group) == 0){
                     array_push($res, $sk);
-                }               
+                }
             }
-        } 
-        return $res;        
+        }
+        return $res;
     }
     function getSkillsRestNeed(){
         return $this->getActiveRestNeed() + $this->getKnowledgeRestNeed();
     }
     function getSkills(){
     	$res = $this->character->ego->skills;
-    	
-    	usort($res, "compSkilByPrefixName"); 
-    
+
+    	usort($res, [EPSkill::class, 'compareSkillsByPrefixName']);
+
 	    return $res;
     }
     function getMotivations(){
@@ -1242,7 +1233,7 @@ class EPCharacterCreator {
     }
 
     function getMorphByName($name){
-        return getAtomByName($this->morphs,$name);
+        return EPAtom::getAtomByName($this->morphs,$name);
     }
 
     // All possible morphs
@@ -1261,7 +1252,7 @@ class EPCharacterCreator {
 	    return $this->character->ego->stats;
     }
     function getStatByName($name){
-        $ret = getAtomByName($this->character->ego->stats,$name);
+        $ret = EPAtom::getAtomByName($this->character->ego->stats,$name);
         if($ret == null){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -1280,12 +1271,12 @@ class EPCharacterCreator {
         $apt = $this->getAiAptitudeByAbbreviation($ia,$abbreviation);
         if (!isset($apt)){
             return false;
-        }      
+        }
         if ($newValue == $apt->value){
             return true;
         }
         $apt->value = $newValue;
-        return true;        
+        return true;
     }
     function setAptitudeValue($abreviation, $newValue){
         if ($this->creationMode){
@@ -1300,8 +1291,8 @@ class EPCharacterCreator {
             }
             if ($apt->feebleMax && $newValue > 4){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level(1) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }   
+                return false;
+            }
             if ($newValue > $apt->getMaxEgoValue()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level(2) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
@@ -1309,16 +1300,16 @@ class EPCharacterCreator {
             if (!$apt->feebleMax && $newValue < $apt->getMinEgoValue()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level(3) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
-            }  
+            }
             if ($apt->feebleMax && $newValue < 0){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level(3) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
             }
 
             $apt->value = $newValue;
-            $this->aptitudePoints = max(0,$this->configValues->getValue('RulesValues','AptitudesPoint')-$this->getSumAptitudes());  
+            $this->aptitudePoints = max(0,$this->configValues->getValue('RulesValues','AptitudesPoint')-$this->getSumAptitudes());
             $this->adjustValues();
-            return true;            
+            return true;
         }else{
             $apt = $this->getAptitudeByAbbreviation($abreviation);
             if (!isset($apt)){
@@ -1327,8 +1318,8 @@ class EPCharacterCreator {
             }
             if ($apt->feebleMax && $newValue > 4){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level(e1) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }   
+                return false;
+            }
             if ($newValue > $apt->getMaxEgoValue()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level(e2) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
@@ -1336,12 +1327,12 @@ class EPCharacterCreator {
             if (!$apt->feebleMax && $newValue < $apt->getMinEgoValue()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level(e3) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
-            }  
+            }
             if ($apt->feebleMax && $newValue < 0){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level(e4) for this aptitude outdated !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
             }
-            
+
             $oldApt = $this->back->getAptitudeByAbbreviation($apt->abbreviation);
             $diff = $newValue - $apt->value;
             if ($newValue < $oldApt->value){
@@ -1357,8 +1348,8 @@ class EPCharacterCreator {
                 return true;
             }
         }
-    }  
-    function checkSkillsForChangeAptitudeValue($apt,$diff){ 
+    }
+    function checkSkillsForChangeAptitudeValue($apt,$diff){
         if ($diff == 0) return;
 
         if ($diff > 0){
@@ -1367,7 +1358,7 @@ class EPCharacterCreator {
                     $up = ($sk->baseValue + $sk->getBonusForCost()) - $this->configValues->getValue('RulesValues','SkillLimitForImprove');
                     $this->evoRezPoint -= max(0,min($up,$diff));
                 }
-            }            
+            }
         }else{
             foreach ($this->character->ego->skills as $sk) {
                 if (strcmp($sk->linkedApt->abbreviation,$apt->abbreviation) == 0){
@@ -1375,29 +1366,29 @@ class EPCharacterCreator {
                     $t = max(0,-$diff - $t);
                     $this->evoRezPoint += $t;
                 }
-            }             
+            }
         }
     }
-    function setBackground($background){   
+    function setBackground($background){
         if ($this->creationMode){
             $this->character->ego->background = $background;
             $this->setEgoTraits();
             $this->adjustAll();
-            return true;            
+            return true;
         }else{
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Evolution mode no background change !)', EPCreatorErrors::$RULE_ERROR));
-            return false;            
-        }     
+            return false;
+        }
     }
     function setFaction($faction){
         if ($this->creationMode){
             $this->character->ego->faction = $faction;
             $this->setEgoTraits();
             $this->adjustAll();
-            return true;            
+            return true;
         }else{
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Evolution mode no faction change  !)', EPCreatorErrors::$RULE_ERROR));
-            return false;            
+            return false;
         }
     }
 
@@ -1417,9 +1408,9 @@ class EPCharacterCreator {
     function setOccurenceGear( $gearName, $occurence,$morphName = null){
       if ($occurence < 1){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
-            return false;        
+            return false;
       }
-      
+
       if ($this->creationMode){
         if (isset($morphName)){
           foreach ($this->character->morphs as $m){
@@ -1437,21 +1428,21 @@ class EPCharacterCreator {
                 }
               }
               array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph not have this gear  !)', EPCreatorErrors::$RULE_ERROR));
-              return false;            
+              return false;
             }
           }
           array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character not have this morph  !)', EPCreatorErrors::$RULE_ERROR));
-          return false;          
+          return false;
         }else{
           foreach ($this->character->ego->softGears as $sg){
             if (strcmp($sg->name, $gearName) == 0){
               $sg->occurence = $occurence;
-              return true;            
+              return true;
             }
           }
           array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this gear !)', EPCreatorErrors::$RULE_ERROR));
-          return false;        
-        }          
+          return false;
+        }
       }else{
         if (isset($morphName)){
           foreach ($this->character->morphs as $m){
@@ -1471,65 +1462,65 @@ class EPCharacterCreator {
                 }
               }
               array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph not have this gear  !)', EPCreatorErrors::$RULE_ERROR));
-              return false;            
+              return false;
             }
           }
           array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character not have this morph  !)', EPCreatorErrors::$RULE_ERROR));
-          return false;          
+          return false;
         }else{
           foreach ($this->character->ego->softGears as $sg){
             if (strcmp($sg->name, $gearName) == 0){
               $this->evoCrePoint -= ($occurence - $sg->occurence) * $sg->getCost();
               $sg->occurence = $occurence;
-              return true;            
+              return true;
             }
           }
           array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this gear !)', EPCreatorErrors::$RULE_ERROR));
-          return false;        
-        }        
+          return false;
+        }
       }
 
     }
     function setOccurenceIA($iaName,$occurence){
       if ($occurence < 1){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
-            return false;        
+            return false;
       }
-      
+
       if ($this->creationMode){
         foreach ($this->character->ego->ais as $a){
           if (strcmp($a->name, $iaName) == 0){
             $a->occurence = $occurence;
-            return true;            
+            return true;
           }
         }
         foreach ($this->character->ego->defaultAis as $a){
           if (strcmp($a->name, $iaName) == 0){
             $a->occurence = $occurence;
-            return true;            
+            return true;
           }
         }
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this ia !)', EPCreatorErrors::$RULE_ERROR));
-        return false;        
+        return false;
       }else{
         foreach ($this->character->ego->ais as $a){
           if (strcmp($a->name, $iaName) == 0){
             $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
             $a->occurence = $occurence;
-            return true;            
+            return true;
           }
         }
         foreach ($this->character->ego->defaultAis as $a){
           if (strcmp($a->name, $iaName) == 0){
             $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
             $a->occurence = $occurence;
-            return true;            
+            return true;
           }
         }
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this ia !)', EPCreatorErrors::$RULE_ERROR));
         return false;
-      }        
-    }            
+      }
+    }
 
     // Set the new reputation value
     //
@@ -1575,15 +1566,15 @@ class EPCharacterCreator {
     }
     function setAiSkillValue($ai,$name,$value = 0){
         $sk = $this->getAiSkillByName($ai,$name);
-                
+
         if (!isset($sk)){
             return false;
         }
         if ($sk->baseValue == $value){
             return true;
-        }   
+        }
         $sk->baseValue = $value;
-        return true;         
+        return true;
     }
     function setSkillValue($id,$value = 0){
         $sk = $this->getSkillByAtomUid($id);
@@ -1597,31 +1588,31 @@ class EPCharacterCreator {
             }
             if ($value + $sk->getBonusForCost() > $sk->getMaxValue()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level ('.$sk->getMaxValue().') outdated ('.$value.')('.$sk->getBonusForCost().') !)', EPCreatorErrors::$RULE_ERROR));
-                return false;                
+                return false;
             }
             if ($value < 0){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Value less than 0 !)', EPCreatorErrors::$RULE_ERROR));
-                return false;                
+                return false;
             }
             $diffCost = $this->getDiffCost($sk,$value);
             if ($diffCost == 0){
                 return true;
-            }    
+            }
             $sk->baseValue = $value;
-            return true;              
+            return true;
         }else{
             $diff = $value - $sk->baseValue;
             $oldSk = $this->back->getSkillByAtomUid($sk->getUid());
             if (empty($oldSk)){
                 $oldSk = $sk;
             }
-            
+
             while($diff != 0){
                 if ($diff > 0){
                     if ($sk->baseValue + $sk->getBonusForCost() >= $sk->getMaxValue()){
                         $diff = 0;
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level ('.$sk->getMaxValue().') outdated ('.$value.')('.$sk->getBonusForCost().') !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;                        
+                        return false;
                     }else{
                         if($sk->baseValue + $sk->getBonusForCost() >= $this->configValues->getValue('RulesValues','SkillLimitForImprove')){
                             $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SkillPointUpperCost');
@@ -1634,33 +1625,33 @@ class EPCharacterCreator {
                         }else{
                             $sk->baseValue += 1;
                             $diff -= 1;
-                        }                        
-                    }                
+                        }
+                    }
                 }else{
                     if ($sk->baseValue > $oldSk->baseValue){
                         if ($sk->baseValue + $sk->getBonusForCost() > $this->configValues->getValue('RulesValues','SkillLimitForImprove')){
                             $this->evoRezPoint += $this->configValues->getValue('RulesValues','SkillPointUpperCost');
                             $sk->baseValue -= 1;
-                            $diff += 1;                            
+                            $diff += 1;
                         }else{
                             $this->evoRezPoint += $this->configValues->getValue('RulesValues','SkillPointUnderCost');
                             $sk->baseValue -= 1;
-                            $diff += 1;                            
-                        }                        
+                            $diff += 1;
+                        }
                     }else{
                         if ($sk->baseValue > 0){
                             $sk->baseValue -= 1;
-                            $diff += 1;                            
+                            $diff += 1;
                         }else{
                             $diff = 0;
                             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Value less than 0 !)', EPCreatorErrors::$RULE_ERROR));
-                            return false;                            
+                            return false;
                         }
                     }
                 }
             }
-            return true;            
-        }                               
+            return true;
+        }
     }
     function setStat($name,$newValue){
         if ($this->creationMode){
@@ -1668,52 +1659,52 @@ class EPCharacterCreator {
                 if (strcmp($stat->abbreviation,$name) == 0){
                     if (strcmp($stat->abbreviation,EPStat::$MOXIE) != 0){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
-                    }  
+                        return false;
+                    }
                     if ($newValue == $stat->value){
                         return true;
-                    }    
+                    }
                     if ($newValue < $this->configValues->getValue('RulesValues','MoxMinPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
+                        return false;
                     }
                     if ($newValue > $this->configValues->getValue('RulesValues','MoxMaxPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
-                    }       
+                        return false;
+                    }
                     $diff = $newValue - $stat->value;
                     $need = $diff * $this->configValues->getValue('RulesValues','MoxiePointCost');
-                    $stat->value = $newValue;
-                    return true;                
-                }
-            }
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;            
-        }else{
-            foreach ($this->character->ego->stats as $stat){
-                if (strcmp($stat->abbreviation,$name) == 0){
-                    if (strcmp($stat->abbreviation,EPStat::$MOXIE) != 0){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
-                    }  
-                    if ($newValue < $this->configValues->getValue('RulesValues','MoxMinPoint')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
-                    }
-                    if ($newValue > $this->configValues->getValue('RulesValues','MoxEvoMaxPoint')){
-                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
-                        return false;            
-                    }       
-                    $diff = $stat->value - $newValue;
-                    $this->evoRezPoint += $diff * $this->configValues->getValue('RulesValues','MoxiePointCost'); 
                     $stat->value = $newValue;
                     return true;
                 }
             }
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;            
+            return false;
+        }else{
+            foreach ($this->character->ego->stats as $stat){
+                if (strcmp($stat->abbreviation,$name) == 0){
+                    if (strcmp($stat->abbreviation,EPStat::$MOXIE) != 0){
+                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
+                        return false;
+                    }
+                    if ($newValue < $this->configValues->getValue('RulesValues','MoxMinPoint')){
+                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
+                        return false;
+                    }
+                    if ($newValue > $this->configValues->getValue('RulesValues','MoxEvoMaxPoint')){
+                        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
+                        return false;
+                    }
+                    $diff = $stat->value - $newValue;
+                    $this->evoRezPoint += $diff * $this->configValues->getValue('RulesValues','MoxiePointCost');
+                    $stat->value = $newValue;
+                    return true;
+                }
+            }
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
         }
-            
+
     }
     function isNativeLanguageSet(){
 	    return $this->nativeLanguageSet;
@@ -1747,41 +1738,41 @@ class EPCharacterCreator {
         $this->reputationPointsFactionMod = 0;
         $this->reputationPointsBackgroundMod = 0;
         $this->reputationPointsSoftGearMod = 0;
-        $this->reputationPointsPsyMod = 0;        
-        $this->character = new EPCharacter();        
+        $this->reputationPointsPsyMod = 0;
+        $this->character = new EPCharacter();
         $this->character->ego->credit = $this->configValues->getValue('RulesValues','CreditStart');
         $this->character->ego->rep = $this->configValues->getValue('RulesValues','RepStart');
-                
+
         $this->loadAptitudes();
         $this->loadStats();
         $this->loadGroups();
         $this->loadSkills();
         $this->loadPrefixs();
-        $this->loadReps(); 
+        $this->loadReps();
         $this->loadBackgrounds();
         $this->loadMorphs();
         $this->loadAis();
         $this->loadGears();
         $this->loadTraits();
         $this->loadPsySleights();
-        
+
         $defaultAi = $this->getAisByName('Standard Muse');
         if (isset($defaultAi)){
             $this->character->ego->addDefaultAi($defaultAi);
-        }            
-                
+        }
+
         $this->nativeLanguageSet = false;
 
         $amountCP = intval($amountCP);
         if ($amountCP < 0 ){
             $amountCP = $this->configValues->getValue('RulesValues','CreationPoint');
-        }   
+        }
         $amountCP = max($amountCP,
-                $this->configValues->getValue('RulesValues','ActiveSkillsMinimum') + 
+                $this->configValues->getValue('RulesValues','ActiveSkillsMinimum') +
                 $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum'));
-        
+
     	$this->initialCreationPoints = $amountCP;
-        
+
         $this->adjustAll();
     }
     function getRezPoints(){
@@ -1791,14 +1782,14 @@ class EPCharacterCreator {
             $rez = $this->evoRezPoint;
             $rez -= $this->getCostForReputation();
             $rez -= $this->evoCrePointPurchased * $this->configValues->getValue('RulesValues','CreditPointCost');
-            
-            
+
+
             return $rez;
-        }  
+        }
     }
     function getCreationPoint(){
         $ret =  $this->initialCreationPoints;
-        
+
         $ret += $this->getCreationPointFromTrait();
         $ret -= $this->getCostForApts();
         $ret -= $this->getCostForStats();
@@ -1807,7 +1798,7 @@ class EPCharacterCreator {
         $ret -= $this->getCostForSkills();
         $ret -= $this->getCostForPsysleights();
         $ret -= $this->character->ego->creditPurchased * $this->configValues->getValue('RulesValues','CreditPointCost');
-        
+
         if ($this->creationMode){
             return $ret;
         }else{
@@ -1830,7 +1821,7 @@ class EPCharacterCreator {
                 }else{
                     $ret += $t->cpCost;
                 }
-            }    
+            }
         }
         return $ret;
     }
@@ -1838,11 +1829,11 @@ class EPCharacterCreator {
         $this->getStatByName(EPStat::$LUCIDITY)->value = $this->getAptitudeByAbbreviation(EPAptitude::$WILLPOWER)->getValue() * 2;
         $this->getStatByName(EPStat::$TRAUMATHRESHOLD)->value = round($this->getStatByName(EPStat::$LUCIDITY)->value / 5);
         $this->getStatByName(EPStat::$INSANITYRATING)->value =  $this->getStatByName(EPStat::$LUCIDITY)->value * 2;
-        
+
         $morph = $this->getCurrentMorph();
         if (isset($morph)){
             $this->getStatByName(EPStat::$DURABILITY)->value = $morph->durability;
-            
+
             if ($morph->morphType != EPMorph::$SYNTHMORPH){
             	//error_log("DR 1.5");
                 $this->getStatByName(EPStat::$DEATHRATING)->value = round($this->getStatByName(EPStat::$DURABILITY)->value * 1.5);
@@ -1854,22 +1845,22 @@ class EPCharacterCreator {
             $this->getStatByName(EPStat::$DURABILITY)->value = 0;
             $this->getStatByName(EPStat::$DEATHRATING)->value = 0;
         }
-        
+
         $this->getStatByName(EPStat::$WOUNDTHRESHOLD)->value = round($this->getStatByName(EPStat::$DURABILITY)->value / 5);
-        $this->getStatByName(EPStat::$INITIATIVE)->value = ($this->getAptitudeByAbbreviation(EPAptitude::$INTUITION) 
+        $this->getStatByName(EPStat::$INITIATIVE)->value = ($this->getAptitudeByAbbreviation(EPAptitude::$INTUITION)
         + $this->getAptitudeByAbbreviation(EPAptitude::$REFLEXS))*2;
         $this->getStatByName(EPStat::$DAMAGEBONUS)->value = round($this->getAptitudeByAbbreviation(EPAptitude::$SOMATICS) / 10);
     }
     function  adjustAll(){
         $this->resetStartValues();
-        
+
         $this->adjustWithBackgroundBonus();
         $this->adjustWithFactionBonus();
         $this->adjustWithMorphBonus();
-        $this->adjustWithPsyBonus();   
+        $this->adjustWithPsyBonus();
         $this->adjustWithSoftGearBonus();
         $this->adjustWithTraitBonus();
-        
+
         $this->adjustValues();
         $this->adjustCredit();
         $this->adjustGrantedTraits();
@@ -1879,54 +1870,54 @@ class EPCharacterCreator {
              foreach ($this->character->ego->background->traits as $t) {
                  if ($t->isInArray($this->character->ego->additionalTraits)){
                      $this->removeTrait($t);
-                 }                 
+                 }
              }
-        }       
+        }
     }
     function resetStartValues(){
         foreach ($this->character->ego->aptitudes as $a){
-            $a->maxValue = $this->configValues->getValue('RulesValues','AptitudesMaxValue');           
-            $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue'); 
+            $a->maxValue = $this->configValues->getValue('RulesValues','AptitudesMaxValue');
+            $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue');
             $a->maxEgoValue = $a->maxValue;
             $a->minEgoValue = $a->minValue;
             $a->maxMorphValue = $a->maxValue;
             $a->minMorphValue = 0;
-            
+
             if ($a->activMorph){
                 $a->maxMorphValue = $a->activMorph->maxApptitude;
             }
-        }     
+        }
         foreach ($this->character->ego->reputations as $r){
             if ($this->creationMode){
                 $r->maxValue = $this->configValues->getValue('RulesValues','RepMaxPoint');
             }else{
                 $r->maxValue = $this->configValues->getValue('RulesValues','EvoMaxRepValue');
-            }                    
-        } 
+            }
+        }
         foreach ($this->character->ego->skills as $s){
             if ($this->creationMode){
                 $s->maxValue = $this->configValues->getValue('RulesValues','SkillMaxPoint');
             }else{
                 $s->maxValue = $this->configValues->getValue('RulesValues','SkillEvolutionMaxPoint');
-            } 
+            }
         }
         foreach ($this->character->ego->ais as $ia){
-            foreach ($ia->aptitudes as $a){                
+            foreach ($ia->aptitudes as $a){
                 $a->maxValue = $this->configValues->getValue('RulesValues','AptitudesMaxValue');
-                $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue');    
+                $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue');
                 $a->maxEgoValue = $a->maxValue;
                 $a->minEgoValue = $a->minValue;
                 $a->maxMorphValue = $a->maxValue;
-                $a->minMorphValue = $a->minValue;                
+                $a->minMorphValue = $a->minValue;
             }
             foreach ($ia->skills as $s){
                 if ($this->creationMode){
                     $s->maxValue = $this->configValues->getValue('RulesValues','SkillMaxPoint');
                 }else{
                     $s->maxValue = $this->configValues->getValue('RulesValues','SkillEvolutionMaxPoint');
-                } 
-            }            
-        }        
+                }
+            }
+        }
     }
     function adjustValues(){
         foreach ($this->character->ego->aptitudes as $a){
@@ -1938,25 +1929,25 @@ class EPCharacterCreator {
                 $newValue = max($newValue,0);
             }else{
                 $newValue = min($newValue,$max);
-                $newValue = max($newValue,$min);                
-            }            
+                $newValue = max($newValue,$min);
+            }
             $this->setAptitudeValue($a->abbreviation, $newValue);
-        }     
+        }
         foreach ($this->character->ego->reputations as $a){
             $newValue = $a->value;
             $max = $a->getMaxValue();
             $absolute = $a->getAbsoluteValue();
-            $newValue = min($newValue,$max); 
+            $newValue = min($newValue,$max);
             $newValue = min($newValue,$absolute);
-            $this->setReputation($a->name, $newValue);       
-        } 
+            $this->setReputation($a->name, $newValue);
+        }
         foreach ($this->character->ego->skills as $a){
             $maxValue = $a->getMaxValue() - $a->getBonusForCost();
             $newValue = min($maxValue,$a->baseValue);
             $this->setSkillValue($a->getUid(),$newValue);
         }
         foreach ($this->character->ego->ais as $ia){
-                foreach ($ia->aptitudes as $a){                
+                foreach ($ia->aptitudes as $a){
                 $newValue = $a->value;
                 $max = $a->getMaxEgoValue();
                 $min = $a->getMinEgoValue();
@@ -1967,14 +1958,14 @@ class EPCharacterCreator {
             foreach ($ia->skills as $a){
               $maxValue = $a->getMaxValue() - $a->getBonusForCost();
               $newValue = min($maxValue,$a->baseValue);
-              $this->setAiSkillValue($ia,$a->name,$newValue);               
-            }            
-        } 
+              $this->setAiSkillValue($ia,$a->name,$newValue);
+            }
+        }
         $this->setStat(EPStat::$MOXIE, $newValue);
     }
     function adjustCredit(){
         $cred = $this->character->ego->credit + $this->character->ego->creditMorphMod + $this->character->ego->creditTraitMod + $this->character->ego->creditFactionMod + $this->character->ego->creditBackgroundMod + $this->character->ego->creditSoftGearMod + $this->character->ego->creditPsyMod;
-       
+
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
                 if (!$m->buyInCreationMode){
@@ -1984,22 +1975,22 @@ class EPCharacterCreator {
                     foreach ($m->additionalGears as $g){
                         $cred -= $g->getCost() * $g->occurence;
                     }
-                }                
+                }
             }
         }
-        
+
         if (is_array($this->character->ego->ais)){
             foreach ($this->character->ego->ais as $ai){
                 $cred -= $ai->getCost() * $ai->occurence;
             }
         }
-        
+
         if (is_array($this->character->ego->softGears)){
             foreach ($this->character->ego->softGears as $s){
                 $cred -= $s->getCost() * $s->occurence;
             }
         }
-        
+
         $this->character->ego->creditInstant = $cred;
     }
     function adjustWithMorphBonus(){
@@ -2007,56 +1998,56 @@ class EPCharacterCreator {
         $this->reputationPointsMorphMod = 0;
         foreach ($this->character->ego->aptitudes as $a){
             $a->morphMod = 0;
-            $a->ratioCostMorphMod = 1;    
+            $a->ratioCostMorphMod = 1;
             $a->minEgoValueMorphMod = 0;
-            $a->maxEgoValueMorphMod = 0;   
+            $a->maxEgoValueMorphMod = 0;
             $a->minMorphValueMorphMod = 0;
-            $a->maxMorphValueMorphMod = 0;          
+            $a->maxMorphValueMorphMod = 0;
         }
         foreach ($this->character->ego->reputations as $r){
             $r->morphMod = 0;
             $r->ratioCostMorphMod = 1;
-            $r->absoluteValueMorphMod = 1000;   
+            $r->absoluteValueMorphMod = 1000;
             $r->maxValueMorphMod = 0;
         }
         foreach ($this->character->ego->skills as $s){
             $s->morphMod = 0;
             $s->ratioCostMorphMod = 1;
-            $s->maxValueMorphMod = 0;            
+            $s->maxValueMorphMod = 0;
         }
         foreach ($this->character->morphs as $m) {
             $m->implantReject = false;
             foreach ($m->gears as $g){
                 $g->armorPenetrationMorphMod = 0;
-                $g->degatMorphMod = 0;   
+                $g->degatMorphMod = 0;
                 $g->armorEnergyMorphMod = 0;
-                $g->armorKineticMorphMod = 0; 
+                $g->armorKineticMorphMod = 0;
                 $g->ratioCostMorphMod = 1;
             }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationMorphMod = 0;
-                $g->degatMorphMod = 0;   
+                $g->degatMorphMod = 0;
                 $g->armorEnergyMorphMod = 0;
-                $g->armorKineticMorphMod = 0; 
+                $g->armorKineticMorphMod = 0;
                 $g->ratioCostMorphMod = 1;
-            }            
-        }           
+            }
+        }
         if (is_array($this->character->ego->ais)){
             foreach ($this->character->ego->ais as $ia){
                 foreach ($ia->aptitudes as $a){
                     $a->morphMod = 0;
-                    $a->ratioCostMorphMod = 1;   
+                    $a->ratioCostMorphMod = 1;
                     $a->minEgoValueMorphMod = 0;
-                    $a->maxEgoValueMorphMod = 0;   
+                    $a->maxEgoValueMorphMod = 0;
                     $a->minMorphValueMorphMod = 0;
-                    $a->maxMorphValueMorphMod = 0;  
+                    $a->maxMorphValueMorphMod = 0;
                 }
                 foreach ($ia->skills as $s){
                     $s->morphMod = 0;
                     $s->ratioCostMorphMod = 1;
                     $s->maxValueMorphMod = 0;
-                }            
-            }            
+                }
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->morphMod = 0;
@@ -2066,46 +2057,46 @@ class EPCharacterCreator {
         $currentMorph = $this->getCurrentMorph();
         if (isset($currentMorph)){
             if (is_array($currentMorph->gears) && count($currentMorph->gears) > 0){
-                foreach ($currentMorph->gears as $g){ 
+                foreach ($currentMorph->gears as $g){
                     if (is_array($g->bonusMalus) && count($g->bonusMalus) > 0){
                         foreach ($g->bonusMalus as $bm){
                             $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);
-                        }                        
-                    }                                           
-                }                
+                        }
+                    }
+                }
             }
             if (is_array($currentMorph->additionalGears) && count($currentMorph->additionalGears) > 0){
-                foreach ($currentMorph->additionalGears as $g){ 
+                foreach ($currentMorph->additionalGears as $g){
                     if (is_array($g->bonusMalus) && count($g->bonusMalus) > 0){
                         foreach ($g->bonusMalus as $bm){
                             $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);
-                        }                        
-                    }                                           
-                }                
-            }            
+                        }
+                    }
+                }
+            }
             if (is_array($currentMorph->traits) && count($currentMorph->traits) > 0){
-                foreach ($currentMorph->traits as $t){ 
+                foreach ($currentMorph->traits as $t){
                     if (is_array($t->bonusMalus) && count($t->bonusMalus) > 0){
                         foreach ($t->bonusMalus as $bm){
                             $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);
-                        }                        
-                    }                                           
-                }                
+                        }
+                    }
+                }
             }
             if (is_array($currentMorph->additionalTraits) && count($currentMorph->additionalTraits) > 0){
-                foreach ($currentMorph->additionalTraits as $t){ 
+                foreach ($currentMorph->additionalTraits as $t){
                     if (is_array($t->bonusMalus) && count($t->bonusMalus) > 0){
                         foreach ($t->bonusMalus as $bm){
                             $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);
-                        }                        
-                    }                                           
-                }                
-            }            
+                        }
+                    }
+                }
+            }
             if (is_array($currentMorph->bonusMalus) && count($currentMorph->bonusMalus) > 0){
-                foreach ($currentMorph->bonusMalus as $bm){ 
-                    $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);  
-                }                
-            }            
+                foreach ($currentMorph->bonusMalus as $bm){
+                    $this->applyBonusMalus($bm,EPBonusMalus::$FROM_MORPH);
+                }
+            }
         }
     }
     function adjustWithTraitBonus(){
@@ -2115,60 +2106,60 @@ class EPCharacterCreator {
             $a->traitMod = 0;
             $a->ratioCostTraitMod = 1;
             $a->minEgoValueTraitMod = 0;
-            $a->maxEgoValueTraitMod = 0;   
+            $a->maxEgoValueTraitMod = 0;
             $a->minMorphValueTraitMod = 0;
-            $a->maxMorphValueTraitMod = 0;            
+            $a->maxMorphValueTraitMod = 0;
             $a->feebleMax = false;
         }
         foreach ($this->character->ego->reputations as $r){
             $r->traitMod = 0;
             $r->ratioCostTraitMod = 1;
-            $r->absoluteValueTraitMod = 1000;   
-            $r->maxValueTraitMod = 0;                 
-        }        
+            $r->absoluteValueTraitMod = 1000;
+            $r->maxValueTraitMod = 0;
+        }
         foreach ($this->character->ego->skills as $s){
             $s->traitMod = 0;
-            $s->ratioCostTraitMod = 1; 
-            $s->maxValueTraitMod = 0;            
-        }   
+            $s->ratioCostTraitMod = 1;
+            $s->maxValueTraitMod = 0;
+        }
         foreach ($this->character->morphs as $m) {
             $m->implantReject = false;
             foreach ($m->gears as $g){
                 $g->armorPenetrationTraitMod = 0;
-                $g->degatTraitMod = 0;   
+                $g->degatTraitMod = 0;
                 $g->armorEnergyTraitMod = 0;
                 $g->armorKineticTraitMod = 0;
                 $g->ratioCostTraitMod = 1;
             }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationTraitMod = 0;
-                $g->degatTraitMod = 0;   
+                $g->degatTraitMod = 0;
                 $g->armorEnergyTraitMod = 0;
                 $g->armorKineticTraitMod = 0;
                 $g->ratioCostTraitMod = 1;
-            }            
-        }           
+            }
+        }
         foreach ($this->character->ego->ais as $ia){
             foreach ($ia->aptitudes as $a){
                 $a->traitMod = 0;
                 $a->ratioCostTraitMod = 1;
                 $a->minEgoValueTraitMod = 0;
-                $a->maxEgoValueTraitMod = 0;   
+                $a->maxEgoValueTraitMod = 0;
                 $a->minMorphValueTraitMod = 0;
-                $a->maxMorphValueTraitMod = 0;             
+                $a->maxMorphValueTraitMod = 0;
                 $a->feebleMax = false;
             }
             foreach ($ia->skills as $s){
                 $s->traitMod = 0;
-                $s->ratioCostTraitMod = 1; 
+                $s->ratioCostTraitMod = 1;
                 $s->maxValueTraitMod = 0;
-            }            
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->traitMod = 0;
             $s->ratioCostTraitMod = 1;
             $s->multiTraitMod = 1;
-        }        
+        }
         foreach ($this->character->ego->traits as $t){
             foreach ($t->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_TRAIT);
@@ -2178,244 +2169,244 @@ class EPCharacterCreator {
             foreach ($t->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_TRAIT);
             }
-        }     
+        }
     }
     function adjustWithFactionBonus(){
         $this->character->ego->creditFactionMod = 0;
         $this->reputationPointsFactionMod = 0;
         foreach ($this->character->ego->aptitudes as $a){
             $a->factionMod = 0;
-            $a->ratioCostFactionMod = 1;    
+            $a->ratioCostFactionMod = 1;
             $a->minEgoValueFactionMod = 0;
-            $a->maxEgoValueFactionMod = 0;   
+            $a->maxEgoValueFactionMod = 0;
             $a->minMorphValueFactionMod = 0;
             $a->maxMorphValueFactionMod = 0;
         }
         foreach ($this->character->ego->reputations as $r){
             $r->factionMod = 0;
             $r->ratioCostFactionMod = 1;
-            $r->absoluteValueFactionMod = 1000;   
-            $r->maxValueFactionMod = 0;            
+            $r->absoluteValueFactionMod = 1000;
+            $r->maxValueFactionMod = 0;
         }
         foreach ($this->character->ego->skills as $s){
             $s->factionMod = 0;
-            $s->ratioCostFactionMod = 1; 
-            $s->maxValueFactionMod = 0;            
-        }  
+            $s->ratioCostFactionMod = 1;
+            $s->maxValueFactionMod = 0;
+        }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
                 $g->armorPenetrationFactionMod = 0;
-                $g->degatFactionMod = 0;   
+                $g->degatFactionMod = 0;
                 $g->armorEnergyFactionMod = 0;
-                $g->armorKineticFactionMod = 0; 
+                $g->armorKineticFactionMod = 0;
                 $g->ratioCostFactionMod = 1;
-            }  
+            }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationFactionMod = 0;
-                $g->degatFactionMod = 0;   
+                $g->degatFactionMod = 0;
                 $g->armorEnergyFactionMod = 0;
-                $g->armorKineticFactionMod = 0; 
+                $g->armorKineticFactionMod = 0;
                 $g->ratioCostFactionMod = 1;
-            }            
-        }        
+            }
+        }
         foreach ($this->character->ego->ais as $ia){
             foreach ($ia->aptitudes as $a){
                 $a->factionMod = 0;
-                $a->ratioCostFactionMod = 1;    
+                $a->ratioCostFactionMod = 1;
                 $a->minEgoValueFactionMod = 0;
-                $a->maxEgoValueFactionMod = 0;   
+                $a->maxEgoValueFactionMod = 0;
                 $a->minMorphValueFactionMod = 0;
                 $a->maxMorphValueFactionMod = 0;
             }
             foreach ($ia->skills as $s){
                 $s->factionMod = 0;
-                $s->ratioCostFactionMod = 1; 
+                $s->ratioCostFactionMod = 1;
                 $s->maxValueFactionMod = 0;
-            }            
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->factionMod = 0;
             $s->ratioCostFactionMod = 1;
             $s->multiFactionMod = 1;
-        }        
+        }
         if (isset($this->character->ego->faction)){
             foreach ($this->character->ego->faction->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_FACTION);
-            }            
-        }  
+            }
+        }
     }
     function adjustWithBackgroundBonus(){
         $this->character->ego->creditBackgroundMod = 0;
         $this->reputationPointsBackgroundMod = 0;
         foreach ($this->character->ego->aptitudes as $a){
             $a->backgroundMod = 0;
-            $a->ratioCostBackgroundMod = 1;  
+            $a->ratioCostBackgroundMod = 1;
             $a->minEgoValueBackgroundMod = 0;
-            $a->maxEgoValueBackgroundMod = 0;   
+            $a->maxEgoValueBackgroundMod = 0;
             $a->minMorphValueBackgroundMod = 0;
             $a->maxMorphValueBackgroundMod = 0;
         }
         foreach ($this->character->ego->reputations as $r){
             $r->backgroundMod = 0;
             $r->ratioCostBackgroundMod = 1;
-            $r->absoluteValueBackgroundMod = 1000;   
-            $r->maxValueBackgroundMod = 0;            
+            $r->absoluteValueBackgroundMod = 1000;
+            $r->maxValueBackgroundMod = 0;
         }
         foreach ($this->character->ego->skills as $s){
             $s->backgroundMod = 0;
-            $s->ratioCostBackgroundMod = 1; 
+            $s->ratioCostBackgroundMod = 1;
             $s->maxValueBackgroundMod = 0;
-        }          
+        }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
                 $g->armorPenetrationBackgroundMod = 0;
-                $g->degatBackgroundMod = 0;   
+                $g->degatBackgroundMod = 0;
                 $g->armorEnergyBackgroundMod = 0;
-                $g->armorKineticBackgroundMod = 0; 
+                $g->armorKineticBackgroundMod = 0;
                 $g->ratioCostBackgroundMod = 1;
-            }  
+            }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationBackgroundMod = 0;
-                $g->degatBackgroundMod = 0;   
+                $g->degatBackgroundMod = 0;
                 $g->armorEnergyBackgroundMod = 0;
-                $g->armorKineticBackgroundMod = 0; 
+                $g->armorKineticBackgroundMod = 0;
                 $g->ratioCostBackgroundMod = 1;
-            }            
-        }   
+            }
+        }
         foreach ($this->character->ego->ais as $ia){
-            foreach ($ia->aptitudes as $a){                
+            foreach ($ia->aptitudes as $a){
                 $a->backgroundMod = 0;
-                $a->ratioCostBackgroundMod = 1;  
+                $a->ratioCostBackgroundMod = 1;
                 $a->minEgoValueBackgroundMod = 0;
-                $a->maxEgoValueBackgroundMod = 0;   
+                $a->maxEgoValueBackgroundMod = 0;
                 $a->minMorphValueBackgroundMod = 0;
-                $a->maxMorphValueBackgroundMod = 0;               
+                $a->maxMorphValueBackgroundMod = 0;
             }
             foreach ($ia->skills as $s){
                 $s->backgroundMod = 0;
                 $s->ratioCostBackgroundMod = 1;
                 $s->maxValueBackgroundMod = 0;
-            }            
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->backgroundMod = 0;
             $s->ratioCostBackgroundMod = 1;
             $s->multiBackgroundMod = 1;
-        }        
+        }
         if (isset($this->character->ego->background)){
             foreach ($this->character->ego->background->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_BACKGROUND);
-            }            
-        }        
-    }    
+            }
+        }
+    }
     function adjustWithSoftGearBonus(){
         $this->character->ego->creditSoftGearMod = 0;
         $this->reputationPointsSoftGearMod = 0;
-        foreach ($this->character->ego->aptitudes as $a){           
+        foreach ($this->character->ego->aptitudes as $a){
             $a->softgearMod = 0;
-            $a->ratioCostSoftgearMod = 1;   
+            $a->ratioCostSoftgearMod = 1;
             $a->minEgoValueSoftgearMod = 0;
-            $a->maxEgoValueSoftgearMod = 0;   
+            $a->maxEgoValueSoftgearMod = 0;
             $a->minMorphValueSoftgearMod = 0;
-            $a->maxMorphValueSoftgearMod = 0;                
+            $a->maxMorphValueSoftgearMod = 0;
         }
-        foreach ($this->character->ego->reputations as $r){           
+        foreach ($this->character->ego->reputations as $r){
             $r->softgearMod = 0;
             $r->ratioCostSoftgearMod = 1;
-            $r->absoluteValueSoftgearMod = 1000;   
-            $r->maxValueSoftgearMod = 0;             
+            $r->absoluteValueSoftgearMod = 1000;
+            $r->maxValueSoftgearMod = 0;
         }
         foreach ($this->character->ego->skills as $s){
             $s->softgearMod = 0;
             $s->ratioCostSoftgearMod = 1;
-            $s->maxValueSofgearMod = 0;          
-        }   
+            $s->maxValueSofgearMod = 0;
+        }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
                 $g->armorPenetrationSoftgearMod = 0;
-                $g->degatSoftgearMod = 0;   
+                $g->degatSoftgearMod = 0;
                 $g->armorEnergySoftgearMod = 0;
-                $g->armorKineticSoftgearMod = 0; 
+                $g->armorKineticSoftgearMod = 0;
                 $g->ratioCostSoftgearMod = 1;
             }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationSoftgearMod = 0;
-                $g->degatSoftgearMod = 0;   
+                $g->degatSoftgearMod = 0;
                 $g->armorEnergySoftgearMod = 0;
-                $g->armorKineticSoftgearMod = 0; 
+                $g->armorKineticSoftgearMod = 0;
                 $g->ratioCostSoftgearMod = 1;
-            }            
-        }   
+            }
+        }
         foreach ($this->character->ego->ais as $ia){
             foreach ($ia->aptitudes as $a){
                 $a->softgearMod = 0;
-                $a->ratioCostSoftgearMod = 1;   
+                $a->ratioCostSoftgearMod = 1;
                 $a->minEgoValueSoftgearMod = 0;
-                $a->maxEgoValueSoftgearMod = 0;   
+                $a->maxEgoValueSoftgearMod = 0;
                 $a->minMorphValueSoftgearMod = 0;
-                $a->maxMorphValueSoftgearMod = 0; 
+                $a->maxMorphValueSoftgearMod = 0;
             }
             foreach ($ia->skills as $s){
                 $s->softgearMod = 0;
                 $s->ratioCostSoftgearMod = 1;
                 $s->maxValueSofgearMod = 0;
-            }            
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->softgearMod = 0;
             $s->ratioCostSoftgearMod = 1;
             $s->multiSoftgearMod = 1;
-        }        
+        }
         foreach ($this->character->ego->softGears as $sg){
             foreach ($sg->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_SOFTGEAR);
             }
-        }                   
-    }    
+        }
+    }
     function adjustWithPsyBonus(){
         $this->character->ego->creditPsyMod = 0;
         $this->reputationPointsPsyMod = 0;
         foreach ($this->character->ego->aptitudes as $a){
             $a->psyMod = 0;
-            $a->ratioCostPsyMod = 1;   
+            $a->ratioCostPsyMod = 1;
             $a->minEgoValuePsyMod = 0;
-            $a->maxEgoValuePsyMod = 0;   
+            $a->maxEgoValuePsyMod = 0;
             $a->minMorphValuePsyMod = 0;
-            $a->maxMorphValuePsyMod = 0;  
+            $a->maxMorphValuePsyMod = 0;
         }
         foreach ($this->character->ego->reputations as $r){
             $r->psyMod = 0;
             $r->ratioCostPsyMod = 1;
-            $r->absoluteValuePsyMod = 1000;   
+            $r->absoluteValuePsyMod = 1000;
             $r->maxValuePsyMod = 0;
-        }        
+        }
         foreach ($this->character->ego->skills as $s){
             $s->psyMod = 0;
             $s->ratioCostPsyMod = 1;
-            $s->maxValuePsyMod = 0;           
-        }   
+            $s->maxValuePsyMod = 0;
+        }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
                 $g->armorPenetrationPsyMod = 0;
-                $g->degatPsyMod = 0;   
+                $g->degatPsyMod = 0;
                 $g->armorEnergyPsyMod = 0;
-                $g->armorKineticPsyMod = 0; 
+                $g->armorKineticPsyMod = 0;
                 $g->ratioCostPsyMod = 1;
             }
             foreach ($m->additionalGears as $g){
                 $g->armorPenetrationPsyMod = 0;
-                $g->degatPsyMod = 0;   
+                $g->degatPsyMod = 0;
                 $g->armorEnergyPsyMod = 0;
-                $g->armorKineticPsyMod = 0; 
+                $g->armorKineticPsyMod = 0;
                 $g->ratioCostPsyMod = 1;
-            }            
-        }          
+            }
+        }
         foreach ($this->character->ego->ais as $ia){
             foreach ($ia->aptitudes as $a){
                 $a->psyMod = 0;
-                $a->ratioCostPsyMod = 1;    
+                $a->ratioCostPsyMod = 1;
                 $a->minEgoValuePsyMod = 0;
-                $a->maxEgoValuePsyMod = 0;   
+                $a->maxEgoValuePsyMod = 0;
                 $a->minMorphValuePsyMod = 0;
                 $a->maxMorphValuePsyMod = 0;
             }
@@ -2423,28 +2414,28 @@ class EPCharacterCreator {
                 $s->psyMod = 0;
                 $s->ratioCostPsyMod = 1;
                 $s->maxValuePsyMod = 0;
-            }            
+            }
         }
         foreach ($this->character->ego->stats as $s){
             $s->psyMod = 0;
             $s->ratioCostPsyMod = 1;
             $s->multiPsyMod = 1;
-        }        
+        }
         foreach ($this->character->ego->psySleights as $ps){
             if ($ps->isActif === true || $ps->action === EPPsySleight::$ACTION_AUTOMATIC)
             foreach ($ps->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_PSY);
             }
-        }        
+        }
     }
     function getCostForApts(){
         $cost = $this->getSumAptitudes();
         $cost = max(0,$cost - $this->configValues->getValue('RulesValues','AptitudesPoint'));
         return $cost * $this->configValues->getValue('RulesValues','AptitudePointCost');
     }
-    function getCostForStats(){       
+    function getCostForStats(){
         $cost = $this->getStatByAbbreviation(EPStat::$MOXIE)->value - $this->configValues->getValue('RulesValues','MoxieStartValue');
-        return $cost * $this->configValues->getValue('RulesValues','MoxiePointCost');        
+        return $cost * $this->configValues->getValue('RulesValues','MoxiePointCost');
     }
     function getCostForMorphs(){
         $cost = 0;
@@ -2459,7 +2450,7 @@ class EPCharacterCreator {
     function getCostForReputation(){
         $c = $this->getReputationPointsRemaining();
         if ($c < 0){
-            return abs($c) * $this->configValues->getValue('RulesValues','RepPointCost'); 
+            return abs($c) * $this->configValues->getValue('RulesValues','RepPointCost');
         }
         return 0;
     }
@@ -2470,46 +2461,46 @@ class EPCharacterCreator {
                  if (!empty($s->specialization)){
                      $cost += $this->configValues->getValue('RulesValues','SpecializationCost');;
                  }
-        }       
-        return $cost;        
-    }   
+        }
+        return $cost;
+    }
     function getCostForPsysleights(){
         $cost = 0;
         foreach ($this->character->ego->psySleights as $p){
-                 $cost +=  $this->configValues->getValue('RulesValues','PsyCpCost'); 
-        }       
-        return $cost;        
+                 $cost +=  $this->configValues->getValue('RulesValues','PsyCpCost');
+        }
+        return $cost;
     }
-    function getRealCPCostForSkill($skill){            
+    function getRealCPCostForSkill($skill){
         if ($skill->isNativeTongue === true){
             $skill->isNativeTongue = false;
-            
+
             $val = $skill->baseValue;
-            
+
             $skill->baseValue += $this->configValues->getValue('RulesValues','NativeTongueBonus');
             $cost1 =  $this->getRealCPCostForSkill($skill);
-            
+
             $skill->baseValue = $this->configValues->getValue('RulesValues','NativeTongueBonus');
             $cost2 =  $this->getRealCPCostForSkill($skill);
-            
+
             $res = $cost1 - $cost2;
-            
+
             $skill->isNativeTongue = true;
             $skill->baseValue = $val;
-            return $res;                      
+            return $res;
         }else{
             $downPart = max(0,$this->configValues->getValue('RulesValues','SkillLimitForImprove') -$skill->getBonusForCost());
             $downPart = min($downPart,$skill->baseValue);
             $upPart = $skill->baseValue + $skill->getBonusForCost() - $this->configValues->getValue('RulesValues','SkillLimitForImprove');
             $upPart = max(0,$upPart);
             $upPart = min($upPart,$skill->baseValue);
-        
+
             return $downPart * $this->configValues->getValue('RulesValues','SkillPointUnderCost') * $skill->getRatioCost()
-                + $upPart * $this->configValues->getValue('RulesValues','SkillPointUpperCost') * $skill->getRatioCost();            
+                + $upPart * $this->configValues->getValue('RulesValues','SkillPointUpperCost') * $skill->getRatioCost();
         }
-    }   
+    }
     function getReputationByName($name){
-        $ret = getAtomByName($this->character->ego->reputations,$name);
+        $ret = EPAtom::getAtomByName($this->character->ego->reputations,$name);
         if($ret == null){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This Reputation not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
@@ -2548,7 +2539,7 @@ class EPCharacterCreator {
         $this->character->ego->stats = $this->listProvider->getListStats($this->configValues,$this);
     }
     private function loadBackgrounds(){
-        $this->backgrounds = $this->listProvider->getListBackgrounds();  
+        $this->backgrounds = $this->listProvider->getListBackgrounds();
     }
     private function loadMorphs(){
         $this->morphs = $this->listProvider->getListMorph();
@@ -2560,12 +2551,12 @@ class EPCharacterCreator {
         $this->gears = $this->listProvider->getListGears();
     }
     private function loadTraits(){
-        $this->traits = $this->listProvider->getListTraits();            
+        $this->traits = $this->listProvider->getListTraits();
     }
     private function loadPsySleights(){
 	    $this->psySleights = $this->listProvider->getListPsySleights();
     }
-    
+
     private function prefixExist($prefix){
         foreach ($this->prefixs as $p){
             if ($p == $prefix){
@@ -2578,14 +2569,14 @@ class EPCharacterCreator {
         if ($this->creationMode){
             if ($cpAmount + $this->character->ego->creditPurchased * $this->configValues->getValue('RulesValues','CreditPointCost') > $this->configValues->getValue('RulesValues','MaxCreditPurchaseWithCp')){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max 100 CP!)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
-            }     
-            
-            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
-            $this->character->ego->creditPurchased += $cred; 
-            $this->character->ego->credit += $cred; 
+                return false;
+            }
 
-            return true;            
+            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
+            $this->character->ego->creditPurchased += $cred;
+            $this->character->ego->credit += $cred;
+
+            return true;
         }else{
             $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
             $this->evoCrePointPurchased += $cred;
@@ -2597,25 +2588,25 @@ class EPCharacterCreator {
             $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
             if ($cred > $this->character->ego->creditPurchased){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No enough crédits purchased !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
+                return false;
             }
             if ($cred > $this->getCredit()){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No enough crédits !)', EPCreatorErrors::$RULE_ERROR));
-                return false;            
+                return false;
             }
             $this->character->ego->creditPurchased -= $cred;
             $this->character->ego->credit -= $cred;
 
-            return true;            
+            return true;
         }else{
             $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
             if ($cred > $this->evoCrePointPurchased){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (To credits sales (max:'.$this->evoCrePointPurchased.') !)', EPCreatorErrors::$RULE_ERROR));
-                return false;                
+                return false;
             }else{
                 $this->evoCrePointPurchased -= $cred;
-                return true;                
-            }            
+                return true;
+            }
         }
     }
 
@@ -2689,14 +2680,14 @@ class EPCharacterCreator {
 	    return $this->psySleights;
     }
     function getPsySleightsByName($name){
-        return getAtomByName($this->psySleights,$name);
+        return EPAtom::getAtomByName($this->psySleights,$name);
     }
 
     /**
      * Thousand plus line function for applying bonusMalus to everything!
      *
-     * @param bm        - The bonusMalus in question.
-     * @param source    - Where the bonusMalus is coming from.
+     * @param $bm EPBonusMalus        - The bonusMalus in question.
+     * @param $source string    - Where the bonusMalus is coming from.
      *                      Acceptable values are:
      *                          EPBonusMalus::$FROM_MORPH
      *                          EPBonusMalus::$FROM_TRAIT
@@ -2734,7 +2725,7 @@ class EPCharacterCreator {
             break;
             case EPBonusMalus::$ON_APTITUDE:
                 foreach ($this->character->ego->aptitudes as $a){
-                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $a->morphMod += $bm->value;
@@ -2760,7 +2751,7 @@ class EPCharacterCreator {
             break;
             case EPBonusMalus::$ON_APTITUDE_EGO_MAX:
                 foreach ($this->character->ego->aptitudes as $a){
-                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $a->maxEgoValueMorphMod += $bm->value;
@@ -2788,42 +2779,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValuePsyMod += $bm->value;
                             }
                         }
@@ -2834,42 +2825,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValuePsyMod += $bm->value;
                             }
                         }
@@ -2880,42 +2871,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValuePsyMod += $bm->value;
                             }
                         }
@@ -2923,11 +2914,11 @@ class EPCharacterCreator {
                 }
             break;
             case EPBonusMalus::$ON_SKILL:
-                $group_members = getGroupMembers($this->character->ego->skills,$bm->groups);
-                $skill = getAtomByUid($this->character->ego->skills,$bm->forTargetNamed);
+                $group_members = EPSkill::getGroupMembers($this->character->ego->skills,$bm->groups);
+                $skill = EPAtom::getAtomByUid($this->character->ego->skills,$bm->forTargetNamed);
                 // Database skills (non user selectable) use name/prefix instead of Uid
                 if($skill == null){
-                    $skill = getSkill($this->character->ego->skills,$bm->forTargetNamed,$bm->typeTarget);
+                    $skill = EPSkill::getSkill($this->character->ego->skills,$bm->forTargetNamed,$bm->typeTarget);
                 }
                 // Just in case
                 if($skill != null){
@@ -2981,11 +2972,11 @@ class EPCharacterCreator {
                 }
             break;
             case EPBonusMalus::$ON_SKILL_MAX:
-                $group_members = getGroupMembers($this->character->ego->skills,$bm->groups);
-                $skill = getAtomByUid($this->character->ego->skills,$bm->forTargetNamed);
+                $group_members = EPAtom::getGroupMembers($this->character->ego->skills,$bm->groups);
+                $skill = EPAtom::getAtomByUid($this->character->ego->skills,$bm->forTargetNamed);
                 // Database skills (non user selectable) use name/prefix instead of Uid
                 if($skill == null){
-                    $skill = getSkill($this->character->ego->skills,$bm->forTargetNamed,$bm->typeTarget);
+                    $skill = EPSkill::getSkill($this->character->ego->skills,$bm->forTargetNamed,$bm->typeTarget);
                 }
                 // Just in case
                 if($skill != null){
@@ -3523,42 +3514,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->morphMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->traitMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->factionMod += $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->backgroundMod += $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->softgearMod += $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->psyMod += $bm->value;
                             }
                         }                        
@@ -3568,7 +3559,7 @@ class EPCharacterCreator {
             case EPBonusMalus::$ON_GROUP:
                 // On passe en revue les skills et si le skill appartient au group on lui applique le bm
                 foreach ($this->character->ego->skills as $s){
-                    if (isInGroups($s,$bm->forTargetNamed)){
+                    if (EPAtom::isInGroups($s,$bm->forTargetNamed)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $s->morphMod += $bm->value;
@@ -3721,42 +3712,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueMorphMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueTraitMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueFactionMod += $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueBackgroundMod += $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueSoftgearMod += $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValuePsyMod += $bm->value;
                             }
                         }                        
@@ -3767,42 +3758,42 @@ class EPCharacterCreator {
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueMorphMod = $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueTraitMod = $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueFactionMod = $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueBackgroundMod = $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueSoftgearMod = $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || isInGroups($r,$bm->groups)){
+                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValuePsyMod = $bm->value;
                             }
                         }                        
@@ -3922,4 +3913,3 @@ class EPCharacterCreator {
 		return $aptNameList;
 	}
 }
-?>

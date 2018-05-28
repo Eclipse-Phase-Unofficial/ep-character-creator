@@ -1,6 +1,10 @@
 <?php
-    require_once '../../../php/EPCharacterCreator.php';
-    require_once '../../../php/EPFileUtility.php';
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
+
     session_start();
 
     $file_util = new EPFileUtility($_SESSION['cc']->character);

@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * Error Class
  *
@@ -34,5 +38,3 @@ class EPCreatorErrors {
         return -1;
     }
 }
-
-?>

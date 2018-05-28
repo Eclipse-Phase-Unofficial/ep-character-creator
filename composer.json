@@ -38,11 +38,13 @@
   ],
   "readme": "README.md",
   "require": {
-    "php": ">7.2"
+    "php": ">7.2",
+    "setasign/fpdf": "^1.8"
   },
   "autoload": {
     "psr-4": {
-      "EclipsePhaseCharacterCreator\\Backend\\": "src/php/"
+      "EclipsePhaseCharacterCreator\\Backend\\": "src/php/",
+      "EclipsePhaseCharacterCreator\\Site\\": "src/Creator/version4/"
     }
   },
   "require-dev": {

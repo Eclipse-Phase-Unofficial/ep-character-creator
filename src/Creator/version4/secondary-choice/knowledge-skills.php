@@ -1,7 +1,12 @@
 <?php
-	require_once '../../../php/EPListProvider.php';
-	require_once '../../../php/EPCharacterCreator.php';
-	session_start();
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPListProvider;
+use EclipsePhaseCharacterCreator\Backend\EPSkill;
+
+session_start();
 ?>
 <ul class="mainlist" id="enterSkill">
 	<li class='listSection'>

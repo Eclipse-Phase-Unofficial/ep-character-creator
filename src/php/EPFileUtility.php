@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-require_once(dirname(__FILE__) . '/EPCharacter.php');
+namespace EclipsePhaseCharacterCreator\Backend;
 
 /**
  * A utility to help convert Eclipse Phase characters to files.

@@ -1,10 +1,19 @@
 <?php
-	
-	require_once '../../../php/EPCharacterCreator.php';
-	require_once '../../../php/EPFileUtility.php';
-	require_once '../../../php/EPBook.php';
-	require_once './fpdf/fpdf.php';	
-	session_start();
+//declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
+use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
+use EclipsePhaseCharacterCreator\Backend\EPBook;
+use EclipsePhaseCharacterCreator\Backend\EPGear;
+use EclipsePhaseCharacterCreator\Backend\EPMorph;
+use EclipsePhaseCharacterCreator\Backend\EPPsySleight;
+use EclipsePhaseCharacterCreator\Backend\EPSkill;
+use EclipsePhaseCharacterCreator\Backend\EPTrait;
+use EclipsePhaseCharacterCreator\Site\exporter\fpdf\FpdfCustomFonts;
+
+session_start();
 	
 	
 	/*
@@ -20,11 +29,11 @@
 	
 	if(isset($_SESSION['cc']))
 	{ 
-		$pdf = new FPDF();
+		$pdf = new FpdfCustomFonts();
 		$ovf = new Overflow();
 
 		//Disable automatic page breaks
-		$pdf->AutoPageBreak = false;
+        $pdf->SetAutoPageBreak(false);
 		
 		$morphs = $_SESSION['cc']->getCurrentMorphs();
 
@@ -44,9 +53,9 @@
 				$pdf->Image($searchpath . "/version4/exporter/EP_BCK_PDF_EGO.png", 0, 0, -150);
 							
 				//DEFINE FONTS ---------------------------------
-				$pdf->AddFont('Lato-Lig', '', 'Lato-Lig.php');
-				$pdf->AddFont('Lato-LigIta', '', 'Lato-LigIta.php');
-				$pdf->AddFont('Lato-Reg', '', 'Lato-Reg.php');
+				$pdf->AddFont('Lato-Lig', '', 'Lato-Light.php');
+				$pdf->AddFont('Lato-LigIta', '', 'Lato-LightItalic.php');
+				$pdf->AddFont('Lato-Reg', '', 'Lato-Regular.php');
 				
 				//BEGIN FILLING SHEET------------------------------
 				$character = $_SESSION['cc']->character;
@@ -118,14 +127,14 @@
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
-                $egoNegTraits = getNegTraits($_SESSION['cc']->character->ego->getTraits());
+                $egoNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->character->ego->getTraits());
                 $formattedNegTraits = formatGearData($egoNegTraits);
                 $pdf->setXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
                 writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
-                $egoPosTraits = getPosTraits($_SESSION['cc']->character->ego->getTraits());
+                $egoPosTraits = EPTrait::getPositiveTraits($_SESSION['cc']->character->ego->getTraits());
                 $formattedPosTraits = formatGearData($egoPosTraits);
                 $pdf->setXY(116,102);
                 $format = setTwoColFormat(25,15,1,8,7);
@@ -247,14 +256,14 @@
 						$pdf->Text(140, 26, formatIt($morph->gender));//morph gender
 
                         //MORPH NEG TRAIT
-                        $morphNegTraits = getNegTraits($_SESSION['cc']->getCurrentTraits($morph));
+                        $morphNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->getCurrentTraits($morph));
                         $formattedNegTraits = formatGearData($morphNegTraits);
                         $pdf->setXY(5,43);
                         writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
 
                         //MORPH POS TRAIT
-                        $morphPosTraits = getPosTraits($_SESSION['cc']->getCurrentTraits($morph));
+                        $morphPosTraits = EPTrait::getPositiveTraits($_SESSION['cc']->getCurrentTraits($morph));
                         $formattedPosTraits = formatGearData($morphPosTraits);
                         $pdf->setXY(52,43);
                         writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
@@ -428,7 +437,7 @@
     class Overflow
     {
         var $page_data;  //A page's worth of data that's overflowed
-        function Overflow()
+        function __construct()
         {
             $this->page_data = array();
         }
@@ -636,7 +645,7 @@
     }
 
     //Acts mostly like a normal $pdf->Cell, but re-sizes the current font so the text alwys fits on one line
-    function singleCell($pdf,$width,$height,$text,$useFill = false)
+    function singleCell(FpdfCustomFonts $pdf,$width,$height,$text,$useFill = false)
     {
         //If the column is too long, drop the font size accordingly so it fits in a single line
         while($pdf->GetStringWidth($text) > $width)
@@ -818,4 +827,3 @@
         $book = new EPBook($atomeName);
 		$pdf->Text($x, $y, $book->getPrintableName());
 	}
-?>

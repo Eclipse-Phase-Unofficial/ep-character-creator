@@ -1,6 +1,11 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php';
-require_once '../other/gearHelper.php';
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPGear;
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
+
 session_start();
 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
@@ -14,7 +19,7 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
                 array_push($listFiltered, $m);
             }
         }
-        $formatedHtml = getFormatedMorphGearList($listFiltered,$currentMorph,'addSelMorphImplantIcon');
+        $formatedHtml = Helpers::getFormatedMorphGearList($listFiltered,$currentMorph,'addSelMorphImplantIcon');
         echo $formatedHtml;
     ?>
 </ul>

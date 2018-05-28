@@ -1,5 +1,8 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * A character's Aptitude
  *
@@ -177,5 +180,3 @@ class EPAptitude extends EPAtom{
         $this->absoluteMaxValue = $absoluteMaxValue;
     }
 }
-
-?>

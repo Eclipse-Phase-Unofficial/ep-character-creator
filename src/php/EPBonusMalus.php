@@ -1,5 +1,8 @@
 <?php
-require_once 'EPAtom.php';
+declare(strict_types=1);
+
+namespace EclipsePhaseCharacterCreator\Backend;
+
 /**
  * All the plus and minuses, buffs and debuffs applied to many different things.
  *
@@ -151,4 +154,3 @@ class EPBonusMalus extends EPAtom{
         return False;
     }
 }
-?>

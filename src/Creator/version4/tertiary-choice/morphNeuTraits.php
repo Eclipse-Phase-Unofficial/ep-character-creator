@@ -1,6 +1,10 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php';
-require_once('../other/traitLayer.php');
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
+
 session_start();
 $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
@@ -12,9 +16,9 @@ $currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph'
         $defaultTraits = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);
         foreach($_SESSION['cc']->getTraits() as $m){
             if($m->isMorph()  &&
-               isTraitLegal($currentMorph,$m) &&
+                Helpers::isTraitLegal($currentMorph,$m) &&
                $m->cpCost == 0){
-                echo getDynamicTraitLi($m,$currentTraits,$defaultTraits,'morphNeuTrait','addSelMorphNeuTraitIcon');
+                echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'morphNeuTrait','addSelMorphNeuTraitIcon');
             }
          }
     ?>

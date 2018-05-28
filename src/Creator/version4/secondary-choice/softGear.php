@@ -1,7 +1,11 @@
 <?php
-require_once '../../../php/EPCharacterCreator.php';
-require_once('../other/panelHelper.php');
-require_once('../other/gearHelper.php');
+declare(strict_types=1);
+
+require_once (__DIR__ . '/../../../../vendor/autoload.php');
+
+use EclipsePhaseCharacterCreator\Backend\EPGear;
+use EclipsePhaseCharacterCreator\Site\other\Helpers;
+use EclipsePhaseCharacterCreator\Site\other\Li;
 
 session_start();
 
@@ -19,7 +23,7 @@ $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
          foreach($_SESSION['cc']->getAis() as $m){
-            $li = new li($m->name,'ai');
+            $li = new Li($m->name,'ai');
             $li->addCost($m->getCost(),$m->isInArray($defaultAi));
             $li->addBookIcon($m->name);
             $li->addPlusChecked('addSelAiIcon',$m->isInArray($defaultAi) || $m->isInArray($currentAis));
@@ -34,7 +38,7 @@ $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($gears as $m){
             if($m->gearType == EPGear::$SOFT_GEAR){
-                $li = new li($m->name,'softG');
+                $li = new Li($m->name,'softG');
                 $li->addCost($m->getCost());
                 $li->addBookIcon($m->name);
                 $li->addPlusChecked('addSelSoftGearIcon',$m->isInArray($currentSoftGear));
@@ -44,6 +48,6 @@ $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
           echo "</ul>";
 
         //FREE GEAR SECTION
-        echo getFreeGear($_SESSION['cc']->getEgoSoftGears());
+        echo Helpers::getFreeGear($_SESSION['cc']->getEgoSoftGears());
 	?>
 </ul>
