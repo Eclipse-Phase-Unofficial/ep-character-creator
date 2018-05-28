@@ -1,0 +1,53 @@
+{
+  "name": "eclipse-phase-unofficial/ep-character-creator",
+  "description": "A web-based character creator application for the Eclipse Phase role-playing game.",
+  "type": "project",
+  "license": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+  "authors": [
+    {
+      "name": "Arthur Moore",
+      "email": "Arthur.Moore.git@cd-net.net"
+    },
+    {
+      "name": "Cedric Reinhardt (FullSimplex)"
+    },
+    {
+      "name": "JIGÉ PONT"
+    },
+    {
+      "name": "OLIVIER MURITH"
+    },
+    {
+      "name": "Russell Bewley (rbewley4)"
+    },
+    {
+      "name": "Ian Ruotsala (boomzilla)"
+    },
+    {
+      "name": "(stoogoff)"
+    },
+    {
+      "name": "(Sumguy62)"
+    },
+    {
+      "name": "(ejiblabahaba)"
+    },
+    {
+      "name": "(mace666)"
+    }
+  ],
+  "readme": "README.md",
+  "require": {
+    "php": ">7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "EclipsePhaseCharacterCreator\\Backend\\": "src/php/"
+    }
+  },
+  "require-dev": {
+    "rskuipers/php-assumptions": "^0.5.0",
+    "sebastian/phpcpd": "^2.0",
+    "phpunit/phpunit": "^7.1"
+  }
+}
