@@ -5559,7 +5559,6 @@ INSERT INTO MorphGears VALUES('Synthtaur','Retracting/Telescoping Limbs',1);
 INSERT INTO MorphGears VALUES('Synthtaur','Shape Adjusting',1);
 INSERT INTO MorphGears VALUES('Takko','360 degree vision',1);
 INSERT INTO MorphGears VALUES('Takko','Access Jacks',1);
-INSERT INTO MorphGears VALUES('Takko','Arachnoid Armor',1);
 INSERT INTO MorphGears VALUES('Takko','Basic Mesh Inserts',1);
 INSERT INTO MorphGears VALUES('Takko','Beak/Claw',1);
 INSERT INTO MorphGears VALUES('Takko','Chameleon Skin',1);
@@ -5643,6 +5642,9 @@ INSERT INTO MorphGears VALUES('Xu Fu','Puppet Sock',1);
 INSERT INTO MorphGears VALUES('Xu Fu','Radar',1);
 INSERT INTO MorphGears VALUES('Xu Fu','Radiation Sense',1);
 INSERT INTO MorphGears VALUES('Xu Fu','T-Ray Emitter',1);
+INSERT INTO MorphGears VALUES('Guard Deluxe','T-Ray Emitter',1);
+INSERT INTO MorphGears VALUES('Guard Deluxe','Synthetic Mask',1);
+INSERT INTO MorphGears VALUES('Guard Deluxe','Puppet Sock',1);
 CREATE TABLE `MorphTrait` (
   `morph` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,
@@ -6071,7 +6073,7 @@ INSERT INTO TraitBonusMalus VALUES('Psi II','Psi Drawbacks infection',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II','Two Mental Disorder',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II','Use psi-chi',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II','Use psi-gamma',1);
-INSERT INTO TraitBonusMalus VALUES('Psi II (Lost)','-1 Trauma treshold',1);
+INSERT INTO TraitBonusMalus VALUES('Psi II (Lost)','-1 Trauma threshold',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II (Lost)','Psi Drawbacks infection',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II (Lost)','Two Mental Disorder',1);
 INSERT INTO TraitBonusMalus VALUES('Psi II (Lost)','Use psi-chi',1);
