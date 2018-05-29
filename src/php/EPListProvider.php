@@ -17,6 +17,9 @@ class EPListProvider {
      * @var \PDO
      */
     private static $database;
+    /**
+     * @var EPConfigFile
+     */
     private $configValues;
 
     function connect(){
@@ -61,8 +64,12 @@ class EPListProvider {
     }
     
     //==== BONUS MALUS =========
-    
-    function getListBonusMalus(){
+
+    /**
+     * @return EPBonusMalus[]
+     */
+    function getListBonusMalus(): array
+    {
         $bmList = array();
         $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus`;");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -75,8 +82,9 @@ class EPListProvider {
         }
         return $bmList;
     }
-    
-    function getBonusMalusByName($name){   
+
+    function getBonusMalusByName(string $name): EPBonusMalus
+    {
         $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -85,7 +93,7 @@ class EPListProvider {
         $epBonMal = new EPBonusMalus($row['name'],$row['type'],$row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
         return $epBonMal;
     }
-    
+
     function getBonusMalusTypes($bmName){
         $bmTypeArray = array();
         $res = self::$database->query("SELECT `bmChoices` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';");
@@ -107,8 +115,12 @@ class EPListProvider {
     }
     
     // ===== TRAIT ======
-    
-    function getListTraits(){
+
+    /**
+     * @return EPTrait[]
+     */
+    function getListTraits(): array
+    {
         $traitList = array();
         $traitRes = self::$database->query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost` , `level` , `JustFor` FROM `traits`");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -134,8 +146,9 @@ class EPListProvider {
         }
         return $traitList;
     }
-    
-    function getTraitByName($traitName){
+
+    function getTraitByName(string $traitName): EPTrait
+    {
         $bonusMalusTraitList = array();
         $traitRes = self::$database->query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -161,8 +174,14 @@ class EPListProvider {
     }
     
     // ==== APTITUDE ======
-    
-    function getListAptitudes($minValue = 0, $maxValue = 0){
+
+    /**
+     * @param int $minValue
+     * @param int $maxValue
+     * @return EPAptitude[]
+     */
+    function getListAptitudes(int $minValue = 0, int $maxValue = 0): array
+    {
         $apt = array();
         if ($minValue == 0){
             $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
@@ -181,8 +200,14 @@ class EPListProvider {
         }
         return $apt;
     }
-    
-     function getListAptitudesComplete($minValue = 0, $maxValue = 0){
+
+    /**
+     * @param int $minValue
+     * @param int $maxValue
+     * @return EPAptitude[]
+     */
+    function getListAptitudesComplete(int $minValue = 0, int $maxValue = 0): array
+    {
        $apt = array();
 
        if ($minValue == 0){
@@ -203,8 +228,9 @@ class EPListProvider {
         }
         return $apt;
     }
-    
-    function getAptitudeByName($aptName,$minValue=0,$maxValue=0){
+
+    function getAptitudeByName(string $aptName, int $minValue = 0, int $maxValue = 0): EPAptitude
+    {
         if ($minValue == 0){
             $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
         }
@@ -221,7 +247,9 @@ class EPListProvider {
         $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups,$minValue,$maxValue,$minValue,$absMax);
         return $epAppt;
     }
-    function getAptitudeByAbbreviation($abbrev,$minValue=0,$maxValue=0){
+
+    function getAptitudeByAbbreviation(string $abbrev, int $minValue = 0, int $maxValue = 0): EPAptitude
+    {
         if ($minValue == 0){
             $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
         }
@@ -239,8 +267,15 @@ class EPListProvider {
     }
     
     //=== STATS ====
-    
-    function getListStats($configValues,&$cc=null){
+    //TODO:  Some do and some don't take EPCharacterCreator. None of them should take it, but that's ongoing.
+
+    /**
+     * @param EPConfigFile            $configValues
+     * @param EPCharacterCreator|null $cc
+     * @return EPStat[]
+     */
+    function getListStats(EPConfigFile $configValues,?EPCharacterCreator &$cc=null): array
+    {
         $stats = array();
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stat`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -259,7 +294,8 @@ class EPListProvider {
         return $stats;
     }
     
-    function getStatByName($statName){
+    function getStatByName(string $statName): EPStat
+    {
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stat` WHERE `name`='".$this->adjustForSQL($statName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -316,8 +352,13 @@ class EPListProvider {
     }
     
     // ===== SKILLS ===========
-    
-    function getListSkills($listApt){        
+
+    /**
+     * @param mixed $listApt TODO:  Determine the type here
+     * @return EPSkill[]
+     */
+    function getListSkills($listApt): array
+    {
         $skills = array();
         $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -329,8 +370,15 @@ class EPListProvider {
         }
         return $skills;
     }
-    
-    function getSkillByNamePrefix($name,$prefix,$listApt){
+
+    /**
+     * @param string $name
+     * @param string $prefix
+     * @param mixed  $listApt TODO:  Determine the type here
+     * @return EPSkill
+     */
+    function getSkillByNamePrefix(string $name, string $prefix, $listApt): EPSkill
+    {
         $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -339,8 +387,17 @@ class EPListProvider {
         $epSkills = new EPSkill($row['name'],$row['desc'],$this->getAptByAbreviation($listApt,$row['linkedApt']),$row['skillType'],$row['defaultable'],$row['prefix'],$groups);
         return $epSkills;
     }
-    
-    function getSkillByName($name,$listApt){
+
+    /**
+     * TODO:  Remove this
+     *
+     * @param string $name
+     * @param mixed  $listApt TODO:  Determine the type here
+     * @return EPSkill
+     * @deprecated Name alone does not uniquely identify a skill
+     */
+    function getSkillByName(string $name,$listApt): EPSkill
+    {
         $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -391,8 +448,12 @@ class EPListProvider {
     }
     
     //==== REPUTATION ====
-    
-    function getListReputation(){
+
+    /**
+     * @return EPReputation[]
+     */
+    function getListReputation(): array
+    {
         $reputations = array();
         $res = self::$database->query("SELECT `name`, `description` FROM `reputation`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -407,8 +468,12 @@ class EPListProvider {
     }
     
     //==== BACKGROUND =====
-    
-    function getListBackgrounds(){
+
+    /**
+     * @return EPBackground[]
+     */
+    function getListBackgrounds(): array
+    {
         $backgroundList = array();
         $bckRes = self::$database->query("SELECT `name`, `description`, `type` FROM `background`");
         $bckRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -468,7 +533,12 @@ class EPListProvider {
     }
     
     // ==== AI =====
-    function getListAi(){
+
+    /**
+     * @return EPAi
+     */
+    function getListAi(): array
+    {
         $aiList = array();
         $aiRes = self::$database->query("SELECT `name`, `desc`, `cost`, `unique` FROM `ai`");
         $aiRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -536,8 +606,12 @@ class EPListProvider {
     
     
     //==== GEAR ====
-    
-    function getListGears(){
+
+    /**
+     * @return EPGear[]
+     */
+    function getListGears(): array
+    {
         $gearList = array();
         $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear`");
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -565,7 +639,8 @@ class EPListProvider {
         return $gearList;
     }
     
-    function getGearByName($name){
+    function getGearByName(string $name): EPGear
+    {
         $bonusMalusGearList = array();
 
         $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
@@ -593,8 +668,12 @@ class EPListProvider {
     }
     
     //==== MORPH =====
-    
-    function getListMorph(){
+
+    /**
+     * @return EPMorph[]
+     */
+    function getListMorph(): array
+    {
         $morphList = array();
         $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morph`");
         $morphRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -652,7 +731,12 @@ class EPListProvider {
     
     
     //PSY SLEIGHT
-     function getListPsySleights(){
+
+    /**
+     * @return EPPsySleight[]
+     */
+    function getListPsySleights(): array
+     {
         $psyList = array();
         $psyRes = self::$database->query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleight`");
         $psyRes->setFetchMode(\PDO::FETCH_ASSOC);
@@ -683,7 +767,8 @@ class EPListProvider {
     }
 
     //BOOK 
-    function getBookForName($name){
+    function getBookForName(string $name): ?string
+    {
         $res = self::$database->query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -691,7 +776,12 @@ class EPListProvider {
         $book = $row['book'];
         return $book;
     }
-    
+
+    /**
+     * TODO:  Remove this
+     * @return array
+     * @deprecated Don't think it's used anywhere
+     */
     function getListBook(){
         $nameBook = array();
         $res = self::$database->query("SELECT `name`,`book` FROM `AtomBook`");
@@ -701,7 +791,13 @@ class EPListProvider {
         }
         return $nameBook;
     }
-    
+
+    /**
+     * TODO:  Remove this
+     * @param $name
+     * @return bool
+     * @deprecated Don't think it's used anywhere
+     */
     function isNameOnBookList($name){
         $res = self::$database->query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -713,7 +809,8 @@ class EPListProvider {
     }
     
     //PAGE
-    function getPageForName($name){
+    function getPageForName(string $name): ?string
+    {
         $res = self::$database->query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
@@ -721,7 +818,12 @@ class EPListProvider {
         $page = $row['page'];
         return $page;
     }
-    
+
+    /**
+     * TODO:  Remove this
+     * @return array
+     * @deprecated Don't think it's used anywhere
+     */
     function getListPage(){
         $namePage = array();
         $res = self::$database->query("SELECT `name`,`page` FROM `AtomPage`");
@@ -731,7 +833,13 @@ class EPListProvider {
         }
         return $namePage;
     }
-    
+
+    /**
+     * TODO:  Remove this
+     * @param $name
+     * @return bool
+     * @deprecated Don't think it's used anywhere
+     */
     function isNameOnPageList($name){
         $res = self::$database->query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);

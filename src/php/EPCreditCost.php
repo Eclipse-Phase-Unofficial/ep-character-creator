@@ -9,7 +9,7 @@ namespace EclipsePhaseCharacterCreator\Backend;
  * @author reinhardt
  */
 class EPCreditCost {
-    
+
     static $TRIVIAL = 50;
     static $LOW =  250;
     static $MODERATE = 1000;
@@ -17,10 +17,13 @@ class EPCreditCost {
     static $EXPENSIVE = 20000;
     static $VERY_EXPENSIVE = 40000;
     static $EXTREMELY_EXPENSIVE = 60000;
-    
+
+    /**
+     * @var int
+     */
     public $value;
-    
-    function __construct($cost) {
+
+    function __construct(int $cost) {
         $this->value = $cost;
     }
 }

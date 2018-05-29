@@ -6,7 +6,8 @@ namespace EclipsePhaseCharacterCreator\Backend;
 /**
  * A utility to help convert Eclipse Phase characters to files.
  */
-class EPFileUtility {
+class EPFileUtility
+{
 
     /**
      * @var EPCharacter
@@ -17,7 +18,8 @@ class EPFileUtility {
      * Constructor
      * @param EPCharacter $character the character that is currently being created
      */
-    public function __construct(EPCharacter $character) {
+    public function __construct(EPCharacter $character)
+    {
         $this->character = $character;
     }
 
@@ -28,17 +30,17 @@ class EPFileUtility {
      * The filename will be composed of the character name, the current
      * date and time, and a file extension.
      *
-     * @param string $default_name base filename to use if the character name is blank.
-     * @param string $extension the file extension
+     * @param string $defaultName Base filename to use if the character name is blank.
+     * @param string $extension   The file extension
      * @return string a filename
      */
-    public function buildExportFilename($default_name, $extension) {
+    public function buildExportFilename(string $defaultName, string $extension): string
+    {
         $character_name = trim($this->character->charName);
-        if('' !== $character_name) {
+        if ('' !== $character_name) {
             $filename = $character_name;
-        }
-        else {
-            $filename = $default_name;
+        } else {
+            $filename = $defaultName;
         }
 
         // append date, time and file extension to save name
@@ -52,7 +54,8 @@ class EPFileUtility {
      * @param string $filename a string to be used as a filename
      * @return string a sanitized version of $filename
      */
-    public function sanitizeFilename($filename) {
+    public function sanitizeFilename(string $filename): string
+    {
         return preg_replace('/[^a-zA-Z0-9_.-]/', '', $filename);
     }
 }

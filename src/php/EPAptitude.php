@@ -124,7 +124,8 @@ class EPAptitude extends EPAtom{
 
         return min($res,$this->absoluteMaxValue);            
     }
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
   
         $savePack['abbreviation'] =  $this->abbreviation;

@@ -35,8 +35,13 @@ class EPSkill extends EPAtom{
      public $nativeTongueBonus;
      
      public $groups;
-     
-     public $linkedApt;
+
+    /**
+     * Linked Aptitude
+     * //TODO:  Rename this to be more clear
+     * @var EPAptitude
+     */
+    public $linkedApt;
      
      public $maxValue;
      public $maxValueMorphMod;
@@ -82,7 +87,8 @@ class EPSkill extends EPAtom{
         return $lnk + $this->baseValue + $this->nativeTongueBonus + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
      } 
      
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	    
         $savePack['skillType'] =  $this->skillType;
@@ -172,32 +178,48 @@ class EPSkill extends EPAtom{
      * Skills are unique by name AND prefix.
      * This is more expensive than EPAtom's version, but catches duplicate skills with different Uids.
      * This is especially important as it prevents users from adding duplicate skills.
+     * @param EPSkill $skill
+     * @return bool
      */
-    public function match($skill){
+    public function match($skill): bool{
         if (strcasecmp($skill->name,$this->name) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
             return true;
         }
         return false;
     }
 
-    // Give a name that can be printed out everywhere
-    public function getPrintableName(){
+    /**
+     * Give a name that can be printed out everywhere
+     * @return string
+     */
+    public function getPrintableName(): string
+    {
         $nameStr = "";
-        if(!empty($this->prefix)){
-            $nameStr .= $this->prefix." : ";
+        if (!empty($this->prefix)) {
+            $nameStr .= $this->prefix . " : ";
         }
         $nameStr .= $this->name;
-        if($this->defaultable == EPSkill::$NO_DEFAULTABLE){
+        if ($this->defaultable == EPSkill::$NO_DEFAULTABLE) {
             $nameStr .= " *";
         }
         return $nameStr;
     }
 
-    //Standard getters to save some comparison operators
-    public function isKnowledge(){
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    public function isKnowledge(): bool
+    {
         return $this->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE;
     }
-    public function isActive(){
+
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    public function isActive(): bool
+    {
         return $this->skillType == EPSkill::$ACTIVE_SKILL_TYPE;
     }
 
@@ -205,13 +227,16 @@ class EPSkill extends EPAtom{
      * Find a skill in an array.
      *
      * Skills are unique by name AND prefix, so both are important.
+     * @param EPSkill[] $skills
+     * @param string    $name
+     * @param string    $prefix
+     * @return EPSkill|null
      */
-    public static function getSkill($list,$name,$prefix=''){
-        if (is_array($list)){
-            foreach ($list as $l){
-                if (strcasecmp($l->name,$name) == 0 && strcasecmp($l->prefix,$prefix) == 0){
-                    return $l;
-                }
+    public static function getSkill(array $skills, string $name, string $prefix = '')
+    {
+        foreach ($skills as $aSkill) {
+            if (strcasecmp($aSkill->name, $name) == 0 && strcasecmp($aSkill->prefix, $prefix) == 0) {
+                return $aSkill;
             }
         }
         return null;
@@ -222,10 +247,14 @@ class EPSkill extends EPAtom{
      * Use with usort to sort skills
      *
      * Usage:  usort($res, [EPSkill::class, 'compareSkillsByPrefixName'])
+     * @param EPSkill $a
+     * @param EPSkill $b
+     * @return int
      */
-    public static function compareSkillsByPrefixName($a, $b){
-        $an = $a->prefix.$a->name;
-        $bn = $b->prefix.$b->name;
+    public static function compareSkillsByPrefixName(EPSkill $a, EPSkill $b): int
+    {
+        $an = $a->prefix . $a->name;
+        $bn = $b->prefix . $b->name;
 
         return strcmp($an, $bn);
     }

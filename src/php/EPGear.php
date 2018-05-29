@@ -85,7 +85,8 @@ class EPGear extends EPAtom{
     //array
     public $bonusMalus;
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 		
         $savePack['armorEnergy'] =  $this->armorEnergy;
@@ -220,8 +221,10 @@ class EPGear extends EPAtom{
      *
      * Gear is unique by name, gearType, and gearRestriction.
      * This is more expensive than EPAtom's version, but catches duplicate gear with different Uids.
+     * @param EPGear $gear
+     * @return bool
      */
-    public function match($gear){
+    public function match($gear): bool{
         if (strcasecmp($gear->name,$this->name) == 0 &&
             $gear->gearType===$this->gearType &&
             $gear->gearRestriction===$this->gearRestriction){

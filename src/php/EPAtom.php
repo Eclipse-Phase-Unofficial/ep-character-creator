@@ -14,8 +14,9 @@ namespace EclipsePhaseCharacterCreator\Backend;
  * @author reinhardt
  * @author EmperorArthur
  */
-class EPAtom {
-    
+class EPAtom implements Savable
+{
+
     static $APTITUDE = 'aptitude';
     static $BACKGROUND = 'background';
     static $FACTION = 'faction';
@@ -31,16 +32,22 @@ class EPAtom {
     static $MORPH = 'morph';
     static $AI = 'ai';
     static $PSY = 'psy';
-    
+
+    /**
+     * @var string
+     */
     private $atomUid;
-    public $type;
-    
+    public  $type;
+
     public $occurence;
     public $unique;
     public $name;
-    public $description;  
+    public $description;
     public $groups;
-    
+
+    /**
+     * @var int
+     */
     public $cost;
     public $ratioCost;
     public $ratioCostMorphMod;
@@ -49,11 +56,11 @@ class EPAtom {
     public $ratioCostFactionMod;
     public $ratioCostSoftgearMod;
     public $ratioCostPsyMod;
-    
-    
-    function __construct($atType, $atName, $atDesc) {
+
+
+    function __construct(string $atType, string $atName, string $atDesc) {
        $this->atomUid = uniqid('Atom_'.$this->sanitize($atName).'_');
-       $this->type = $atType;  
+       $this->type = $atType;
        $this->name = $atName;
        $this->description = $atDesc;
        $this->groups = array();
@@ -68,14 +75,15 @@ class EPAtom {
        $this->occurence = 1;
        $this->unique = true;
     }
-     function getSavePack(){  
+     function getSavePack(): array
+     {
 	    $savePack = array();
 
         $savePack['atomUid'] = $this->atomUid;
-	    $savePack['type'] = $this->type; 
+	    $savePack['type'] = $this->type;
 	    $savePack['name'] = $this->name;
 	    $savePack['description'] = $this->description;
-	    $savePack['groups'] = $this->groups;    
+	    $savePack['groups'] = $this->groups;
 	    $savePack['cost'] = $this->cost;
         $savePack['ratioCost'] = $this->ratioCost;
 	    $savePack['ratioCostMorphMod'] = $this->ratioCostMorphMod;
@@ -86,13 +94,13 @@ class EPAtom {
 	    $savePack['ratioCostPsyMod'] = $this->ratioCostPsyMod;
         $savePack['occurence'] = $this->occurence;
         $savePack['unique'] = $this->unique;
-        
+
 	    return $savePack;
     }
-    
+
     function loadSavePack($savePack,$cc = null){
         $this->atomUid = $savePack['atomUid'];
-	    $this->type = $savePack['type'];    
+	    $this->type = $savePack['type'];
 	    $this->name = $savePack['name'];
 	    $this->description = $savePack['description'];
 	    $this->groups = $savePack['groups'];
@@ -103,38 +111,57 @@ class EPAtom {
 	    $this->ratioCostBackgroundMod = $savePack['ratioCostBackgroundMod'];
 	    $this->ratioCostFactionMod = $savePack['ratioCostFactionMod'];
 	    $this->ratioCostSoftgearMod = $savePack['ratioCostSoftgearMod'];
-	    $this->ratioCostPsyMod = $savePack['ratioCostPsyMod'];	
-        $this->occurence = $savePack['occurence'];	
-        $this->unique = $savePack['unique'];	
-    }   
+	    $this->ratioCostPsyMod = $savePack['ratioCostPsyMod'];
+        $this->occurence = $savePack['occurence'];
+        $this->unique = $savePack['unique'];
+    }
+
+    /**
+     * Ensure a clone object has a different atomUid from the original
+     */
     function __clone()
     {
-        // Ensure a clone object have a different atomUid from original 
-        $this->atomUid = uniqid('Atom_'.$this->sanitize($this->name).'_');
+        $this->atomUid = uniqid('Atom_' . $this->sanitize($this->name) . '_');
     }
-    public function getCost(){
-        if (is_int($this->cost)){
-            return round($this->cost * $this->ratioCost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
-        }
-        return 0;
+
+    /**
+     * Get the final cost of the object.
+     *
+     * @return int
+     */
+    public function getCost(): int
+    {
+        return (int)round($this->cost * $this->ratioCost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
     }
-    public function getUid(){
+
+    public function getUid(): string
+    {
         return $this->atomUid;
     }
 
     //Strip any character that could cause an issue in an id tag
-    private function sanitize($input){
-        $replace_char = '/[^A-Z,^a-z,^0-9]/';
-        return preg_replace($replace_char, '_', $input);
+
+    /**
+     * @param string $input
+     * @return string
+     */
+    private function sanitize(string $input): string
+    {
+        $badChars = '/[^A-Z,^a-z,^0-9]/';
+        return preg_replace($badChars, '_', $input);
     }
 
     /**
      * Check if this and another atom are identical
      *
      * It does this via checking if Uids are the same or different.
+     * TODO:  Add ids to the database so this is no longer needed
+     * @param EPAtom $atom
+     * @return bool
      */
-    function match($atom){
-        if (strcmp($atom->getUid(),$this->atomUid) == 0){
+    function match(EPAtom $atom): bool
+    {
+        if (strcmp($atom->getUid(), $this->atomUid) == 0) {
             return true;
         }
         return false;
@@ -142,13 +169,14 @@ class EPAtom {
 
     /**
      * Check if this Atom is in an array
+     * @param EPAtom[] $atoms
+     * @return bool
      */
-    public function isInArray($array){
-        if (!empty($array)){
-            foreach ($array as $item){
-                if ($this->match($item)){
-                    return true;
-                }
+    public function isInArray(array $atoms): bool
+    {
+        foreach ($atoms as $anAtom) {
+            if ($this->match($anAtom)) {
+                return true;
             }
         }
         return false;
@@ -157,11 +185,13 @@ class EPAtom {
     /**
      * Add this Atom to an array
      *
-     * @return true if successful, false if this atom was already in the array
+     * @param EPAtom[] $atoms
+     * @return bool true if successful, false if this atom was already in the array
      */
-    public function addToArray(&$array){
-        if (is_array($array) && !$this->isInArray($array)){
-            array_push($array, $this);
+    public function addToArray(array &$atoms): bool
+    {
+        if (!$this->isInArray($atoms)) {
+            array_push($atoms, $this);
             return true;
         }
         return false;
@@ -170,68 +200,83 @@ class EPAtom {
     /**
      * Remove this Atom from an array
      *
-     * @return true if successful, returns false on failure
+     * @param EPAtom[] $atoms
+     * @return bool Success or failure
      */
-    public function removeFromArray(&$array){
-        if (!$this->isInArray($array)){
-            error_log("Not in array!");
-
-        }else{
+    public function removeFromArray(array &$atoms): bool
+    {
+        if ($this->isInArray($atoms)) {
             $index = 0;
-            foreach ($array as $item) {
-                if ($this->match($item)){
+            foreach ($atoms as $item) {
+                if ($this->match($item)) {
                     break;
-                }else{
+                } else {
                     $index++;
                 }
             }
-            array_splice($array, $index, 1);
+            array_splice($atoms, $index, 1);
             return true;
         }
+        error_log("Not in array!");
         return false;
     }
 
 
     /**
      * Find an Atom with a particular name (potentially dangerous, do not use for skills)
+     * @param EPAtom[] $atoms
+     * @param string   $name
+     * @return EPAtom|null|mixed
      */
-    public static function getAtomByName($array,$name){
-        if(!empty($array)){
-            foreach ($array as $a){
-                if (strcmp($a->name,$name) == 0){
-                    return $a;
-                }
+    public static function getAtomByName(array $atoms, string $name)
+    {
+        if (empty($atoms)) {
+            return null;
+        }
+        foreach ($atoms as $anAtom) {
+            if (strcmp($anAtom->name, $name) == 0) {
+                return $anAtom;
             }
         }
-        return null;
     }
 
     /**
      * Find an atom by unique id (safe)
+     * @param EPAtom[] $atoms
+     * @param string   $id
+     * @return EPAtom|null|mixed
      */
-    public static function getAtomByUid($array,$id){
-        if(!empty($array)){
-            foreach ($array as $a){
-                if (strcmp($a->getUid(),$id) == 0){
-                    return $a;
-                }
+    public static function getAtomByUid(array $atoms, string $id)
+    {
+        if (empty($atoms)) {
+            return null;
+        }
+        foreach ($atoms as $anAtom) {
+            if (strcmp($anAtom->getUid(), $id) == 0) {
+                return $anAtom;
             }
         }
-        return null;
     }
 
-    // TODO:  Make this non static
-    public static function isInGroups($atom,$groups){
-        if (!empty($atom->groups)){
-            foreach ($atom->groups as $grp){
-                if (is_array($groups)){
-                    foreach ($groups as $g){
-                        if (strcmp($grp,$g) == 0){
+    /**
+     * TODO:  Make this non static
+     *
+     * @param EPAtom          $atom
+     * @param string|string[] $groups
+     * @return bool
+     */
+    public static function isInGroups(EPAtom $atom, $groups): bool
+    {
+        if (!empty($atom->groups)) {
+            foreach ($atom->groups as $atomGroups) {
+                if (is_array($groups)) {
+                    foreach ($groups as $aGroup) {
+                        if (strcmp($atomGroups, $aGroup) == 0) {
                             return true;
                         }
                     }
-                }else{
-                    if (strcmp($grp,$groups) == 0){
+                } else {
+                    if (strcmp($atomGroups, $groups) == 0) {
                         return true;
                     }
                 }
@@ -242,14 +287,19 @@ class EPAtom {
 
     // Get all the members of a group from an array
     // May be expensive (not optimized at all)
-    public static function getGroupMembers($array,$groups){
-        $groupArr = array();
-        foreach ($array as $i){
-            if(static::isInGroups($i,$groups)){
-                $i->addToArray($groupArr);
+    /**
+     * @param array $atoms
+     * @param mixed $groups
+     * @return array
+     */
+    public static function getGroupMembers(array $atoms, $groups): array
+    {
+        $output = array();
+        foreach ($atoms as $anAtom) {
+            if (static::isInGroups($anAtom, $groups)) {
+                $anAtom->addToArray($output);
             }
         }
-        return $groupArr;
+        return $output;
     }
-
 }

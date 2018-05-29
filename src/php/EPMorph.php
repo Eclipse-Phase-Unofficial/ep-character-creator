@@ -11,7 +11,7 @@ namespace EclipsePhaseCharacterCreator\Backend;
  * @author reinhardt
  */
 class EPMorph extends EPAtom {
-   
+
     static $BIOMORPH = 'biomorph';
     static $SYNTHMORPH = 'synthmorph';
     static $PODMORPH = 'podmorph';
@@ -34,16 +34,35 @@ class EPMorph extends EPAtom {
     public $cpCost;
     public $buyInCreationMode;
 
-    //array
-    public $traits;             //All the traits granted by default (not user modifiable)
-    public $additionalTraits;   //All the traits the user has added
-    public $gears;              //All the gear granted by default (not user modifiable)
-    public $additionalGears;    //All the gear the user has added
-    public $bonusMalus; 
+    /**
+     * All the traits granted by default (not user modifiable)
+     * @var EPTrait[]
+     */
+    public $traits;
+    /**
+     * All the traits the user has added
+     * @var EPTrait[]
+     */
+    public $additionalTraits;
+    /**
+     * All the gear granted by default (not user modifiable)
+     * @var EPGear[]
+     */
+    public $gears;
+    /**
+     * All the gear the user has added
+     * @var EPGear[]
+     */
+    public $additionalGears;
+    /**
+     * @var EPBonusMalus[]
+     */
+    public $bonusMalus;
 
     public $implantReject;
 
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 
         $savePack['morphType'] = $this->morphType;
@@ -65,7 +84,7 @@ class EPMorph extends EPAtom {
         foreach($this->additionalTraits as $m){
             array_push($additionalTraitsSavePacks, $m->getSavePack());
         }
-        $savePack['additionalTraitsSavePacks'] = $additionalTraitsSavePacks;            
+        $savePack['additionalTraitsSavePacks'] = $additionalTraitsSavePacks;
         $gearsSavePacks = array();
         foreach($this->gears as $m){
             array_push($gearsSavePacks	, $m->getSavePack());
@@ -81,14 +100,14 @@ class EPMorph extends EPAtom {
             array_push($bmSavePacks	, $m->getSavePack());
         }
         $savePack['bmSavePacks'] = $bmSavePacks;
-        return $savePack;	    
-    }   
+        return $savePack;
+    }
     function loadSavePack($savePack,$cc = null){
         parent::loadSavePack($savePack);
 
         $this->name = $savePack['name'];
         $this->description = $savePack['description'];
-        $this->morphType = $savePack['morphType']; 
+        $this->morphType = $savePack['morphType'];
         $this->age = $savePack['age'];
         $this->gender = $savePack['gender'];
         $this->maxApptitude = $savePack['maxApptitude'];
@@ -123,7 +142,7 @@ class EPMorph extends EPAtom {
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }
-    }    
+    }
     function __construct( $atName,$morphType,$age, $gender,$maxApptitude,$durability,$cpCost,$traits=  array(),$gears=  array(),$bonusMalus=  array(), $atDesc= '',$nickname = '', $location = '',$creditCost=0) {
         parent::__construct(EPAtom::$MORPH, $atName, $atDesc);
         $this->morphType = $morphType;
@@ -149,8 +168,11 @@ class EPMorph extends EPAtom {
      *
      * Check if *almost all* morph values match.
      * This is more expensive than EPAtom's version, but catches duplicate morphs with different Uids.
+     * @param EPMorph $morph
+     * @return bool
      */
-    public function match($morph){
+    public function match($morph): bool
+    {
         if (strcasecmp($morph->name,$this->name) == 0 &&
             $morph->morphType===$this->morphType &&
             $morph->maxApptitude===$this->maxApptitude &&
@@ -162,27 +184,31 @@ class EPMorph extends EPAtom {
         return false;
     }
 
-    function addGear($gear){
-        if (isset($gear) && $gear->type == EPAtom::$GEAR){
-            array_push($this->gears, $gear);
-            return true;
-        } 
-    }
-    function addAdditionalGear($gear){
-        if (isset($gear) && $gear->type == EPAtom::$GEAR){
-            array_push($this->additionalGears, $gear);
-            return true;
-        }
-
+    function addGear(EPGear $gear)
+    {
+        array_push($this->gears, $gear);
     }
 
-    // All the traits, both user added, and from morph default
-    function getTraits(){
-        return array_merge($this->traits,$this->additionalTraits);
+    function addAdditionalGear(EPGear $gear)
+    {
+        array_push($this->additionalGears, $gear);
     }
 
-    // All gear, both user added, and from morph default
-    function getGear(){
-        return array_merge($this->gears,$this->additionalGears);
+    /**
+     * All the traits, both user added, and from morph default
+     * @return EPTrait[]
+     */
+    function getTraits(): array
+    {
+        return array_merge($this->traits, $this->additionalTraits);
+    }
+
+    /**
+     * All gear, both user added, and from morph default
+     * @return EPGear
+     */
+    function getGear(): array
+    {
+        return array_merge($this->gears, $this->additionalGears);
     }
 }

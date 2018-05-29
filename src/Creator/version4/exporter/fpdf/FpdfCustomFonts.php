@@ -16,6 +16,10 @@ class FpdfCustomFonts extends \FPDF
         $this->fontpath = __DIR__ . '/font/';
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function __get($name)
     {
         return $this->$name;

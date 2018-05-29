@@ -3,14 +3,7 @@ declare(strict_types=1);
 
 namespace EclipsePhaseCharacterCreator\Backend;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of EPTrait
- *
  * @author reinhardt
  */
 class EPTrait extends EPAtom{
@@ -36,12 +29,15 @@ class EPTrait extends EPAtom{
     public $cpCost;
     
     public $level;
-    
-    //Array 
+
+    /**
+     * @var EPBonusMalus[]
+     */
     public $bonusMalus;
     
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
         
         $savePack['canUse'] = $this->canUse;
@@ -90,8 +86,11 @@ class EPTrait extends EPAtom{
      *
      * Check if *all* trait values match.
      * This is more expensive than EPAtom's version, but catches duplicate traits with different Uids.
+     * @param EPTrait $trait
+     * @return bool
      */
-    public function match($trait){
+    public function match($trait): bool
+    {
         if (strcasecmp($trait->name,$this->name) == 0 &&
             $trait->traitPosNeg===$this->traitPosNeg &&
             $trait->traitEgoMorph===$this->traitEgoMorph &&
@@ -103,42 +102,70 @@ class EPTrait extends EPAtom{
         return false;
     }
 
-    //Standard getters to save some comparison operators
-    function isPositive(){
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    function isPositive(): bool
+    {
         return $this->traitPosNeg == EPTrait::$POSITIVE_TRAIT;
     }
-    function isNegative(){
+
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    function isNegative(): bool
+    {
         return $this->traitPosNeg == EPTrait::$NEGATIVE_TRAIT;
     }
-    function isEgo(){
+
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    function isEgo(): bool
+    {
         return $this->traitEgoMorph == EPTrait::$EGO_TRAIT;
     }
-    function isMorph(){
+
+    /**
+     * Standard getter to save some comparison operators
+     * @return bool
+     */
+    function isMorph(): bool
+    {
         return $this->traitEgoMorph == EPTrait::$MORPH_TRAIT;
     }
 
     /**
      * Get all positive traits from an array
+     * @param EPTrait[] $traitsArray
+     * @return array
      */
-    static function getPositiveTraits($array){
+    static function getPositiveTraits(array $traitsArray): array
+    {
         $result = array();
-        foreach($array as $t)
-        {
-            if($t->isPositive())
+        foreach ($traitsArray as $t) {
+            if ($t->isPositive()) {
                 array_push($result, $t);
+            }
         }
         return $result;
     }
 
     /**
      * Get all negative traits from an array
+     * @param EPTrait[] $traitsArray
+     * @return array
      */
-    static function getNegativeTraits($array){
+    static function getNegativeTraits(array $traitsArray): array
+    {
         $result = array();
-        foreach($array as $t)
-        {
-            if($t->isNegative())
+        foreach ($traitsArray as $t) {
+            if ($t->isNegative()) {
                 array_push($result, $t);
+            }
         }
         return $result;
     }

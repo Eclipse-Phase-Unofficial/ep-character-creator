@@ -11,8 +11,9 @@ namespace EclipsePhaseCharacterCreator\Backend;
  *
  * @author reinhardt
  */
-class EPEgo {
-    
+class EPEgo implements Savable
+{
+
      //values
     public $name;
     public $creditInstant;
@@ -22,15 +23,15 @@ class EPEgo {
     public $creditFactionMod;
     public $creditBackgroundMod;
     public $creditSoftGearMod;
-    public $creditPsyMod;  
+    public $creditPsyMod;
     public $creditPurchased;
 
     /**
-     * @var EPAtom
+     * @var EPBackground
      */
     public $faction;
     /**
-     * @var EPAtom
+     * @var EPBackground
      */
     public $background;
 
@@ -39,51 +40,52 @@ class EPEgo {
      */
     public $motivations;
     /**
-     * @var EPAtom[]
+     * @var EPAptitude[]
      */
     public $aptitudes;
     /**
-     * @var EPAtom[]
+     * @var EPSkill[]
      */
     public $skills;
     /**
-     * @var EPAtom[]
+     * @var EPReputation[]
      */
     public $reputations;
     /**
-     * @var EPAtom[]
+     * @var EPStat[]
      */
     public $stats;
     /**
 	 * All the traits granted by faction and background (not user modifiable)
-     * @var EPAtom[]
+     * @var EPTrait[]
      */
     public $traits;
     /**
 	 * All the traits the user has added
-     * @var EPAtom[]
+     * @var EPTrait[]
      */
     public $additionalTraits;
     /**
-     * @var EPAtom[]
+     * @var EPGear[]
      */
     public $softGears;
     /**
-     * @var EPAtom[]
+     * @var EPAi[]
      */
     public $ais;
     /**
-     * @var EPAtom[]
+     * @var EPAi[]
      */
     public $defaultAis;
     /**
-     * @var EPAtom[]
+     * @var EPPsySleight[]
      */
     public $psySleights;
-    
-    function getSavePack(){
+
+    function getSavePack(): array
+    {
 	    $savePack = array();
-	    
+
 	    $savePack['name'] = $this->name;
 	    $savePack['creditInstant'] = $this->creditInstant;
 	    $savePack['credit'] = $this->credit;
@@ -92,8 +94,8 @@ class EPEgo {
 	    $savePack['creditFactionMod'] = $this->creditFactionMod;
 	    $savePack['creditBackgroundMod'] = $this->creditBackgroundMod;
 	    $savePack['creditSoftGearMod'] = $this->creditSoftGearMod;
-	    $savePack['creditPsyMod'] = $this->creditPsyMod;	    	    
-	    $savePack['creditPurchased'] = $this->creditPurchased;	    	    	    
+	    $savePack['creditPsyMod'] = $this->creditPsyMod;
+	    $savePack['creditPurchased'] = $this->creditPurchased;
 	    if(isset($this->faction)){
 	    	$savePack['factionSavePack'] = $this->faction->getSavePack();
 	    }
@@ -105,34 +107,34 @@ class EPEgo {
             }
             else{
 		$savePack['backgroundSavePack'] = null;
-            }    
+            }
 	    $motivationArray = array();
 	    foreach($this->motivations as $m){
 	    	array_push($motivationArray, $m);
-	    } 
-	    $savePack['motivationArray'] = $motivationArray;    
+	    }
+	    $savePack['motivationArray'] = $motivationArray;
 	    $aptitudesSavePacks = array();
 	    foreach($this->aptitudes as $m){
 	    	array_push($aptitudesSavePacks	, $m->getSavePack());
 	    }
-	    $savePack['aptitudesSavePacks'] = $aptitudesSavePacks;	    	   
+	    $savePack['aptitudesSavePacks'] = $aptitudesSavePacks;
 	    $skillsSavesPacks = array();
 	    foreach($this->skills as $m){
 	    	array_push($skillsSavesPacks, $m->getSavePack());
 	    }
 	    $savePack['skillsSavePacks'] = $skillsSavesPacks;
-	    
+
 	    $reputationsSavePacks = array();
 	    foreach($this->reputations as $m){
 	    	array_push($reputationsSavePacks, $m->getSavePack());
 	    }
-	    $savePack['reputationSavePack'] = $reputationsSavePacks;	    
+	    $savePack['reputationSavePack'] = $reputationsSavePacks;
 	    $statsSavePacks = array();
 	    foreach($this->stats as $m){
 	    	array_push($statsSavePacks, $m->getSavePack());
 	    }
 	    $savePack['statsSavePacks'] = $statsSavePacks;
-	    
+
 	    $traitsSavePacks = array();
 	    foreach($this->traits as $m){
 	    	array_push($traitsSavePacks, $m->getSavePack());
@@ -143,12 +145,12 @@ class EPEgo {
 	    foreach($this->additionalTraits as $m){
 	    	array_push($additionaTraitsSavePacks, $m->getSavePack());
 	    }
-	    $savePack['additionaTraitsSavePacks'] = $additionaTraitsSavePacks;                  
+	    $savePack['additionaTraitsSavePacks'] = $additionaTraitsSavePacks;
 	    $softGearSavePacks = array();
 	    foreach($this->softGears as $m){
 	    	array_push($softGearSavePacks, $m->getSavePack());
 	    }
-	    $savePack['softGearSavePacks'] = $softGearSavePacks;	    
+	    $savePack['softGearSavePacks'] = $softGearSavePacks;
 	    $aiSavePacks = array();
 	    foreach($this->ais as $m){
 	    	array_push($aiSavePacks, $m->getSavePack());
@@ -159,16 +161,16 @@ class EPEgo {
 	    	array_push($defAiSavePacks, $m->getSavePack());
 	    }
 	    $savePack['defaultAisSavePacks'] = $defAiSavePacks;
-	    	    
+
 	    $psySleightSavePacks = array();
 	    foreach($this->psySleights as $m){
 	    	array_push($psySleightSavePacks, $m->getSavePack());
 	    }
 	    $savePack['psySleightSavePacks'] = $psySleightSavePacks;
-	    	    
-	    return $savePack;   
+
+	    return $savePack;
     }
-    
+
     function loadSavePack($savePack,$cc = null){
 	    $this->name = $savePack['name'];
 	    $this->creditInstant = $savePack['creditInstant'];
@@ -179,9 +181,9 @@ class EPEgo {
 	    $this->creditBackgroundMod = $savePack['creditBackgroundMod'];
 	    $this->creditSoftGearMod = $savePack['creditSoftGearMod'];
 	    $this->creditPsyMod = $savePack['creditPsyMod'];
-	    
+
 	    $this->creditPurchased = $savePack['creditPurchased'];
-	    
+
 	    if($savePack['factionSavePack'] != null){
 	    	$faction = new EPBackground('','','');
 	    	$faction->loadSavePack($savePack['factionSavePack']);
@@ -192,11 +194,11 @@ class EPEgo {
 	    	$faction->loadSavePack($savePack['backgroundSavePack']);
 	    	$this->background = $faction;
 	    }
-	    
+
 	    foreach($savePack['motivationArray'] as $m){
 	    	array_push($this->motivations, $m);
-	    } 
-	    
+	    }
+
 	    //must be done before skills !
 	    $this->aptitudes = array();
 	    foreach($savePack['aptitudesSavePacks'] as $m){
@@ -211,7 +213,7 @@ class EPEgo {
 	    	$savedSkill->loadSavePack($m);
 	    	array_push($this->skills, $savedSkill);
 	    }
-	    
+
 	    $this->reputations = array();
 	    foreach($savePack['reputationSavePack'] as $m){
 	    	$savedRep = new EPReputation('','');
@@ -225,25 +227,25 @@ class EPEgo {
 	    	$savedStat->loadSavePack($m);
 	    	array_push($this->stats, $savedStat);
 	    }
-	    
+
 	    foreach($savePack['traitSavePacks'] as $m){
 	    	$savedTrait = new EPTrait('','','','','');
 	    	$savedTrait->loadSavePack($m);
 	    	array_push($this->traits, $savedTrait);
 	    }
-            
+
 	    foreach($savePack['additionaTraitsSavePacks'] as $m){
 	    	$savedAddTrait = new EPTrait('','','','','');
 	    	$savedAddTrait->loadSavePack($m);
 	    	array_push($this->additionalTraits, $savedAddTrait);
 	    }
-            
+
 	    foreach($savePack['softGearSavePacks'] as $m){
 	    	$savedSoftG = new EPGear('','','','');
 	    	$savedSoftG->loadSavePack($m);
 	    	array_push($this->softGears, $savedSoftG);
 	    }
-	    
+
 	    foreach($savePack['aiSavePacks'] as $m){
 	    	$savedAi = new EPAi('',array(),'');
 	    	$savedAi->loadSavePack($m,$cc);
@@ -256,13 +258,13 @@ class EPEgo {
 	    	$defSavedAi->loadSavePack($m,$cc);
 	    	array_push($this->defaultAis, $defSavedAi);
 	    }
-		
+
 		foreach($savePack['psySleightSavePacks'] as $m){
 	    	$savedPsyS = new EPPsySleight('','','','','','','','');
 	    	$savedPsyS->loadSavePack($m);
 	    	array_push($this->psySleights, $savedPsyS);
-	    }	     
-    } 
+	    }
+    }
     function __construct() {
         $this->aptitudes = array();
         $this->skills = array();
@@ -285,44 +287,52 @@ class EPEgo {
         $this->creditPurchased = 0;
         $this->creditInstant = 0;
     }
-    function addDefaultAi($defaultAi){
+    function addDefaultAi(EPAi $defaultAi){
         if (isset($defaultAi)){
             array_push($this->defaultAis,$defaultAi);
         }
     }
 
-    // All the traits, both user added, and from background/faction
-    function getTraits(){
+    /**
+     * All the traits, both user added, and from background/faction
+     * @return EPTrait[]
+     */
+    function getTraits(): array
+    {
         return array_merge($this->traits,$this->additionalTraits);
     }
 
-    // Get all the knowledge skills
-    function getKnowledgeSkills(){
-        $res = array();
-
-        foreach ($this->skills as $s){
-            if ($s->isKnowledge()){
-                array_push($res, $s);
+    /**
+     * Get all the knowledge skills
+     * @return EPSkill[]
+     */
+    function getKnowledgeSkills(): array
+    {
+        $output = array();
+        foreach ($this->skills as $skill) {
+            if ($skill->isKnowledge()) {
+                array_push($output, $skill);
             }
         }
 
-        usort($res, [EPSkill::class, 'compareSkillsByPrefixName']);
-        return $res;
+        usort($output, [EPSkill::class, 'compareSkillsByPrefixName']);
+        return $output;
     }
 
-    // Get all the active skills
-    function getActiveSkills(){
-        $res = array();
-
-        foreach ($this->skills as $s){
-            if ($s->isActive()){
-                array_push($res, $s);
+    /**
+     * Get all the active skills
+     * @return EPSkill[]
+     */
+    function getActiveSkills(): array
+    {
+        $output = array();
+        foreach ($this->skills as $skill) {
+            if ($skill->isActive()) {
+                array_push($output, $skill);
             }
         }
 
-
-        usort($res, [EPSkill::class, 'compareSkillsByPrefixName']);
-
-        return $res;
+        usort($output, [EPSkill::class, 'compareSkillsByPrefixName']);
+        return $output;
     }
 }

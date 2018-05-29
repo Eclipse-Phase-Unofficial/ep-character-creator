@@ -51,7 +51,8 @@ class EPReputation extends EPAtom{
         $max = min($max,$this->absoluteValuePsyMod);
         return $max;
     }
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	    
         $savePack['value'] =  $this->value;

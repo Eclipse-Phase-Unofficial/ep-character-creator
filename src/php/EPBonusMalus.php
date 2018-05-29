@@ -69,7 +69,8 @@ class EPBonusMalus extends EPAtom{
     public $multi_occurence; // How many $bonusMalusTypes the user is to select
     public $selected; // same a radio button group .... ( O X X O O X O) 
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	    
         $savePack['bonusMalusType'] =  $this->bonusMalusType;
@@ -121,8 +122,10 @@ class EPBonusMalus extends EPAtom{
 
     /**
      * If the BM is granted to the player.
+     * @return bool
      */
-    function isGranted(){
+    function isGranted(): bool
+    {
         if($this->targetForChoice == ""){
             return True;
         }
@@ -131,8 +134,10 @@ class EPBonusMalus extends EPAtom{
 
     /**
      * If the BM requires the player to make a *single* choice.
+     * @return bool
      */
-    function isChoice(){
+    function isChoice(): bool
+    {
         if($this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE ||
            $this->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
            $this->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
@@ -146,8 +151,10 @@ class EPBonusMalus extends EPAtom{
 
     /**
      * If the BM requires the player to choose between several sub BMs
+     * @return bool
      */
-    function isMultipleChoice(){
+    function isMultipleChoice(): bool
+    {
         if($this->targetForChoice == EPBonusMalus::$MULTIPLE){
             return True;
         }

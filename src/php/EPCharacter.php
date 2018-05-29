@@ -8,11 +8,17 @@ namespace EclipsePhaseCharacterCreator\Backend;
  *
  * @author reinhardt
  */
-class EPCharacter {
+class EPCharacter implements Savable
+{
+    /**
+     * @var EPEgo
+     */
     public $ego;
     public $currentMorphUid;
-    
-    //array
+
+    /**
+     * @var EPMorph[]
+     */
     public $morphs;
     
     //character sheet details
@@ -23,7 +29,8 @@ class EPCharacter {
     public $note;
     
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = array();
 
         $savePack['playerName'] = $this->playerName;

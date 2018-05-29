@@ -14,15 +14,28 @@ class EPBackground extends EPAtom{
     static $FACTION = 'FAC';
     
     public $backgroundType;
-    
-    //array
+
+    //TODO:  Be more specific with these types
+    /**
+     * @var EPBonusMalus[]
+     */
     public $bonusMalus;
+    /**
+     * @var EPTrait[]
+     */
     public $traits;
+    /**
+     * @var array
+     */
     public $limitations;
+    /**
+     * @var array
+     */
     public $obligations;
     
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	        
         $savePack['backgroundType'] = $this->backgroundType;  

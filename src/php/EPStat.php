@@ -23,7 +23,11 @@ class EPStat extends EPAtom{
     
     public $abbreviation;
     public $value;
-    
+
+    /**
+     * //TODO:  This potentially introduces cyclic dependencies, and should be removed
+     * @var null|EPCharacterCreator
+     */
     public $cc;
     
     public $morphMod;
@@ -42,7 +46,8 @@ class EPStat extends EPAtom{
     public $multiGearMod;
     public $multiPsyMod;    
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	    
         $savePack['abbreviation'] = $this->abbreviation;

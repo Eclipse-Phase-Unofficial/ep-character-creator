@@ -40,12 +40,15 @@ class EPPsySleight extends EPAtom{
     public $psyLevel;
     public $skillNeeded;
     public $buyInCreationMode;
-    
-    //Array 
+
+    /**
+     * @var EPBonusMalus[]
+     */
     public $bonusMalus;
     
     
-    function getSavePack(){
+    function getSavePack(): array
+    {
         $savePack = parent::getSavePack();
 	    	    
         $savePack['psyType'] = $this->psyType;
@@ -103,12 +106,15 @@ class EPPsySleight extends EPAtom{
      *
      * Psy is unique by name, psyType, and psyLevel.
      * This is more expensive than EPAtom's version, but catches duplicate Psy with different Uids.
+     * @param EPPsySleight $atom
+     * @return bool
      */
-    public function match($item){
-        if (strcasecmp($item->name,$this->name) == 0 &&
-            $item->psyType===$this->psyType &&
-            $item->psyLevel===$this->psyLevel){
-                return true;
+    public function match($atom): bool
+    {
+        if (strcasecmp($atom->name, $this->name) == 0 &&
+            $atom->psyType === $this->psyType &&
+            $atom->psyLevel === $this->psyLevel) {
+            return true;
         }
         return false;
     }

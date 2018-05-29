@@ -32,6 +32,10 @@ function returnMessage(&$data,$msg=""){
     $data['msg'] = "RULES : ".$msg;
 }
 
+/**
+ * @param $data
+ * @param string| EPCreatorErrors $creatorError
+ */
 function treatCreatorErrors(&$data,$creatorError){
     if(is_string($creatorError)) {
         returnErrors($data,$creatorError);
@@ -244,9 +248,7 @@ if(isset($_POST['negTrait'])){
 //SET MOTIVATION
 if(isset($_POST['newMot'])){
 	if($_POST['newMot'] != ""){
-	    if(!$_SESSION['cc']->addMotivation($_POST['newMot'])){
-	        treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-	    }
+        $_SESSION['cc']->addMotivation($_POST['newMot']);
 	}
 }
 //REMOVE MOTIVATION
@@ -634,9 +636,7 @@ if(isset($_POST['morphFreeGear'])){
             }
         }else{
             if (!$_SESSION['cc']->haveGearOnMorph($gear,$morph)){
-                if (!$_SESSION['cc']->addFreeGear($gear,$morph)){
-                    treatCreatorErrors($return, $_SESSION['cc']->getLastError());
-                }
+                $_SESSION['cc']->addFreeGear($gear,$morph);
             }else{
                 treatCreatorErrors($return, "Can not remove permanent Gear!");
             }

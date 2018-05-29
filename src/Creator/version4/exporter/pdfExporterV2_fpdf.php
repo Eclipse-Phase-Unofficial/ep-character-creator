@@ -661,7 +661,7 @@ session_start();
     // @param $ovf                  The overflow object to store extra items in
     // @param $overflow_number      The max number of items before overflow occurs
     // @param $overflow_message     The message to put on the overflow page
-    function writeTwoColumnsOvf($ovf,$pdf,$data,$rowFormat,$row_height,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
+    function writeTwoColumnsOvf(Overflow $ovf,$pdf,$data,$rowFormat,$row_height,$seperator_type = 0,$overflow_number = 0,$overflow_message = "")
     {
         //Don't bother when not given input data
         if(count($data) == 0)

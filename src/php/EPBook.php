@@ -10,55 +10,75 @@ namespace EclipsePhaseCharacterCreator\Backend;
  *
  * @author Arthur Moore
  */
-class EPBook {
+class EPBook
+{
 
-    static $BOOK_RIMWARD 		= "Rimward";
-    static $BOOK_PANOPTICON 	= "Panopticon";
-    static $BOOK_SUNWARD 		= "Sunward";
-    static $BOOK_GATECRASHING 	= "Gatecrashing";
-    static $BOOK_TRANSHUMAN 	= "Transhuman";
-    static $BOOK_ECLIPSEPHASE   = "Eclipse Phase";
+    /**
+     * Translation table between books full names and their abbreviation
+     */
+    const SHORT_NAMES = [
+        'Rimward' => 'RW',
+        'Panopticon' => 'PAN',
+        'Sunward' => 'SW',
+        'Gatecrashing' => 'GC',
+        'Transhuman' => 'TH',
+        'Eclipse Phase' => 'EP',
+    ];
 
-    private $page;      // Page number within the book
-    private $bookName;  // The full name of the book
-    private $shortBook; // The two/three letter abreviation of the book name
+    /**
+     * Page number (or location) within the book
+     * @var string
+     */
+    private $page;      //
+    /**
+     * The full name of the book
+     * @var string
+     */
+    private $bookName;
+    /**
+     * The two/three letter abbreviation of the book name
+     * @var string
+     */
+    private $shortBook;
 
-    function __construct($name) {
-        $provider = new EPListProvider('../../../php/config.ini');
-        $this->bookName = $provider->getBookForName($name);
-        $this->page = $provider->getPageForName($name);
-
-        if($this->bookName == EPBook::$BOOK_RIMWARD)           $this->shortBook =  "RW";
-        else if($this->bookName == EPBook::$BOOK_PANOPTICON)   $this->shortBook =  "PAN";
-        else if($this->bookName == EPBook::$BOOK_SUNWARD)      $this->shortBook =  "SW";
-        else if($this->bookName == EPBook::$BOOK_GATECRASHING) $this->shortBook =  "GC";
-        else if($this->bookName == EPBook::$BOOK_TRANSHUMAN)   $this->shortBook =  "TH";
-        else if($this->bookName == EPBook::$BOOK_ECLIPSEPHASE) $this->shortBook =  "EP";
-        else                                             $this->shortBook =  "";
+    function __construct(string $bookName)
+    {
+        $provider        = new EPListProvider('../../../php/config.ini');
+        $this->bookName  = $provider->getBookForName($bookName) ?? '';
+        $this->page      = $provider->getPageForName($bookName) ?? 'Unknown';
+        $this->shortBook = self::SHORT_NAMES[$this->bookName] ?? '';
     }
 
-    //Generic getters
-    function getPage(){
+    function getPage(): string
+    {
         return $this->page;
     }
-    function getBookName(){
+
+    function getBookName(): string
+    {
         return $this->bookName;
     }
-    function getAbbreviation(){
+
+    function getAbbreviation(): string
+    {
         return $this->shortBook;
     }
 
     /**
      * Get book info suitable for printing. (short form)
+     * @return string
      */
-     function getPrintableName(){
-        return "(".$this->shortBook." p.".$this->page.")";
-     }
+    function getPrintableName(): string
+    {
+        return "(" . $this->shortBook . " p." . $this->page . ")";
+    }
 
-     /**
+    /**
      * Get book info suitable for printing. (long form)
+     * @return string
      */
-     function getPrintableNameL(){
-        return $this->bookName." P. ".$this->page;
-     }
+    function getPrintableNameL(): string
+    {
+        return $this->bookName . " P. " . $this->page;
+    }
 }

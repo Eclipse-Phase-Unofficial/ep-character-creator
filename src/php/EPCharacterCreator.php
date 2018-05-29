@@ -8,7 +8,8 @@ namespace EclipsePhaseCharacterCreator\Backend;
  *
  * @author Jigé
  */
-class EPCharacterCreator {
+class EPCharacterCreator implements Savable
+{
     static $PSY_CHI_TRAIT_NAME = "Psi I";
     static $PSY_GAMMA_TRAIT_NAME = "Psi II";
     
@@ -21,21 +22,30 @@ class EPCharacterCreator {
     public $reputationPointsBackgroundMod;
     public $reputationPointsSoftGearMod;
     public $reputationPointsPsyMod;
-    public $configValues;
-    public $errorList;
-    public $character;
+    /**
+     * @var EPConfigFile
+     */
+    public  $configValues;
+    public  $errorList;
+    /**
+     * @var EPCharacter
+     */
+    public  $character;
+    /**
+     * @var EPListProvider
+     */
     private $listProvider;
-    public $groups;
-    public $prefixs;
-    public $backgrounds;
-    public $factions;
-    public $morphs;
-    public $ais;
-    public $gears;
-    public $psySleights;
-    public $traits;
-    public $validation;
-    public $psySleigths;
+    public  $groups;
+    public  $prefixs;
+    public  $backgrounds;
+    public  $factions;
+    public  $morphs;
+    public  $ais;
+    public  $gears;
+    public  $psySleights;
+    public  $traits;
+    public  $validation;
+    public  $psySleigths;
     
     public $nativeLanguageSet;
     public $creationMode;
@@ -45,7 +55,10 @@ class EPCharacterCreator {
     public $evoCrePoint;
     
     public $evoCrePointPurchased;
-    
+
+    /**
+     * @var EPCharacterCreator
+     */
     public $back;
     
     // How many reputation points are remaining after all the modifyers are taken into account
@@ -64,7 +77,8 @@ class EPCharacterCreator {
         return max(0,$this->getReputationPointsRemaining());
     }
 
-    function getSavePack(){
+    function getSavePack(): array
+    {
 		$savePack = array();
 		
         $savePack['versionName'] = $this->configValues->getValue('GeneralValues','versionName');
@@ -173,7 +187,8 @@ class EPCharacterCreator {
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
     }
-    function addAI($ai){
+    function addAI(EPAi $ai): bool
+    {
         if ($this->creationMode){
             if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
@@ -195,7 +210,8 @@ class EPCharacterCreator {
             return false;            
         }
     }
-    function checkValidation(){       
+    function checkValidation(): bool
+    {
         $this->validation->items[EPValidation::$APTITUDE_POINT_USE] = $this->aptitudePoints == 0;
         $this->validation->items[EPValidation::$REPUTATION_POINT_USE] = $this->getReputationPoints() == 0;
         $this->validation->items[EPValidation::$BACKGROUND_CHOICE] = !empty($this->character->ego->background);
@@ -219,11 +235,15 @@ class EPCharacterCreator {
                 $this->validation->items[EPValidation::$CREDIT_AMOUNT_ENOUGH];
     }
 
-    //Get all the traits for either the current morph or the ego
-    function getCurrentTraits($morph = false){
-        if ($morph){
-            $m = $this->getCurrentMorph();
-            return $m->getTraits();
+    /**
+     * Get all the traits for either the current morph or the ego
+     * @param bool $morph
+     * @return EPTrait[]
+     */
+    function getCurrentTraits(bool $morph = false): array
+    {
+        if ($morph) {
+            return $this->getCurrentMorph()->getTraits();
         }
         return $this->character->ego->getTraits();
     }
@@ -283,13 +303,22 @@ class EPCharacterCreator {
         return $m->getGear();
     }
 
-    function getCurrentMorphsByName($name){
+    function getCurrentMorphsByName($name): EPMorph
+    {
         return EPAtom::getAtomByName($this->character->morphs,$name);
     }
-    function getTraitByName($name){
+    function getTraitByName($name): EPTrait
+    {
         return EPAtom::getAtomByName($this->traits,$name);
     }
-     function havePsiSleight($psiName){
+
+    /**
+     * TODO:  Fixup by using EPAtom functions
+     * @param string $psiName
+     * @return bool
+     */
+    function havePsiSleight(string $psiName): bool
+     {
         if (is_array($this->character->ego->psySleights)){
             foreach ($this->character->ego->psySleights as $p){
                 if (strcmp($p->name, $psiName) == 0){
@@ -300,17 +329,27 @@ class EPCharacterCreator {
         return false;
     }
 
-    // If the morph has the trait (includes default and user added traits)
-    function haveTraitOnMorph($trait,$morph){
+    /**
+     * If the morph has the trait (includes default and user added traits)
+     * @param EPTrait $trait
+     * @param EPMorph $morph
+     * @return bool
+     */
+    function haveTraitOnMorph(EPTrait $trait, EPMorph$morph): bool{
         return $trait->isInArray($morph->getTraits());
     }
 
-    // If the morph has a particular piece of gear on it (includes default and user added gear)
-    function haveGearOnMorph($gear,$morph){
+    /**
+     * If the morph has a particular piece of gear on it (includes default and user added gear)
+     * @param EPGear  $gear
+     * @param EPMorph $morph
+     * @return bool
+     */
+    function haveGearOnMorph(EPGear $gear, EPMorph $morph){
         return $gear->isInArray($morph->getGear());
     }
 
-    function removeAI($ai){
+    function removeAI(EPAi $ai){
         if ($this->creationMode){
             if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
@@ -377,49 +416,22 @@ class EPCharacterCreator {
             return true;
         }
     }
-    function addFreeGear($gear, &$morph){
-        if ($this->creationMode){
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            $gear->addToArray($morph->additionalGears);
-            $this->adjustAll();
-            return true;
-        }else{
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            $gear->addToArray($morph->additionalGears);
+
+    function addFreeGear(EPGear $gear, EPMorph &$morph){
+        $gear->addToArray($morph->additionalGears);
+        if (!$this->creationMode){
             $this->evoCrePoint -= $gear->getCost();
-            $this->adjustAll();
-            return true;
         }
+        $this->adjustAll();
     }
 
     function getCurrentPsySleight(){
         return $this->character->ego->psySleights;
     }
 
-    function removeGear($gear,$morph){
+    function removeGear(EPGear $gear,EPMorph &$morph): bool
+    {
         if ($this->creationMode){
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
             if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
@@ -436,14 +448,6 @@ class EPCharacterCreator {
             $this->adjustAll();
             return true;
         }else{
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
             if (!$morph->isInArray($this->character->morphs)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character do not have this morph !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
@@ -462,10 +466,13 @@ class EPCharacterCreator {
             return true;
         }
     }
-    function haveAdditionalGear($gear,$morph){
+    function haveAdditionalGear(EPGear $gear, EPMorph $morph): bool
+    {
         return $gear->isInArray($morph->additionalGears);
     }
-    function addMorphCreationMode($morph){
+
+    function addMorphCreationMode(EPMorph $morph): bool
+    {
         if ($morph->addToArray($this->character->morphs)){
             $this->activateMorph($morph);
             $this->adjustAll();
@@ -473,7 +480,9 @@ class EPCharacterCreator {
         }
         return false;
     }
-    function addMorphUpdateMode($morph){
+
+    function addMorphUpdateMode(EPMorph $morph): bool
+    {
         if ($morph->addToArray($this->character->morphs)){
             $this->evoCrePoint -= $morph->getCost();
             $this->activateMorph($morph);
@@ -482,11 +491,9 @@ class EPCharacterCreator {
         }
         return false;
     }
-    function addMorph($morph){
-        if (!isset($morph)){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-            return false;
-        }
+
+    function addMorph(EPMorph $morph)
+    {
         if ($this->creationMode){
             $morph->buyInCreationMode = true;
             return $this->addMorphCreationMode($morph);
@@ -495,7 +502,8 @@ class EPCharacterCreator {
             return $this->addMorphUpdateMode($morph);
         }
     }
-    function removeMorphCreationMode($morph){
+    function removeMorphCreationMode(EPMorph $morph)
+    {
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
                 if (strcmp($m->name,$morph->name) == 0){
@@ -529,7 +537,9 @@ class EPCharacterCreator {
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
     }
-    function removeMorphUpdateMode($morph){
+
+    function removeMorphUpdateMode(EPMorph $morph): bool
+    {
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
                 if (strcmp($m->name,$morph->name) == 0){
@@ -564,7 +574,9 @@ class EPCharacterCreator {
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
     }
-    function removeMorph($morph){
+
+    function removeMorph(EPMorph $morph): bool
+    {
         if ($this->creationMode){
             return $this->removeMorphCreationMode($morph);
         }else{
@@ -572,7 +584,9 @@ class EPCharacterCreator {
         }
     }
 
-    function addSpecialization($name,$skill){
+    //TODO:  Half of this should be in EPSkill
+    function addSpecialization($name, EPSkill $skill): bool
+    {
         if (!empty($skill->specialization)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill already has a specialization!)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
@@ -585,7 +599,10 @@ class EPCharacterCreator {
         $skill->specialization = $name;
         return true;
     }
-    function removeSpecialization($skill){
+
+    //TODO:  Half of this should be in EPSkill
+    function removeSpecialization(EPSkill $skill): bool
+    {
         if (empty($skill->specialization)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No specialization to remove!)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
@@ -599,22 +616,26 @@ class EPCharacterCreator {
         return true;
     }
 
-    function addSoftGear($sg){
-        $sg->addToArray($this->character->ego->softGears);
+    function addSoftGear(EPGear $softGear): bool
+    {
+        $result = $softGear->addToArray($this->character->ego->softGears);
         $this->adjustAll();
-        return true;
+        return $result;
     }
-    function removeSoftGear($sg){
-        if(!$sg->removeFromArray($this->character->ego->softGears)){
+
+    function removeSoftGear(EPGear $softGear): bool
+    {
+        if (!$softGear->removeFromArray($this->character->ego->softGears)) {
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Soft gear not exist in character softGear list !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
         $this->adjustAll();
         return true;
     }
-    function addMotivation($motiv){
-         array_push($this->character->ego->motivations, $motiv);
-         return true;
+
+    function addMotivation(string $motivation)
+    {
+        array_push($this->character->ego->motivations, $motivation);
     }
     function removeMotivation($motiv){
 
@@ -625,7 +646,8 @@ class EPCharacterCreator {
 		$this->character->ego->motivations = $candidat;
         return true;
     }
-    function addTrait($trait, $morph = null){
+    function addTrait(EPTrait $trait, EPMorph $morph = null): bool
+    {
         //Error checking
         if (isset($morph)){
             if (!$morph->isInArray($this->character->morphs)){
@@ -734,7 +756,8 @@ class EPCharacterCreator {
             return true;
         }
     }
-    function removeTrait($trait,$morph = null){
+    function removeTrait(EPTrait $trait,?EPMorph $morph = null): bool
+    {
         //Error checking
         if (isset($morph)){
             if (!$morph->isInArray($this->character->morphs)){
@@ -808,7 +831,9 @@ class EPCharacterCreator {
 
         return false;
     }
-    function sellLowerLevel($trait,$morph = null){
+
+    function sellLowerLevel(EPTrait $trait, ?EPMorph $morph = null)
+    {
     	if(isset($morph)){
     		$traitName = $this->removeLastWord($trait->name);
 		    foreach ($morph->additionalTraits as $t){
@@ -831,8 +856,9 @@ class EPCharacterCreator {
     	}
 
     }
-     function sellHigherLevel($trait,$morph = null){
 
+    function sellHigherLevel(EPTrait $trait, ?EPMorph $morph = null)
+    {
     	if(isset($morph)){
     		$traitName = $this->removeLastWord($trait->name);
 		    foreach ($morph->additionalTraits as $t){
@@ -855,7 +881,9 @@ class EPCharacterCreator {
     	}
 
     }
-    function addPsySleight($psySleight){
+
+    function addPsySleight(EPPsySleight $psySleight)
+    {
         if ($this->creationMode){
             if ($this->havePsiSleight($psySleight->name)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -876,7 +904,9 @@ class EPCharacterCreator {
             return true;
         }
     }
-    function removePsySleight($psySleight){
+
+    function removePsySleight(EPPsySleight $psySleight)
+    {
         if ($this->creationMode){
             if (!$this->havePsiSleight($psySleight->name)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -926,7 +956,9 @@ class EPCharacterCreator {
         $this->adjustAll();
         return true;
     }
-    function removeSkill($skill){
+
+    function removeSkill(EPSkill $skill): bool
+    {
         if ($skill->tempSkill === false){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Impossible to remove a permanent skill !)', EPCreatorErrors::$RULE_ERROR));
             return false;
@@ -952,12 +984,9 @@ class EPCharacterCreator {
         return max(0,$need);
     }
 
-    function getCurrentMorph(){
-        $ret = EPAtom::getAtomByUid($this->character->morphs,$this->character->currentMorphUid);
-        if($ret === null){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-        }
-        return $ret;
+    function getCurrentMorph(): ?EPMorph
+    {
+        return EPAtom::getAtomByUid($this->character->morphs, $this->character->currentMorphUid);
     }
     function getCredit(){
         if ($this->creationMode){
@@ -967,19 +996,15 @@ class EPCharacterCreator {
             return $this->evoCrePoint + $this->evoCrePointPurchased;
         }
     }
-    function getCurrentBackground(){
-        if (isset($this->character->ego->background)){
-            return $this->character->ego->background;
-        }
 
-        return null;
+    function getCurrentBackground(): ?EPBackground
+    {
+        return $this->character->ego->background ?? null;
     }
-    function getCurrentFaction(){
-        if (isset($this->character->ego->faction)){
-            return $this->character->ego->faction;
-        }
 
-        return null;
+    function getCurrentFaction(): ?EPBackground
+    {
+        return $this->character->ego->faction ?? null;
     }
     function getErrorList(){
         return $this->errorList;
@@ -996,7 +1021,8 @@ class EPCharacterCreator {
         return EPAtom::getAtomByName($this->ais,$name);
     }
 
-    function haveAi($ai){
+    function haveAi(EPAi $ai): bool
+    {
         return $ai->isInArray($this->character->ego->ais);
     }
 
@@ -1004,15 +1030,24 @@ class EPCharacterCreator {
         return EPAtom::getAtomByName($this->gears,$name);
     }
 
-    function getEgoSoftGears(){
+    /**
+     * @return EPGear[]
+     */
+    function getEgoSoftGears(): array
+    {
         return $this->character->ego->softGears;
     }
 
-    function haveSoftGear($soft){
+    function haveSoftGear(EPGear $soft): bool
+    {
         return $soft->isInArray($this->character->ego->softGears);
     }
 
-    function getEgoAi(){
+    /**
+     * @return EPAi[]
+     */
+    function getEgoAi(): array
+    {
         $res = array();
         $res = array_merge($res,$this->character->ego->ais);
         $res = array_merge($res,$this->character->ego->defaultAis);
@@ -2471,7 +2506,7 @@ class EPCharacterCreator {
         }
         return $cost;
     }
-    function getRealCPCostForSkill($skill){
+    function getRealCPCostForSkill(EPSkill $skill){
         if ($skill->isNativeTongue === true){
             $skill->isNativeTongue = false;
 
