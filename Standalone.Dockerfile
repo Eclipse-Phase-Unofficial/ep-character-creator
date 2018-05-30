@@ -10,7 +10,12 @@ COPY docker/epcc/php.ini /usr/local/etc/php/
 COPY src /var/www/html/
 COPY docker/epcc/epcc_standalone.ini /var/www/html/php/config.ini
 
+#Database prep
 RUN mkdir /db/
 RUN touch /db/FullDatabase.sqlite
 RUN sed --in-place 's/\\n/ /g' /var/www/html/sql/init/FullDatabase.sql
 RUN sqlite3 --init /var/www/html/sql/init/FullDatabase.sql /db/FullDatabase.sqlite
+
+#Clean out non user accessable folders
+RUN rm -r /var/www/html/sql/
+RUN rm -r /var/www/html/management/
