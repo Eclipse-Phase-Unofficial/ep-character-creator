@@ -29,17 +29,60 @@ You will need to maintain a separate version of that file outside of this reposi
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
 [src/sql/init/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
 
-## Testing
+## Setup
 You will need:
 
-* php 5.3 or greater (php.net)
-* sqlite3
+* [php 5.6 or greater](https://php.net)
+* Either: [mySql 14.14 or greater](https://dev.mysql.com/downloads/)
+* Or: [sqlite3](https://www.sqlite.org/download.html)
 
-1. Set up the sqlite database as explained in the Deployment section.
+### Database Setup
+#### SQLite:
+1. Create a sqlite3 database
+    ```bash
+    sed 's/\\n/ /g' FullDatabase.sql > tmp.sql
+    sqlite3 --init tmp.sql FullDatabase.sqlite3
+    ```
+3. configure database access in php/config.ini
+    ```ini
+    databasePDO = 'sqlite:../../../sql/init/FullDatabase.sqlite3'
+    ````
+
+#### MySql
+1. create a MySql database
+    ```mySql
+    CREATE USER 'epcc_www'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD';
+    GRANT ALL PRIVILEGES ON EclipsePhaseData.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
+    CREATE DATABASE EclipsePhaseData;
+    USE EclipsePhaseData;
+    ```
+2. Import the database
+    ```
+    mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < sql/init/FullDatabase.sql
+    ```
+3. configure database access in php/config.ini
+    ```
+    databaseUser = "epcc_www"
+    databasePassword = "$DATABASE_PASSWORD"
+    databasePDO = "mysql:dbname=<Database Name>;host=<DATABASE SERVER>("localhost" for local server);port=<Database Port> (for my sql generaly : 3306)"
+    ```
+
+### Saving database changes
+#### SQLite:
+To save changes made to the Sqlite database run:
+```bash
+echo -e ".once FullDatabase.sql\n.dump"|sqlite3 FullDatabase.sqlite3
+```
+WARNING:  If you use this feature, skip the `sed` step when creating the database.
+
+
+## Testing
+### Using the built in php web server
+1. Set up the database.
 2. From a command prompt in the `src` directory run `php -S localhost:8080`
 3. Browse to http://localhost:8080
 
-### Testing with Docker
+### Using Docker-Compose
 
 If you have [Docker](https://www.docker.com/) installed, you can use the `docker-compose` command to run EPCC:
 
@@ -62,51 +105,12 @@ epcc-db    | 2017-09-03T00:41:29.240576Z 0 [Note] mysqld: ready for connections.
 In the event that the database needs to be updated, run the command `docker volume rm epcharactercreator_epcc-db-data` to delete the database.
 Docker will automatically re-build it on next run
 
-<a name="Deployment"></a>
 ## Deployment
-You will need:
-
-* php 5.3 or greater (php.net)
-* mySql 14.14 or greater (dev.mysql.com/downloads/)
-
-
-1. Ensure that the webserver is pointing to the src directory.
-2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessable!
+1. Ensure that the web server is pointing to the src directory.
+2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessible!
 3. Set the Google Analytics Id.
 
-#### MySql Database Setup (For publicly accessable websites)
-1. create a MySql database
+### Deployment via Docker (Recommended)
+Run `docker image build -f Standalone.Dockerfile .`
 
-    ```mySql
-    CREATE USER 'epcc_www'@'localhost' IDENTIFIED BY '0928sdGdsfa8#_+';
-    GRANT ALL PRIVILEGES ON EclipsePhaseData.* TO 'epcc_www'@'localhost' WITH GRANT OPTION;
-    CREATE DATABASE EclipsePhaseData;
-    USE EclipsePhaseData;
-    ```
-
-2. Import the database
-
-    ```
-    mysql -h localhost -u epcc_www -p'0928sdGdsfa8#_+' EclipsePhaseData < sql/init/FullDatabase.sql
-    ```
-3. configure database access in php/config.ini
-
-    ```ini
-    databaseUser = "DATABASE USER NAME"
-    databasePassword = "DATABASE USER PASSWORD"
-    databasePDO = "mysql:dbname=<Database Name>;host=<DATABASE SERVER>("localhost" for local server);port=<Database Port> (for my sql generaly : 3306)"
-    ```
-
-#### Sqlite Database Setup (For local testing)
-1. Create a sqlite database
-
-    ```bash
-    sed 's/\\n/ /g' FullDatabase.sql > tmp.sql
-    sqlite3 --init tmp.sql FullDatabase.sqlite3
-    ```
-
-3. configure database access in php/config.ini
-
-    ```ini
-    databasePDO = 'sqlite:../../../sql/init/FullDatabase.sqlite3'
-    ````
+If you would like a pre-build image, see [here](https://hub.docker.com/r/emperorarthur/ep-character-creator/).
