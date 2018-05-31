@@ -589,18 +589,7 @@ class EPListProvider {
                 }
             }
 
-            //stats
-            $statList = array();
-            $statRes = self::$database->query("SELECT `ai`, `stat`, `value` FROM `AiStat` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';");
-            $statRes->setFetchMode(\PDO::FETCH_ASSOC);
-            while ($statRow = $statRes->fetch()) {
-                $epStat = $this->getStatByName($statRow['stat']);
-                $epStat->value = $statRow['value'];
-                //$statList[$epStat->name] = $epStat;
-                array_push($statList, $epStat);
-            }
-
-            $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $statList, $aiRow['desc']);
+            $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $aiRow['desc']);
             if ($aiRow['unique'] == "N") {
                 $ai->unique = false;
             } else {

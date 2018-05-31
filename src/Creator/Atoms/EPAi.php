@@ -20,10 +20,6 @@ class EPAi extends EPAtom{
      */
     public $skills;
     /**
-     * @var EPStat[]
-     */
-    public $stats;
-    /**
      * @var EPBonusMalus[]
      */
     public $bonusMalus;
@@ -42,11 +38,6 @@ class EPAi extends EPAtom{
             array_push($skillsSavesPacks, $m->getSavePack());
         }
         $savePack['skillsSavePacks'] = $skillsSavesPacks;
-        $statsSavePacks = array();
-        foreach($this->stats as $m){
-            array_push($statsSavePacks, $m->getSavePack());
-        }
-        $savePack['statsSavePacks'] = $statsSavePacks;
         $bmSavePacks = array();
         foreach($this->bonusMalus as $m){
             array_push($bmSavePacks	, $m->getSavePack());
@@ -68,22 +59,18 @@ class EPAi extends EPAtom{
             $savedSkill->loadSavePack($m);
             array_push($this->skills, $savedSkill);
         }
-        foreach($savePack['statsSavePacks'] as $m){
-            $savedStat = new EPStat('','','',0,$cc);
-            $savedStat->loadSavePack($m);
-            array_push($this->stats, $savedStat);
-        }
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('','','');
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }    
-    } 
-    function __construct($atName,$aptitudes, $costType,$skills = array(),$stats = array(), $atDesc = '') {
+    }
+
+    function __construct($atName, $aptitudes, $costType, $skills = array(), $atDesc = '')
+    {
         parent::__construct(EPAtom::$AI, $atName, $atDesc);
         $this->aptitudes = $aptitudes;
         $this->skills = $skills;
-        $this->stats = $stats;
         $this->cost = $costType;
         $this->bonusMalus = array();
     }
