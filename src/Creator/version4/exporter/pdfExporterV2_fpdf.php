@@ -705,7 +705,7 @@ if(null !== creator()) {
 		$final = "*";
 		foreach($objArray as $m)
 		{
-			if($m->gearType =! EPGear::$IMPLANT_GEAR)
+			if(EPGear::$IMPLANT_GEAR != $m->gearType)
 				$final .= $m->name . "*";
 		}
 		return $final;
