@@ -16,7 +16,7 @@ session_start();
 	<li>
 		<select id="actprefix">
 		<?php
-				 $provider = new EPListProvider('../../../php/config.ini'); 
+				 $provider = new EPListProvider(getConfigLocation());
 				 $prefixList =  $provider->getListPrefix(); 
 		         foreach($prefixList as $m){
 		         	if($provider->getTypeForPrefix($m) == EPSkill::$ACTIVE_SKILL_TYPE){

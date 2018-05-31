@@ -46,7 +46,7 @@ session_start();
      */
     function getFormatedMorphList(array $totalMorphList, array $currentList)
     {
-             $provider = new EPListProvider('../../../php/config.ini');
+             $provider = new EPListProvider(getConfigLocation());
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){
                 $li = new Li($m->name,'morphHover');

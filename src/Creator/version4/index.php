@@ -6,7 +6,7 @@ require_once (__DIR__ . "/../../../vendor/autoload.php");
 use EclipsePhaseCharacterCreator\Backend\EPListProvider;
 
     error_reporting(0);
-    $provider = new EPListProvider('../../php/config.ini');
+    $provider = new EPListProvider(getConfigLocation());
     function createDataURI($image,$image_type){
         return "data:image/".$image_type.";base64,".base64_encode(file_get_contents($image));
     }

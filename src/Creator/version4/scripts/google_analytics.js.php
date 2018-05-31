@@ -6,9 +6,7 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
 use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
 
-$php_dir = dirname(__FILE__) . '/../../../php/';
-
-$configValues = new EPConfigFile($php_dir . 'config.ini');
+$configValues = new EPConfigFile(getConfigLocation());
 $id = $configValues->getValue('GeneralValues','googleAnalyticsId');
 ?>
 

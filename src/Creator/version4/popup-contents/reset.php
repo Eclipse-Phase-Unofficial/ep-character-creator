@@ -5,7 +5,7 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
 use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
 
-$config = new EPConfigFile('../../../php/config.ini');
+$config = new EPConfigFile(getConfigLocation());
 ?>
 <table class="popup_table" id="table_reset" align="center">
 	<tr align="center">

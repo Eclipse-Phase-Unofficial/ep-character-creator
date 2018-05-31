@@ -14,7 +14,6 @@ use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPAtom;
 
 session_start();
-$php_dir = dirname(__FILE__) . '/../../../php/';
 
 header('Content-type: application/json');
 
@@ -58,8 +57,8 @@ function treatCreatorErrors(&$data,$creatorError){
 //INIT
 $return = array();
 $return['error'] = false;
-$configValues = new EPConfigFile($php_dir . 'config.ini');
-$provider = new EPListProvider($php_dir . 'config.ini');
+$configValues = new EPConfigFile(getConfigLocation());
+$provider = new EPListProvider(getConfigLocation());
 	//error_log(print_r($_POST,true));
 	//error_log(print_r($_FILES,true));
 	//error_log(print_r($_SESSION,true));
@@ -75,8 +74,8 @@ if (isset($_POST['load_char'])) {
     if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $configValues->getValue('GeneralValues','versionNumberMin')){
         treatCreatorErrors($return,new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
     }
-    $_SESSION['cc'] = new EPCharacterCreator($php_dir . 'config.ini');
-    creator()->back = new EPCharacterCreator($php_dir . 'config.ini');
+    $_SESSION['cc'] = new EPCharacterCreator(getConfigLocation());
+    creator()->back = new EPCharacterCreator(getConfigLocation());
 
     creator()->loadSavePack($saveFile);
     creator()->back->loadSavePack($saveFile);
@@ -123,7 +122,7 @@ if (isset($_POST['firstTime'])) {
 //SET CP FOR A NEW CHARACTER
 if(isset($_POST['setCP'])){
 	//CHARACTER CREATOR
-    $_SESSION['cc'] = new EPCharacterCreator($php_dir . 'config.ini',$_POST['setCP']);
+    $_SESSION['cc'] = new EPCharacterCreator(getConfigLocation(),$_POST['setCP']);
     //error_log("NEW CHAR");
 }
 

@@ -25,7 +25,7 @@ session_start();
 	<li>
 		<select id="knoprefix">
 		<?php
-			 $provider = new EPListProvider('../../../php/config.ini');
+			 $provider = new EPListProvider(getConfigLocation());
 			 $prefixList =  $provider->getListPrefix();
 	         foreach($prefixList as $m){
 	         	if($provider->getTypeForPrefix($m) == EPSkill::$KNOWLEDGE_SKILL_TYPE){
