@@ -42,7 +42,7 @@ class EPListProvider {
         try
         {
             self::$database = new \PDO($databasePDO, $databaseUser, $databasePassword);
-            if(!self::$database->query("SELECT * FROM `aptitude`"))
+            if(!self::$database->query("SELECT * FROM `aptitudes`"))
                 throw new \PDOException('Aptitude table in Database is empty!  Database connection Error?');
         }
         catch (\PDOException $e)
@@ -138,7 +138,7 @@ class EPListProvider {
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($traitRow = $traitRes->fetch()) {
             $bonusMalusTraitList = array();
-            $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `bonusMalus_trait` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
                 $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']);
@@ -166,7 +166,7 @@ class EPListProvider {
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         $traitRow = $traitRes->fetch();
 
-        $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `TraitBonusMalus` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
+        $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `bonusMalus_trait` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
         $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
         while ($bmRow = $bonusMalus->fetch()) {
             $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']);
@@ -202,7 +202,7 @@ class EPListProvider {
             $maxValue = $this->configValues->getValue('RulesValues', 'AptitudesMaxValue');
         }
         $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`");
+        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
@@ -231,7 +231,7 @@ class EPListProvider {
        
        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
        
-       $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitude`");
+       $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
        $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
@@ -252,7 +252,7 @@ class EPListProvider {
 
         $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
 
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `name` = '".$this->adjustForSQL($aptName)."';");
+        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `name` = '".$this->adjustForSQL($aptName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
@@ -270,7 +270,7 @@ class EPListProvider {
         }
         $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
 
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitude` WHERE `abbreviation` = '".$abbrev."';");
+        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `abbreviation` = '".$abbrev."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
@@ -467,7 +467,7 @@ class EPListProvider {
     function getListReputation(): array
     {
         $reputations = array();
-        $res = self::$database->query("SELECT `name`, `description` FROM `reputation`");
+        $res = self::$database->query("SELECT `name`, `description` FROM `reputations`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
 
         while ($row = $res->fetch()) {
@@ -487,12 +487,12 @@ class EPListProvider {
     function getListBackgrounds(): array
     {
         $backgroundList = array();
-        $bckRes = self::$database->query("SELECT `name`, `description`, `type` FROM `background`");
+        $bckRes = self::$database->query("SELECT `name`, `description`, `type` FROM `backgrounds`");
         $bckRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($bckRow = $bckRes->fetch()) {
             //Bonus Malus
             $backgroundBonusMalusList = array();
-            $bonusMalus = self::$database->query("SELECT `background`, `bonusMalus`, `occurrence` FROM `BackgroundBonusMalus` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `background`, `bonusMalus`, `occurrence` FROM `background_bonusMalus` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
                 for($i = 0; $i < $bmRow['occurrence']; $i++ ){
@@ -507,7 +507,7 @@ class EPListProvider {
             }
             //Traits
             $backgroundTraitList = array();
-            $traits = self::$database->query("SELECT `background`, `trait` FROM `BackgroundTrait` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $traits = self::$database->query("SELECT `background`, `trait` FROM `background_trait` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
             $traits->setFetchMode(\PDO::FETCH_ASSOC);
 
             while ($traitRow = $traits->fetch()) {
@@ -552,12 +552,12 @@ class EPListProvider {
     function getListAi(): array
     {
         $aiList = array();
-        $aiRes = self::$database->query("SELECT `name`, `desc`, `cost`, `unique` FROM `ai`");
+        $aiRes = self::$database->query("SELECT `name`, `desc`, `cost`, `unique` FROM `muses`");
         $aiRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($aiRow = $aiRes->fetch()) {
             //aptitudes
             $aptitudeList = array();
-            $aptRes = self::$database->query("SELECT `ai`, `aptitude`, `value` FROM `AiAptitude` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';");
+            $aptRes = self::$database->query("SELECT `muse`, `aptitude`, `value` FROM `aptitude_muse` WHERE `muse` = '" .$this->adjustForSQL($aiRow['name'])."';");
             $aptRes->setFetchMode(\PDO::FETCH_ASSOC);
             while ($aptRow = $aptRes->fetch()) {
                 $epApt = $this->getAptitudeByName($aptRow['aptitude']);
@@ -574,7 +574,7 @@ class EPListProvider {
 
             //skills
             $skillList = array();
-            $skillRes = self::$database->query("SELECT `ai`, `skillName`, `skillPrefix`, `value` FROM `AiSkill` WHERE `ai` = '".$this->adjustForSQL($aiRow['name'])."';");
+            $skillRes = self::$database->query("SELECT `muse`, `skillName`, `skillPrefix`, `value` FROM `muse_skill` WHERE `muse` = '".$this->adjustForSQL($aiRow['name'])."';");
             $skillRes->setFetchMode(\PDO::FETCH_ASSOC);
             while ($skillRow = $skillRes->fetch()) {
                 $epSkill = $this->getSkillByNamePrefix($skillRow['skillName'],$skillRow['skillPrefix'],$aptitudeList);
@@ -614,7 +614,7 @@ class EPListProvider {
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($gearRow = $gearRes->fetch()) {
             $bonusMalusGearList = array();
-             $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
+             $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `bonusMalus_gear` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
                 $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
@@ -644,7 +644,7 @@ class EPListProvider {
         $gRes->setFetchMode(\PDO::FETCH_ASSOC);
         $gearRow = $gRes->fetch();
 
-        $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `GearBonusMalus` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
+        $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `bonusMalus_gear` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
         $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
         while ($bmRow = $bonusMalus->fetch()) {
             $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
@@ -677,7 +677,7 @@ class EPListProvider {
         while ($morphRow = $morphRes->fetch()) {
             //Bonus Malus
             $morphBonusMalusList = array();
-            $bonusMalus = self::$database->query("SELECT `morph`, `bonusMalus`, `occur` FROM `MorphBonusMalus` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `morph`, `bonusMalus`, `occur` FROM `bonusMalus_morph` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
                 for($i = 0; $i < $bmRow['occur']; $i++ ){
@@ -691,7 +691,7 @@ class EPListProvider {
             }
             //Gear
             $morphGearsList = array();
-            $gears = self::$database->query("SELECT `morph`, `gear`, `occur` FROM `MorphGears` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $gears = self::$database->query("SELECT `morph`, `gear`, `occur` FROM `gear_morph` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
             $gears->setFetchMode(\PDO::FETCH_ASSOC);
             while ($gRow = $gears->fetch()) {
                 $epGear = $this->getGearByName($gRow['gear']);
@@ -707,7 +707,7 @@ class EPListProvider {
             }
             //Traits
             $morphTraitList = array();
-            $traits = self::$database->query("SELECT `morph`, `trait` FROM `MorphTrait` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $traits = self::$database->query("SELECT `morph`, `trait` FROM `morph_trait` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
             $traits->setFetchMode(\PDO::FETCH_ASSOC);
             while ($traitRow = $traits->fetch()) {
                 $epTraits = $this->getTraitByName($traitRow['trait']);
@@ -735,12 +735,12 @@ class EPListProvider {
     function getListPsySleights(): array
      {
         $psyList = array();
-        $psyRes = self::$database->query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleight`");
+        $psyRes = self::$database->query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleights`");
         $psyRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($psyRow = $psyRes->fetch())
         {
             $bonusMalusPsyList = array();
-            $bonusMalus = self::$database->query("SELECT `psy`, `bonusmalus`, `occur` FROM `PsySleightBonusMalus` WHERE `psy` = '".$this->adjustForSQL($psyRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `psy`, `bonusmalus`, `occur` FROM `bonusMalus_psySleight` WHERE `psy` = '".$this->adjustForSQL($psyRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch())
             {
