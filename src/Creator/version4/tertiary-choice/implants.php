@@ -14,7 +14,7 @@ $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
     <li class='foldingListSection'>Implants</li>
     <?php
         $listFiltered = array();
-        foreach(creator()->getGears() as $m){
+        foreach(EpDatabase()->getGears() as $m){
             if($m->gearType == EPGear::$IMPLANT_GEAR){
                 array_push($listFiltered, $m);
             }

@@ -12,7 +12,7 @@ session_start();
     <?php
         $currentFac = creator()->getCurrentFaction();
 
-         foreach(creator()->getBackgrounds() as $m){
+         foreach(EpDatabase()->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$FACTION){
                 $li = new Li($m->name,'fac');
                 $li->addBookIcon($m->name);

@@ -9,7 +9,7 @@ use App\Creator\DisplayHelpers\Li;
 
 session_start();
 
-$gears = creator()->getGears();
+$gears = EpDatabase()->getGears();
 $currentSoftGear = creator()->getEgoSoftGears();
 ?>
 <ul class="mainlist" id="soft">
@@ -22,7 +22,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
  		 echo "Ai's and Muses";
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
-         foreach(creator()->getAis() as $m){
+         foreach(EpDatabase()->getAis() as $m){
             $li = new Li($m->name,'ai');
             $li->addCost($m->getCost(),$m->isInArray($defaultAi));
             $li->addBookIcon($m->name);

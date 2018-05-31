@@ -11,7 +11,7 @@ session_start();
 ?>
 <ul class="mainlist" id="morphs">
 	<?php
-		 $listMorphs = creator()->getMorphs();
+		 $listMorphs = EpDatabase()->getMorphs();
 		 $currentMorphs = creator()->getCurrentMorphs(); 
 		 
          function printMorph($listMorphs,$currentMorphs,$morphType,$sectionName){

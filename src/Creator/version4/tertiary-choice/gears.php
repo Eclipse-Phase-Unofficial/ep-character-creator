@@ -9,7 +9,7 @@ use App\Creator\DisplayHelpers\Helpers;
 session_start();
 
 $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
-$gears = creator()->getGears();
+$gears = EpDatabase()->getGears();
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="gears">

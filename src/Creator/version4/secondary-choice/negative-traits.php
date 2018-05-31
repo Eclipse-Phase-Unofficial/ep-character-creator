@@ -11,7 +11,7 @@ session_start();
     <?php
         $currentTraits = creator()->getCurrentTraits();
         $defaultTraits = creator()->getCurrentDefaultEgoTraits();
-         foreach(creator()->getTraits() as $m){
+         foreach(EpDatabase()->getTraits() as $m){
             if($m->isNegative() &&
                $m->isEgo() && $m->cpCost > 0){
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon');

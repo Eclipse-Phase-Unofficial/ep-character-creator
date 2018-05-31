@@ -205,7 +205,7 @@ class EPMorph extends EPAtom {
 
     /**
      * All gear, both user added, and from morph default
-     * @return EPGear
+     * @return EPGear[]
      */
     function getGear(): array
     {

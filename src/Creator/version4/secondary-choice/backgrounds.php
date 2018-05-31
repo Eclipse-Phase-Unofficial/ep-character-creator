@@ -12,7 +12,7 @@ session_start();
     <?php
         $currentBck = creator()->getCurrentBackground();
 
-         foreach(creator()->getBackgrounds() as $m){
+         foreach(EpDatabase()->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$ORIGIN){
                 $li = new Li($m->name,'bck');
                 $li->addBookIcon($m->name);

@@ -12,7 +12,7 @@ session_start();
 $currentTraitsList = creator()->getCurrentTraits();
 $currentTrait = EPAtom::getAtomByName($currentTraitsList,$_SESSION['currentTraitName']);
 if($currentTrait == null){
-    $currentTrait = creator()->getTraitByName($_SESSION['currentTraitName']);
+    $currentTrait = EpDatabase()->getTraitByName($_SESSION['currentTraitName']);
 }
 
 $myPanel = new Panel();

@@ -71,19 +71,8 @@ class EPCharacterCreator implements Savable
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// TODO:  All of these should be in their own separate class, and called when needed instead of on load
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// Variables
-    private $prefixes;
-    private $backgrounds;
-    private $morphs;
-    private $ais;
-    private $gears;
-    private $psySleights;
-    private $traits;
 
     /// Loaders
-    private function loadPrefixs(){
-        $this->prefixes = $this->listProvider->getListPrefix();
-    }
     private function loadReps(){
         $this->character->ego->reputations = $this->listProvider->getListReputation();
     }
@@ -92,24 +81,6 @@ class EPCharacterCreator implements Savable
     }
     private function loadStats(){
         $this->character->ego->stats = $this->listProvider->getListStats($this->configValues,$this);
-    }
-    private function loadBackgrounds(){
-        $this->backgrounds = $this->listProvider->getListBackgrounds();
-    }
-    private function loadMorphs(){
-        $this->morphs = $this->listProvider->getListMorph();
-    }
-    private function loadAis(){
-        $this->ais = $this->listProvider->getListAi();
-    }
-    private function loadGears(){
-        $this->gears = $this->listProvider->getListGears();
-    }
-    private function loadTraits(){
-        $this->traits = $this->listProvider->getListTraits();
-    }
-    private function loadPsySleights(){
-        $this->psySleights = $this->listProvider->getListPsySleights();
     }
     private function loadAptitudes(){
         $this->character->ego->aptitudes = $this->listProvider->getListAptitudes($this->configValues->getValue('RulesValues','AptitudesMinValue'),
@@ -147,59 +118,6 @@ class EPCharacterCreator implements Savable
     }
 
     /**
-     * @return EPBackground[]
-     */
-    function getBackgrounds(): array
-    {
-        return $this->backgrounds;
-    }
-    /**
-     * All possible morphs
-     *
-     * This is generated from the database at session creation, so UIDs will vary from session to session.
-     * @return EPMorph[]
-     */
-    function getMorphs(): array
-    {
-        return $this->morphs;
-    }
-
-    /**
-     * @return EPAi[]
-     */
-    function getAis(): array
-    {
-        return $this->ais;
-    }
-
-    /**
-     * @return EPGear[]
-     */
-    function getGears(): array
-    {
-        return $this->gears;
-    }
-
-    /**
-     * All possible traits
-     *
-     * Generated from database at session start, not saved in a file.
-     * This means trait UIDs will change between sessions!
-     * @return EPTrait[]
-     */
-    function getTraits(): array
-    {
-        return $this->traits;
-    }
-
-    /**
-     * @return EPPsySleight[]
-     */
-    function getPsySleights(): array
-    {
-        return $this->psySleights;
-    }
-    /**
      * @return EPAptitude[]
      */
     function getAptitudes(): array
@@ -209,14 +127,6 @@ class EPCharacterCreator implements Savable
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// TODO:  These should also be in the new file as individual selectors
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    function getBackgroundByName($name): EPBackground
-    {
-        $ret = EPAtom::getAtomByName($this->backgrounds,$name);
-        if($ret == null){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This background not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
-        }
-        return $ret;
-    }
     function getStatByName($name): EPStat
     {
         $ret = EPAtom::getAtomByName($this->character->ego->stats,$name);
@@ -258,60 +168,6 @@ class EPCharacterCreator implements Savable
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This skill not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
         }
         return $ret;
-    }
-
-    /**
-     * @param $group
-     * @return EPSkill[]
-     */
-    function getSkillsByGroup($group): array
-    {
-        $res = array();
-        foreach ($this->character->ego->skills as $sk){
-            foreach ($sk->groups as $grp){
-                if (strcmp($grp,$group) == 0){
-                    array_push($res, $sk);
-                }
-            }
-        }
-        return $res;
-    }
-
-    /**
-     * FIXME:  Dangerous (Skills should always be referenced by name AND prefix)
-     *
-     * @param EPAi   $ai
-     * @param string $name
-     * @return EPSkill
-     */
-    function getAiSkillByName(EPAi $ai, string $name): EPSkill
-    {
-        return EPAtom::getAtomByName($ai->skills,$name);
-    }
-
-    function getMorphByName(string $name): EPMorph
-    {
-        return EPAtom::getAtomByName($this->morphs,$name);
-    }
-
-    function getPsySleightsByName(string $name): EPPsySleight
-    {
-        return EPAtom::getAtomByName($this->psySleights,$name);
-    }
-
-    function getAiByName(string $name): EPAi
-    {
-        return EPAtom::getAtomByName($this->ais,$name);
-    }
-
-    private function prefixExists($prefix): bool
-    {
-        foreach ($this->prefixes as $p){
-            if ($p == $prefix){
-                return true;
-            }
-        }
-        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -546,18 +402,9 @@ class EPCharacterCreator implements Savable
         return $m->getGear();
     }
 
-    function getGearForMorphName($morphName){
-        $m = $this->getMorphByName($morphName);
-        return $m->getGear();
-    }
-
     function getCurrentMorphsByName($name): EPMorph
     {
         return EPAtom::getAtomByName($this->character->morphs,$name);
-    }
-    function getTraitByName($name): EPTrait
-    {
-        return EPAtom::getAtomByName($this->traits,$name);
     }
 
     /**
@@ -634,7 +481,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = $this->listProvider->getGearByName($gear->name);
+            $gearToAdd = EpDatabase()->getGearByName($gear->name);
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
@@ -654,7 +501,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = $this->listProvider->getGearByName($gear->name);
+            $gearToAdd = EpDatabase()->getGearByName($gear->name);
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
@@ -1179,7 +1026,7 @@ class EPCharacterCreator implements Savable
 
     // Create a skill from a user entered name and pre-defined prefix
     function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
-        if (!$this->prefixExists($prefix)){
+        if (!EpDatabase()->prefixExists($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
@@ -1262,10 +1109,6 @@ class EPCharacterCreator implements Savable
     function haveAi(EPAi $ai): bool
     {
         return $ai->isInArray($this->character->ego->ais);
-    }
-
-    function getGearByName($name){
-        return EPAtom::getAtomByName($this->gears,$name);
     }
 
     /**
@@ -1760,7 +1603,7 @@ class EPCharacterCreator implements Savable
         }
     }
     function setAiSkillValue($ai,$name,$value = 0){
-        $sk = $this->getAiSkillByName($ai,$name);
+        $sk = EpDatabase()->getAiSkillByName($ai,$name);
 
         if (!isset($sk)){
             return false;
@@ -1939,16 +1782,9 @@ class EPCharacterCreator implements Savable
         $this->loadAptitudes();
         $this->loadStats();
         $this->loadSkills();
-        $this->loadPrefixs();
         $this->loadReps();
-        $this->loadBackgrounds();
-        $this->loadMorphs();
-        $this->loadAis();
-        $this->loadGears();
-        $this->loadTraits();
-        $this->loadPsySleights();
 
-        $defaultAi = $this->getAiByName('Standard Muse');
+        $defaultAi = EpDatabase()->getAiByName('Standard Muse');
         if (isset($defaultAi)){
             $this->character->ego->addDefaultAi($defaultAi);
         }

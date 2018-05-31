@@ -11,7 +11,7 @@ session_start();
 <ul class="mainlist" id="psyS">
 	<?php
 		 $currentPsyS = creator()->getCurrentPsySleights();
-		 $listPsyS = creator()->getPsySleights();
+		 $listPsyS = EpDatabase()->getPsySleights();
 		 
 		 //CHI SECTION
  		echo "<li class='foldingListSection' id='chi'>";

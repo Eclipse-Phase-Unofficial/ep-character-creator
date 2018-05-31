@@ -218,9 +218,14 @@ class Database
         return EPAtom::getAtomByName($this->ais, $name);
     }
 
-    function getGearByName($name): Atoms\EPGear
+    function getGearByName(string $name): Atoms\EPGear
     {
         return EPAtom::getAtomByName($this->gears, $name);
+    }
+
+    function getTraitByName(string $name): Atoms\EPTrait
+    {
+        return EPAtom::getAtomByName($this->traits, $name);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

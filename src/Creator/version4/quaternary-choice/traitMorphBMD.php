@@ -12,7 +12,7 @@ session_start();
 $currentMorphTraits = creator()->getCurrentMorphTraits($_SESSION['currentMorph']);
 $currentTrait = EPAtom::getAtomByName($currentMorphTraits,$_SESSION['currentMorphTraitName']);
 if($currentTrait == null){
-    $currentTrait =  creator()->getTraitByName($_SESSION['currentMorphTraitName']);
+    $currentTrait =  EpDatabase()->getTraitByName($_SESSION['currentMorphTraitName']);
 }
 
 $myPanel = new Panel();

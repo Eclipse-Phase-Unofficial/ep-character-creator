@@ -7,6 +7,7 @@ declare(strict_types=1);
  * Time: 10:31 PM
  */
 
+use App\Creator\Database;
 use \EclipsePhaseCharacterCreator\Backend\EPCharacterCreator;
 
 /**
@@ -32,4 +33,17 @@ function getConfigLocation(): string
         return $_ENV['EPCC_CONFIG_PATH'];
     }
     return __DIR__ . '/../php/config.ini';
+}
+
+/**
+ * Returns a singleton of the Database class
+ * @return Database
+ */
+function EpDatabase(): Database
+{
+    if(empty($_SESSION['db']))
+    {
+        $_SESSION['db'] = new Database();
+    }
+    return $_SESSION['db'];
 }

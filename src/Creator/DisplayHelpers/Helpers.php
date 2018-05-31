@@ -411,7 +411,7 @@ class Helpers
             $output .= $bm->name;
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             if ($parentType == 'morph') {
-                $morph = $creator->getMorphByName($parentName);
+                $morph = EpDatabase()->getMorphByName($parentName);
                 if (!empty($morph)) {
                     $banedAptNameList = $creator->getMorphGrantedBMApptitudesNameList($morph);
                     foreach ($creator->getAptitudes() as $apt) {

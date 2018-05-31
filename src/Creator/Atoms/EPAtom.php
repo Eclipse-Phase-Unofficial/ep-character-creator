@@ -127,6 +127,7 @@ class EPAtom implements Savable
     function __clone()
     {
         $this->atomUid = uniqid('Atom_' . $this->sanitize($this->name) . '_');
+        error_log(static::class . " cloned!");
     }
 
     /**

@@ -14,7 +14,7 @@ $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
 	<?php
         $currentTraits = creator()->getCurrentMorphTraits($_SESSION['currentMorph']);
         $defaultTraits = creator()->getCurrentDefaultMorphTraits($currentMorph);
-        foreach(creator()->getTraits() as $m){
+        foreach(EpDatabase()->getTraits() as $m){
             if($m->isNegative() &&
                $m->isMorph()  &&
                Helpers::isTraitLegal($currentMorph,$m) &&

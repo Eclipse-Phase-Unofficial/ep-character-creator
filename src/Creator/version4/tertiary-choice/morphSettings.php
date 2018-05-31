@@ -10,7 +10,7 @@ use App\Creator\Atoms\EPAtom;
 	$currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 	if($currentMorph == null)
 	{
-		$currentMorph = creator()->getMorphByName($_SESSION['currentMorph']);
+		$currentMorph = EpDatabase()->getMorphByName($_SESSION['currentMorph']);
 	}
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>

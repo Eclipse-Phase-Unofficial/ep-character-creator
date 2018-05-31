@@ -115,12 +115,7 @@ class EPStat extends EPAtom{
         $this->multiGearMod = 1;
         $this->multiPsyMod = 1;
     }
-    function getEgoValue(){
-        if (!isset($this->cc)){
-            return 0;
-        }
-        return $this->value;
-    }
+
     function getValue(){
         if (!isset($this->cc)){
             return 0;

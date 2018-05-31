@@ -11,7 +11,7 @@ session_start();
 $currentMorphsList = creator()->getCurrentMorphs();
 $currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 if($currentMorph == null){
-    $currentMorph = creator()->getMorphByName($_SESSION['currentMorph']);
+    $currentMorph = EpDatabase()->getMorphByName($_SESSION['currentMorph']);
 }
 
 $traits = creator()->getCurrentMorphTraits($currentMorph->name);

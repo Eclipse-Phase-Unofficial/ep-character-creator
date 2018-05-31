@@ -139,10 +139,10 @@ if(isset($_POST['getBcg'])){
 }
 //SET ORIGINE
 if (isset($_POST['origine'])) {
-    if(creator()->getBackgroundByName($_POST['origine']) != null &&
-       creator()->setBackground(creator()->getBackgroundByName($_POST['origine']))){
+    if(EpDatabase()->getBackgroundByName($_POST['origine']) != null &&
+       creator()->setBackground(EpDatabase()->getBackgroundByName($_POST['origine']))){
         $_SESSION['currentOrigineName'] = $_POST['origine'];
-        //$return['desc'] = creator()->getBackgroundByName($_POST['origine'])->description;
+        //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['origine'])->description;
     }
     else{
         treatCreatorErrors($return, creator()->getLastError());
@@ -162,10 +162,10 @@ if(isset($_POST['getFac'])){
 }
 //SET FACTION
 if(isset($_POST['faction'])){
-    if(creator()->getBackgroundByName($_POST['faction']) != null &&
-       creator()->setFaction(creator()->getBackgroundByName($_POST['faction']))){
+    if(EpDatabase()->getBackgroundByName($_POST['faction']) != null &&
+       creator()->setFaction(EpDatabase()->getBackgroundByName($_POST['faction']))){
        $_SESSION['currentFactionName'] = creator()->getCurrentFaction()->name;
-        //$return['desc'] = creator()->getBackgroundByName($_POST['faction'])->description;
+        //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['faction'])->description;
     }
     else{
         treatCreatorErrors($return, creator()->getLastError());
@@ -174,7 +174,7 @@ if(isset($_POST['faction'])){
 
 //SET POS TRAIT
 if(isset($_POST['posTrait'])){
-    $trait = creator()->getTraitByName($_POST['posTrait']);
+    $trait = EpDatabase()->getTraitByName($_POST['posTrait']);
     if(!isset($trait)){
         treatCreatorErrors($return,"Trait ".$_POST['posTrait']." does not exist!");
     }
@@ -193,7 +193,7 @@ if(isset($_POST['posTrait'])){
 
 //HOVER POS/NEG TRAIT
 if(isset($_POST['traitHover'])){
-	$trait = creator()->getTraitByName($_POST['traitHover']);
+	$trait = EpDatabase()->getTraitByName($_POST['traitHover']);
 	if($trait != null){
 	        $_SESSION['currentTraitName'] = $trait->name;
 	}
@@ -201,7 +201,7 @@ if(isset($_POST['traitHover'])){
 
 //SET PSY SLEIGHT
 if(isset($_POST['psyS'])){
-    $psyS = creator()->getPsySleightsByName($_POST['psyS']);
+    $psyS = EpDatabase()->getPsySleightsByName($_POST['psyS']);
     if(!isset($psyS)){
         treatCreatorErrors($return,"Psy Sleight ".$_POST['psyS']." does not exist!");
     }
@@ -219,13 +219,13 @@ if(isset($_POST['psyS'])){
 }
 //HOVER PSY SLEIGHT
 if(isset($_POST['hoverPsyS'])){
-	$psyS = creator()->getPsySleightsByName($_POST['hoverPsyS']);
+	$psyS = EpDatabase()->getPsySleightsByName($_POST['hoverPsyS']);
 	$_SESSION['currentPsiSName'] = $psyS->name;
 }
 
 //SET NEG TRAIT
 if(isset($_POST['negTrait'])){
-    $trait = creator()->getTraitByName($_POST['negTrait']);
+    $trait = EpDatabase()->getTraitByName($_POST['negTrait']);
     if(!isset($trait)){
         treatCreatorErrors($return,"Trait ".$_POST['negTrait']." does not exist!");
     }
@@ -441,14 +441,14 @@ if(isset($_POST['remSpeSkill'])){
 
 //HOVER MORPH
 if (isset($_POST['morphHover'])) {
-	   $morph = EPAtom::getAtomByName(creator()->getMorphs(),$_POST['morphHover']);
+	   $morph = EPAtom::getAtomByName(EpDatabase()->getMorphs(),$_POST['morphHover']);
        $return['title'] = $morph->name;
 	   $return['desc'] = $morph->description;
 }
 
 //ADD / REMOVE MORPH
 if (isset($_POST['addRemMorph'])) {
-    $morph = EPAtom::getAtomByName(creator()->getMorphs(),$_POST['addRemMorph']);
+    $morph = EPAtom::getAtomByName(EpDatabase()->getMorphs(),$_POST['addRemMorph']);
     if(!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
@@ -492,7 +492,7 @@ if (isset($_POST['currentMorphUsed'])) {
 
 //SET MORPH SETTINGS
 if (isset($_POST['morphSettingsChange'])) {
-    $morph = EPAtom::getAtomByName(creator()->getMorphs(),$_POST['morphSettingsChange']);
+    $morph = EPAtom::getAtomByName(EpDatabase()->getMorphs(),$_POST['morphSettingsChange']);
     if(!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
     }
@@ -506,7 +506,7 @@ if (isset($_POST['morphSettingsChange'])) {
 //SET REMOVE MORPH POS TRAIT
 if(isset($_POST['morphPosTrait'])){
     $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
-    $trait = creator()->getTraitByName($_POST['morphPosTrait']);
+    $trait = EpDatabase()->getTraitByName($_POST['morphPosTrait']);
 
     if (!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
@@ -530,7 +530,7 @@ if(isset($_POST['morphPosTrait'])){
 //SET REMOVE MORPH NEG TRAIT
 if(isset($_POST['morphNegTrait'])){
     $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
-    $trait = creator()->getTraitByName($_POST['morphNegTrait']);
+    $trait = EpDatabase()->getTraitByName($_POST['morphNegTrait']);
 
     if (!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
@@ -559,7 +559,7 @@ if(isset($_POST['morphTraitHover'])){
 //SET REMOVE MORPH IMPLANTS
 if(isset($_POST['morphImplant'])){
     $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
-    $gear = creator()->getGearByName($_POST['morphImplant']);
+    $gear = EpDatabase()->getGearByName($_POST['morphImplant']);
 
     if (!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
@@ -587,7 +587,7 @@ if(isset($_POST['morphImplant'])){
 //SET REMOVE MORPH GEAR
 if(isset($_POST['morphGear'])){
     $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
-    $gear = creator()->getGearByName($_POST['morphGear']);
+    $gear = EpDatabase()->getGearByName($_POST['morphGear']);
 
     if (!isset($morph)){
         treatCreatorErrors($return, "Morph does not exist (".$_SESSION['currentMorph'].")");
@@ -692,7 +692,7 @@ if(isset($_POST['remCredit'])){
 
 //SET REMOVE AI
 if(isset($_POST['ai'])){
-    $ai = creator()->getAiByName($_POST['ai']);
+    $ai = EpDatabase()->getAiByName($_POST['ai']);
 
     if (!isset($ai)){
         treatCreatorErrors($return, "Ai does not exist (".$_SESSION['ai'].")");
@@ -712,7 +712,7 @@ if(isset($_POST['ai'])){
 
 //HOVER AI
 if(isset($_POST['hoverAi'])){
-    $ai = creator()->getAiByName($_POST['hoverAi']);
+    $ai = EpDatabase()->getAiByName($_POST['hoverAi']);
     $_SESSION['currentAiName'] = $ai->name;
 }
 
@@ -720,7 +720,7 @@ if(isset($_POST['hoverAi'])){
 //SET REMOVE SOFT GEAR
 if(isset($_POST['softg'])){
 //     error_log(print_r($_POST,true));
-    $soft = creator()->getGearByName($_POST['softg']);
+    $soft = EpDatabase()->getGearByName($_POST['softg']);
 
     if (!isset($soft)){
         treatCreatorErrors($return, "Soft gear does not exist (".$_POST['softg'].")");
@@ -740,7 +740,7 @@ if(isset($_POST['softg'])){
 
 //HOVER ON SOFT GEAR
 if(isset($_POST['hoverSoftg'])){
-    $soft = creator()->getGearByName($_POST['hoverSoftg']);
+    $soft = EpDatabase()->getGearByName($_POST['hoverSoftg']);
     $_SESSION['currentSoftName'] = $soft->name;
 }
 
@@ -789,24 +789,24 @@ if(isset($_POST['addTargetTo'])){
     }
 
 	if($_POST['parentType'] == "origine"){
-		$currentBck = creator()->getBackgroundByName($_POST['parentName']);
+		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "faction"){
-		$currentBck = creator()->getBackgroundByName($_POST['parentName']);
+		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "trait"){
 		$currentTrait = EPAtom::getAtomByName(creator()->getCurrentTraits(),$_POST['parentName']);
 		if(!isset($currentTrait)){
-			$currentTrait = creator()->getTraitByName($_POST['parentName']);
+			$currentTrait = EpDatabase()->getTraitByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentTrait->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morph"){
 		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),$_POST['parentName']);
 		if(!isset($currentMorph)){
-			$currentMorph = creator()->getMorphByName($_POST['parentName']);
+			$currentMorph = EpDatabase()->getMorphByName($_POST['parentName']);
 		}
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
@@ -871,19 +871,19 @@ if(isset($_POST['addTargetTo'])){
 if(isset($_POST['removeTargetFrom'])){
 	//error_log(print_r($_POST,true));
 	if($_POST['parentType'] == "origine"){
-		$currentBck = creator()->getBackgroundByName($_POST['parentName']);
+		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "faction"){
-		$currentBck = creator()->getBackgroundByName($_POST['parentName']);
+		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
 		$bonusMalusArray = $currentBck->bonusMalus;
 	}
 	else if($_POST['parentType'] == "trait"){
-		$currentTrait = creator()->getTraitByName($_POST['parentName']);
+		$currentTrait = EpDatabase()->getTraitByName($_POST['parentName']);
 		$bonusMalusArray = $currentTrait->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morph"){
-		$currentMorph = creator()->getMorphByName($_POST['parentName']);
+		$currentMorph = EpDatabase()->getMorphByName($_POST['parentName']);
 		$bonusMalusArray = $currentMorph->bonusMalus;
 	}
 	else if($_POST['parentType'] == "morphTrait"){
@@ -925,7 +925,7 @@ if(isset($_POST['removeTargetFrom'])){
 if(isset($_POST['addOccurence'])){
 	
 	if($_POST['addOccurence'] == "AI"){
-		$currentOccu = creator()->getAiByName($_SESSION['currentAiName'])->occurence;
+		$currentOccu = EpDatabase()->getAiByName($_SESSION['currentAiName'])->occurence;
 		if(!creator()->setOccurenceIA($_SESSION['currentAiName'],$currentOccu+1)){
 			treatCreatorErrors($return, creator()->getLastError());
 		}
@@ -939,7 +939,7 @@ if(isset($_POST['addOccurence'])){
 	}
 	
 	if($_POST['addOccurence'] == "MORPH"){
-		$currentOccu = EPAtom::getAtomByName(creator()->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName(EpDatabase()->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!creator()->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu+1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, creator()->getLastError());
 		}
@@ -952,7 +952,7 @@ if(isset($_POST['addOccurence'])){
 if(isset($_POST['remOccurence'])){
 	
 	if($_POST['remOccurence'] == "AI"){
-		$currentOccu = creator()->getAiByName($_SESSION['currentAiName'])->occurence;
+		$currentOccu = EpDatabase()->getAiByName($_SESSION['currentAiName'])->occurence;
 		if(!creator()->setOccurenceIA($_SESSION['currentAiName'],$currentOccu-1)){
 			treatCreatorErrors($return, creator()->getLastError());
 		}
@@ -966,7 +966,7 @@ if(isset($_POST['remOccurence'])){
 	}
 	
 	if($_POST['remOccurence'] == "MORPH"){
-		$currentOccu = EPAtom::getAtomByName(creator()->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
+		$currentOccu = EPAtom::getAtomByName(EpDatabase()->getGearForMorphName($_SESSION['currentMorph']),$_SESSION['currentMorphGearName'])->occurence;
 		if(!creator()->setOccurenceGear($_SESSION['currentMorphGearName'],$currentOccu-1,$_SESSION['currentMorph'])){
 			treatCreatorErrors($return, creator()->getLastError());
 		}
