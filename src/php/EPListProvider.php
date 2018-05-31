@@ -547,7 +547,7 @@ class EPListProvider {
     // ==== AI =====
 
     /**
-     * @return EPAi
+     * @return EPAi[]
      */
     function getListAi(): array
     {

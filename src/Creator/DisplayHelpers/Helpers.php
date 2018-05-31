@@ -85,13 +85,13 @@ class Helpers
     /**
      * Outputs a 'foldingListSection' for gear of a certain type.
      * @param EPCharacterCreator $creator
-     * @param EPGear             $gears
+     * @param EPGear[]           $gears
      * @param EPMorph            $morph
      * @param string             $gearType
      * @param string             $sectionName
      * @return string
      */
-    static function getGearSection(EPCharacterCreator $creator, EPGear $gears, EPMorph $morph, string $gearType, string $sectionName)
+    static function getGearSection(EPCharacterCreator $creator, array $gears, EPMorph $morph, string $gearType, string $sectionName)
     {
         //Generate a HTML valid Id from the section name
         $id = preg_replace("/[^A-z]/", "", $sectionName);
@@ -494,11 +494,11 @@ class Helpers
 
     /**
      * All the skills in an array that have a certain prefix
-     * @param EPSkill $skillArray
-     * @param string  $prefix
+     * @param EPSkill[] $skillArray
+     * @param string    $prefix
      * @return array
      */
-    static function skillsWithPrefix(EPSkill $skillArray, string $prefix)
+    static function skillsWithPrefix(array $skillArray, string $prefix)
     {
         $outArray = array();
         foreach ($skillArray as $skill) {
