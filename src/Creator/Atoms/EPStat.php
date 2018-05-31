@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Backend;
+namespace App\Creator\Atoms;
 
 /**
  * Calculated Stats & Moxie.
@@ -26,7 +26,7 @@ class EPStat extends EPAtom{
 
     /**
      * //TODO:  This potentially introduces cyclic dependencies, and should be removed
-     * @var null|EPCharacterCreator
+     * @var null|\EclipsePhaseCharacterCreator\Backend\EPCharacterCreator
      */
     public $cc;
     

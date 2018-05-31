@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
-use EclipsePhaseCharacterCreator\Site\other\Helpers;
+use App\Creator\DisplayHelpers\Helpers;
 
 session_start();
 ?>

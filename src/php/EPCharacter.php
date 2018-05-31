@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EclipsePhaseCharacterCreator\Backend;
 
+use App\Creator\Atoms\EPMorph;
+
 /**
  * The character's general information.
  *

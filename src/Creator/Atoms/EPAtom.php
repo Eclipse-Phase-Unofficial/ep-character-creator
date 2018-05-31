@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Backend;
+namespace App\Creator\Atoms;
+
+use EclipsePhaseCharacterCreator\Backend\Savable;
 
 /**
  * EPAtom is the generic object class of the character creator, almost everything is subclassed from it.

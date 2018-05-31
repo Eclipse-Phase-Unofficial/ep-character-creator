@@ -6,12 +6,12 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 use EclipsePhaseCharacterCreator\Backend\EPCharacterCreator;
 use EclipsePhaseCharacterCreator\Backend\EPCreatorErrors;
 use EclipsePhaseCharacterCreator\Backend\EPListProvider;
-use EclipsePhaseCharacterCreator\Backend\EPSkill;
-use EclipsePhaseCharacterCreator\Backend\EPStat;
+use App\Creator\Atoms\EPSkill;
+use App\Creator\Atoms\EPStat;
 use EclipsePhaseCharacterCreator\Backend\EPConfigFile;
-use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
-use EclipsePhaseCharacterCreator\Backend\EPGear;
-use EclipsePhaseCharacterCreator\Backend\EPAtom;
+use App\Creator\Atoms\EPBonusMalus;
+use App\Creator\Atoms\EPGear;
+use App\Creator\Atoms\EPAtom;
 
 session_start();
 $php_dir = dirname(__FILE__) . '/../../../php/';

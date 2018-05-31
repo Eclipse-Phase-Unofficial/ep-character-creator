@@ -44,7 +44,7 @@
   "autoload": {
     "psr-4": {
       "EclipsePhaseCharacterCreator\\Backend\\": "src/php/",
-      "EclipsePhaseCharacterCreator\\Site\\": "src/Creator/version4/"
+      "App\\": "src/"
     }
   },
   "require-dev": {

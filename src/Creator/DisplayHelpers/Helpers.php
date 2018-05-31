@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Site\other;
+namespace App\Creator\DisplayHelpers;
 
-use EclipsePhaseCharacterCreator\Backend\EPAtom;
+use App\Creator\Atoms\EPAtom;
 use EclipsePhaseCharacterCreator\Backend\EPBook;
 use EclipsePhaseCharacterCreator\Backend\EPCreditCost;
-use EclipsePhaseCharacterCreator\Backend\EPGear;
-use EclipsePhaseCharacterCreator\Backend\EPMorph;
-use EclipsePhaseCharacterCreator\Backend\EPTrait;
-use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
+use App\Creator\Atoms\EPGear;
+use App\Creator\Atoms\EPMorph;
+use App\Creator\Atoms\EPTrait;
+use App\Creator\Atoms\EPBonusMalus;
 
 class Helpers
 {

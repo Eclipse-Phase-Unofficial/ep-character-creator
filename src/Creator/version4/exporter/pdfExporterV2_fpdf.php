@@ -3,15 +3,15 @@
 
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
-use EclipsePhaseCharacterCreator\Backend\EPBonusMalus;
+use App\Creator\Atoms\EPBonusMalus;
 use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
 use EclipsePhaseCharacterCreator\Backend\EPBook;
-use EclipsePhaseCharacterCreator\Backend\EPGear;
-use EclipsePhaseCharacterCreator\Backend\EPMorph;
-use EclipsePhaseCharacterCreator\Backend\EPPsySleight;
-use EclipsePhaseCharacterCreator\Backend\EPSkill;
-use EclipsePhaseCharacterCreator\Backend\EPTrait;
-use EclipsePhaseCharacterCreator\Site\exporter\fpdf\FpdfCustomFonts;
+use App\Creator\Atoms\EPGear;
+use App\Creator\Atoms\EPMorph;
+use App\Creator\Atoms\EPPsySleight;
+use App\Creator\Atoms\EPSkill;
+use App\Creator\Atoms\EPTrait;
+use App\Creator\DisplayHelpers\FpdfCustomFonts;
 
 session_start();
 	

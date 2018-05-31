@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
 use EclipsePhaseCharacterCreator\Backend\EPListProvider;
-use EclipsePhaseCharacterCreator\Backend\EPSkill;
+use App\Creator\Atoms\EPSkill;
 
 session_start();
 ?>

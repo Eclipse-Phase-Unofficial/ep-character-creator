@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Site\other;
+namespace App\Creator\DisplayHelpers;
 
 /**
  * A class to help in adding icons to the page

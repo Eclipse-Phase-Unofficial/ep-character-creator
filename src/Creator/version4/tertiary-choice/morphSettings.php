@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
-use EclipsePhaseCharacterCreator\Backend\EPAtom;
+use App\Creator\Atoms\EPAtom;
 
     session_start();
 	$currentMorphsList = $_SESSION['cc']->getCurrentMorphs();

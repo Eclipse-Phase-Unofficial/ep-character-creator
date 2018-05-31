@@ -3,6 +3,16 @@ declare(strict_types=1);
 
 namespace EclipsePhaseCharacterCreator\Backend;
 
+use App\Creator\Atoms\EPAi;
+use App\Creator\Atoms\EPAptitude;
+use App\Creator\Atoms\EPBackground;
+use App\Creator\Atoms\EPGear;
+use App\Creator\Atoms\EPPsySleight;
+use App\Creator\Atoms\EPReputation;
+use App\Creator\Atoms\EPSkill;
+use App\Creator\Atoms\EPStat;
+use App\Creator\Atoms\EPTrait;
+
 /**
  * The Character's Ego.
  *

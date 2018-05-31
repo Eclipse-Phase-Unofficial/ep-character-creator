@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Site\exporter\fpdf;
+namespace App\Creator\DisplayHelpers;
 
 
 /**

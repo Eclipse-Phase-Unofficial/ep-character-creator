@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
-use EclipsePhaseCharacterCreator\Site\other\Helpers;
-use EclipsePhaseCharacterCreator\Site\other\Panel;
+use App\Creator\DisplayHelpers\Helpers;
+use App\Creator\DisplayHelpers\Panel;
 
 session_start();
 $currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);

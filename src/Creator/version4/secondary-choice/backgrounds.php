@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
-use EclipsePhaseCharacterCreator\Backend\EPBackground;
-use EclipsePhaseCharacterCreator\Site\other\Li;
+use App\Creator\Atoms\EPBackground;
+use App\Creator\DisplayHelpers\Li;
 
 session_start();
 ?>

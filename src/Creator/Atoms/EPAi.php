@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Backend;
+namespace App\Creator\Atoms;
 
 /**
  * AIs and Muses the player can use.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace EclipsePhaseCharacterCreator\Backend;
+namespace App\Creator\Atoms;
 
 /**
  * A skill used by the player.
