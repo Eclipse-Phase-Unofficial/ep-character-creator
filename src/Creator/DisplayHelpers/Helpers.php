@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Creator\DisplayHelpers;
 
 use App\Creator\Atoms\EPAtom;
+use App\Creator\Atoms\EPSkill;
 use EclipsePhaseCharacterCreator\Backend\EPBook;
 use EclipsePhaseCharacterCreator\Backend\EPCharacterCreator;
 use EclipsePhaseCharacterCreator\Backend\EPCreditCost;
@@ -18,16 +19,21 @@ class Helpers
      * Get the Gear list a morph can use.
      *
      * Filters out gear morphs can't use.
+     * @param EPCharacterCreator $creator
+     * @param EPGear[]           $gears
+     * @param EPMorph            $morph
+     * @param                    $iconClass
+     * @return string
      */
-    static function getFormatedMorphGearList(EPCharacterCreator $creator, $listFiltered, $morph, $iconClass)
+    static function getFormatedMorphGearList(EPCharacterCreator $creator, array $gears, EPMorph $morph, $iconClass)
     {
         $htmlResult = "";
-        foreach ($listFiltered as $m) {
-            if (static::isGearLegal($morph, $m)) {
-                $li = new Li($m->name, 'morphGear');
-                $li->addCost($m->getCost(), $m->isInArray($creator->getCurrentDefaultMorphGear($morph)), 'cr');
-                $li->addBookIcon($m->name);
-                $li->addPlusChecked($iconClass, $creator->haveGearOnMorph($m, $morph));
+        foreach ($gears as $gear) {
+            if (static::isGearLegal($morph, $gear)) {
+                $li = new Li($gear->name, 'morphGear');
+                $li->addCost($gear->getCost(), $gear->isInArray($creator->getCurrentDefaultMorphGear($morph)), 'cr');
+                $li->addBookIcon($gear->name);
+                $li->addPlusChecked($iconClass, $creator->haveGearOnMorph($gear, $morph));
                 $htmlResult .= $li->getHtml();
             }
         }
@@ -36,8 +42,11 @@ class Helpers
 
     /**
      * Add/Display/Remove free gear for both morph and Ego.
+     * @param EPGear[] $currentGear
+     * @param bool     $isEgo
+     * @return string
      */
-    static function getFreeGear($currentGear, $isEgo = true)
+    static function getFreeGear(array $currentGear, bool $isEgo = true)
     {
         $output       = "";
         $ego_or_morph = "Ego";
@@ -75,8 +84,14 @@ class Helpers
 
     /**
      * Outputs a 'foldingListSection' for gear of a certain type.
+     * @param EPCharacterCreator $creator
+     * @param EPGear             $gears
+     * @param EPMorph            $morph
+     * @param string             $gearType
+     * @param string             $sectionName
+     * @return string
      */
-    static function getGearSection(EPCharacterCreator $creator, $gears, $morph, $gearType, $sectionName)
+    static function getGearSection(EPCharacterCreator $creator, EPGear $gears, EPMorph $morph, string $gearType, string $sectionName)
     {
         //Generate a HTML valid Id from the section name
         $id = preg_replace("/[^A-z]/", "", $sectionName);
@@ -145,7 +160,7 @@ class Helpers
         return false;
     }
 
-    static function getDynamicTraitLi($trait, $currentTraits, $defaultTraits, $traitClass, $iconClass)
+    static function getDynamicTraitLi(EPTrait $trait, array $currentTraits, array $defaultTraits, string $traitClass, string $iconClass)
     {
         if ($currentTraits == null) {
             $currentTraits = array();
@@ -348,7 +363,7 @@ class Helpers
     /**
      * Get the options to select/deselect a skill
      */
-    static function getSkillOptions($bm, $skill_list, $prefix_skill = false)
+    static function getSkillOptions(EPBonusMalus $bm, $skill_list, $prefix_skill = false)
     {
         //Handle Prefix only skill selection
         if ($prefix_skill == true && !empty($bm->typeTarget)) {
@@ -449,7 +464,11 @@ class Helpers
         return $output;
     }
 
-    static function grantedExist($bmArray)
+    /**
+     * @param EPBonusMalus[] $bmArray
+     * @return bool
+     */
+    static function grantedExist(array $bmArray)
     {
         foreach ($bmArray as $bm) {
             if ($bm->isGranted()) {
@@ -473,8 +492,13 @@ class Helpers
         return false;
     }
 
-//All the skills in an array that have a certain prefix
-    static function skillsWithPrefix($skillArray, $prefix)
+    /**
+     * All the skills in an array that have a certain prefix
+     * @param EPSkill $skillArray
+     * @param string  $prefix
+     * @return array
+     */
+    static function skillsWithPrefix(EPSkill $skillArray, string $prefix)
     {
         $outArray = array();
         foreach ($skillArray as $skill) {

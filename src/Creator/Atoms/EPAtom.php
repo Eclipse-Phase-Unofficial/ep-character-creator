@@ -42,6 +42,9 @@ class EPAtom implements Savable
     public  $type;
 
     public $occurence;
+    /**
+     * @var bool
+     */
     public $unique;
     public $name;
     public $description;
@@ -240,6 +243,7 @@ class EPAtom implements Savable
                 return $anAtom;
             }
         }
+        return null;
     }
 
     /**
@@ -258,6 +262,7 @@ class EPAtom implements Savable
                 return $anAtom;
             }
         }
+        return null;
     }
 
     /**

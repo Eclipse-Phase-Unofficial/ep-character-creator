@@ -64,8 +64,12 @@ class EPBonusMalus extends EPAtom{
     public $targetForChoice; //$ON_SKILL, $ON_ARMOR, etc.
     public $typeTarget; //fex : Networing, pilot if no choice get the prefix
     public $onCost; //true if this is a cost modificator
-    
-    public $bonusMalusTypes; // Recursive structure holding an array of EPBonusMalus
+
+    /**
+     * Recursive structure holding an array of EPBonusMalus
+     * @var EPBonusMalus[]
+     */
+    public $bonusMalusTypes;
     public $multi_occurence; // How many $bonusMalusTypes the user is to select
     public $selected; // same a radio button group .... ( O X X O O X O) 
     

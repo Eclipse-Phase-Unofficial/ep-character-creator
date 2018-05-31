@@ -44,9 +44,13 @@ class EPPsySleight extends EPAtom{
     /**
      * @var EPBonusMalus[]
      */
-    public $bonusMalus;
-    
-    
+    public  $bonusMalus;
+    /**
+     * @var bool
+     */
+    public $buyinCreationMode;
+
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();

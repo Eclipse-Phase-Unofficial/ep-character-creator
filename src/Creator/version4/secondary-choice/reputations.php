@@ -21,7 +21,7 @@ session_start();
 		
          foreach(creator()->getReputations() as $m){
         	echo "<li id='".$m->name."Def' class='rep'>";
-        	echo "		<label for='".$m->name."'>".$m->name." </label><label class='score_rep'>[".$m->getvalue()."] </label>";
+        	echo "		<label for='".$m->name."'>".$m->name." </label><label class='score_rep'>[".$m->getValue()."] </label>";
         	echo "		<input type='number' min=0 step=5  id='".$m->name."' value='".$m->value."' />";
             echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';
         	echo "</li>";

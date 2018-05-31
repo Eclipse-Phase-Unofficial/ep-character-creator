@@ -428,7 +428,7 @@ class EPCharacterCreator implements Savable
         $this->evoCrePointPurchased = 0;
         $this->init($pathToConfig,$amountCP);
     }
-    function activateMorph($morph = null){
+    function activateMorph(?EPMorph $morph = null){
         if (!isset($morph)){
             $this->character->currentMorphUid = '';
             foreach ($this->getAptitudes() as $a){
@@ -695,7 +695,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             if (!$gear->isInArray($morph->additionalGears)){
-                if ($gear->isInArray($morph->gear)){
+                if ($gear->isInArray($morph->gears)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
@@ -711,7 +711,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             if (!$gear->isInArray($morph->additionalGears)){
-                if ($gear->isInArray($morph->gear)){
+                if ($gear->isInArray($morph->gears)){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This gear is a native morph gear, impossible to remove !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
@@ -1174,16 +1174,17 @@ class EPCharacterCreator implements Savable
             $this->adjustAll();
 
             return true;
-        }else{
-            if (!$this->havePsiSleight($psySleight->name)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            $psySleight->removeFromArray($this->character->ego->psySleights);
-            if (!$psySleight->buyinCreationMode){
-                $this->evoRezPoint += $this->configValues->getValue('RulesValues','PsyCpCost');
-            }
         }
+
+        if (!$this->havePsiSleight($psySleight->name)){
+            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
+            return false;
+        }
+        $psySleight->removeFromArray($this->character->ego->psySleights);
+        if (!$psySleight->buyinCreationMode){
+            $this->evoRezPoint += $this->configValues->getValue('RulesValues','PsyCpCost');
+        }
+        return true;
     }
 
     // Create a skill from a user entered name and pre-defined prefix
@@ -2122,48 +2123,48 @@ class EPCharacterCreator implements Savable
         }
     }
     function adjustValues(){
-        foreach ($this->character->ego->aptitudes as $a){
-            $newValue = $a->value;
-            $max = $a->getMaxEgoValue();
-            $min = $a->getMinEgoValue();
-            if ($a->feebleMax){
+        foreach ($this->character->ego->aptitudes as $aptitude){
+            $newValue = $aptitude->value;
+            $max = $aptitude->getMaxEgoValue();
+            $min = $aptitude->getMinEgoValue();
+            if ($aptitude->feebleMax){
                 $newValue = min($newValue,4);
                 $newValue = max($newValue,0);
             }else{
                 $newValue = min($newValue,$max);
                 $newValue = max($newValue,$min);
             }
-            $this->setAptitudeValue($a->abbreviation, $newValue);
+            $this->setAptitudeValue($aptitude->abbreviation, $newValue);
         }
-        foreach ($this->character->ego->reputations as $a){
-            $newValue = $a->value;
-            $max = $a->getMaxValue();
-            $absolute = $a->getAbsoluteValue();
+        foreach ($this->character->ego->reputations as $reputation){
+            $newValue = $reputation->value;
+            $max = $reputation->getMaxValue();
+            $absolute = $reputation->getAbsoluteValue();
             $newValue = min($newValue,$max);
             $newValue = min($newValue,$absolute);
-            $this->setReputation($a->name, $newValue);
+            $this->setReputation($reputation->name, $newValue);
         }
-        foreach ($this->character->ego->skills as $a){
-            $maxValue = $a->getMaxValue() - $a->getBonusForCost();
-            $newValue = min($maxValue,$a->baseValue);
-            $this->setSkillValue($a->getUid(),$newValue);
+        foreach ($this->character->ego->skills as $skill){
+            $maxValue = $skill->getMaxValue() - $skill->getBonusForCost();
+            $newValue = min($maxValue,$skill->baseValue);
+            $this->setSkillValue($skill->getUid(),$newValue);
         }
-        foreach ($this->character->ego->ais as $ia){
-                foreach ($ia->aptitudes as $a){
-                $newValue = $a->value;
-                $max = $a->getMaxEgoValue();
-                $min = $a->getMinEgoValue();
+        foreach ($this->character->ego->ais as $ai){
+            foreach ($ai->aptitudes as $aiAptitude){
+                $newValue = $aiAptitude->value;
+                $max = $aiAptitude->getMaxEgoValue();
+                $min = $aiAptitude->getMinEgoValue();
                 $newValue = min($newValue,$max);
                 $newValue = max($newValue,$min);
-                $this->setAiAptitudeValue($ia,$a->abbreviation, $newValue);
+                $this->setAiAptitudeValue($ai,$aiAptitude->abbreviation, $newValue);
             }
-            foreach ($ia->skills as $a){
-              $maxValue = $a->getMaxValue() - $a->getBonusForCost();
-              $newValue = min($maxValue,$a->baseValue);
-              $this->setAiSkillValue($ia,$a->name,$newValue);
+            foreach ($ai->skills as $aiSkill){
+              $maxValue = $aiSkill->getMaxValue() - $aiSkill->getBonusForCost();
+              $newValue = min($maxValue,$aiSkill->baseValue);
+              $this->setAiSkillValue($ai,$aiSkill->name,$newValue);
             }
         }
-        $this->setStat(EPStat::$MOXIE, $newValue);
+//        $this->setStat(EPStat::$MOXIE, $newValue);
     }
     function adjustCredit(){
         $cred = $this->character->ego->credit + $this->character->ego->creditMorphMod + $this->character->ego->creditTraitMod + $this->character->ego->creditFactionMod + $this->character->ego->creditBackgroundMod + $this->character->ego->creditSoftGearMod + $this->character->ego->creditPsyMod;
@@ -2666,12 +2667,10 @@ class EPCharacterCreator implements Savable
         }
         return $cost;
     }
-    function getCostForPsysleights(){
-        $cost = 0;
-        foreach ($this->character->ego->psySleights as $p){
-                 $cost +=  $this->configValues->getValue('RulesValues','PsyCpCost');
-        }
-        return $cost;
+    function getCostForPsysleights(): int
+    {
+        $costPer = $this->configValues->getValue('RulesValues','PsyCpCost');
+        return count($this->character->ego->psySleights) * $costPer;
     }
     function getRealCPCostForSkill(EPSkill $skill){
         if ($skill->isNativeTongue === true){
@@ -2716,11 +2715,6 @@ class EPCharacterCreator implements Savable
         $vEnd = $this->getRealCPCostForSkill($sk);
         $sk->baseValue = $val;
         return $vEnd - $vStart;
-    }
-    private function loadAptitudes(){
-        $this->character->ego->aptitudes = $this->listProvider->getListAptitudes($this->configValues->getValue('RulesValues','AptitudesMinValue'),
-                                                      $this->configValues->getValue('RulesValues','AptitudesMaxValue'));
-        $this->aptitudePoints -= count($this->character->ego->aptitudes) * $this->configValues->getValue('RulesValues','AptitudesMinValue');
     }
 
     function purchaseCredit($cpAmount){
@@ -4025,21 +4019,22 @@ class EPCharacterCreator implements Savable
             break;
         } 
     }
-    function morphHaveBonusMalus($bm,$m){
-        foreach ($m->traits as $t) {
+    function morphHaveBonusMalus(EPBonusMalus $bonusMalus,EPMorph $mmorph){
+        foreach ($mmorph->traits as $t) {
             foreach ($t->bonusMalus as $b) {
-                if (strcmp($b->name,$bm->name) == 0){
+                if (strcmp($b->name,$bonusMalus->name) == 0){
                     return true;
                 }                
             }
         }
-        foreach ($m->additionalTraits as $t) {
+        foreach ($mmorph->additionalTraits as $t) {
             foreach ($t->bonusMalus as $b) {
-                if (strcmp($b->name,$bm->name) == 0){
+                if (strcmp($b->name,$bonusMalus->name) == 0){
                     return true;
                 }                
             }
-        }        
+        }
+        return false;
     }
     //HELPERS
     function removeLastWord($name){

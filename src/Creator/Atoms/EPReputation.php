@@ -91,7 +91,7 @@ class EPReputation extends EPAtom{
         $this->groups = $groups;
         $this->maxValue = $maxVal;
     }
-    function getvalue(){
+    function getValue(){
         return $this->value + $this->morphMod + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
         
     }

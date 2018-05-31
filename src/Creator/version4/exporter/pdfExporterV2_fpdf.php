@@ -26,7 +26,7 @@ session_start();
 	*/
 if(null !== creator()) {
 		$pdf = new FpdfCustomFonts();
-		$ovf = new Overflow();
+		$ovf = new Overflow($pdf);
 
 		//Disable automatic page breaks
         $pdf->SetAutoPageBreak(false);
@@ -106,11 +106,11 @@ if(null !== creator()) {
 				$motivations = creator()->getMotivations();
 				$apt_x = 158;
 				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->setXY($apt_x,51);
+				$pdf->SetXY($apt_x,51);
 				foreach($motivations as $mot)
 				{
 					$pdf->MultiCell(50, 3.5, formatIt($mot));//Motivations
-					$pdf->setX($apt_x);
+					$pdf->SetX($apt_x);
 				}
 
 				//EGO SKILLS
@@ -119,20 +119,20 @@ if(null !== creator()) {
 
                 $skillList = creator()->getSkills();
                 $formattedSkills = formatSkills($skillList,'getEgoValue');
-                $pdf->setXY(8,84);
+                $pdf->SetXY(8,84);
                 writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
                 //EGO NEG TRAIT
                 $egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
                 $formattedNegTraits = formatGearData($egoNegTraits);
-                $pdf->setXY(80,102);
+                $pdf->SetXY(80,102);
                 $format = setTwoColFormat(18,15,1,8,7);
                 writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
                 //EGO POS TRAIT
                 $egoPosTraits = EPTrait::getPositiveTraits(creator()->character->ego->getTraits());
                 $formattedPosTraits = formatGearData($egoPosTraits);
-                $pdf->setXY(116,102);
+                $pdf->SetXY(116,102);
                 $format = setTwoColFormat(25,15,1,8,7);
                 writeTwoColumns($pdf,$formattedPosTraits,$format,3);
 
@@ -153,7 +153,7 @@ if(null !== creator()) {
                     $item[2] = $book->getPrintableName();
                     array_push($formattedPsi,$item);
                 }
-                $pdf->setXY(158,102);
+                $pdf->SetXY(158,102);
                 writeTwoColumns($pdf,$formattedPsi,$traitFormat,3);
 
                 //SOFT GEAR
@@ -200,11 +200,11 @@ if(null !== creator()) {
 					}
 
 					$pdf->SetFont('Lato-LigIta', '', 7);
-					$pdf->setXY($apt_x + 27,$apt_y);
+					$pdf->SetXY($apt_x + 27,$apt_y);
 					$pdf->MultiCell(30,3,$skillAptNonformated);
-					$pdf->Line($apt_x+27,$pdf->getY(),$apt_x+57,$pdf->getY());
+					$pdf->Line($apt_x+27,$pdf->GetY(),$apt_x+57,$pdf->GetY());
 
-					$apt_y = $pdf->getY();
+					$apt_y = $pdf->GetY();
 				}
 
                 //MEMO (all ego bonus malus)
@@ -254,14 +254,14 @@ if(null !== creator()) {
                         //MORPH NEG TRAIT
                         $morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
                         $formattedNegTraits = formatGearData($morphNegTraits);
-                        $pdf->setXY(5,43);
+                        $pdf->SetXY(5,43);
                         writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
 
                         //MORPH POS TRAIT
                         $morphPosTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
                         $formattedPosTraits = formatGearData($morphPosTraits);
-                        $pdf->setXY(52,43);
+                        $pdf->SetXY(52,43);
                         writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
 
 						//MORPH STATS
@@ -287,7 +287,7 @@ if(null !== creator()) {
 						$pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
 						$skillList = creator()->getSkills();
                         $formattedSkills = formatSkills($skillList,'getValue');
-                        $pdf->setXY(8,84);
+                        $pdf->SetXY(8,84);
                         writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Morph Skills Overflow");
 
 						//NOTES
@@ -411,7 +411,7 @@ if(null !== creator()) {
                     }
 
 			//===================
-        $ovf->printOverflowPages($pdf);
+        $ovf->printOverflowPages();
 		$file_util = new EPFileUtility(creator()->character);
 		$filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
 // 		$pdf->Output($filename, 'D');
@@ -432,9 +432,20 @@ if(null !== creator()) {
     //To deal with this, we save the data, and print extra pages at the end if needed
     class Overflow
     {
-        var $page_data;  //A page's worth of data that's overflowed
-        function __construct()
+        /**
+         * A page's worth of data that's overflowed
+         * @var array
+         */
+        private $page_data;
+        /**
+         * @var FpdfCustomFonts
+         */
+        private $pdfWriter;
+
+
+        function __construct(FpdfCustomFonts $pdfWriter)
         {
+            $this->pdfWriter = $pdfWriter;
             $this->page_data = array();
         }
         function generateOverflowPage($pageName,$data)
@@ -444,27 +455,31 @@ if(null !== creator()) {
             $item['data'] = $data;
             array_push($this->page_data,$item);
         }
-        function printOverflowPages($pdf)
+        function printOverflowPages()
         {
             foreach($this->page_data as $page)
             {
-                $pdf->AddPage('P', 'A4');
-                $pdf->SetFont('Lato-Reg', '', 30);
-                $pdf->Text(5, 15, formatIt($page['name']));
-                $pdf->SetXY(5,20);
+                $this->pdfWriter->AddPage('P', 'A4');
+                $this->pdfWriter->SetFont('Lato-Reg', '', 30);
+                $this->pdfWriter->Text(5, 15, formatIt($page['name']));
+                $this->pdfWriter->SetXY(5,20);
                 $format = setTwoColFormat(60,90,2,8,8);
-                writeTwoColumns($pdf,$page['data'],$format,4,2);
+                writeTwoColumns($this->pdfWriter, $page['data'], $format, 4, 2);
             }
 
         }
     }
 
-    //Prepare skill data for printing
-    //
-    // @param $functionName The Name of the function used to get the skills value
-    // 'getEgoValue' for ego skills
-    // 'getValue' for morph skills
-    function formatSkills($skillList,$functionName)
+    /**
+     * Prepare skill data for printing
+     *
+     * @param EPSkill[] $skillList
+     * @param string    $functionName The Name of the function used to get the skills value
+     *                                'getEgoValue' for ego skills
+     *                                'getValue' for morph skills
+     * @return array
+     */
+    function formatSkills(array $skillList, string $functionName)
     {
         $formattedSkills = array();
         foreach($skillList as $skill)
@@ -568,22 +583,23 @@ if(null !== creator()) {
         return $rowFormat;
     }
 
-    // Writes out multi-column data
-    //
-    // @param $pdf              The pdf to write to
-    // @param $data             The data to be written
-    //  This is an array containing row data.  Each row consists of multiple columns, sequentially numbered from '0'
-    //  If 'isContinuation' is set for a row, then a seperator is not placed between it and the previous row
-    // @param $rowFormat        How each row is formatted
-    //  This is an array containing formatting information for each column.
-    //  Each column format is an array containing 'width' and 'font_size'
-    // @param $row_height       How high each row is
-    // @param $seperator_type   The type of separator between items
-    //  0 no seperator
-    //  1 line seperator
-    //  2 every other row has a gray background
-    //  3 every other row is bolded
-    function writeTwoColumns($pdf,$data,$rowFormat,$row_height,$seperator_type = 0)
+    /**
+     * Writes out multi-column data
+     * @param FpdfCustomFonts $pdf            The pdf to write to
+     * @param array           $data           The data to be written
+     *                                        This is an array containing row data.  Each row consists of multiple columns, sequentially numbered from '0'
+     *                                        If 'isContinuation' is set for a row, then a separator is not placed between it and the previous row
+     * @param array           $rowFormat      How each row is formatted
+     *                                        This is an array containing formatting information for each column.
+     *                                        Each column format is an array containing 'width' and 'font_size'
+     * @param int             $row_height     How high each row is
+     * @param int             $seperator_type The type of separator between items
+     *                                        0 no seperator
+     *                                        1 line seperator
+     *                                        2 every other row has a gray background
+     *                                        3 every other row is bolded
+     */
+    function writeTwoColumns(FpdfCustomFonts $pdf, array $data, array $rowFormat, int $row_height, int $seperator_type = 0)
     {
         $x_position = $pdf->GetX();
         $pdf->SetFillColor(200);    //Fill color for separating items
@@ -626,7 +642,7 @@ if(null !== creator()) {
             }
 
             $pdf->SetFont($fontName, '',$rowFormat[0]['font_size']);
-            singleCell($pdf,$rowFormat[0]['width'],$row_height,$item[0],$useFill);
+            $pdf->singleCell($rowFormat[0]['width'],$row_height,$item[0],$useFill);
 
             if(!isset($item[1]))
                 $item[1]="";
@@ -638,18 +654,6 @@ if(null !== creator()) {
 
             $pdf->SetX($x_position);
         }
-    }
-
-    //Acts mostly like a normal $pdf->Cell, but re-sizes the current font so the text alwys fits on one line
-    function singleCell(FpdfCustomFonts $pdf,$width,$height,$text,$useFill = false)
-    {
-        //If the column is too long, drop the font size accordingly so it fits in a single line
-        while($pdf->GetStringWidth($text) > $width)
-        {
-            $pdf->SetFontSize($pdf->FontSizePt - 1);
-            error_log($pdf->FontSizePt."->".$text.":  ".$pdf->GetStringWidth($text));
-        }
-        $pdf->Cell($width,$height,$text,0,0,'l',$useFill);
     }
 
     //Wrapper that allows for the creation of overflow pages if too many elements are entered
@@ -818,8 +822,8 @@ if(null !== creator()) {
 		return $result;
 	}
 
-	function writeBookLink($atomeName, $x, $y, $pdf)
+	function writeBookLink(string $atomName, int $x, int $y, FpdfCustomFonts $pdf)
 	{
-        $book = new EPBook($atomeName);
+        $book = new EPBook($atomName);
 		$pdf->Text($x, $y, $book->getPrintableName());
 	}

@@ -39,7 +39,13 @@ session_start();
          printMorph($listMorphs,$currentMorphs,EPMorph::$SYNTHMORPH,"Synthmorphs");
          printMorph($listMorphs,$currentMorphs,EPMorph::$INFOMORPH,"Infomorphs");
 
-         function getFormatedMorphList($totalMorphList,$currentList){
+    /**
+     * @param EPMorph[] $totalMorphList
+     * @param EPMorph[] $currentList
+     * @return string
+     */
+    function getFormatedMorphList(array $totalMorphList, array $currentList)
+    {
              $provider = new EPListProvider('../../../php/config.ini');
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){

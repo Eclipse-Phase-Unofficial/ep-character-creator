@@ -596,20 +596,16 @@ class EPListProvider {
             while ($statRow = $statRes->fetch()) {
                 $epStat = $this->getStatByName($statRow['stat']);
                 $epStat->value = $statRow['value'];
-                if($epApt == null){
-                    $this->addError("Get Ai getStatByName function call failed: (" . $statRow['stat'] . ")");
-                    return null;
-                }
-                else{
-                    //$statList[$epStat->name] = $epStat;
-                    array_push($statList, $epStat);
-                }
+                //$statList[$epStat->name] = $epStat;
+                array_push($statList, $epStat);
             }
 
             $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $statList, $aiRow['desc']);
-            if ($aiRow['unique'] == "N") $unik = false;
-            else $unique = true;
-            $ai->unique = $unik;
+            if ($aiRow['unique'] == "N") {
+                $ai->unique = false;
+            } else {
+                $ai->unique = true;
+            }
             //$aiList[$aiRow['name']] = $ai;
             array_push($aiList, $ai);
         }

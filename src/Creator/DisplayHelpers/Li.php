@@ -20,10 +20,11 @@ class Li{
     /**
      * Create an li element.
      *
-     * @param $id    - The li's id. (Also displays this to the user)
-     * @param $class - The li's class. (defaults to "")
+     * @param string $id    - The li's id. (Also displays this to the user)
+     * @param string $class - The li's class. (defaults to "")
      */
-    function __construct($id,$class = ""){
+    function __construct(string $id, string $class = "")
+    {
         $this->id = $id;
         $this->class = $class;
 
@@ -71,10 +72,10 @@ class Li{
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
      *
-     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
-     * @param $isPlus    - Display the plus icon, or the checked icon.
+     * @param string $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param bool   $isChecked
      */
-    function addPlusChecked($iconClass,$isChecked = False){
+    function addPlusChecked(string $iconClass, bool $isChecked = False){
         $icon = Icon::$checked;
         if(!$isChecked){
             $icon = Icon::$plus;

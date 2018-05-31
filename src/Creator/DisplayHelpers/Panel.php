@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\DisplayHelpers;
 
+use App\Creator\Atoms\EPAi;
+
 
 /**
  * A class to help in panel creation.
@@ -93,7 +95,7 @@ class Panel{
     /**
      * Add AI Skills and Aptitudes if they exist.
      */
-    function addAi($ai){
+    function addAi(EPAi $ai){
         $output = "";
         if(!empty($ai->aptitudes)){
             $output .= "<li class='listSection'>";

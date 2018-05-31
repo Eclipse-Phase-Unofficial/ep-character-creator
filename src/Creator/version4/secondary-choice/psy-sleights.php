@@ -55,9 +55,15 @@ session_start();
 		 	echo "<li>";
 		 	echo "		<label>You must take the trait [Psi II] for using psi gamma </label>";
 		 	echo "</li>";
-	 	} 
-		 
-        function getFormatedPsySleight($list,$currentPsyS){
+	 	}
+
+    /**
+     * @param EPPsySleight[] $list
+     * @param EPPsySleight[] $currentPsyS
+     * @return string
+     */
+    function getFormatedPsySleight(array $list, array $currentPsyS)
+    {
                 $result = "";
                 foreach($list as $m){
                     $li = new Li($m->name,'psyS');

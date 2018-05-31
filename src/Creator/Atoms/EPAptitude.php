@@ -66,9 +66,15 @@ class EPAptitude extends EPAtom{
     public $factionMod;
     public $softgearMod;
     public $psyMod;
-    
+
+    /**
+     * TODO:  This is way too much coupling, and should be removed
+     * @var EPMorph|null
+     */
     public $activMorph;
-    
+    public $maxValue;
+    public $minValue;
+
     function getMaxEgoValue(){
         $res =  $this->maxEgoValue + $this->maxEgoValueMorphMod + $this->maxEgoValueTraitMod + 
                 $this->maxEgoValueBackgroundMod + $this->maxEgoValueFactionMod +
