@@ -8,13 +8,13 @@ use App\Creator\DisplayHelpers\Panel;
 
 session_start();
 
-$currentBck = $_SESSION['cc']->getCurrentBackground();
+$currentBck = creator()->getCurrentBackground();
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentBck->name);
 $myPanel->addDescription($currentBck->description);
 $myPanel->addTraits($currentBck->traits);
-$myPanel->addRawHtml( Helpers::getBMHtml($currentBck->bonusMalus,$currentBck->name,'origine') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentBck->bonusMalus,$currentBck->name,'origine') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();
 ?>

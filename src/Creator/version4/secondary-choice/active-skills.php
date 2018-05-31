@@ -45,7 +45,7 @@ session_start();
 			</thead>
 			<tbody>
 			<?php
-				 foreach($_SESSION['cc']->character->ego->getActiveSkills() as $m){
+				 foreach(creator()->character->ego->getActiveSkills() as $m){
 		         	$prefix = $m->prefix;
 		         	$spe = $m->specialization;
 					$name = $m->getPrintableName();

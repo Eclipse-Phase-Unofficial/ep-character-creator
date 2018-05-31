@@ -7,7 +7,7 @@ session_start();
 ?>
 <ul class="mainlist" id="motivation">
 	<?php
-			if(count($_SESSION['cc']->getMotivations()) < 10) {
+			if(count(creator()->getMotivations()) < 10) {
 			
 				echo "<li>
 						<input type='text' id='motToAdd' placeholder='Enter a motivation'/>
@@ -18,9 +18,9 @@ session_start();
 			echo "<div id='motivationsList'>";
 		
 		
-			if($_SESSION['cc']->getMotivations() != null){
+			if(creator()->getMotivations() != null){
 				$motForm = "";
-				foreach($_SESSION['cc']->getMotivations() as $m){
+				foreach(creator()->getMotivations() as $m){
 					echo "<li>".$m."</span><span class='remMotiv slowTransition iconPlusMinus' id='".$m."' data-icon='&#x39;'></li>";
 				}
 			}

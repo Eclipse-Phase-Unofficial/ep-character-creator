@@ -8,7 +8,7 @@ session_start();
 <ul class="mainlist" id="aptitudes">
 	<?php
 		 
-		 if($_SESSION['cc']->getAptitudePoint() > 0){
+		 if(creator()->getAptitudePoint() > 0){
 			  echo "<li class='listSection'>";
 			  echo "Cost : 1 Aptitude point";
 			  echo "</li>";
@@ -20,9 +20,9 @@ session_start();
 		 }
 		 
 		 
-		 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
-		 //$_SESSION['cc']->activateMorph(null);
-         foreach($_SESSION['cc']->getAptitudes() as $m){
+		 $currentMorphs = creator()->getCurrentMorphs(); 
+		 //creator()->activateMorph(null);
+         foreach(creator()->getAptitudes() as $m){
         	echo "<li id='".$m->abbreviation."Def' class='apt'>";
         	echo "		<label>".$m->name."</label>";
         	echo "		<input type='number' min=0 step=5 id='".$m->abbreviation."' value='".$m->value."'/>";

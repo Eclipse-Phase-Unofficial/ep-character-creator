@@ -46,7 +46,7 @@ class EPFileUtility
         // append date, time and file extension to save name
         $filename .= '-' . date('Ymd-His') . '.' . $extension;
 
-        return $this->sanitizeFilename($filename);
+        return static::sanitizeFilename($filename);
     }
 
     /**
@@ -54,7 +54,7 @@ class EPFileUtility
      * @param string $filename a string to be used as a filename
      * @return string a sanitized version of $filename
      */
-    public function sanitizeFilename(string $filename): string
+    public static function sanitizeFilename(string $filename): string
     {
         return preg_replace('/[^a-zA-Z0-9_.-]/', '', $filename);
     }

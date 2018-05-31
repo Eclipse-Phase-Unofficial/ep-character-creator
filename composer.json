@@ -45,7 +45,8 @@
     "psr-4": {
       "EclipsePhaseCharacterCreator\\Backend\\": "src/php/",
       "App\\": "src/"
-    }
+    },
+    "files": ["src/Creator/HelperFunctions.php"]
   },
   "require-dev": {
     "rskuipers/php-assumptions": "^0.5.0",

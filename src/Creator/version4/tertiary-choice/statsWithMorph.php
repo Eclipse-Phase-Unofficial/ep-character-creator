@@ -6,7 +6,7 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 session_start();
 
 function printStat($abbreviation){
-    $stat = $_SESSION['cc']->getStatByAbbreviation($abbreviation);
+    $stat = creator()->getStatByAbbreviation($abbreviation);
     echo "<li id='".$abbreviation."' class='statMorph'>";
     echo "  ".$stat->name;
     echo "  <span class='btnhelp slowTransition' data-icon='&#x2a;' title='".$stat->description."'></span>";
@@ -17,8 +17,8 @@ function printStat($abbreviation){
 ?>
 <ul class="mainlist" id="statWithMorph">
     <?php
-        $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
-        $_SESSION['cc']->activateMorph($morph);
+        $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
+        creator()->activateMorph($morph);
         echo "<li class='listSection'>";
 		echo $morph->name;
 		echo "</li>";

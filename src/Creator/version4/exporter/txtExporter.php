@@ -13,16 +13,15 @@ use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPTrait;
 
 session_start();
-	
-	if(isset($_SESSION['cc']))
-	{
-        $file_util = new EPFileUtility($_SESSION['cc']->character);
+
+if(null !== creator()) {
+        $file_util = new EPFileUtility(creator()->character);
         $filename = $file_util->buildExportFilename('EPCharacter', 'txt');
 
         header("Content-type: text/plain");
         header('Content-Disposition: attachment; filename="'.$filename.'"');
 		
-		$morphs = $_SESSION['cc']->getCurrentMorphs();
+		$morphs = creator()->getCurrentMorphs();
 
 		//TXT EXPORT ================================================================
 	
@@ -37,7 +36,7 @@ session_start();
 				
 								
 				//BEGIN FILLING SHEET------------------------------
-				$character = $_SESSION['cc']->character;
+				$character = creator()->character;
 				
 				
 				//EGO TITLE
@@ -61,16 +60,16 @@ session_start();
 				echo formatTitle("Background")
 				.$tab
 				.": "
-				.formatResult($_SESSION['cc']->getCurrentBackground()->name)
+				.formatResult(creator()->getCurrentBackground()->name)
 				.$tab
-				.setBookLink($_SESSION['cc']->getCurrentBackground()->name)
+				.setBookLink(creator()->getCurrentBackground()->name)
 				.$carriageReturn
 				.formatTitle("Faction")
 				.$tab
 				.": "
-				.formatResult($_SESSION['cc']->getCurrentFaction()->name)
+				.formatResult(creator()->getCurrentFaction()->name)
 				.$tab
-				.setBookLink($_SESSION['cc']->getCurrentFaction()->name)
+				.setBookLink(creator()->getCurrentFaction()->name)
 				.$carriageReturn
 				.$line.$carriageReturn;
 				
@@ -91,7 +90,7 @@ session_start();
 				echo formatTitle("Credit")
 				.$tab
 				.": "
-				.formatResult($_SESSION['cc']->getCredit())
+				.formatResult(creator()->getCredit())
 				.$tab
 				."   (EP p.137)"
 				.$carriageReturn
@@ -106,7 +105,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$aptitudes = $_SESSION['cc']->getAptitudes();
+				$aptitudes = creator()->getAptitudes();
 				foreach($aptitudes as $apt){
 					echo formatTitle($apt->name)
 					.$tab //Apt Name
@@ -124,7 +123,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$reputations = $_SESSION['cc']->getReputations();
+				$reputations = creator()->getReputations();
 				foreach($reputations as $rep){
 					echo formatTitle($rep->name)
 					.$tab //Rep Name
@@ -143,7 +142,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$motivations = $_SESSION['cc']->getMotivations();
+				$motivations = creator()->getMotivations();
 				foreach($motivations as $mot){
 					echo formatResult($mot)
 					.$carriageReturn;
@@ -168,7 +167,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$skillList = $_SESSION['cc']->getSkills();
+				$skillList = creator()->getSkills();
 				foreach($skillList as $skill){
 				
 					$skillCompleteName = "";
@@ -209,7 +208,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->character->ego->getTraits());
+				$egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					echo formatResult($trait->name)
 					.$tab
@@ -225,7 +224,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoNegTraits = EPTrait::getPositiveTraits($_SESSION['cc']->character->ego->getTraits());
+				$egoNegTraits = EPTrait::getPositiveTraits(creator()->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
 					 echo formatResult($trait->name)
 					.$tab
@@ -241,7 +240,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$psySleights =  $_SESSION['cc']->getCurrentPsySleights();
+				$psySleights =  creator()->getCurrentPsySleights();
 				foreach($psySleights as $sleight){
 					 $type = "(P)";
 					 if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) $type="(A)";
@@ -261,7 +260,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$softGears = $_SESSION['cc']->getEgoSoftGears();
+				$softGears = creator()->getEgoSoftGears();
 				foreach($softGears as $gear){
 					if($gear->occurence > 1) $occ = "(".$gear->occurence.") ";
 					else $occ = "";
@@ -279,7 +278,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$ais = $_SESSION['cc']->getEgoAi();
+				$ais = creator()->getEgoAi();
 				foreach($ais as $ai){
 					if($ai->occurence > 1) $occ = "(".$ai->occurence.") ";
 					else $occ = "";
@@ -316,7 +315,7 @@ session_start();
 				.$carriageReturn
 				.$carriageReturn;
 				
-				$egoBonusMalus = $_SESSION['cc']->getBonusMalusEgo();
+				$egoBonusMalus = creator()->getBonusMalusEgo();
 				foreach($egoBonusMalus as $bm){
 					
 					echo formatResult($bm->name)
@@ -332,10 +331,10 @@ session_start();
 //MORPHS ============================================================ 
 					
 					//DO ONE PAGE PER MORPH
-					$morphs = $_SESSION['cc']->getCurrentMorphs();
+					$morphs = creator()->getCurrentMorphs();
 					foreach($morphs as $morph){
 						//ACTIVATE THE MORPH
-						$_SESSION['cc']->activateMorph($morph);
+						creator()->activateMorph($morph);
 						
 						echo $carriageReturn 
 						."====================================== MORPH ========================================" 
@@ -387,7 +386,7 @@ session_start();
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = EPTrait::getNegativeTraits($_SESSION['cc']->getCurrentTraits($morph));
+						$morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							echo formatResult($trait->name)
 							.$tab
@@ -403,7 +402,7 @@ session_start();
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphNegTraits = EPTrait::getPositiveTraits($_SESSION['cc']->getCurrentTraits($morph));
+						$morphNegTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
 							 echo formatResult($trait->name)
 							.$tab
@@ -423,7 +422,7 @@ session_start();
 						
 						echo formatTitle("") . $tab . "BASE" . $tab . "MORPH" . $tab . "TOTAL" . $carriageReturn;
 
-						$aptitudes = $_SESSION['cc']->getAptitudes();
+						$aptitudes = creator()->getAptitudes();
 						foreach($aptitudes as $apt){
 							echo formatTitle($apt->name)
 							.$tab //Apt Name
@@ -444,7 +443,7 @@ session_start();
 						.$carriageReturn
 						.$carriageReturn;
 
-						$stats = $_SESSION['cc']->getStats();
+						$stats = creator()->getStats();
 
 						foreach($stats as $stat) {
 							echo formatResult($stat->name)
@@ -472,7 +471,7 @@ session_start();
 						. $carriageReturn;
 
 
-						$skillList = $_SESSION['cc']->getSkills();
+						$skillList = creator()->getSkills();
 						foreach($skillList as $skill){
 						
 							$skillCompleteName = "";
@@ -511,7 +510,7 @@ session_start();
 						echo $line.$carriageReturn;	
 						
 						
-						$morphGear = $_SESSION['cc']->getGearForCurrentMorph();
+						$morphGear = creator()->getGearForCurrentMorph();
 						
 						//WEAPONS	
 						$weapons = filterWeaponOnly($morphGear);
@@ -626,7 +625,7 @@ session_start();
 						.$carriageReturn
 						.$carriageReturn;
 						
-						$morphBonusMalus = $_SESSION['cc']->getBonusMalusForMorph($morph);
+						$morphBonusMalus = creator()->getBonusMalusForMorph($morph);
 						foreach($morphBonusMalus as $bm){
 							
 							echo formatResult($bm->name)

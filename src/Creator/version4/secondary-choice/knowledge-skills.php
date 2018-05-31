@@ -14,7 +14,7 @@ session_start();
 		<div>Specialization: 5 creation points</div>
 	</li>
 	<?php
-		if(!$_SESSION['cc']->isNativeLanguageSet()){
+		if(!creator()->isNativeLanguageSet()){
 		echo "<li>
 				<label>language : </label>
 				<input  type='text' id='langToAdd' placeholder='Native language' />
@@ -25,8 +25,8 @@ session_start();
 	<li>
 		<select id="knoprefix">
 		<?php
-			 $provider = new EPListProvider('../../../php/config.ini'); 
-			 $prefixList =  $provider->getListPrefix();  
+			 $provider = new EPListProvider('../../../php/config.ini');
+			 $prefixList =  $provider->getListPrefix();
 	         foreach($prefixList as $m){
 	         	if($provider->getTypeForPrefix($m) == EPSkill::$KNOWLEDGE_SKILL_TYPE){
 		        	echo "<option value='".$m."'>".$m."</option>";
@@ -39,22 +39,22 @@ session_start();
 	</li>
 </ul>
 <div id="knoSklDiv">
-	<table class="skills" id="knoSkills">			    
+	<table class="skills" id="knoSkills">
 			<thead>
 				<tr>
-					<th></th>	
-					<th>spe</th>	
-					<th align="center">base</th>	
-					<th align="center"><span class="iconeSkill" data-icon="&#x21;"></span></th>	
+					<th></th>
+					<th>spe</th>
+					<th align="center">base</th>
+					<th align="center"><span class="iconeSkill" data-icon="&#x21;"></span></th>
 <!-- 					<th align="center"><span class="iconeSkill" data-icon="&#x32;"></span></th>	 -->
 <!-- 					<th align="center"><span class="iconeSkill" data-icon="&#x33;"></span></th>	 -->
-					<th align="center">t</th>	
+					<th align="center">t</th>
 					<th align="center"></th>
 				</tr>
 			</thead>
 			<tbody>
 			<?php
-		         foreach($_SESSION['cc']->character->ego->getKnowledgeSkills() as $m){
+		         foreach(creator()->character->ego->getKnowledgeSkills() as $m){
 		        	$prefix = $m->prefix;
 		        	$spe = $m->specialization;
 					$name = $m->getPrintableName();

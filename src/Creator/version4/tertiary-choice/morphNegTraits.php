@@ -6,15 +6,15 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 use App\Creator\DisplayHelpers\Helpers;
 
 session_start();
-$currentMorph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
+$currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
 <ul class="mainlist" id="morphNegtraits">
     <li class='foldingListSection'>Morph Neg. Traits</li>
 	<?php
-        $currentTraits = $_SESSION['cc']->getCurrentMorphTraits($_SESSION['currentMorph']);
-        $defaultTraits = $_SESSION['cc']->getCurrentDefaultMorphTraits($currentMorph);
-        foreach($_SESSION['cc']->getTraits() as $m){
+        $currentTraits = creator()->getCurrentMorphTraits($_SESSION['currentMorph']);
+        $defaultTraits = creator()->getCurrentDefaultMorphTraits($currentMorph);
+        foreach(creator()->getTraits() as $m){
             if($m->isNegative() &&
                $m->isMorph()  &&
                Helpers::isTraitLegal($currentMorph,$m) &&

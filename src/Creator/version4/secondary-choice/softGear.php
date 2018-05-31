@@ -9,20 +9,20 @@ use App\Creator\DisplayHelpers\Li;
 
 session_start();
 
-$gears = $_SESSION['cc']->getGears();
-$currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
+$gears = creator()->getGears();
+$currentSoftGear = creator()->getEgoSoftGears();
 ?>
 <ul class="mainlist" id="soft">
 	<?php
 		 
 		 //AI GEAR
-		 $currentAis = $_SESSION['cc']->getEgoAi();
-		 $defaultAi = $_SESSION['cc']->getDefaultEgoAi();
+		 $currentAis = creator()->getEgoAi();
+		 $defaultAi = creator()->getDefaultEgoAi();
 		 echo "<li class='foldingListSection' id='ai'>";
  		 echo "Ai's and Muses";
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList ai'>";
-         foreach($_SESSION['cc']->getAis() as $m){
+         foreach(creator()->getAis() as $m){
             $li = new Li($m->name,'ai');
             $li->addCost($m->getCost(),$m->isInArray($defaultAi));
             $li->addBookIcon($m->name);
@@ -48,6 +48,6 @@ $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
           echo "</ul>";
 
         //FREE GEAR SECTION
-        echo Helpers::getFreeGear($_SESSION['cc']->getEgoSoftGears());
+        echo Helpers::getFreeGear(creator()->getEgoSoftGears());
 	?>
 </ul>

@@ -8,13 +8,13 @@ use App\Creator\DisplayHelpers\Panel;
 use App\Creator\DisplayHelpers\Helpers;
 
 session_start();
-$currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
+$currentMorphsList = creator()->getCurrentMorphs();
 $currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 if($currentMorph == null){
-    $currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
+    $currentMorph = creator()->getMorphByName($_SESSION['currentMorph']);
 }
 
-$traits = $_SESSION['cc']->getCurrentMorphTraits($currentMorph->name);
+$traits = creator()->getCurrentMorphTraits($currentMorph->name);
 
 function getImplantHtml($implants){
     $output = "";
@@ -37,6 +37,6 @@ $myPanel->startDescriptivePanel($currentMorph->name);
 $myPanel->addDescription($currentMorph->description);
 $myPanel->addTraits($traits);
 $myPanel->addRawHtml( getImplantHtml($currentMorph->gears) );
-$myPanel->addRawHtml( Helpers::getBMHtml($currentMorph->bonusMalus,$currentMorph->name,'morph') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentMorph->bonusMalus,$currentMorph->name,'morph') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

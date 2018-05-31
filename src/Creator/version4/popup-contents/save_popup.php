@@ -5,10 +5,10 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 
 use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
 
-    session_start();
+session_start();
 
-    $file_util = new EPFileUtility($_SESSION['cc']->character);
-    $save_name = $file_util->buildExportFilename('EPCharacterSave', 'json');
+$file_util = new EPFileUtility(creator()->character);
+$save_name = $file_util->buildExportFilename('EPCharacterSave', 'json');
 ?>
 	<table class="popup_table" id="table_save" align="center">
 		<tr align="center">
@@ -16,7 +16,7 @@ use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
 				<h1><b><u> Save character </u></b></h1>
 			</td>
 		</tr>
-		
+
 		<tr align="center">
 			<td>
 				Enter a file name
@@ -27,25 +27,25 @@ use EclipsePhaseCharacterCreator\Backend\EPFileUtility;
 				<br><br>
 			</td>
 		</tr>
-		
-		
-		
+
+
+
 		<tr align="center">
 			<td>
 				<div id="errorSaveMsg"></div>
 			</td>
 		</tr>
-		
+
 		<tr align="center">
 			<td>
 				<br><br>
 				<button class="saveSaveButton popupInnerButton">
-			       			Save 
+			       			Save
 		        </button>
-		        
+
 		        <button class="closeButton popupInnerButton">
 			       			Cancel
 		        </button>
-			</td>	
+			</td>
 		</tr>
 	</table>

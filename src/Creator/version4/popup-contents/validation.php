@@ -7,23 +7,23 @@ use EclipsePhaseCharacterCreator\Backend\EPValidation;
 
 session_start();
 
-$isValid = $_SESSION['cc']->checkValidation();
+$isValid = creator()->checkValidation();
 
-$aptPoint = $_SESSION['cc']->validation->items[EPValidation::$APTITUDE_POINT_USE];
-$repPoint = $_SESSION['cc']->validation->items[EPValidation::$REPUTATION_POINT_USE];
-$bck 	  = $_SESSION['cc']->validation->items[EPValidation::$BACKGROUND_CHOICE];
-$fac      = $_SESSION['cc']->validation->items[EPValidation::$FACTION_CHOICE];
-$charName = $_SESSION['cc']->validation->items[EPValidation::$CHARACTER_NAME_CHOICE];
-$morph    = $_SESSION['cc']->validation->items[EPValidation::$MORPH_CHOICE];
-$mot      = $_SESSION['cc']->validation->items[EPValidation::$MOTIVATION_THREE_CHOICE];
-$acSkill  = $_SESSION['cc']->validation->items[EPValidation::$ACTIVE_SKILLS_MIN];
-$knSkill  = $_SESSION['cc']->validation->items[EPValidation::$KNOWLEDGE_SKILLS_MIN];
+$aptPoint = creator()->validation->items[EPValidation::$APTITUDE_POINT_USE];
+$repPoint = creator()->validation->items[EPValidation::$REPUTATION_POINT_USE];
+$bck 	  = creator()->validation->items[EPValidation::$BACKGROUND_CHOICE];
+$fac      = creator()->validation->items[EPValidation::$FACTION_CHOICE];
+$charName = creator()->validation->items[EPValidation::$CHARACTER_NAME_CHOICE];
+$morph    = creator()->validation->items[EPValidation::$MORPH_CHOICE];
+$mot      = creator()->validation->items[EPValidation::$MOTIVATION_THREE_CHOICE];
+$acSkill  = creator()->validation->items[EPValidation::$ACTIVE_SKILLS_MIN];
+$knSkill  = creator()->validation->items[EPValidation::$KNOWLEDGE_SKILLS_MIN];
 
-$AP = $_SESSION['cc']->getAptitudePoint();
-$CP = $_SESSION['cc']->getCreationPoint();
-$RP = $_SESSION['cc']->getReputationPoints();
-$cpActivRestNeed = $_SESSION['cc']->getActiveRestNeed();
-$cpKnowRestNeed = $_SESSION['cc']->getKnowledgeRestNeed();
+$AP = creator()->getAptitudePoint();
+$CP = creator()->getCreationPoint();
+$RP = creator()->getReputationPoints();
+$cpActivRestNeed = creator()->getActiveRestNeed();
+$cpKnowRestNeed = creator()->getKnowledgeRestNeed();
 
 function getIsValidHtml($itemName,$isValid,$failureMessage){
     $output = "<tr><td>";

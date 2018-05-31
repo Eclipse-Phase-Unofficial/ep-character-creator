@@ -9,9 +9,9 @@ session_start();
 ?>
 <ul class="mainlist" id="postraits">
     <?php
-        $currentTraits = $_SESSION['cc']->getCurrentTraits();
-        $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
-         foreach($_SESSION['cc']->getTraits() as $m){
+        $currentTraits = creator()->getCurrentTraits();
+        $defaultTraits = creator()->getCurrentDefaultEgoTraits();
+         foreach(creator()->getTraits() as $m){
             if($m->isPositive() &&
                $m->isEgo()  && $m->cpCost > 0){
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'posTrait','addSelPosTraitIcon');

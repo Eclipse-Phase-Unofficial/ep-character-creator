@@ -10,9 +10,9 @@ session_start();
 ?>
 <ul class="mainlist" id="factions">
     <?php
-        $currentFac = $_SESSION['cc']->getCurrentFaction();
+        $currentFac = creator()->getCurrentFaction();
 
-         foreach($_SESSION['cc']->getBackgrounds() as $m){
+         foreach(creator()->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$FACTION){
                 $li = new Li($m->name,'fac');
                 $li->addBookIcon($m->name);

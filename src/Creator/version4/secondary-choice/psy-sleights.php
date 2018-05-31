@@ -10,14 +10,14 @@ session_start();
 ?>
 <ul class="mainlist" id="psyS">
 	<?php
-		 $currentPsyS = $_SESSION['cc']->getCurrentPsySleights();
-		 $listPsyS = $_SESSION['cc']->getPsySleights();
+		 $currentPsyS = creator()->getCurrentPsySleights();
+		 $listPsyS = creator()->getPsySleights();
 		 
 		 //CHI SECTION
  		echo "<li class='foldingListSection' id='chi'>";
  		echo "Chi Sleight";
  		echo "</li>";
- 		if($_SESSION['cc']->getCanPsyChi()){
+ 		if(creator()->getCanPsyChi()){
 	 		$lishtChi = array();
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_CHI_PSY){
@@ -39,7 +39,7 @@ session_start();
  		echo "<li class='foldingListSection' id='gamma'>";
  		echo "Gamma Sleight";
  		echo "</li>";
- 		if($_SESSION['cc']->getCanPsyGamma()){
+ 		if(creator()->getCanPsyGamma()){
  			$listGamma = array();
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_GAMMA_PSY){

@@ -13,8 +13,8 @@ session_start();
 	</li>
 
 	<?php
-		 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
-		 $currentMoxie = $_SESSION['cc']->getStatByAbbreviation(EPStat::$MOXIE)->getValue();
+		 $currentMorphs = creator()->getCurrentMorphs(); 
+		 $currentMoxie = creator()->getStatByAbbreviation(EPStat::$MOXIE)->getValue();
 		 echo "<li class='descMoxie'>";
 		 echo "		Moxie";
 		 echo "		<span class='iconPlusMinus slowTransition' id='removeMoxie' data-icon='&#x3b;'></span>";

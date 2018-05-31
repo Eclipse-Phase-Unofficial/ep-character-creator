@@ -7,13 +7,13 @@ session_start();
 ?>
 <ul class="mainlist" id="aptsWithMorph">
     <?php
-        $morph = $_SESSION['cc']->getCurrentMorphsByName($_SESSION['currentMorph']);
-        $_SESSION['cc']->activateMorph($morph);
+        $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
+        creator()->activateMorph($morph);
 
         echo "<li class='listSection'>";
 		echo $morph->name;
 		echo "</li>";
-		foreach($_SESSION['cc']->getAptitudes() as $m){
+		foreach(creator()->getAptitudes() as $m){
         	echo "<li>";
         	echo $m->name;
         	echo '		<span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';

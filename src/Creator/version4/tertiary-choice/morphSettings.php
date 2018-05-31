@@ -6,11 +6,11 @@ require_once (__DIR__ . '/../../../../vendor/autoload.php');
 use App\Creator\Atoms\EPAtom;
 
     session_start();
-	$currentMorphsList = $_SESSION['cc']->getCurrentMorphs();
+	$currentMorphsList = creator()->getCurrentMorphs();
 	$currentMorph = EPAtom::getAtomByName($currentMorphsList,$_SESSION['currentMorph']);
 	if($currentMorph == null)
 	{
-		$currentMorph = $_SESSION['cc']->getMorphByName($_SESSION['currentMorph']);
+		$currentMorph = creator()->getMorphByName($_SESSION['currentMorph']);
 	}
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>

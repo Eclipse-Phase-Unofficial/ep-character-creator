@@ -10,10 +10,10 @@ use App\Creator\DisplayHelpers\Helpers;
 session_start();
 
 // $hint = "--dubug:morph";
-$morphGears = $_SESSION['cc']->getGearForMorphName($_SESSION['currentMorph']);
+$morphGears = creator()->getGearForMorphName($_SESSION['currentMorph']);
 $currentGear = EPAtom::getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
 if($currentGear == null){
-    $currentGear =  $_SESSION['cc']->getGearByName($_SESSION['currentMorphGearName']);
+    $currentGear =  creator()->getGearByName($_SESSION['currentMorphGearName']);
     // $hint = "--debug:general";
 }
 
@@ -22,6 +22,6 @@ $myPanel->startDescriptivePanel($currentGear->name);
 $myPanel->addBuySell($currentGear,"MORPH");
 $myPanel->addDescription($currentGear->description);
 $myPanel->addArmor($currentGear);
-$myPanel->addRawHtml( Helpers::getBMHtml($currentGear->bonusMalus,$currentGear->name,'morphGear') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentGear->bonusMalus,$currentGear->name,'morphGear') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

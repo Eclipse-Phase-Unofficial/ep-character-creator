@@ -9,9 +9,9 @@ session_start();
 ?>
 <ul class="mainlist" id="negtraits">
     <?php
-        $currentTraits = $_SESSION['cc']->getCurrentTraits();
-        $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
-         foreach($_SESSION['cc']->getTraits() as $m){
+        $currentTraits = creator()->getCurrentTraits();
+        $defaultTraits = creator()->getCurrentDefaultEgoTraits();
+         foreach(creator()->getTraits() as $m){
             if($m->isNegative() &&
                $m->isEgo() && $m->cpCost > 0){
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon');

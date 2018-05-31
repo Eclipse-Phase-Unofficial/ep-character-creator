@@ -5,6 +5,7 @@ namespace App\Creator\DisplayHelpers;
 
 use App\Creator\Atoms\EPAtom;
 use EclipsePhaseCharacterCreator\Backend\EPBook;
+use EclipsePhaseCharacterCreator\Backend\EPCharacterCreator;
 use EclipsePhaseCharacterCreator\Backend\EPCreditCost;
 use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPMorph;
@@ -18,15 +19,15 @@ class Helpers
      *
      * Filters out gear morphs can't use.
      */
-    static function getFormatedMorphGearList($listFiltered, $morph, $iconClass)
+    static function getFormatedMorphGearList(EPCharacterCreator $creator, $listFiltered, $morph, $iconClass)
     {
         $htmlResult = "";
         foreach ($listFiltered as $m) {
             if (static::isGearLegal($morph, $m)) {
                 $li = new Li($m->name, 'morphGear');
-                $li->addCost($m->getCost(), $m->isInArray($_SESSION['cc']->getCurrentDefaultMorphGear($morph)), 'cr');
+                $li->addCost($m->getCost(), $m->isInArray($creator->getCurrentDefaultMorphGear($morph)), 'cr');
                 $li->addBookIcon($m->name);
-                $li->addPlusChecked($iconClass, $_SESSION['cc']->haveGearOnMorph($m, $morph));
+                $li->addPlusChecked($iconClass, $creator->haveGearOnMorph($m, $morph));
                 $htmlResult .= $li->getHtml();
             }
         }
@@ -75,7 +76,7 @@ class Helpers
     /**
      * Outputs a 'foldingListSection' for gear of a certain type.
      */
-    static function getGearSection($gears, $morph, $gearType, $sectionName)
+    static function getGearSection(EPCharacterCreator $creator, $gears, $morph, $gearType, $sectionName)
     {
         //Generate a HTML valid Id from the section name
         $id = preg_replace("/[^A-z]/", "", $sectionName);
@@ -86,7 +87,7 @@ class Helpers
                 array_push($listFiltered, $m);
             }
         }
-        $formatedHtml = static::getFormatedMorphGearList($listFiltered, $morph, 'addSelMorphGearIcon');
+        $formatedHtml = static::getFormatedMorphGearList($creator, $listFiltered, $morph, 'addSelMorphGearIcon');
 
         $output = "";
         $output .= "<li class='foldingListSection' id='" . $id . "'>";
@@ -194,10 +195,13 @@ class Helpers
     /**
      * Get the section handling Bonuses / Detriments.
      *
-     * @param $parentType - Good values are (origine, faction, trait, morph, morphTrait)
+     * @param EPCharacterCreator $creator
+     * @param EPBonusMalus[]     $bonusMalusArray
+     * @param string             $parentName
+     * @param string             $parentType - Good values are (origine, faction, trait, morph, morphTrait)
      * @return string The HTML of multiple \<li>s
      */
-    static function getBMHtml($bonusMalusArray, $parentName, $parentType)
+    static function getBMHtml(EPCharacterCreator $creator, array $bonusMalusArray, string $parentName, string $parentType)
     {
         $output = "";
 
@@ -225,7 +229,7 @@ class Helpers
             foreach ($bonusMalusArray as $bm) {
                 if ($bm->isChoice()) {
                     $output .= "<li><label class='bmChoiceInput'>";
-                    $output .= static::choosePrintOption($bm, $parentName, $parentType);
+                    $output .= static::choosePrintOption($creator, $bm, $parentName, $parentType);
                     $output .= "<input id='" . $bm->getUid() . "Parent' type='hidden' value='" . $parentName . "'>";
                     $output .= "<input id='" . $bm->getUid() . "Type' type='hidden' value='" . $parentType . "'>";
                     $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->name . "'>";
@@ -245,8 +249,8 @@ class Helpers
                         if ($bmMulti->selected) {
                             $output .= "<li><label class='bmChoiceInput'>";
                             if ($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX) {
-                                $activeSkills    = $_SESSION['cc']->character->ego->getActiveSkills();
-                                $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
+                                $activeSkills    = $creator->character->ego->getActiveSkills();
+                                $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
                                 $skill           = EPAtom::getAtomByUid(array_merge($activeSkills, $knowledgeSkills),
                                     $bmMulti->forTargetNamed);
                                 $output          .= "+" . $bmMulti->value . " " . $skill->getPrintableName();
@@ -282,7 +286,7 @@ class Helpers
                             $output .= "<input id='" . $bmMulti->getUid() . "Sel' type='hidden' value='" . $bmMulti->forTargetNamed . "'>";
                         } else {
                             $output .= "<label class='bmChoiceInput'>";
-                            $output .= static::choosePrintOption($bmMulti, $parentName, $parentType);
+                            $output .= static::choosePrintOption($creator, $bmMulti, $parentName, $parentType);
                             $output .= "</label>";
                         }
                         $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->name . "'>";
@@ -304,11 +308,16 @@ class Helpers
 
     /**
      * Choose which item to print based on the BM type.
+     * @param EPCharacterCreator $creator
+     * @param EPBonusMalus       $bm
+     * @param string             $parentName
+     * @param string             $parentType
+     * @return string
      */
-    static function choosePrintOption($bm, $parentName, $parentType)
+    static function choosePrintOption(EPCharacterCreator $creator, EPBonusMalus $bm, string $parentName, string $parentType)
     {
-        $activeSkills    = $_SESSION['cc']->character->ego->getActiveSkills();
-        $knowledgeSkills = $_SESSION['cc']->character->ego->getKnowledgeSkills();
+        $activeSkills    = $creator->character->ego->getActiveSkills();
+        $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
         if ($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX) {
             return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills), true);
         } else {
@@ -322,10 +331,10 @@ class Helpers
                         return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills));
                     } else {
                         if ($bm->targetForChoice == EPBonusMalus::$ON_APTITUDE) {
-                            return static::getAptitudeOptions($bm, $parentName, $parentType);
+                            return static::getAptitudeOptions($creator, $bm, $parentName, $parentType);
                         } else {
                             if ($bm->targetForChoice == EPBonusMalus::$ON_REPUTATION) {
-                                return static::getReputationOptions($bm);
+                                return static::getReputationOptions($creator, $bm);
                             }
                         }
                     }
@@ -373,8 +382,13 @@ class Helpers
 
     /**
      * Get the options to select/deselect an aptitude
+     * @param EPCharacterCreator $creator
+     * @param EPBonusMalus       $bm
+     * @param string             $parentName
+     * @param string             $parentType
+     * @return string
      */
-    static function getAptitudeOptions($bm, $parentName, $parentType)
+    static function getAptitudeOptions(EPCharacterCreator $creator, EPBonusMalus $bm, string $parentName, string $parentType)
     {
         $output = "";
 
@@ -382,17 +396,17 @@ class Helpers
             $output .= $bm->name;
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             if ($parentType == 'morph') {
-                $morph = $_SESSION['cc']->getMorphByName($parentName);
+                $morph = $creator->getMorphByName($parentName);
                 if (!empty($morph)) {
-                    $banedAptNameList = $_SESSION['cc']->getMorphGrantedBMApptitudesNameList($morph);
-                    foreach ($_SESSION['cc']->getAptitudes() as $apt) {
+                    $banedAptNameList = $creator->getMorphGrantedBMApptitudesNameList($morph);
+                    foreach ($creator->getAptitudes() as $apt) {
                         if (!static::isNameOnList($apt->name, $banedAptNameList)) {
                             $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
                         }
                     }
                 }
             } else {
-                foreach ($_SESSION['cc']->getAptitudes() as $apt) {
+                foreach ($creator->getAptitudes() as $apt) {
                     $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
                 }
             }
@@ -410,15 +424,18 @@ class Helpers
 
     /**
      * Get the options to select/deselect a reputation
+     * @param EPCharacterCreator $creator
+     * @param EPBonusMalus       $bm
+     * @return string
      */
-    static function getReputationOptions($bm)
+    static function getReputationOptions(EPCharacterCreator $creator, EPBonusMalus $bm)
     {
         $output = "";
 
         if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
             $output .= $bm->name;
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
-            foreach ($_SESSION['cc']->getReputations() as $apt) {
+            foreach ($creator->getReputations() as $apt) {
                 $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
             }
             $output .= "</select>";
@@ -442,7 +459,11 @@ class Helpers
         return false;
     }
 
-    static function choiceExist($bmArray)
+    /**
+     * @param EPBonusMalus[] $bmArray
+     * @return bool
+     */
+    static function choiceExist(array $bmArray)
     {
         foreach ($bmArray as $bm) {
             if ($bm->isChoice()) {

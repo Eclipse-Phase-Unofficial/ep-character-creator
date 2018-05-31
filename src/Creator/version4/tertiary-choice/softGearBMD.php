@@ -7,12 +7,12 @@ use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
 session_start();
-$currentGear = $_SESSION['cc']->getGearByName($_SESSION['currentSoftName']);
+$currentGear = creator()->getGearByName($_SESSION['currentSoftName']);
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentGear->name);
 $myPanel->addDescription($currentGear->description);
 $myPanel->addArmor($currentGear);
-$myPanel->addRawHtml(Helpers::getBMHtml($currentGear->bonusMalus,$currentGear->name,'soft') );
+$myPanel->addRawHtml(Helpers::getBMHtml(creator(), $currentGear->bonusMalus,$currentGear->name,'soft') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

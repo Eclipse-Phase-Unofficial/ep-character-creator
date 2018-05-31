@@ -7,11 +7,11 @@ use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
 session_start();
-$currentPsiS = $_SESSION['cc']->getPsySleightsByName($_SESSION['currentPsiSName']);
+$currentPsiS = creator()->getPsySleightsByName($_SESSION['currentPsiSName']);
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentPsiS->name);
 $myPanel->addDescription($currentPsiS->description);
-$myPanel->addRawHtml( Helpers::getBMHtml($currentPsiS->bonusMalus,$currentPsiS->name,'psi') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentPsiS->bonusMalus,$currentPsiS->name,'psi') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

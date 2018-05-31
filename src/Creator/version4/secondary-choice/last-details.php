@@ -8,11 +8,11 @@ session_start();
 <ul class="mainlist" id="lastDetails">
 	  <?php
 
-		$playerName		= $_SESSION['cc']->character->playerName;
-		$charName		= $_SESSION['cc']->character->charName;
-		$realAge		= $_SESSION['cc']->character->realAge;
-		$birthGender	= $_SESSION['cc']->character->birthGender;
-		$note			= $_SESSION['cc']->character->note;
+		$playerName		= creator()->character->playerName;
+		$charName		= creator()->character->charName;
+		$realAge		= creator()->character->realAge;
+		$birthGender	= creator()->character->birthGender;
+		$note			= creator()->character->note;
 
 		echo "	<li>
 					<label>Player Name</label>

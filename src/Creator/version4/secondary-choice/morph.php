@@ -11,8 +11,8 @@ session_start();
 ?>
 <ul class="mainlist" id="morphs">
 	<?php
-		 $listMorphs = $_SESSION['cc']->getMorphs();
-		 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
+		 $listMorphs = creator()->getMorphs();
+		 $currentMorphs = creator()->getCurrentMorphs(); 
 		 
          function printMorph($listMorphs,$currentMorphs,$morphType,$sectionName){
             //Generate a HTML valid Id from the section name
@@ -44,7 +44,7 @@ session_start();
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){
                 $li = new Li($m->name,'morphHover');
-                if($_SESSION['cc']->creationMode){
+                if(creator()->creationMode){
                     $li->addCost($m->cpCost,False,'cp');
                 }else{
                     $li->addCost($m->getCost(),False,'Credits');

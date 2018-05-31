@@ -10,9 +10,9 @@ session_start();
 ?>
 <ul class="mainlist" id="backgrounds">
     <?php
-        $currentBck = $_SESSION['cc']->getCurrentBackground();
+        $currentBck = creator()->getCurrentBackground();
 
-         foreach($_SESSION['cc']->getBackgrounds() as $m){
+         foreach(creator()->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$ORIGIN){
                 $li = new Li($m->name,'bck');
                 $li->addBookIcon($m->name);

@@ -13,7 +13,7 @@ session_start();
 		Current Credit
 		<span class='iconPlusMinus slowTransition' id='removeCredit' data-icon='&#x3b;'></span>
 		<?php
-			$currentCredit = $_SESSION['cc']->getCredit();
+			$currentCredit = creator()->getCredit();
 			echo "<span class='betweenPlusMinus slowTransition'>[".$currentCredit."]</span>";
 		?>
 		<span class='iconPlusMinus slowTransition' id='addCredit' data-icon='&#x3a;'></span>
