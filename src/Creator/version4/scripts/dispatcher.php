@@ -693,7 +693,7 @@ if(isset($_POST['remCredit'])){
 
 //SET REMOVE AI
 if(isset($_POST['ai'])){
-    $ai = creator()->getAisByName($_POST['ai']);
+    $ai = creator()->getAiByName($_POST['ai']);
 
     if (!isset($ai)){
         treatCreatorErrors($return, "Ai does not exist (".$_SESSION['ai'].")");
@@ -713,7 +713,7 @@ if(isset($_POST['ai'])){
 
 //HOVER AI
 if(isset($_POST['hoverAi'])){
-    $ai = creator()->getAisByName($_POST['hoverAi']);
+    $ai = creator()->getAiByName($_POST['hoverAi']);
     $_SESSION['currentAiName'] = $ai->name;
 }
 
@@ -926,7 +926,7 @@ if(isset($_POST['removeTargetFrom'])){
 if(isset($_POST['addOccurence'])){
 	
 	if($_POST['addOccurence'] == "AI"){
-		$currentOccu = creator()->getAisByName($_SESSION['currentAiName'])->occurence;
+		$currentOccu = creator()->getAiByName($_SESSION['currentAiName'])->occurence;
 		if(!creator()->setOccurenceIA($_SESSION['currentAiName'],$currentOccu+1)){
 			treatCreatorErrors($return, creator()->getLastError());
 		}
@@ -953,7 +953,7 @@ if(isset($_POST['addOccurence'])){
 if(isset($_POST['remOccurence'])){
 	
 	if($_POST['remOccurence'] == "AI"){
-		$currentOccu = creator()->getAisByName($_SESSION['currentAiName'])->occurence;
+		$currentOccu = creator()->getAiByName($_SESSION['currentAiName'])->occurence;
 		if(!creator()->setOccurenceIA($_SESSION['currentAiName'],$currentOccu-1)){
 			treatCreatorErrors($return, creator()->getLastError());
 		}

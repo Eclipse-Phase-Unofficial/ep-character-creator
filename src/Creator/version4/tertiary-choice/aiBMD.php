@@ -7,7 +7,7 @@ use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
 session_start();
-$currentAi = creator()->getAisByName($_SESSION['currentAiName']);
+$currentAi = creator()->getAiByName($_SESSION['currentAiName']);
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentAi->name);

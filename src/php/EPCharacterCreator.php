@@ -72,22 +72,17 @@ class EPCharacterCreator implements Savable
     /// TODO:  All of these should be in their own separate class, and called when needed instead of on load
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Variables
-    public  $groups;
-    public  $prefixs;
-    public  $backgrounds;
-    public  $factions;
-    public  $morphs;
-    public  $ais;
-    public  $gears;
-    public  $psySleights;
-    public  $traits;
+    private $prefixes;
+    private $backgrounds;
+    private $morphs;
+    private $ais;
+    private $gears;
+    private $psySleights;
+    private $traits;
 
     /// Loaders
-    private function loadGroups(){
-        $this->groups = $this->listProvider->getListGroups();
-    }
     private function loadPrefixs(){
-        $this->prefixs = $this->listProvider->getListPrefix();
+        $this->prefixes = $this->listProvider->getListPrefix();
     }
     private function loadReps(){
         $this->character->ego->reputations = $this->listProvider->getListReputation();
@@ -304,19 +299,14 @@ class EPCharacterCreator implements Savable
         return EPAtom::getAtomByName($this->psySleights,$name);
     }
 
-    /**
-     * TODO:  Change this function name to singular
-     * @param string $name
-     * @return EPAi
-     */
-    function getAisByName(string $name): EPAi
+    function getAiByName(string $name): EPAi
     {
         return EPAtom::getAtomByName($this->ais,$name);
     }
 
-    private function prefixExist($prefix): bool
+    private function prefixExists($prefix): bool
     {
-        foreach ($this->prefixs as $p){
+        foreach ($this->prefixes as $p){
             if ($p == $prefix){
                 return true;
             }
@@ -1189,7 +1179,7 @@ class EPCharacterCreator implements Savable
 
     // Create a skill from a user entered name and pre-defined prefix
     function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
-        if (!$this->prefixExist($prefix)){
+        if (!$this->prefixExists($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
@@ -1948,7 +1938,6 @@ class EPCharacterCreator implements Savable
 
         $this->loadAptitudes();
         $this->loadStats();
-        $this->loadGroups();
         $this->loadSkills();
         $this->loadPrefixs();
         $this->loadReps();
@@ -1959,7 +1948,7 @@ class EPCharacterCreator implements Savable
         $this->loadTraits();
         $this->loadPsySleights();
 
-        $defaultAi = $this->getAisByName('Standard Muse');
+        $defaultAi = $this->getAiByName('Standard Muse');
         if (isset($defaultAi)){
             $this->character->ego->addDefaultAi($defaultAi);
         }
