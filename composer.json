@@ -43,10 +43,9 @@
   },
   "autoload": {
     "psr-4": {
-      "EclipsePhaseCharacterCreator\\Backend\\": "src/php/",
-      "App\\": "src/"
+      "App\\": "app/"
     },
-    "files": ["src/Creator/HelperFunctions.php"]
+    "files": ["app/Creator/HelperFunctions.php"]
   },
   "require-dev": {
     "rskuipers/php-assumptions": "^0.5.0",
