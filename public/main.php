@@ -155,6 +155,5 @@ use App\Creator\EPListProvider;
                 });
             });
         </script>
-        <script><?php include "scripts/google_analytics.js.php"; ?></script>
     </body>
 </html>
