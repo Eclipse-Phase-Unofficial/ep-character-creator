@@ -6,8 +6,7 @@ $ = jQuery;
 require('jquery-ui/ui/widgets/tooltip');
 
 //Google Analytics
-let analytics = require('./googleAnalytics.js');
-analytics.init();
+require('./googleAnalytics').init();
 
-//Vegas (background slideshow)
-require('vegas');
+//Background slide show
+require('./background').init();
