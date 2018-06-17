@@ -129,24 +129,21 @@ use App\Creator\EPListProvider;
             </div>
         </div>
 
-        <style><?php include "css/popup.css"; ?></style>
-        <style><?php include "scripts/jquery/jquery-ui.min.css"; ?></style>
-        <style><?php include "scripts/vegas/vegas.min.css"; ?></style>
-        <style><?php include "css/normalize/normalize.min.css"; ?></style>
-        <style><?php include "css/lato.css"; ?></style>
-        <style><?php include "css/icomoon.css"; ?></style>
-        <style><?php include "css/ui.css"; ?></style>
-        <style><?php include "css/main7.css"; ?></style>
+        <style>
+        <?php
+            include "css/vendor.css";
+            include "css/app.css";
+        ?>
+        </style>
 
-        <script><?php include "scripts/jquery/jquery.min.js"; ?></script>
-        <script><?php include "scripts/jquery/jquery-ui.min.js"; ?></script>
-        <script><?php include "scripts/vegas/vegas.min.js"; ?></script>
-        <script><?php include "scripts/ajax_helper.js"; ?></script>
-        <script><?php include "scripts/panel_1.js"; ?></script>
-        <script><?php include "scripts/ajaxManager.js"; ?></script>
-        <script><?php include "scripts/popup.js"; ?></script>
-        <script><?php include "scripts/ui.js"; ?></script>
         <script>
+            <?php
+                //Load order is important here
+                include "js/manifest.js";
+                include "js/vendor.js";
+                include "js/app.js";
+                include "js/legacy.js";
+            ?>
             $( function() {
                 //NAVIGATION JQUERRY
                 //class active au menu principal
