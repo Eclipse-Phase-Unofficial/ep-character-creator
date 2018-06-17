@@ -27,10 +27,16 @@ mix.js('resources/assets/js/app.js', 'public/js/app.js')
                 modernBrowser: true
             }),
             // This lets us inline most CSS images
-            require('postcss-url')(
-                {
-                    url: 'inline',
-                }
-            ),
+            require('postcss-url')({
+                url: 'inline',
+                maxSize: 10,
+            }),
+            //And this handles almost all the rest
+            require('postcss-url')({
+                url: 'inline',
+                maxSize: 10,
+                ignoreFragmentWarning: true,
+                basePath: process.cwd() + '/' + mix.config.publicPath,
+            }),
         ]
     });
