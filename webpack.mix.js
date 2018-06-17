@@ -20,10 +20,17 @@ mix.js('resources/assets/js/app.js', 'public/js/app.js')
     .scripts('resources/assets/js/legacy/*', 'public/js/legacy.js') //Combine all the legacy files into one
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sass('resources/assets/sass/vendor.scss', 'public/css')
-    .options({      //This lets us use @import on urls
+    .options({
         postCss: [
+            //This lets us use @import on urls
             require('postcss-import-url')({
                 modernBrowser: true
-            })
+            }),
+            // This lets us inline most CSS images
+            require('postcss-url')(
+                {
+                    url: 'inline',
+                }
+            ),
         ]
     });
