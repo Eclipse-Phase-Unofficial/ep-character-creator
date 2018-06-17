@@ -44,9 +44,8 @@ if(null !== creator()) {
 
 				$pdf->AddPage('P', 'A4');//A4 EGO PAGE
 
-				$searchpath = dirname(dirname(dirname(__FILE__)));//."/input";
 				//SET BAGROUNT PNG-----------------------------
-				$pdf->Image($searchpath . "/version4/exporter/EP_BCK_PDF_EGO.png", 0, 0, -150);
+				$pdf->Image(public_path() . "/exporter/EP_BCK_PDF_EGO.png", 0, 0, -150);
 
 				//DEFINE FONTS ---------------------------------
 				$pdf->AddFont('Lato-Lig', '', 'Lato-Light.php');
@@ -227,9 +226,8 @@ if(null !== creator()) {
 						creator()->activateMorph($morph);
 						$pdf->AddPage('P', 'A4');//A4 MORPH
 
-						$searchpath = dirname(dirname(dirname(__FILE__)));//."/input";
 						//SET BAGROUNT PNG-----------------------------
-						$pdf->Image($searchpath . "/version4/exporter/EP_BCK_PDF_MORPH.png", 0, 0, -150);
+						$pdf->Image(public_path() . "/exporter/EP_BCK_PDF_MORPH.png", 0, 0, -150);
 
 						$pdf->SetFont('Lato-Lig', '', 8);
 
