@@ -191,6 +191,26 @@ if(isset($_POST['posTrait'])){
     $return['desc'] = $trait->description;
 }
 
+//SET NEG TRAIT
+if(isset($_POST['negTrait'])){
+    $trait = EpDatabase()->getTraitByName($_POST['negTrait']);
+    if(!isset($trait)){
+        treatCreatorErrors($return,"Trait ".$_POST['negTrait']." does not exist!");
+    }
+
+    if($trait->isInArray(creator()->getCurrentTraits())){
+        if(!creator()->removeTrait($trait)){
+            treatCreatorErrors($return, creator()->getLastError());
+        }
+    }
+    else if(!creator()->addTrait($trait)){
+        treatCreatorErrors($return, creator()->getLastError());
+    }
+    $_SESSION['currentTraitName'] = $trait->name;
+    $return['desc'] = $trait->description;
+}
+
+
 //HOVER POS/NEG TRAIT
 if(isset($_POST['traitHover'])){
 	$trait = EpDatabase()->getTraitByName($_POST['traitHover']);
@@ -221,25 +241,6 @@ if(isset($_POST['psyS'])){
 if(isset($_POST['hoverPsyS'])){
 	$psyS = EpDatabase()->getPsySleightsByName($_POST['hoverPsyS']);
 	$_SESSION['currentPsiSName'] = $psyS->name;
-}
-
-//SET NEG TRAIT
-if(isset($_POST['negTrait'])){
-    $trait = EpDatabase()->getTraitByName($_POST['negTrait']);
-    if(!isset($trait)){
-        treatCreatorErrors($return,"Trait ".$_POST['negTrait']." does not exist!");
-    }
-
-    if($trait->isInArray(creator()->getCurrentTraits())){
-        if(!creator()->removeTrait($trait)){
-            treatCreatorErrors($return, creator()->getLastError());
-        }
-    }
-    else if(!creator()->addTrait($trait)){
-        treatCreatorErrors($return, creator()->getLastError());
-    }
-    $_SESSION['currentTraitName'] = $trait->name;
-    $return['desc'] = $trait->description;
 }
 
 //SET MOTIVATION
