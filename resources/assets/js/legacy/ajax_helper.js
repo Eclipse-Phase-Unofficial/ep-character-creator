@@ -8,6 +8,7 @@ var dispatcherURL = 'scripts/dispatcher.php';
 // Do not use except in special circumstances.
 // In 90% of the cases, do_ajax(...) provides all the functionality, and handles displaying errors.
 function ajax_helper(data,success_function) {
+    data._token = document.head.querySelector('meta[name="csrf-token"]').content; //Append the CSRF token
     $.ajax({
         type : 'POST',
         contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-1',

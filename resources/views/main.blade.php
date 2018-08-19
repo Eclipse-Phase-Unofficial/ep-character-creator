@@ -20,6 +20,7 @@ use App\Creator\EPListProvider;
         <title>Eclipse Phase Character Creator</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <body>
 
