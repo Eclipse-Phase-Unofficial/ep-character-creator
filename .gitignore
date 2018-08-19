@@ -44,3 +44,7 @@ public/css
 public/js
 public/images/vendor
 public/mix-manifest.json
+
+#Laravel IDE Helper generated files
+.phpstorm.meta.php
+_ide_helper.php
