@@ -1,6 +1,4 @@
-//jQuery
-jQuery = require('jquery');
-$ = jQuery;
+import './bootstrap';
 
 //jQuery-ui
 require('jquery-ui/ui/widgets/tooltip');
