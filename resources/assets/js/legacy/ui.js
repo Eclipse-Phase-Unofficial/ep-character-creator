@@ -7,38 +7,38 @@
 
 // Load button
 $("#loadButton").click(function() {
-    loadPopup("#load_popup","popup-contents/load.php");
+    loadPopup("#load_popup","popup-contents/load");
 });
 
 // Save button
 $("#saveButton").click(function() {
     // window.open("./other/save.php");
-    loadPopup("#save_popup","popup-contents/save_popup.php");
+    loadPopup("#save_popup","popup-contents/save_popup");
 });
 
 // Check button
 $("#validateButton").click(function() {
-        loadPopup("#validation_popup", "popup-contents/validation.php",true);
+        loadPopup("#validation_popup", "popup-contents/validation",true);
 });
 
 // Txt export button
 $("#exportTxtButton").click(function() {
-        window.open("./exporter/txtExporter.php");
+        window.open("./exporter/txtExporter");
 });
 
 // Pdf export button
 $("#exportPdfButton").click(function() {
-        window.open("./exporter/pdfExporterV2_fpdf.php");
+        window.open("./exporter/pdfExporterV2_fpdf");
 });
 
 // Reset button
 $("#settingsButton").click(function() {
-        loadPopup("reload_popup","popup-contents/reset.php",false,true);
+        loadPopup("reload_popup","popup-contents/reset",false,true);
 });
 
 // About button
 $("#aboutButton").click(function() {
-        loadPopup("#about_popup", "popup-contents/about.php",true);
+        loadPopup("#about_popup", "popup-contents/about",true);
 });
 
 //**************************************************

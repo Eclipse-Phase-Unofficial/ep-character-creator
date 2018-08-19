@@ -12,7 +12,25 @@
 */
 
 Route::get('/', function () {
-    return include('main.php');
+    return view('main');
+});
+
+Route::prefix('popup-contents')->group(function () {
+    Route::get('/about', function () {
+        return view('popup-contents.about');
+    });
+    Route::get('/load', function () {
+        return view('popup-contents.load');
+    });
+    Route::get('/reset', function () {
+        return view('popup-contents.reset');
+    });
+    Route::get('/save_popup', function () {
+        return view('popup-contents.save_popup');
+    });
+    Route::get('/validation', function () {
+        return view('popup-contents.validation');
+    });
 });
 
 //All the routes to get and set data

@@ -30,7 +30,7 @@ $(document).ready(function(){
                         endLoading();
                     }
                     else{
-                        loadPopup("reload_popup","popup-contents/reset.php");
+                        loadPopup("reload_popup","popup-contents/reset");
                         endLoading();
                     }
                 });
