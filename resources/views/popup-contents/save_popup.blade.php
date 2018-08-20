@@ -19,7 +19,8 @@ $save_name = $file_util->buildExportFilename('EPCharacterSave', 'json');
 			<td>
 				Enter a file name
 				<br><br>
-				<form action="other/save.php" id="saveForm" method="POST" enctype="multipart/form-data">
+				<form action="{{route('save')}}" id="saveForm" method="POST" enctype="multipart/form-data">
+                    {{csrf_field()}}
 					<input style="line-height: 1em;" id="saveName" name="saveName" type="text" value="<?php echo $save_name ?>">
 				</form>
 				<br><br>

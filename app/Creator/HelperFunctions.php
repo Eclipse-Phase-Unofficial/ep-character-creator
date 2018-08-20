@@ -16,8 +16,7 @@ use \App\Creator\EPCharacterCreator;
  */
 function creator(): ?EPCharacterCreator
 {
-//    session_start();
-    return $_SESSION['cc'] ?? null;
+    return session('cc') ?? null;
 }
 
 /**
@@ -43,7 +42,7 @@ function EpDatabase(): Database
 {
     if(empty($_SESSION['db']))
     {
-        $_SESSION['db'] = new Database();
+        session()->put('db', new Database());
     }
-    return $_SESSION['db'];
+    return session('db');
 }

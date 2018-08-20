@@ -15,6 +15,28 @@ Route::get('/', function () {
     return view('main');
 });
 
+Route::prefix('others')->group(function () {
+    Route::post('/save', 'SaveLoadController@save')->name('save');
+    Route::get('/uploadFile', function() {
+        return view('popup-contents.upload_file_iframe');
+    });
+    Route::post('/uploadFile', function() {
+        return view('popup-contents.upload_file_iframe');
+    });
+});
+
+Route::prefix('export')->group(function () {
+    Route::get('/pdf', function() {
+        $exporter = new \App\Creator\Exporters\pdfExporterV2_fpdf();
+        if(!$exporter->export()){
+            return response("Bad news, something went wrong, we can not print your character, verify your character and try again.", 500);
+        }
+    });
+    Route::get('/txt', function() {
+        include(app_path('Creator/Exporters/txtExporter.php'));
+    });
+});
+
 Route::prefix('popup-contents')->group(function () {
     Route::get('/about', function () {
         return view('popup-contents.about');
@@ -32,6 +54,122 @@ Route::prefix('popup-contents')->group(function () {
         return view('popup-contents.validation');
     });
 });
+
+//Panel 2
+Route::prefix('secondary-choice')->group(function () {
+    Route::get('/active-skills', function () {
+        return view('secondary-choice.active-skills');
+    });
+    Route::get('/aptitudes', function () {
+        return view('secondary-choice.aptitudes');
+    });
+    Route::get('/backgrounds', function () {
+        return view('secondary-choice.backgrounds');
+    });
+    Route::get('/credits', function () {
+        return view('secondary-choice.credits');
+    });
+    Route::get('/factions', function () {
+        return view('secondary-choice.factions');
+    });
+    Route::get('/knowledge-skills', function () {
+        return view('secondary-choice.knowledge-skills');
+    });
+    Route::get('/last-details', function () {
+        return view('secondary-choice.last-details');
+    });
+    Route::get('/morph', function () {
+        return view('secondary-choice.morph');
+    });
+    Route::get('/motivations', function () {
+        return view('secondary-choice.motivations');
+    });
+    Route::get('/negative-traits', function () {
+        return view('secondary-choice.negative-traits');
+    });
+    Route::get('/neutral-traits', function () {
+        return view('secondary-choice.neutral-traits');
+    });
+    Route::get('/positive-traits', function () {
+        return view('secondary-choice.positive-traits');
+    });
+    Route::get('/psy-sleights', function () {
+        return view('secondary-choice.psy-sleights');
+    });
+    Route::get('/reputations', function () {
+        return view('secondary-choice.reputations');
+    });
+    Route::get('/softGear', function () {
+        return view('secondary-choice.softGear');
+    });
+    Route::get('/stats', function () {
+        return view('secondary-choice.stats');
+    });
+});
+
+//Panel 3
+Route::prefix('tertiary-choice')->group(function () {
+    Route::get('/', function () {
+        return view('tertiary-choice.aiBMD');
+    });
+    Route::get('/', function () {
+        return view('tertiary-choice.aptsWithMorph');
+    });
+    Route::get('/', function () {
+        return view('tertiary-choice.backgroundBMD');
+    });
+    Route::get('/', function () {
+        return view('tertiary-choice.factionBMD');
+    });
+    Route::get('/', function () {
+        return view('tertiary-choice.gears');
+    });
+    Route::get('/', function () {
+        return view('tertiary-choice.implants');
+    });
+    Route::get('/morphBMD', function () {
+        return view('tertiary-choice.morphBMD');
+    });
+    Route::get('/morphNegTraits', function () {
+        return view('tertiary-choice.morphNegTraits');
+    });
+    Route::get('/morphNeuTraits', function () {
+        return view('tertiary-choice.morphNeuTraits');
+    });
+    Route::get('/morphPosTraits', function () {
+        return view('tertiary-choice.morphPosTraits');
+    });
+    Route::get('/morphSettings', function () {
+        return view('tertiary-choice.morphSettings');
+    });
+    Route::get('/psySleightBDM', function () {
+        return view('tertiary-choice.psySleightBDM');
+    });
+    Route::get('/softGearBMD', function () {
+        return view('tertiary-choice.softGearBMD');
+    });
+    Route::get('/statsWithMorph', function () {
+        return view('tertiary-choice.statsWithMorph');
+    });
+    Route::get('/traitBMD', function () {
+        return view('tertiary-choice.traitBMD');
+    });
+});
+
+//Panel 4
+Route::prefix('quaternary-choice')->group(function () {
+    Route::get('/gearMorphBMD', function () {
+        return view('quaternary-choice.gearMorphBMD');
+    });
+    Route::get('/traitMorphBMD', function () {
+        return view('quaternary-choice.traitMorphBMD');
+    });
+});
+
+// This handles pretty much every API request
+// TODO:  Split this to the dispatch routes
+// TODO:  Convert this to using request instead of $_POST
+Route::post('/dispatcher', 'Dispatcher@process');
 
 //All the routes to get and set data
 //These were all originally in dispatcher.php

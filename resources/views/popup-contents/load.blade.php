@@ -10,7 +10,7 @@
 			<td>
 				If you have save a character you can reload it on the system for evolving or changing details.
 				<br><br>
-				Choose a file: <iframe style="position: absolute; border:none;" src="other/upload_file.php"></iframe>
+				Choose a file: <iframe style="position: absolute; border:none;" src="/others/uploadFile"></iframe>
 				<br><br>
 			</td>
 		</tr>

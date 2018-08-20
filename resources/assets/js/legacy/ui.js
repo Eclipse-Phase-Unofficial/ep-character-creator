@@ -12,7 +12,6 @@ $("#loadButton").click(function() {
 
 // Save button
 $("#saveButton").click(function() {
-    // window.open("./other/save.php");
     loadPopup("#save_popup","popup-contents/save_popup");
 });
 
@@ -23,12 +22,12 @@ $("#validateButton").click(function() {
 
 // Txt export button
 $("#exportTxtButton").click(function() {
-        window.open("./exporter/txtExporter");
+        window.open("./export/txt");
 });
 
 // Pdf export button
 $("#exportPdfButton").click(function() {
-        window.open("./exporter/pdfExporterV2_fpdf");
+        window.open("./export/pdf");
 });
 
 // Reset button

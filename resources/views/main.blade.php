@@ -129,20 +129,17 @@ use App\Creator\EPListProvider;
         </div>
 
         <style>
-        <?php
-            include "css/vendor.css";
-            include "css/app.css";
-        ?>
+            {{include public_path('css/vendor.css')}}
+            {{include public_path('css/app.css')}}
         </style>
 
         <script>
-            <?php
-                //Load order is important here
-                include "js/manifest.js";
-                include "js/vendor.js";
-                include "js/app.js";
-                include "js/legacy.js";
-            ?>
+            //Load order is important here
+            {{include public_path('js/manifest.js')}}
+            {{include public_path('js/vendor.js')}}
+            {{include public_path('js/app.js')}}
+            {{include public_path('js/legacy.js')}}
+
             $( function() {
                 //NAVIGATION JQUERRY
                 //class active au menu principal

@@ -1,7 +1,7 @@
 //Helper library for ajax and error messages
 // This helps reduce boilerplate code, and increases consistency
 
-var dispatcherURL = 'scripts/dispatcher.php';
+var dispatcherURL = '/dispatcher';
 
 // Handle the boilerplate ajax code
 //

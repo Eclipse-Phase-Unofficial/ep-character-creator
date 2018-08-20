@@ -56,7 +56,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/backgroundBMD.php");
+                    loadTertiary("tertiary-choice/backgroundBMD");
                     setRemainingPoint(response);
             });
             return false;
@@ -73,7 +73,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/factionBMD.php");
+                    loadTertiary("tertiary-choice/factionBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -146,8 +146,8 @@ $(document).ready(function(){
                     		}
                     		else {
                     			setRemainingPoint(response);
-                                $("#secondary").attr('src',"secondary-choice/aptitudes.php");
-                    			$("#secondary").load("secondary-choice/aptitudes.php" , function(){
+                                $("#secondary").attr('src',"secondary-choice/aptitudes");
+                    			$("#secondary").load("secondary-choice/aptitudes" , function(){
                     				//console.log("change"+focusOn);
 	                    			$(focusOn).focus();
                     			});
@@ -166,7 +166,7 @@ $(document).ready(function(){
                             currentMorphUsed :morphName             
                     },
                     function(response){
-                    		 	loadTertiary("tertiary-choice/aptsWithMorph.php");
+                    		 	loadTertiary("tertiary-choice/aptsWithMorph");
                     });
 				return false;
         
@@ -206,8 +206,8 @@ $(document).ready(function(){
 						}
                 		else {
 							setRemainingPoint(response);
-                            $("#secondary").attr('src',"secondary-choice/reputations.php");
-							$("#secondary").load("secondary-choice/reputations.php", function(){
+                            $("#secondary").attr('src',"secondary-choice/reputations");
+							$("#secondary").load("secondary-choice/reputations", function(){
 	                    			$(focusOn).focus();
                     		});
                 		}
@@ -222,7 +222,7 @@ $(document).ready(function(){
                     traitHover : $(this).attr('id')
                 },
                 function(response){
-                    loadTertiary("tertiary-choice/traitBMD.php");
+                    loadTertiary("tertiary-choice/traitBMD");
                 });
             return false;
         });
@@ -237,7 +237,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/traitBMD.php");
+                    loadTertiary("tertiary-choice/traitBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -253,7 +253,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/traitBMD.php");
+                    loadTertiary("tertiary-choice/traitBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -270,7 +270,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/traitBMD.php");
+                    loadTertiary("tertiary-choice/traitBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -286,7 +286,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/psySleightBDM.php");
+                    loadTertiary("tertiary-choice/psySleightBDM");
                     setRemainingPoint(response);
                 });
             return false;
@@ -298,7 +298,7 @@ $(document).ready(function(){
                             hoverPsyS : $(this).attr('id')
                     },
                     function(response){
-                    			loadTertiary("tertiary-choice/psySleightBDM.php");
+                    			loadTertiary("tertiary-choice/psySleightBDM");
                     });
 				return false;
         
@@ -313,7 +313,7 @@ $(document).ready(function(){
 		
 		//change active skill value
 		$(document).on('change ', '.actskillbase' ,function () {
-            changeSkill($(this), "secondary-choice/active-skills.php");
+            changeSkill($(this), "secondary-choice/active-skills");
             return false;
 		});
 		
@@ -357,10 +357,10 @@ $(document).ready(function(){
 	                function(response){
                                 var comeFrom = $('.skills').attr('id');
                     			if(comeFrom == "actSkills"){
-                    				loadSecondary("secondary-choice/active-skills.php");
+                    				loadSecondary("secondary-choice/active-skills");
                     			}
                     			else{
-	                    			loadSecondary("secondary-choice/knowledge-skills.php");
+	                    			loadSecondary("secondary-choice/knowledge-skills");
                     			}
 	                			setRemainingPoint(response);
 	                });
@@ -377,7 +377,7 @@ $(document).ready(function(){
 		
 		//change knowlege skill value
 		$(document).on('change ', '.knoskillbase' ,function () {
-            changeSkill($(this), "secondary-choice/knowledge-skills.php");
+            changeSkill($(this), "secondary-choice/knowledge-skills");
             return false;
 		});
 		//Add the native language
@@ -390,7 +390,7 @@ $(document).ready(function(){
                         newNatLanguageSkill : $('#langToAdd').val()
                 },
                 function(response){
-                            loadSecondary("secondary-choice/knowledge-skills.php");
+                            loadSecondary("secondary-choice/knowledge-skills");
                 });
             return false;
         }
@@ -415,7 +415,7 @@ $(document).ready(function(){
                         newTmpSkillPrefix : $('#knoprefix').val()
                 },
                 function(response){
-                            loadSecondary("secondary-choice/knowledge-skills.php");
+                            loadSecondary("secondary-choice/knowledge-skills");
                 });
             return false;
         }
@@ -520,7 +520,7 @@ $(document).ready(function(){
                             currentMorphUsed : $(this).attr('id')
                     },
                     function(response){
-								loadTertiary("tertiary-choice/morphBMD.php");
+								loadTertiary("tertiary-choice/morphBMD");
                     });
 			return false;
         });
@@ -533,8 +533,8 @@ $(document).ready(function(){
                             currentMorphUsed : $(this).attr('id')
                     },
                     function(response){
-                                $("#tertiary").attr('src',"tertiary-choice/morphSettings.php");
-								$("#tertiary").load("tertiary-choice/morphSettings.php", function(){
+                                $("#tertiary").attr('src',"tertiary-choice/morphSettings");
+								$("#tertiary").load("tertiary-choice/morphSettings", function(){
 									$("#morphName").attr('value',response.morphName);									
 									$("#mNickname").val(response.nickname);
 									$("#mLocation").val(response.location);
@@ -569,7 +569,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-	                            loadTertiary("tertiary-choice/morphPosTraits.php");
+	                            loadTertiary("tertiary-choice/morphPosTraits");
                     });
 				return false;
         });
@@ -583,7 +583,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    loadQuaternary("quaternary-choice/traitMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -597,7 +597,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-	                            loadTertiary("tertiary-choice/morphNeuTraits.php");
+	                            loadTertiary("tertiary-choice/morphNeuTraits");
                     });
 				return false;
         });
@@ -611,7 +611,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    loadQuaternary("quaternary-choice/traitMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -625,7 +625,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-	                            loadTertiary("tertiary-choice/morphNegTraits.php");
+	                            loadTertiary("tertiary-choice/morphNegTraits");
                     });
 				return false;
         });
@@ -638,7 +638,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    loadQuaternary("quaternary-choice/traitMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -650,7 +650,7 @@ $(document).ready(function(){
                     morphTraitHover : $(this).attr('id')
                 },
                 function(response){
-                    loadQuaternary("quaternary-choice/traitMorphBMD.php");
+                    loadQuaternary("quaternary-choice/traitMorphBMD");
                 });
             return false;
         });
@@ -664,7 +664,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-	                            loadTertiary("tertiary-choice/implants.php");
+	                            loadTertiary("tertiary-choice/implants");
                     });
 				return false;
         });
@@ -678,7 +678,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    loadQuaternary("quaternary-choice/gearMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -693,7 +693,7 @@ $(document).ready(function(){
                             currentMorphUsed : morphName
                     },
                     function(response){
-                        loadTertiary("tertiary-choice/gears.php");
+                        loadTertiary("tertiary-choice/gears");
                     });
 				return false;
         });
@@ -708,7 +708,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    loadQuaternary("quaternary-choice/gearMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -742,7 +742,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                    loadQuaternary("quaternary-choice/gearMorphBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -765,7 +765,7 @@ $(document).ready(function(){
                     morphImplantGearHover : $(this).attr('id')
                 },
                 function(response){
-                        loadQuaternary("quaternary-choice/gearMorphBMD.php");
+                        loadQuaternary("quaternary-choice/gearMorphBMD");
                 });
             return false;
         });
@@ -780,7 +780,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/aiBMD.php");
+                    loadTertiary("tertiary-choice/aiBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -792,7 +792,7 @@ $(document).ready(function(){
                             hoverAi : $(this).attr('id')
                     },
                     function(response){
-								loadTertiary("tertiary-choice/aiBMD.php");
+								loadTertiary("tertiary-choice/aiBMD");
                     });
 				return false;
         });
@@ -806,7 +806,7 @@ $(document).ready(function(){
                 },
                 function(response){
                     reloadPanel(me);
-                    loadTertiary("tertiary-choice/softGearBMD.php");
+                    loadTertiary("tertiary-choice/softGearBMD");
                     setRemainingPoint(response);
                 });
             return false;
@@ -818,7 +818,7 @@ $(document).ready(function(){
                             hoverSoftg : $(this).attr('id')
                     },
                     function(response){
-								loadTertiary("tertiary-choice/softGearBMD.php");
+								loadTertiary("tertiary-choice/softGearBMD");
                     });
 				return false;
         });
@@ -942,7 +942,7 @@ $(document).ready(function(){
                             currentMorphUsed :morphName             
                     },
                     function(response){
-                    		 	loadTertiary("tertiary-choice/statsWithMorph.php");
+                    		 	loadTertiary("tertiary-choice/statsWithMorph");
                     });
 				return false;
         
@@ -1003,15 +1003,15 @@ $(document).ready(function(){
                             parentBmId : parentId         
                     },
                     function(response){
-                    			if(parentType_var == 'origine') loadTertiary("tertiary-choice/backgroundBMD.php");
-                    			else if(parentType_var == 'faction') loadTertiary("tertiary-choice/factionBMD.php");
-                    			else if(parentType_var == 'trait') loadTertiary("tertiary-choice/traitBMD.php");
-                    			else if(parentType_var == 'psi') loadTertiary("tertiary-choice/psySleightBDM.php");
-                    			else if(parentType_var == 'morph') loadTertiary("tertiary-choice/morphBMD.php");
-                    			else if(parentType_var == 'morphTrait') loadQuaternary("quaternary-choice/traitMorphBMD.php");
-                    			else if(parentType_var == 'morphGear') loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                    			else if(parentType_var == 'ai') loadTertiary("tertiary-choice/aiBMD.php");
-                    			else if(parentType_var == 'soft') loadTertiary("tertiary-choice/softGearBMD.php");
+                    			if(parentType_var == 'origine') loadTertiary("tertiary-choice/backgroundBMD");
+                    			else if(parentType_var == 'faction') loadTertiary("tertiary-choice/factionBMD");
+                    			else if(parentType_var == 'trait') loadTertiary("tertiary-choice/traitBMD");
+                    			else if(parentType_var == 'psi') loadTertiary("tertiary-choice/psySleightBDM");
+                    			else if(parentType_var == 'morph') loadTertiary("tertiary-choice/morphBMD");
+                    			else if(parentType_var == 'morphTrait') loadQuaternary("quaternary-choice/traitMorphBMD");
+                    			else if(parentType_var == 'morphGear') loadQuaternary("quaternary-choice/gearMorphBMD");
+                    			else if(parentType_var == 'ai') loadTertiary("tertiary-choice/aiBMD");
+                    			else if(parentType_var == 'soft') loadTertiary("tertiary-choice/softGearBMD");
                     });
 				return false;
         
@@ -1053,15 +1053,15 @@ $(document).ready(function(){
                                        
                     },
                     function(response){
-                    			if(parentType_var == 'origine') loadTertiary("tertiary-choice/backgroundBMD.php");
-                    			else if(parentType_var == 'faction') loadTertiary("tertiary-choice/factionBMD.php");
-                    			else if(parentType_var == 'trait') loadTertiary("tertiary-choice/traitBMD.php");
-                    			else if(parentType_var == 'psi') loadTertiary("tertiary-choice/psySleightBDM.php");
-                    			else if(parentType_var == 'morph') loadTertiary("tertiary-choice/morphBMD.php");
-                    			else if(parentType_var == 'morphTrait') loadQuaternary("quaternary-choice/traitMorphBMD.php");
-                    			else if(parentType_var == 'morphGear') loadQuaternary("quaternary-choice/gearMorphBMD.php");
-                    			else if(parentType_var == 'ai') loadTertiary("tertiary-choice/aiBMD.php");
-                    			else if(parentType_var == 'soft') loadTertiary("tertiary-choice/softGearBMD.php");
+                    			if(parentType_var == 'origine') loadTertiary("tertiary-choice/backgroundBMD");
+                    			else if(parentType_var == 'faction') loadTertiary("tertiary-choice/factionBMD");
+                    			else if(parentType_var == 'trait') loadTertiary("tertiary-choice/traitBMD");
+                    			else if(parentType_var == 'psi') loadTertiary("tertiary-choice/psySleightBDM");
+                    			else if(parentType_var == 'morph') loadTertiary("tertiary-choice/morphBMD");
+                    			else if(parentType_var == 'morphTrait') loadQuaternary("quaternary-choice/traitMorphBMD");
+                    			else if(parentType_var == 'morphGear') loadQuaternary("quaternary-choice/gearMorphBMD");
+                    			else if(parentType_var == 'ai') loadTertiary("tertiary-choice/aiBMD");
+                    			else if(parentType_var == 'soft') loadTertiary("tertiary-choice/softGearBMD");
                     });
 				return false;
         
