@@ -15,5 +15,5 @@ COPY docker/epcc/epcc_standalone.ini /var/www/html/config.ini
 #Database prep
 RUN mkdir /db/ && \
     touch /db/FullDatabase.sqlite && \
-    sed --in-place 's/\\n/ /g' /var/www/html/database/init/FullDatabase.sql && \
-    sqlite3 --init /var/www/html/database/init/FullDatabase.sql /db/FullDatabase.sqlite
+    sed --in-place 's/\\n/ /g' /var/www/html/database/database.sql && \
+    sqlite3 --init /var/www/html/database/database.sql /db/database.sqlite

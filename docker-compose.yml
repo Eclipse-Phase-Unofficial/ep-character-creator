@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     volumes:
       - epcc-db-data:/var/lib/mysql
-      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database:/docker-entrypoint-initdb.d
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ;dslagku*(PDSGDS

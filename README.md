@@ -27,7 +27,7 @@ There is a single configuration file for EPCC: [src/php/config.ini](https://gith
 You will need to maintain a separate version of that file outside of this repository for your production environment.
 
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
-[src/sql/init/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
+[src/database/database.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/database/database.sql).
 
 ## Setup
 You will need:
@@ -40,12 +40,12 @@ You will need:
 #### SQLite:
 1. Create a sqlite3 database
     ```bash
-    sed 's/\\n/ /g' FullDatabase.sql > tmp.sql
-    sqlite3 --init tmp.sql FullDatabase.sqlite3
+    sed 's/\\n/ /g' database.sql > tmp.sql
+    sqlite3 --init tmp.sql database.sqlite3
     ```
 3. configure database access in php/config.ini
     ```ini
-    databasePDO = 'sqlite:../../../sql/init/FullDatabase.sqlite3'
+    databasePDO = 'sqlite:../../../database/database.sqlite3'
     ````
 
 #### MySql
@@ -58,7 +58,7 @@ You will need:
     ```
 2. Import the database
     ```
-    mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < sql/init/FullDatabase.sql
+    mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < database/database.sql
     ```
 3. configure database access in php/config.ini
     ```
@@ -71,7 +71,7 @@ You will need:
 #### SQLite:
 To save changes made to the Sqlite database run:
 ```bash
-echo -e ".once FullDatabase.sql\n.dump"|sqlite3 FullDatabase.sqlite3
+echo -e ".once database.sql\n.dump"|sqlite3 database.sqlite3
 ```
 WARNING:  If you use this feature, skip the `sed` step when creating the database.
 
