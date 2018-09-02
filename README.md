@@ -32,7 +32,7 @@ The rest of the information (Eclipse Phase content) is stored in the database. T
 ## Setup
 You will need:
 
-* [php 5.6 or greater](https://php.net)
+* [php 7.2 or greater](https://php.net)
 * Either: [mySql 14.14 or greater](https://dev.mysql.com/downloads/)
 * Or: [sqlite3](https://www.sqlite.org/download.html)
 
