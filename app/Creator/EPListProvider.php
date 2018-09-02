@@ -289,7 +289,7 @@ class EPListProvider {
     function getListStats(EPConfigFile $configValues,?EPCharacterCreator &$cc=null): array
     {
         $stats = array();
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stat`");
+        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stats`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
@@ -308,7 +308,7 @@ class EPListProvider {
     
     function getStatByName(string $statName): EPStat
     {
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stat` WHERE `name`='".$this->adjustForSQL($statName)."';");
+        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stats` WHERE `name`='".$this->adjustForSQL($statName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
@@ -429,7 +429,7 @@ class EPListProvider {
     function getListGroups($targetName = ""){
         $groupsList = array();
         if(!empty($targetName)){
-            $res = self::$database->query("SELECT `groupName`, `targetName` FROM `GroupName` WHERE `targetName` = '".$this->adjustForSQL($targetName)."';");
+            $res = self::$database->query("SELECT `groupName`, `targetName` FROM `GroupNames` WHERE `targetName` = '".$this->adjustForSQL($targetName)."';");
             $res->setFetchMode(\PDO::FETCH_ASSOC);
             while ($groupRow = $res->fetch()) {
                     if($groupRow == null){
@@ -443,7 +443,7 @@ class EPListProvider {
             }
         }
         else{
-            $res = self::$database->query("SELECT DISTINCT `groupName` FROM `GroupName`;");
+            $res = self::$database->query("SELECT DISTINCT `groupName` FROM `GroupNames`;");
             $res->setFetchMode(\PDO::FETCH_ASSOC);
             while ($groupRow = $res->fetch()) {
                 if($groupRow == null){
@@ -522,7 +522,7 @@ class EPListProvider {
             }
             //limitations
             $bckLimitation = array();
-            $limit = self::$database->query("SELECT `background`, `limitationGroup` FROM `BackgroundLimitation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $limit = self::$database->query("SELECT `background`, `limitationGroup` FROM `BackgroundLimitations` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
             $limit->setFetchMode(\PDO::FETCH_ASSOC);
 
             while ($limitRow = $limit->fetch()) {
@@ -531,7 +531,7 @@ class EPListProvider {
 
             //obligations
             $bckObligation = array();
-            $obl = self::$database->query("SELECT `background`, `obligationGroup` FROM `BackgroundObligation` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $obl = self::$database->query("SELECT `background`, `obligationGroup` FROM `BackgroundObligations` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
             $obl->setFetchMode(\PDO::FETCH_ASSOC);
 
             while ($oblRow = $obl->fetch()) {
@@ -610,7 +610,7 @@ class EPListProvider {
     function getListGears(): array
     {
         $gearList = array();
-        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear`");
+        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `gear`");
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($gearRow = $gearRes->fetch()) {
             $bonusMalusGearList = array();
@@ -640,7 +640,7 @@ class EPListProvider {
     {
         $bonusMalusGearList = array();
 
-        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `Gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
+        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $gRes->setFetchMode(\PDO::FETCH_ASSOC);
         $gearRow = $gRes->fetch();
 
@@ -672,7 +672,7 @@ class EPListProvider {
     function getListMorph(): array
     {
         $morphList = array();
-        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morph`");
+        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morphs`");
         $morphRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($morphRow = $morphRes->fetch()) {
             //Bonus Malus
