@@ -16,7 +16,7 @@ foreach ($allAis as $m) {
 
 $gears = $_SESSION['cc']->getGears();
 $currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
-$softGear = array();
+$softGear = [];
 foreach($gears as $m){
   if($m->gearType == EPGear::$SOFT_GEAR){
     $m->book = getBookAbbreviation($m->name);
@@ -26,11 +26,11 @@ foreach($gears as $m){
 }
 
 $freeGear=$_SESSION['cc']->getEgoSoftGears();
-$result = array(
+$result = [
   'ai' => $allAis,
   'gear'=> $softGear,
   'free'=> $freeGear
-);
+];
 
 header('Content-type: application/json');
 echo json_encode($result);

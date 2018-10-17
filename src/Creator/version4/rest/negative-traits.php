@@ -5,7 +5,7 @@ session_start();
 
 $currentTraits = $_SESSION['cc']->getCurrentTraits();
 $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
-$result = array();
+$result = [];
 foreach($_SESSION['cc']->getTraits() as $m){
     if($m->isNegative() &&
         $m->isEgo() && $m->cpCost > 0){

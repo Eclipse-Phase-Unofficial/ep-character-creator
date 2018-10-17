@@ -3,7 +3,7 @@ require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/panelHelper.php');
 session_start();
 
-$result = array();
+$result = [];
 
 header('Content-type: application/json');
 echo json_encode($result);
@@ -18,7 +18,7 @@ echo json_encode($result);
  		echo "Chi Sleight";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyChi()){
-	 		$lishtChi = array();
+	 		$lishtChi = [];
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_CHI_PSY){
 	     		 	array_push($lishtChi, $m);
@@ -40,7 +40,7 @@ echo json_encode($result);
  		echo "Gamma Sleight";
  		echo "</li>";
  		if($_SESSION['cc']->getCanPsyGamma()){
- 			$listGamma = array();
+ 			$listGamma = [];
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_GAMMA_PSY){
 	     		 	array_push($listGamma, $m);

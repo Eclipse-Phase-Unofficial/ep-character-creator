@@ -4,7 +4,7 @@ require_once '../../../php/EPCharacterCreator.php';
 
 session_start();
 
-$result = array();
+$result = [];
 foreach($_SESSION['cc']->character->ego->getKnowledgeSkills() as $m){
     $m->uid = $m->getUid();
     $m->printableName = $m->getPrintableName();

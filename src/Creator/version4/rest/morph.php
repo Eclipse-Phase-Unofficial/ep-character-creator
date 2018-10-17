@@ -8,7 +8,7 @@ session_start();
 $listMorphs = $_SESSION['cc']->getMorphs();
 $currentMorphs = $_SESSION['cc']->getCurrentMorphs(); 
 
-$result = array();
+$result = [];
 foreach($listMorphs as $m){
     $m->isOwned = $m->isInArray($currentMorphs);
     $m->book = getBookAbbreviation($m->name);

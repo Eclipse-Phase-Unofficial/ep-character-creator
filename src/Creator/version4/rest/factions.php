@@ -4,7 +4,7 @@ require_once('../other/panelHelper.php');
 
 session_start();
 
-$result = array();
+$result = [];
 
 foreach($_SESSION['cc']->getBackgrounds() as $m){
     if($m->backgroundType == EPBackground::$FACTION){
@@ -12,7 +12,7 @@ foreach($_SESSION['cc']->getBackgrounds() as $m){
         array_push($result, $m);
     }
  }
-$payload =  array('test' => 'foo');
+$payload =  ['test' => 'foo'];
 header('Content-type: application/json');
 echo json_encode($result);
 ?>

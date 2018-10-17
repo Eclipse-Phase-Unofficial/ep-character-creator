@@ -5,7 +5,7 @@ require_once('../other/bookPageLayer.php');
 
 session_start();
 
-$result = array();
+$result = [];
 
 foreach($_SESSION['cc']->getBackgrounds() as $m){
     if($m->backgroundType == EPBackground::$ORIGIN){
