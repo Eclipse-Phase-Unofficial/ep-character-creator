@@ -17,6 +17,7 @@ class EPBackground extends EPAtom{
     public $traits;
     public $limitations;
     public $obligations;
+    public $isSelected;
     
     
     function getSavePack(){

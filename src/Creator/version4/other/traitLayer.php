@@ -16,6 +16,25 @@ function getDynamicTraitLi($trait,$currentTraits,$defaultTraits,$traitClass,$ico
     return $li->getHtml();
 }
 
+function getDynamicTrait($trait,$currentTraits,$defaultTraits,$traitClass,$iconClass){
+    if($currentTraits == null){
+        $currentTraits = array();
+    }
+    if($defaultTraits == null){
+        $defaultTraits = array();
+    }
+
+    // $li = new li($trait->name,$traitClass);
+    // $li->addCost($trait->cpCost,$trait->isInArray($defaultTraits));
+    
+    $trait->book = getBookAbbreviation($trait->name);
+    
+    // TODO: Add this mechanism in the frontend.
+    $trait->isSelected = $trait->isInArray($currentTraits);
+    
+    return $trait;
+}
+
 function isTraitLegal($morph,$trait){
     if($morph->morphType == EPMorph::$INFOMORPH)
         return false;

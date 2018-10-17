@@ -239,6 +239,13 @@ class li{
     }
 
     /**
+     * TODO: inline in a proper helper?
+     */
+    function getBookStamp($id){
+        return getBookAbbreviation($id);
+    }
+
+    /**
      * Add a plus or checked icon.
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)

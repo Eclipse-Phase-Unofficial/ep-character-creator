@@ -25,5 +25,9 @@ function getListStampHtml($atomName){
     return "<span class='bookIcon ".$book->getAbbreviation()."'></span>";
 }
 
+function getBookAbbreviation($atomName){
+    $book = new EPBook($atomName);
+    return $book->getAbbreviation();
+}
 
 ?>
