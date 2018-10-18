@@ -1,6 +1,4 @@
 
-var firstTime = true;
-
 var SECONDARY_INFO_HTML = "<div id='secondary_infos'></div>";
 var TERTIARY_INFO_HTML = "<div id='tertiary_infos'></div>";
 var QUATERNARY_INFO_HTML = "<div id='quaternary_infos'></div>";
@@ -16,26 +14,24 @@ var focusOnSkill = "";
 $(document).ready(function(){
 
         //FIRST OPEN WEB PAGE -- INIT
-        if(firstTime){
-
-        	startLoading();
-        	//initialize character and extract first data
-            ajax_helper({
-                        firstTime : 'first',
-                        getCrePoint : 'get'
-                },
-                function(response){
-                    if(response.sessionExist){
-                        setRemainingPoint(response);
-                        endLoading();
-                    }
-                    else{
-                        loadPopup("reload_popup","popup-contents/reset.php");
-                        endLoading();
-                    }
-                });
-            firstTime = false;
-        }
+        startLoading();
+        //initialize character and extract first data
+        ajax_helper({
+                    firstTime : 'first',
+                    getCrePoint : 'get'
+            },
+            function(response){
+                if(response.sessionExist){
+                    setRemainingPoint(response);
+                    endLoading();
+                }
+                else{
+                    loadPopup("reload_popup","popup-contents/reset.php");
+                    endLoading();
+                }
+            });
+        firstTime = false;
+    
 
         //Tooltips (used for help buttons)
         $(document).tooltip({
