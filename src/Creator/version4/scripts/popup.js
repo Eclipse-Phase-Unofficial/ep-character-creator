@@ -65,6 +65,7 @@ $(document).on("click",".closeButton",function() {
 //Click on the begin button
 $(document).on("click",".startButton",function() {
     startLoading();
+    // TODO: Change setCP to reset character.
     ajax_helper({
             setCP :  $("#startCP").val(),
             getCrePoint : 'get'

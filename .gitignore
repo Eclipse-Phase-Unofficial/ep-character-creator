@@ -24,3 +24,5 @@ Documentation/api/
 composer.json
 composer.lock
 vendor/
+
+node_modules/

@@ -93,6 +93,7 @@ if (isset($_POST['firstTime'])) {
 }
 
 //SET CP FOR A NEW CHARACTER
+// TODO: Change setCP to reset character.
 if(isset($_POST['setCP'])){
 	//CHARACTER CREATOR
     $_SESSION['cc'] = new EPCharacterCreator($php_dir . 'config.ini',$_POST['setCP']);
