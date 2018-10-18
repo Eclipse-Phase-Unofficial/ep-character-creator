@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
 import { createGlobalStyle } from 'styled-components'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import store from './store'
+
+import {rest} from './client/rest'
+import {dispatch} from './client/dispatcher'
 
 const GlobalStyle = createGlobalStyle`
  body {
@@ -21,6 +23,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
   }
 `
+
+
+dispatch('firstTime=first&getCrePoint=get')
+  .then(() => dispatch('setCP=1000&getCrePoint=get').then(rest('backgrounds')))
+
 
 ReactDOM.render(
   <Provider store={store}>

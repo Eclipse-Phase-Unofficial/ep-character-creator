@@ -5,7 +5,9 @@ FROM php:5.6-apache
 EXPOSE 80
 
 RUN apt update && apt install -y sqlite3
+RUN a2enmod headers
 
+COPY docker/epcc/httpd.conf /etc/apache2/conf-enabled/epcc.conf
 COPY docker/epcc/php.ini /usr/local/etc/php/
 COPY src /var/www/html/
 COPY docker/epcc/epcc_standalone.ini /var/www/html/php/config.ini

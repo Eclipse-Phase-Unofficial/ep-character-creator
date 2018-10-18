@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux'
 
-import ReduxThunk from 'redux-thunk'
-
+import appContext from './appContext'
 
 export default combineReducers({
-
+  appContext
 })

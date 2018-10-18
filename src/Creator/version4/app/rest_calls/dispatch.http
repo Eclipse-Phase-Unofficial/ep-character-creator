@@ -8,7 +8,7 @@
 ### Reset
 POST http://localhost:8080/Creator/version4/scripts/dispatcher.php
 Content-Type: application/x-www-form-urlencoded;charset=UTF-8
-Cookie: PHPSESSID=ef6ee5f6c8bba511df8c61f5383f5e9f; _ga=GA1.1.285864407.1539686556; _gid=GA1.1.170510425.1539686556; Pods=N; Infomorphs=N; free=Y; softLst=Y; ai=Y; gamma=N; Synthmorphs=Y; Biomorphs=Y; undefined=N; KineticWeapons=N; EnergyWeapons=N; SprayWeapons=N; SeekerWeapons=N; MeleeWeapons=N; Ammunition=N; GrenadesandMissiles=N; WeaponAccessories=N; Armor=N; Drugs=N; Poisons=N; Chemicals=N; Pets=N; Vehicles=N; Robots=N; Misc=N; chi=Y
+Cookie: PHPSESSID=ef6ee5f6c8bba511df8c61f5383f5e9f; _ga=GA1.1.285864407.1539686556; _gid=GA1.1.170510425.1539686556; Pods=N; Infomorphs=N; free=Y; softLst=Y; ai=Y; gamma=N; Synthmorphs=Y; Biomorphs=Y; undefined=N; KineticWeapons=N; EnergyWeapons=N; SprayWeapons=N; SeekerWeapons=N; MeleeWeapons=N; Ammunition=N; GrenadesandMissiles=N; WeaponAccessories=N; Armor=N; Drugs=N; Poisons=N; Chemicals=N; Pets=N; Vehicles=N; Robots=N; Misc=N; chi=Y; _gat=1
 
 setCP=1000&getCrePoint=get
 
