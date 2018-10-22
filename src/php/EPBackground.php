@@ -76,6 +76,14 @@ class EPBackground extends EPAtom{
         $this->limitations = $limitations;
         $this->obligations = $obligations;
     }
+
+    /**
+     *  Returns all properties of the object
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }
 
 ?>

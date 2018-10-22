@@ -15,6 +15,10 @@ export const dispatch = body => fetch(
     credentials: 'include',
     body
   })
-  .then(r => r.text())
-  .then(console.log)
+  .then(r => r.json())
+  .then(r => {console.log(r); return r;})
   .catch(console.error)
+
+export default {
+  dispatcher: dispatch
+}

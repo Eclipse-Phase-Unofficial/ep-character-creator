@@ -10,7 +10,7 @@
  * @author reinhardt
  * @author EmperorArthur
  */
-class EPAtom {
+class EPAtom implements JsonSerializable {
     
     static $APTITUDE = 'aptitude';
     static $BACKGROUND = 'background';
@@ -185,6 +185,14 @@ class EPAtom {
             return true;
         }
         return false;
+    }
+
+    /**
+     *  Returns all properties of the object
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
 

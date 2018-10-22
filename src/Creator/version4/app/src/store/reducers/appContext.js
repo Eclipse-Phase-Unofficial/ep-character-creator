@@ -1,15 +1,25 @@
+import typeToReducer from 'type-to-reducer'
+
+import { appContextTypes } from '../actions/appContext'
 
 const INITIAL_STATE = {
-  firstLoad: true,
+  error: false,
+  sessionExist: false
 }
 
-const appContext = (state = {}, action) => {
-  switch(action.type){
-    // TODO wrote reducer and actions
-    default:
-      return state
+export const appContext = typeToReducer({
+  [appContextTypes.SESSION_CHECK]: {
+    FULFILLED: (state, {payload}) => ({
+      ...state,
+      error: payload.error,
+      sessionExist: payload.sessionExist
+    }),
+    REJECTED:  (state, action) => ({
+      ...state,
+      error: true,
+      sessionExist: false
+    })
   }
-}
-
+}, INITIAL_STATE)
 
 export default appContext

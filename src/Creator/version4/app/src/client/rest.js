@@ -8,14 +8,14 @@ const DEFAULT_HEADERS = {
   'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 }
 
-export const rest = endpoint => () => fetch(
+export const rest = endpoint => fetch(
   `${BASE_URL}/${endpoint}.php`,
   {
     method: 'GET',
     headers: DEFAULT_HEADERS,
     credentials: 'include',
   })
-  .then(r => r.text())
-  .then(console.log)
+  .then(r => r.json())
+  .then(r => {console.log(r); return r;})
   .catch(console.error)
 

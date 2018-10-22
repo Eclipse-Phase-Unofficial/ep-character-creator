@@ -1,7 +1,5 @@
-import { combineReducers } from 'redux'
+export * from './appContext'
+export * from './credits'
+export * from './data'
 
-import appContext from './appContext'
 
-export default combineReducers({
-  appContext
-})

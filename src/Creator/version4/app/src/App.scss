@@ -1,5 +1,7 @@
+//$css--use-experimental-grid: true;
+//$css--use-experimental-grid-fallback: true;
 $feature-flags: (
-        components-x: true,
+        components-x: false,
         ui-shell: true,
 );
 

@@ -1,40 +1,36 @@
+import 'carbon-icons'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import store from './store'
-
-import {rest} from './client/rest'
-import {dispatch} from './client/dispatcher'
+import contextActions from './store/actions/appContext'
+import dataActions from './store/actions/data'
+import { theme } from './theme'
 
 const GlobalStyle = createGlobalStyle`
  body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-  }
+  background-color: #f5f7fa;
+}
 `
 
-
-dispatch('firstTime=first&getCrePoint=get')
-  .then(() => dispatch('setCP=1000&getCrePoint=get').then(rest('backgrounds')))
-
+store.dispatch(contextActions.checkExistingSession())
+store.dispatch(dataActions.loadBackground())
 
 ReactDOM.render(
   <Provider store={store}>
+    <ThemeProvider theme={theme}>
     <React.Fragment>
       <GlobalStyle/>
       <App/>
     </React.Fragment>
+    </ThemeProvider>
   </Provider>
   , document.getElementById('root'))
 
