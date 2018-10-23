@@ -1,11 +1,11 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/panelHelper.php');
+require_once './_headers.php';
 session_start();
 
 $result = [];
 
-header('Content-type: application/json');
 echo json_encode($result);
 ?>
 <ul class="mainlist" id="psyS">

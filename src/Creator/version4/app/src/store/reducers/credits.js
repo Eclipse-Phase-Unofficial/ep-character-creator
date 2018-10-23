@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   ksr: 0
 }
 
-const loadCredits = (state, {payload}) => ({
+const loadCredits = (state, { payload }) => ({
   ...state,
   creation: payload['creation_remain'],
   credit: payload['credit_remain'],
@@ -21,7 +21,7 @@ const loadCredits = (state, {payload}) => ({
   reputation: payload['reputation_remain'],
   rez: payload['rez_remain'],
   asr: payload['asr_remain'],
-  ksr: payload['ksr_remain'],
+  ksr: payload['ksr_remain']
 })
 
 export const credits = typeToReducer({
@@ -34,4 +34,3 @@ export const credits = typeToReducer({
 }, INITIAL_STATE)
 
 export default credits
-

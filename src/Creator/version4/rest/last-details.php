@@ -1,5 +1,6 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
+require_once './_headers.php';
 session_start();
 
 $result = [
@@ -9,6 +10,5 @@ $result = [
 	"birthGender" => $_SESSION['cc']->character->birthGender,
 	"Notes" => $_SESSION['cc']->character->note
 ];
-header('Content-type: application/json');
 echo json_encode($result);
 ?>

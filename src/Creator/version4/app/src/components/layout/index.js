@@ -18,10 +18,10 @@ const LayoutContent = styled.div`
   width: 1000px;
 `
 
-export const Layout = ({children}) => (
+export const Layout = ({ children }) => (
   <React.Fragment>
-    <Header/>
-    <SideNav/>
+    <Header />
+    <SideNav />
     <LayoutContainer>
       <LayoutContent>
         {children}

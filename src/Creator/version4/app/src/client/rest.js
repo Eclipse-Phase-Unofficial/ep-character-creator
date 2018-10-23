@@ -13,9 +13,8 @@ export const rest = endpoint => fetch(
   {
     method: 'GET',
     headers: DEFAULT_HEADERS,
-    credentials: 'include',
+    credentials: 'include'
   })
   .then(r => r.json())
-  .then(r => {console.log(r); return r;})
+  .then(r => { console.log(r); return r })
   .catch(console.error)
-

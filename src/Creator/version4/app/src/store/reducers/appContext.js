@@ -9,12 +9,11 @@ const INITIAL_STATE = {
 
 export const appContext = typeToReducer({
   [appContextTypes.SESSION_CHECK]: {
-    FULFILLED: (state, {payload}) => ({
+    FULFILLED: (state, { payload }) => ({
       ...state,
-      error: payload.error,
       sessionExist: payload.sessionExist
     }),
-    REJECTED:  (state, action) => ({
+    REJECTED: (state, action) => ({
       ...state,
       error: true,
       sessionExist: false

@@ -7,7 +7,7 @@ export const spacing = {
   'lg': '1.5rem',
   'xl': '2rem',
   '2xl': '2.5rem',
-  '3xl': '3rem',
+  '3xl': '3rem'
 }
 
 export const layout = {
@@ -17,5 +17,5 @@ export const layout = {
   'md': '3rem',
   'lg': '4rem',
   'xl': '6rem',
-  '2xl': '10rem',
+  '2xl': '10rem'
 }

@@ -1,6 +1,7 @@
 <?php
 require_once '../../../php/EPListProvider.php';
 require_once '../../../php/EPCharacterCreator.php';
+require_once './_headers.php';
 
 session_start();
 
@@ -11,6 +12,5 @@ foreach($_SESSION['cc']->character->ego->getActiveSkills() as $m){
     array_push($result, $m);
 }
 
-header('Content-type: application/json');
 echo json_encode($result);
 ?>

@@ -1,8 +1,8 @@
 import React from 'react'
 import { withColumn } from '../hoc/grid'
 
-export const Heading = withColumn({xs: 6})(
-  ({h, children}) => {
+export const Heading = withColumn({ xs: 6 })(
+  ({ h, children }) => {
     switch (h) {
       case 1:
         return <h1>{children}</h1>

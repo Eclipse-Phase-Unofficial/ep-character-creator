@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise-middleware'
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 import * as reducers from './reducers'
 
@@ -10,7 +10,7 @@ let middlewares = applyMiddleware(
   promiseMiddleware()
 )
 
-if(process.env.NODE_ENV !== 'prod') {
+if (process.env.NODE_ENV !== 'prod') {
   middlewares = composeWithDevTools(middlewares)
 }
 
@@ -20,7 +20,5 @@ const store = createStore(
   }),
   middlewares
 )
-
-
 
 export default store

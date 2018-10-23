@@ -16,7 +16,7 @@ export const dispatch = body => fetch(
     body
   })
   .then(r => r.json())
-  .then(r => {console.log(r); return r;})
+  .then(r => { console.log(r); return r })
   .catch(console.error)
 
 export default {

@@ -8,20 +8,11 @@ $currentTraits = $_SESSION['cc']->getCurrentTraits();
 $defaultTraits = $_SESSION['cc']->getCurrentDefaultEgoTraits();
 $result = [];
 foreach($_SESSION['cc']->getTraits() as $m){
-    if($m->isEgo() && $m->cpCost == 0){
+    if($m->isPositive() &&
+    $m->isEgo()  && $m->cpCost > 0){
         array_push($result, getDynamicTrait($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon'));
     }
 }
 
 echo json_encode($result);
 ?>
-
-
-
-
-
-
-
-
-
-

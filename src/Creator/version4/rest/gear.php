@@ -3,6 +3,7 @@ require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/panelHelper.php');
 require_once('../other/gearHelper.php');
 require_once('../other/bookPageLayer.php');
+require_once './_headers.php';
 
 session_start();
 
@@ -15,23 +16,25 @@ foreach ($allAis as $m) {
 } 
 
 $gears = $_SESSION['cc']->getGears();
-$currentSoftGear = $_SESSION['cc']->getEgoSoftGears();
 $softGear = [];
+$hardGear = [];
 foreach($gears as $m){
+  $m->book = getBookAbbreviation($m->name);
   if($m->gearType == EPGear::$SOFT_GEAR){
-    $m->book = getBookAbbreviation($m->name);
     $m->isOwned = $m->isInArray($currentSoftGear);
     array_push($softGear, $m);
+  } else {
+    array_push($hardGear, $m);
   }
 }
 
 $freeGear=$_SESSION['cc']->getEgoSoftGears();
 $result = [
   'ai' => $allAis,
-  'gear'=> $softGear,
-  'free'=> $freeGear
+  'freeGear'=> $freeGear,
+  'hardGear'=> $hardGear,
+  'softGear'=> $softGear
 ];
 
-header('Content-type: application/json');
 echo json_encode($result);
 ?>

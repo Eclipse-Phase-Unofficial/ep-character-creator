@@ -11,10 +11,10 @@ import { H } from './components/typography'
 const App = () => {
   return (
     <Layout>
-      {/*<Loading/>*/}
+      {/* <Loading/> */}
       <H h={1}>Ego</H>
       <H h={2}>Backgrounds</H>
-      <Backgrounds/>
+      <Backgrounds />
     </Layout>
   )
 }

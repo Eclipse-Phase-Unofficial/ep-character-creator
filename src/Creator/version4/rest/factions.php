@@ -1,6 +1,7 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/panelHelper.php');
+require_once './_headers.php';
 
 session_start();
 
@@ -13,6 +14,5 @@ foreach($_SESSION['cc']->getBackgrounds() as $m){
     }
  }
 $payload =  ['test' => 'foo'];
-header('Content-type: application/json');
 echo json_encode($result);
 ?>

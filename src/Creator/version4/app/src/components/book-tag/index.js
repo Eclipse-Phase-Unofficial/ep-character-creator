@@ -7,9 +7,9 @@ const BOOK_MAP = {
   'PAN': 'local',
   'SW': 'experimental',
   'GC': 'community',
-  'TH': 'private',
+  'TH': 'private'
 }
 
-const BookTag = ({book}) => (<Tag type={BOOK_MAP[book]}>{book}</Tag>)
+const BookTag = ({ book }) => (<Tag type={BOOK_MAP[book]}>{book}</Tag>)
 
 export default BookTag

@@ -9,7 +9,7 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import store from './store'
 import contextActions from './store/actions/appContext'
-import dataActions from './store/actions/data'
+import dataActions from './store/actions/ref-data'
 import { theme } from './theme'
 
 const GlobalStyle = createGlobalStyle`
@@ -21,15 +21,15 @@ const GlobalStyle = createGlobalStyle`
 `
 
 store.dispatch(contextActions.checkExistingSession())
-store.dispatch(dataActions.loadBackground())
+store.dispatch(dataActions.loadAllRefData())
 
 ReactDOM.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
-    <React.Fragment>
-      <GlobalStyle/>
-      <App/>
-    </React.Fragment>
+      <React.Fragment>
+        <GlobalStyle />
+        <App />
+      </React.Fragment>
     </ThemeProvider>
   </Provider>
   , document.getElementById('root'))

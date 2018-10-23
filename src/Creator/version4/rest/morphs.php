@@ -2,6 +2,7 @@
 require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/panelHelper.php');
 require_once('../other/bookPageLayer.php');
+require_once './_headers.php';
 
 session_start();
 
@@ -14,6 +15,5 @@ foreach($listMorphs as $m){
     $m->book = getBookAbbreviation($m->name);
 }
 
-header('Content-type: application/json');
 echo json_encode($listMorphs);
 ?>

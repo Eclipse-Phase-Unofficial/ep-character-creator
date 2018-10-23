@@ -1,11 +1,14 @@
-import _ from 'lodash'
+import map from 'lodash/fp/map'
+import size from 'lodash/fp/size'
+import values from 'lodash/fp/values'
+
 import React from 'react'
 import styled from 'styled-components'
 import {
   Button,
   StructuredListBody,
   StructuredListCell,
-  StructuredListHead,
+  // StructuredListHead,
   StructuredListInput,
   StructuredListRow,
   StructuredListWrapper,
@@ -15,7 +18,7 @@ import {
 import ButtonTag from '../book-tag'
 import { connect } from 'react-redux'
 
-const BackgroundLine = ({background}) => (<StructuredListRow label htmlFor="row-1">
+const BackgroundLine = ({ background }) => (<StructuredListRow label htmlFor='row-1'>
   <StructuredListInput
     id={background.atomUid}
     value={background.name}
@@ -27,7 +30,7 @@ const BackgroundLine = ({background}) => (<StructuredListRow label htmlFor="row-
     {background.name}
   </StructuredListCell>
   <StructuredListCell>
-    <ButtonTag book={background.book}/>
+    <ButtonTag book={background.book} />
   </StructuredListCell>
   <StructuredListCell>
     <Button small onClick={() => console.log('test')}>
@@ -54,19 +57,20 @@ const ListHeader = styled.h6`
   border-bottom: 1px solid blue;
 `
 
-
-const ChooseBackground = ({backgrounds}) => (
+const ChooseBackground = ({ backgrounds }) => (
   <Wrapper>
     <ListHeader>Choose a background</ListHeader>
     <StructuredListWrapper selection>
       <StructuredListBody>
-        {_.map(backgrounds, (background, index) => <BackgroundLine key={index} background={background}/>)}
+        {size(backgrounds) > 0
+          ? map(background => <BackgroundLine key={background.atomUid} background={background} />)(backgrounds)
+          : <i>No backgrounds loaded</i>}
       </StructuredListBody>
     </StructuredListWrapper>
   </Wrapper>)
 
-const mapStateToProps = state => ({
-  backgrounds: _.values(state.data.backgrounds.data)
+const mapStateToProps = ({refData}) => ({
+  backgrounds: values(refData.backgrounds.data)
 })
 
 export default connect(mapStateToProps)(ChooseBackground)

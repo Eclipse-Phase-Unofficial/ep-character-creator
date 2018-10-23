@@ -1,6 +1,7 @@
 <?php
 require_once '../../../php/EPCharacterCreator.php';
 require_once('../other/traitLayer.php');
+require_once './_headers.php';
 session_start();
 
 $currentTraits = $_SESSION['cc']->getCurrentTraits();
@@ -13,6 +14,5 @@ foreach($_SESSION['cc']->getTraits() as $m){
     }
 }
 
-header('Content-type: application/json');
 echo json_encode($result);
 ?>
