@@ -7,14 +7,17 @@ import './App.scss'
 
 import Backgrounds from './components/backgrounds'
 import { H } from './components/typography'
+import GearList from './components/gear'
+import AiList from './components/ai'
 
 const App = () => {
   return (
     <Layout>
       {/* <Loading/> */}
-      <H h={1}>Ego</H>
-      <H h={2}>Backgrounds</H>
+      <H h={1}>Backgrounds</H>
       <Backgrounds />
+      <GearList/>
+      <AiList/>
     </Layout>
   )
 }

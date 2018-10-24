@@ -6,7 +6,7 @@ import { Tile, TooltipDefinition } from 'carbon-components-react'
 
 import { withColumn } from '../../hoc/grid'
 
-import ChooseBackground from './choose-background'
+import ChooseBackground from './background-list'
 
 const Background = ({ background = {} }) => (<Tile>
   <h3>{background.name}
@@ -36,9 +36,9 @@ const mapStateToProps = ({refData}) => ({
   background: refData.backgrounds.data[refData.backgrounds.selected]
 })
 
+const ChooseBackgroundEnhanced = withColumn({ xs: 2 })(ChooseBackground)
 const BackgroundEnhanced = withColumn({ xs: 4 })(connect(mapStateToProps)(Background))
-const ChooseBackgroundEnchanced = withColumn({ xs: 2 })(ChooseBackground)
 
-const BackgroundLayout = () => (<React.Fragment><ChooseBackgroundEnchanced /><BackgroundEnhanced /></React.Fragment>)
+const BackgroundLayout = () => (<React.Fragment><ChooseBackgroundEnhanced /><BackgroundEnhanced /></React.Fragment>)
 
 export default BackgroundLayout

@@ -54,8 +54,8 @@ const logger = v => {
   return v
 }
 
-const mapDispatch = flatMap(action => dispatch(action())
-const triggerAllActions = dispatch => () => pipe(values, mapDispatch))(actions)
+const mapDispatch = dispatch => flatMap(action => dispatch(action()))
+const triggerAllActions = dispatch => () => pipe(values, mapDispatch(dispatch))(actions)
 
 const dispatchActions = (actions = []) => ({
   type: dataTypes.LOAD_ALL_REF_DATA,
