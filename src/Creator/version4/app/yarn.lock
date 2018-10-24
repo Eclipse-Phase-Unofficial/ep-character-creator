@@ -734,9 +734,17 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@carbon/colors@^0.0.1-alpha.0":
+"@carbon/colors@^0.0.1-alpha.0", "@carbon/colors@^0.0.1-alpha.2":
   version "0.0.1-alpha.2"
   resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-0.0.1-alpha.2.tgz#bfe50a0f8b1ba6cb916b4c96145896f1b72209ea"
+
+"@carbon/icons-react@^0.0.1-alpha.2":
+  version "0.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@carbon/icons-react/-/icons-react-0.0.1-alpha.2.tgz#d46a8bcb1986a7d57d10894c02db6b56040d5699"
+
+"@carbon/icons@^0.0.1-alpha.2":
+  version "0.0.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@carbon/icons/-/icons-0.0.1-alpha.2.tgz#98610c9b946ee8c2498e6cc960e17f877854015e"
 
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"

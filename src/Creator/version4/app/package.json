@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
+    "@carbon/colors": "^0.0.1-alpha.2",
+    "@carbon/icons": "^0.0.1-alpha.2",
+    "@carbon/icons-react": "^0.0.1-alpha.2",
     "@svgr/webpack": "2.4.1",
     "bfj": "6.1.1",
     "carbon-components": "^9.30.1",
