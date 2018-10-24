@@ -49,11 +49,6 @@ let actions = {
   loadMorphs
 }
 
-const logger = v => {
-  console.log(v)
-  return v
-}
-
 const mapDispatch = dispatch => flatMap(action => dispatch(action()))
 const triggerAllActions = dispatch => () => pipe(values, mapDispatch(dispatch))(actions)
 

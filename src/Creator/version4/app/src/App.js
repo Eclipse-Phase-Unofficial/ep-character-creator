@@ -1,6 +1,6 @@
 // import 'carbon-components/scss/globals/scss/styles.scss'
 
-import React, { Component } from 'react'
+import React from 'react'
 import Layout from './components/layout'
 
 import './App.scss'
@@ -9,6 +9,7 @@ import Backgrounds from './components/backgrounds'
 import { H } from './components/typography'
 import GearList from './components/gear'
 import AiList from './components/ai'
+import MorphList from './components/morphs'
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
       <Backgrounds />
       <GearList/>
       <AiList/>
+      <MorphList/>
     </Layout>
   )
 }

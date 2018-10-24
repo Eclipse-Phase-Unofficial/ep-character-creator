@@ -10,23 +10,23 @@ const INITIAL_STATE = {
   loading: null,
   ai: {
     selected: null,
-    data: []
+    data: {}
   },
   backgrounds: {
     selected: null,
-    data: []
+    data: {}
   },
   morphs: {
     selected: null,
-    data: []
+    data: {}
   },
   hardGear: {
     selected: null,
-    data: []
+    data: {}
   },
   softGear: {
     selected: null,
-    data: []
+    data: {}
   }
 }
 

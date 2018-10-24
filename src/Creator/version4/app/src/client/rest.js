@@ -16,5 +16,5 @@ export const rest = endpoint => fetch(
     credentials: 'include'
   })
   .then(r => r.json())
-  .then(r => { console.log(r); return r })
+  .then(r => { console.debug(r); return r })
   .catch(console.error)

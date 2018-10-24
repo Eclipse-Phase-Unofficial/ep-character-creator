@@ -19,25 +19,31 @@ import ButtonTag from '../book-tag/index'
 import './List.scss'
 
 const Wrapper = styled(Tile)`
+  display: flex;
   position: relative;
   height: 500px;
-  overflow: scroll;
   padding: 0;
+  
+  flex-direction: column;
 `
 
 const ListHeader = styled.h6`
-  z-index: 1;
-  position: sticky;
+  flex-shrink: 0;
   height: 46px;
-  top: 0;
-  width: 100%;
   background-color: white;
   border-bottom: 1px solid blue;
 `
 
+const ListWrapper = styled.div`
+  flex: 1;
+  overflow: scroll;
+`
+
 const listWrapper = Component => props => (<Wrapper>
   <ListHeader>{props.title}</ListHeader>
-  <Component {...props}/>
+  <ListWrapper>
+    <Component {...props}/>
+  </ListWrapper>
 </Wrapper>)
 
 export const List = listWrapper(({renderLine, values}) => (
@@ -61,7 +67,7 @@ export const GroupedList = listWrapper(({renderLine, values}) => (
   <Accordion>
     {
       map(key =>
-        <AccordionItem key={`${key}_accordion`} title={key} className='grouped-list'
+        <AccordionItem open={true} key={`${key}_accordion`} title={key} className='grouped-list'
         >
           <TileGroup key={`${key}_list_body`} name={`${key}_list`}>
             {
