@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
+const StyledNav = styled.aside`
+  z-index: 10;
+`
+
 export const SideNav = () => (
-  <aside className='bx--side-nav'>
+  <StyledNav className='bx--side-nav'>
     <div className='bx--side-nav__content'>
       <header className='bx--side-nav__title-bar'>
         <div className='bx--side-nav__icon'>
@@ -140,7 +144,7 @@ navigation
         </button>
       </footer>
     </div>
-  </aside>
+  </StyledNav>
 )
 
 export default SideNav

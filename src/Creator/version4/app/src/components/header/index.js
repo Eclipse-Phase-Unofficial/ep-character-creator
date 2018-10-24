@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
+const StyledHeader = styled.header`
+  z-index: 10;
+`
+
 export const Header = () => (
-  <header className='bx--platform-header'>
+  <StyledHeader className='bx--platform-header'>
     <button className='bx--platform-header__menu-trigger bx--platform-header__action' title='Open menu'>
       <svg aria-hidden='true' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>
         <path d='M4 6h24v2H4zm0 18h24v2H4zm0-9h24v2H4z' />
@@ -73,8 +77,7 @@ export const Header = () => (
         </svg>
       </button>
     </div>
-  </header>
-
+  </StyledHeader>
 )
 
 export default Header
