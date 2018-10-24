@@ -54,18 +54,15 @@ const logger = v => {
   return v
 }
 
-const triggerAllActions = dispatch => () => pipe(values, logger, flatMap(t => dispatch(t())), logger)(actions)
+const mapDispatch = flatMap(action => dispatch(action())
+const triggerAllActions = dispatch => () => pipe(values, mapDispatch))(actions)
 
 const dispatchActions = (actions = []) => ({
   type: dataTypes.LOAD_ALL_REF_DATA,
-  payload: Promise.all([...actions]).then((r) => {
-    console.log('SUCCESS')
-    console.log(r)
-    return r
-  })
+  payload: Promise.all([...actions])
 })
 
-const loadAllRefData = () => dispatch => (pipe(triggerAllActions(dispatch), logger, dispatchActions, logger, dispatch)())
+const loadAllRefData = () => dispatch => (pipe(triggerAllActions(dispatch), dispatchActions, dispatch)())
 
 export default {
   ...actions,
