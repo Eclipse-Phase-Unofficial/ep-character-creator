@@ -1,4 +1,4 @@
-import { colors }from '@carbon/colors'
+import colors from './colors'
 import * as sizes from './sizes'
 
 export const theme = {

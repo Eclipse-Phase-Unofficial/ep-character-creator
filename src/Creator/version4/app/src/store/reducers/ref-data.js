@@ -46,6 +46,7 @@ export const refData = typeToReducer({
     FULFILLED: (state, { payload }) => ({
       ...state,
       ai: {
+        selected: 'Atom_Animal_Keeper_Ai_5bc86b286ff0f',
         data: indexByAtomUid(payload.ai)
       },
       hardGear: {

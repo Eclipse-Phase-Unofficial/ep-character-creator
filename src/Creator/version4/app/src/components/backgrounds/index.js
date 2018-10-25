@@ -2,43 +2,47 @@ import map from 'lodash/fp/map'
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { Tile, TooltipDefinition } from 'carbon-components-react'
+import { FormLabel, TooltipDefinition } from 'carbon-components-react'
 
 import { withColumn } from '../../hoc/grid'
+import { Card } from '../../common/cards'
 
 import ChooseBackground from './background-list'
 
-const Background = ({ background = {} }) => (<Tile>
-  <h3>{background.name}
-    <small>(Find more at: {background.findMore})</small>
-  </h3>
+const Background = ({background = {}}) => (
+  <Card title={background.name}>
+    <h3>
+      <small>(Find more at: {background.findMore})</small>
+    </h3>
 
-  <h6>Traits</h6>
-  <div>
-    {map(background.traits)(t => <TooltipDefinition key={t.atomUid} tooltipText={t.description}>{t.name}</TooltipDefinition>)}
-  </div>
+    <FormLabel>Traits</FormLabel>
+    <div>
+      {map(t => <TooltipDefinition key={t.atomUid}
+                                   tooltipText={t.description}>{t.name}</TooltipDefinition>)(background.traits)}
+    </div>
 
-  <h6>Bonus & Malus</h6>
-  <div>
-    {map(background.bonusMalus)(bm => bm.name)}
-  </div>
+    <FormLabel>Bonus & Malus</FormLabel>
+    <div>
+      {map(bm => bm.name)(background.bonusMalus).join(', ')}
+    </div>
 
-  <h6>Limitations</h6>
-  <div>
-    {map(background.limitations)(bm => bm)}
-  </div>
+    <FormLabel>Limitations</FormLabel>
+    <div>
+      {map(bm => bm)(background.limitations).join(', ')}
+    </div>
 
-  <h6>Description</h6>
-  <p dangerouslySetInnerHTML={{ __html: background.description }} />
-</Tile>)
+    <FormLabel>Description</FormLabel>
+    <p dangerouslySetInnerHTML={{__html: background.description}}/>
+  </Card>
+)
 
 const mapStateToProps = ({refData}) => ({
   background: refData.backgrounds.data[refData.backgrounds.selected]
 })
 
-const ChooseBackgroundEnhanced = withColumn({ xs: 2 })(ChooseBackground)
-const BackgroundEnhanced = withColumn({ xs: 4 })(connect(mapStateToProps)(Background))
+const ChooseBackgroundEnhanced = withColumn({xs: 2})(ChooseBackground)
+const BackgroundEnhanced = withColumn({xs: 4})(connect(mapStateToProps)(Background))
 
-const BackgroundLayout = () => (<React.Fragment><ChooseBackgroundEnhanced /><BackgroundEnhanced /></React.Fragment>)
+const BackgroundLayout = () => (<React.Fragment><ChooseBackgroundEnhanced/><BackgroundEnhanced/></React.Fragment>)
 
 export default BackgroundLayout
