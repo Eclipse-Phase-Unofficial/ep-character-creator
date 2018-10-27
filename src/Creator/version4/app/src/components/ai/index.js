@@ -30,7 +30,6 @@ const AiCard = ({ai = {}}) => (
 
 const mapStateToProps = ({refData}) => ({
   ai: refData.ai.data[refData.ai.selected]
-  // ai: refData.ai.data['Atom_Animal_Keeper_Ai_5bc86b286ff0f']
 })
 
 const EnhancedAiList = withColumn({xs: 2})(AiList)

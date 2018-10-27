@@ -53,6 +53,7 @@ export const refData = typeToReducer({
         data: indexByAtomUid(payload.hardGear)
       },
       softGear: {
+        selected: 'Atom_Active_Countermeasures_5bc86b287e331',
         data: indexByAtomUid(payload.softGear)
       }
     })

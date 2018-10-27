@@ -1,8 +1,10 @@
 import keys from 'lodash/fp/keys'
 import map from 'lodash/fp/map'
 import size from 'lodash/fp/size'
+import kebabCase from 'lodash/fp/lowerCase'
 
-import React, { Fragment } from 'react'
+
+import React  from 'react'
 import PropTypes from 'prop-types'
 
 import styled from 'styled-components'
@@ -46,13 +48,14 @@ const listWrapper = Component => props => (<Wrapper>
   </ListWrapper>
 </Wrapper>)
 
-export const List = listWrapper(({renderLine, values}) => (
-  <Fragment>
+
+export const List = listWrapper(({title, renderLine, values}) => (
+  <TileGroup key={`${kebabCase(title)}-list-body`} name={`${title}-list`}>
     {
       size(values) > 0 &&
       map(renderLine)(values)
     }
-  </Fragment>
+  </TileGroup>
 ))
 List.propTypes = {
   renderLine: PropTypes.func.isRequired,
@@ -63,13 +66,13 @@ List.defaultProps = {
   values: {}
 }
 
-export const GroupedList = listWrapper(({renderLine, values}) => (
+export const GroupedList = listWrapper(({title, renderLine, values}) => (
   <Accordion>
     {
       map(key =>
-        <AccordionItem open={true} key={`${key}_accordion`} title={key} className='grouped-list'
+        <AccordionItem open={true} key={`${key}-accordion`} title={key} className='grouped-list'
         >
-          <TileGroup key={`${key}_list_body`} name={`${key}_list`}>
+          <TileGroup key={`${key}-list-body`} name={`${key}-list`}>
             {
               size(values[key]) > 0 &&
               map(renderLine)(values[key])

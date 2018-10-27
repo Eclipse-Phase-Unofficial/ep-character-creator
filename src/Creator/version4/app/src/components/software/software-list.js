@@ -5,19 +5,18 @@ import { connect } from 'react-redux'
 
 import { List, NameAndBookLine } from '../../common/list'
 
-const AiList = ({ai}) => (
+export const SoftwareList = ({software}) => (
   <Fragment>
     <List
-      title="Select a AI"
-      values={ai}
+      title="Choose a software"
+      values={software}
       renderLine={NameAndBookLine}
     />
   </Fragment>
 )
 
-const mapStateToProps = ({refData}) => ({
-  ai: values(refData.ai.data),
+export const mapStateToProps = ({refData}) => ({
+  software: values(refData.softGear.data)
 })
 
-const enhancedAiList = connect(mapStateToProps)(AiList)
-export default enhancedAiList
+export default connect(mapStateToProps)(SoftwareList)
