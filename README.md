@@ -71,7 +71,7 @@ You will need:
 #### SQLite:
 To save changes made to the Sqlite database run:
 ```bash
-echo -e ".once database.sql\n.dump"|sqlite3 database.sqlite3
+echo -e ".once database.sql\n.dump"|sqlite3 database.sqlite
 ```
 WARNING:  If you use this feature, skip the `sed` step when creating the database.
 
