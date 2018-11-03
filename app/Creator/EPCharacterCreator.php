@@ -15,6 +15,7 @@ use App\Creator\Atoms\EPReputation;
 use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPStat;
 use App\Creator\Atoms\EPTrait;
+use App\Creator\Objects\EPCharacter;
 
 /**
  * Character managment class

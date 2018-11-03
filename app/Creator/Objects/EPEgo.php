@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Creator;
+namespace App\Creator\Objects;
 
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPAptitude;
@@ -21,7 +21,7 @@ use App\Creator\Atoms\EPTrait;
  *
  * @author reinhardt
  */
-class EPEgo implements Savable
+class EPEgo implements \App\Creator\Savable
 {
 
      //values

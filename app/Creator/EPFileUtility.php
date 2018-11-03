@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator;
 
+use App\Creator\Objects\EPCharacter;
+
 /**
  * A utility to help convert Eclipse Phase characters to files.
  */

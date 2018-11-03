@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Creator;
+namespace App\Creator\Objects;
 
 use App\Creator\Atoms\EPMorph;
 
@@ -10,7 +10,7 @@ use App\Creator\Atoms\EPMorph;
  *
  * @author reinhardt
  */
-class EPCharacter implements Savable
+class EPCharacter implements \App\Creator\Savable
 {
     /**
      * @var EPEgo
