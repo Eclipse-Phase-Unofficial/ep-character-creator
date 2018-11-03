@@ -6,8 +6,11 @@ namespace App\Creator\Atoms;
 /**
  * @author reinhardt
  */
-class EPTrait extends EPAtom{
-    
+class EPTrait extends EPAtom
+{
+    CONST PSY_CHI_TRAIT_NAME   = "Psi I";
+    CONST PSY_GAMMA_TRAIT_NAME = "Psi II";
+
     static $POSITIVE_TRAIT = 'POS';
     static $NEGATIVE_TRAIT = 'NEG';
     
@@ -136,6 +139,30 @@ class EPTrait extends EPAtom{
     function isMorph(): bool
     {
         return $this->traitEgoMorph == EPTrait::$MORPH_TRAIT;
+    }
+
+    /**
+     * If this trait allows the use of Psy Chi (Psy I) abilities
+     * @return bool
+     */
+    public function isPsyTrait(): bool
+    {
+        if ($this->getName() === EPTrait::PSY_CHI_TRAIT_NAME || $this->getName() === EPTrait::PSY_GAMMA_TRAIT_NAME) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * If this trait allows the use of Psy Gamma (Psy II) abilities
+     * @return bool
+     */
+    public function isPsy2Trait(): bool
+    {
+        if ($this->getName() === EPTrait::PSY_GAMMA_TRAIT_NAME) {
+            return true;
+        }
+        return false;
     }
 
     /**

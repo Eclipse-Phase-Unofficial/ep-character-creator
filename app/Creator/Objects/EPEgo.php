@@ -345,4 +345,30 @@ class EPEgo implements \App\Creator\Savable
         usort($output, [EPSkill::class, 'compareSkillsByPrefixName']);
         return $output;
     }
+
+    /**
+     * If the Ego can use Psy I Traits
+     * @return bool
+     */
+    function canUsePsyTraits(){
+        foreach($this->getTraits() as $t){
+            if($t->isPsyTrait()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * If the Ego can use Psy II Traits
+     * @return bool
+     */
+    function canUsePsy2Traits(){
+        foreach($this->getTraits() as $t){
+            if($t->isPsy2Trait()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

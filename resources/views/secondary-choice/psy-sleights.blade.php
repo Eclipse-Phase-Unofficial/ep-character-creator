@@ -14,7 +14,7 @@ use App\Creator\DisplayHelpers\Li;
  		echo "<li class='foldingListSection' id='chi'>";
  		echo "Chi Sleight";
  		echo "</li>";
- 		if(creator()->getCanPsyChi()){
+ 		if(creator()->character->ego->canUsePsyTraits()){
 	 		$lishtChi = array();
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_CHI_PSY){
@@ -36,7 +36,7 @@ use App\Creator\DisplayHelpers\Li;
  		echo "<li class='foldingListSection' id='gamma'>";
  		echo "Gamma Sleight";
  		echo "</li>";
- 		if(creator()->getCanPsyGamma()){
+ 		if(creator()->character->ego->canUsePsy2Traits()){
  			$listGamma = array();
 	 		foreach($listPsyS as $m){
 	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_GAMMA_PSY){
