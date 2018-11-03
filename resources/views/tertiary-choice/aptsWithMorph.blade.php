@@ -3,7 +3,7 @@ declare(strict_types=1);
 ?>
 <ul class="mainlist" id="aptsWithMorph">
     <?php
-        $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
+        $morph = creator()->getCurrentMorphsByName((string) session('currentMorph'));
         creator()->activateMorph($morph);
 
         echo "<li class='listSection'>";

@@ -5,10 +5,10 @@ use App\Creator\Atoms\EPAtom;
 use App\Creator\DisplayHelpers\Panel;
 use App\Creator\DisplayHelpers\Helpers;
 
-$currentMorphTraits = creator()->getCurrentMorphTraits($_SESSION['currentMorph']);
-$currentTrait = EPAtom::getAtomByName($currentMorphTraits,$_SESSION['currentMorphTraitName']);
+$currentMorphTraits = creator()->getCurrentMorphTraits((string) session('currentMorph'));
+$currentTrait = EPAtom::getAtomByName($currentMorphTraits, (string) session('currentMorphTraitName'));
 if($currentTrait == null){
-    $currentTrait =  EpDatabase()->getTraitByName($_SESSION['currentMorphTraitName']);
+    $currentTrait =  EpDatabase()->getTraitByName((string) session('currentMorphTraitName'));
 }
 
 $myPanel = new Panel();

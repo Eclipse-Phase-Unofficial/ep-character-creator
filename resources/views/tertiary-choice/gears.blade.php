@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Creator\Atoms\EPGear;
 use App\Creator\DisplayHelpers\Helpers;
 
-$currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
+$currentMorph = creator()->getCurrentMorphsByName((string) session('currentMorph'));
 $gears = EpDatabase()->getGears();
 ?>
 <label class="descriptionTitle"><?php echo $currentMorph->getName(); ?></label>

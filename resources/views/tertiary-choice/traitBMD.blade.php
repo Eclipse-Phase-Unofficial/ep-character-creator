@@ -6,9 +6,9 @@ use App\Creator\DisplayHelpers\Panel;
 use App\Creator\DisplayHelpers\Helpers;
 
 $currentTraitsList = creator()->getCurrentTraits();
-$currentTrait = EPAtom::getAtomByName($currentTraitsList,$_SESSION['currentTraitName']);
+$currentTrait = EPAtom::getAtomByName($currentTraitsList, (string) session('currentTraitName'));
 if($currentTrait == null){
-    $currentTrait = EpDatabase()->getTraitByName($_SESSION['currentTraitName']);
+    $currentTrait = EpDatabase()->getTraitByName( (string) session('currentTraitName'));
 }
 
 $myPanel = new Panel();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
-$currentPsiS = EpDatabase()->getPsySleightsByName($_SESSION['currentPsiSName']);
+$currentPsiS = EpDatabase()->getPsySleightsByName((string) session('currentPsiSName'));
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentPsiS->getName());

@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
-$currentGear = EpDatabase()->getGearByName($_SESSION['currentSoftName']);
+$currentGear = EpDatabase()->getGearByName((string) session('currentSoftName'));
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentGear->getName());

@@ -6,10 +6,10 @@ use App\Creator\DisplayHelpers\Panel;
 use App\Creator\DisplayHelpers\Helpers;
 
 // $hint = "--dubug:morph";
-$morphGears = EpDatabase()->getGearForMorphName($_SESSION['currentMorph']);
-$currentGear = EPAtom::getAtomByName($morphGears,$_SESSION['currentMorphGearName']);
+$morphGears = EpDatabase()->getGearForMorphName((string) session('currentMorph'));
+$currentGear = EPAtom::getAtomByName($morphGears, (string) session('currentMorphGearName');
 if($currentGear == null){
-    $currentGear =  EpDatabase()->getGearByName($_SESSION['currentMorphGearName']);
+    $currentGear =  EpDatabase()->getGearByName((string) session('currentMorphGearName'));
     // $hint = "--debug:general";
 }
 

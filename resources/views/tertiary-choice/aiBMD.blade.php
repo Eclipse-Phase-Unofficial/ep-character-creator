@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Panel;
 
-$currentAi = EpDatabase()->getAiByName($_SESSION['currentAiName']);
+$currentAi = EpDatabase()->getAiByName((string) session('currentAiName'));
 
 $myPanel = new Panel();
 $myPanel->startDescriptivePanel($currentAi->getName());

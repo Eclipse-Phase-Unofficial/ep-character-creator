@@ -13,7 +13,7 @@ function printStat($abbreviation){
 ?>
 <ul class="mainlist" id="statWithMorph">
     <?php
-        $morph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
+        $morph = creator()->getCurrentMorphsByName((string) session('currentMorph'));
         creator()->activateMorph($morph);
         echo "<li class='listSection'>";
 		echo $morph->getName();
