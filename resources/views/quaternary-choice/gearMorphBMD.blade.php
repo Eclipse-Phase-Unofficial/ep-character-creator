@@ -14,10 +14,10 @@ if($currentGear == null){
 }
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentGear->name);
+$myPanel->startDescriptivePanel($currentGear->getName());
 $myPanel->addBuySell($currentGear,"MORPH");
-$myPanel->addDescription($currentGear->description);
+$myPanel->addDescription($currentGear->getDescription());
 $myPanel->addArmor($currentGear);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentGear->bonusMalus,$currentGear->name,'morphGear') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentGear->bonusMalus,$currentGear->getName(),'morphGear') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

@@ -46,8 +46,17 @@ class EPAtom implements Savable
      * @var bool
      */
     public $unique;
-    public $name;
-    public $description;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $description;
+
     public $groups;
 
     /**
@@ -79,6 +88,11 @@ class EPAtom implements Savable
        $this->ratioCostPsyMod = 1;
        $this->occurence = 1;
        $this->unique = true;
+
+        if(empty($this->name))
+        {
+            throw new \InvalidArgumentException("Name may never be empty");
+        }
     }
      function getSavePack(): array
      {
@@ -86,8 +100,8 @@ class EPAtom implements Savable
 
         $savePack['atomUid'] = $this->atomUid;
 	    $savePack['type'] = $this->type;
-	    $savePack['name'] = $this->name;
-	    $savePack['description'] = $this->description;
+	    $savePack['name'] = $this->getName();
+	    $savePack['description'] = $this->getDescription();
 	    $savePack['groups'] = $this->groups;
 	    $savePack['cost'] = $this->cost;
         $savePack['ratioCost'] = $this->ratioCost;
@@ -119,6 +133,11 @@ class EPAtom implements Savable
 	    $this->ratioCostPsyMod = $savePack['ratioCostPsyMod'];
         $this->occurence = $savePack['occurence'];
         $this->unique = $savePack['unique'];
+
+        if(empty($this->name))
+        {
+            throw new \InvalidArgumentException("Name may never be empty");
+        }
     }
 
     /**
@@ -126,8 +145,30 @@ class EPAtom implements Savable
      */
     function __clone()
     {
-        $this->atomUid = uniqid('Atom_' . $this->sanitize($this->name) . '_');
+        $this->atomUid = uniqid('Atom_' . $this->sanitize($this->getName()) . '_');
         error_log(static::class . " cloned!");
+    }
+
+    /**
+     * Get an objects name.
+     *
+     * May never be empty.
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get a raw HTML string describing the object.
+     *
+     * May be empty.
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     /**
@@ -240,7 +281,7 @@ class EPAtom implements Savable
             return null;
         }
         foreach ($atoms as $anAtom) {
-            if (strcmp($anAtom->name, $name) == 0) {
+            if (strcmp($anAtom->getName(), $name) == 0) {
                 return $anAtom;
             }
         }

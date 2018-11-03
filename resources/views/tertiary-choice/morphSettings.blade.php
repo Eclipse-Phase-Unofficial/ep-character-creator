@@ -10,7 +10,7 @@ use App\Creator\Atoms\EPAtom;
 		$currentMorph = EpDatabase()->getMorphByName($_SESSION['currentMorph']);
 	}
 ?>
-<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
+<label class="descriptionTitle"><?php echo $currentMorph->getName(); ?></label>
 <input type="hidden" id="morphName"/>
 <ul class="mainlist" id="morph-settings">
 	<li>

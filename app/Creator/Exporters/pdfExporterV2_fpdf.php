@@ -61,12 +61,12 @@ class pdfExporterV2_fpdf {
 				$pdf->Text(143, 12, $character->playerName);//Player Name
 
 				//ORIGINES
-        $pdf->Text(37, 26, PdfHelpers::formatIt(creator()->getCurrentBackground()->name)); //Background
-        $pdf->Text(37, 33, PdfHelpers::formatIt(creator()->getCurrentFaction()->name)); //Faction
+        $pdf->Text(37, 26, PdfHelpers::formatIt(creator()->getCurrentBackground()->getName())); //Background
+        $pdf->Text(37, 33, PdfHelpers::formatIt(creator()->getCurrentFaction()->getName())); //Faction
 
 				$pdf->SetFont('Lato-LigIta', '', 7);
-        $this->writeBookLink(creator()->getCurrentBackground()->name, 85, 27, $pdf);//Background bookLink
-        $this->writeBookLink(creator()->getCurrentFaction()->name, 85, 34, $pdf);//Faction bookLink
+        $this->writeBookLink(creator()->getCurrentBackground()->getName(), 85, 27, $pdf);//Background bookLink
+        $this->writeBookLink(creator()->getCurrentFaction()->getName(), 85, 34, $pdf);//Faction bookLink
 
 				//AGE - SEX
 				$pdf->SetFont('Lato-Lig', '', 10);
@@ -174,10 +174,10 @@ class pdfExporterV2_fpdf {
 						$occ = "";
 
 					$pdf->SetFont('Lato-Lig', '', 8);
-					$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt($occ . $ai->name));//ai name
+					$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt($occ . $ai->getName()));//ai name
 
 					$pdf->SetFont('Lato-LigIta', '', 6);
-            $this->writeBookLink($ai->name, ($apt_x + 14), ($apt_y + 2), $pdf);//ai bookLink
+            $this->writeBookLink($ai->getName(), ($apt_x + 14), ($apt_y + 2), $pdf);//ai bookLink
 
 					$skillAptNonformated = "";
 					foreach($ai->aptitudes as $aiApt)
@@ -193,7 +193,7 @@ class pdfExporterV2_fpdf {
 						if(!empty($aiSkill->prefix))
 							$skillCompleteName = $aiSkill->prefix . " : ";
 
-						$skillCompleteName .= $aiSkill->name;
+						$skillCompleteName .= $aiSkill->getName();
 						$skillAptNonformated .= $skillCompleteName . "(";
 						$skillAptNonformated .= $aiSkill->baseValue . ")\n";
 					}

@@ -7,11 +7,11 @@ use App\Creator\DisplayHelpers\Panel;
 $currentAi = EpDatabase()->getAiByName($_SESSION['currentAiName']);
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentAi->name);
+$myPanel->startDescriptivePanel($currentAi->getName());
 $myPanel->addBuySell($currentAi,"AI");
-$myPanel->addDescription($currentAi->description);
+$myPanel->addDescription($currentAi->getDescription());
 $myPanel->addAi($currentAi);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentAi->bonusMalus,$currentAi->name,'ai') ); // 'ai' is not a valid value, so any choose options WILL FAIL
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentAi->bonusMalus,$currentAi->getName(),'ai') ); // 'ai' is not a valid value, so any choose options WILL FAIL
 echo $myPanel->getHtml();
 echo Panel::endPanel();
 ?>

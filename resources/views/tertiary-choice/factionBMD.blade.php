@@ -7,10 +7,10 @@ use App\Creator\DisplayHelpers\Panel;
 $currentFaction = creator()->getCurrentFaction();
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentFaction->name);
-$myPanel->addDescription($currentFaction->description);
+$myPanel->startDescriptivePanel($currentFaction->getName());
+$myPanel->addDescription($currentFaction->getDescription());
 $myPanel->addTraits($currentFaction->traits);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentFaction->bonusMalus,$currentFaction->name,'faction') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentFaction->bonusMalus,$currentFaction->getName(),'faction') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();
 ?>

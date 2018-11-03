@@ -7,8 +7,8 @@ use App\Creator\DisplayHelpers\Panel;
 $currentPsiS = EpDatabase()->getPsySleightsByName($_SESSION['currentPsiSName']);
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentPsiS->name);
-$myPanel->addDescription($currentPsiS->description);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentPsiS->bonusMalus,$currentPsiS->name,'psi') );
+$myPanel->startDescriptivePanel($currentPsiS->getName());
+$myPanel->addDescription($currentPsiS->getDescription());
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentPsiS->bonusMalus,$currentPsiS->getName(),'psi') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

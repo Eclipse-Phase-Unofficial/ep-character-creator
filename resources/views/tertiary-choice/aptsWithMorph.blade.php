@@ -7,12 +7,12 @@ declare(strict_types=1);
         creator()->activateMorph($morph);
 
         echo "<li class='listSection'>";
-		echo $morph->name;
+		echo $morph->getName();
 		echo "</li>";
 		foreach(creator()->getAptitudes() as $m){
         	echo "<li>";
-        	echo $m->name;
-        	echo '		<span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';
+        	echo $m->getName();
+        	echo '		<span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->getDescription().'"></span>';
         	echo "		<span class='score'>[".$m->getValue()."] </span>";
         	echo "</li>";
         	

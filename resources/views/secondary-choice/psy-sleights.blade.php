@@ -63,9 +63,9 @@ use App\Creator\DisplayHelpers\Li;
     {
                 $result = "";
                 foreach($list as $m){
-                    $li = new Li($m->name,'psyS');
+                    $li = new Li($m->getName(),'psyS');
                     $li->addCost(5);
-                    $li->addBookIcon($m->name);
+                    $li->addBookIcon($m->getName());
                     $li->addPlusChecked('addSelPsySleightIcon',$m->isInArray($currentPsyS));
                     $result .= $li->getHtml();
                 }

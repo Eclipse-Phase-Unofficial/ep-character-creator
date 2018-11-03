@@ -5,7 +5,7 @@ use App\Creator\DisplayHelpers\Helpers;
 
 $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
-<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
+<label class="descriptionTitle"><?php echo $currentMorph->getName(); ?></label>
 <ul class="mainlist" id="morphPostraits">
     <li class='foldingListSection'>Morph Pos. Traits</li>
     <?php

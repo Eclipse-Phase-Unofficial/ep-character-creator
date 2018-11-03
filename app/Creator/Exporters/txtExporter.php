@@ -56,16 +56,16 @@ if(null !== creator()) {
 				echo formatTitle("Background")
 				.$tab
 				.": "
-				.formatResult(creator()->getCurrentBackground()->name)
+				.formatResult(creator()->getCurrentBackground()->getName())
 				.$tab
-				.setBookLink(creator()->getCurrentBackground()->name)
+				.setBookLink(creator()->getCurrentBackground()->getName())
 				.$carriageReturn
 				.formatTitle("Faction")
 				.$tab
 				.": "
-				.formatResult(creator()->getCurrentFaction()->name)
+				.formatResult(creator()->getCurrentFaction()->getName())
 				.$tab
-				.setBookLink(creator()->getCurrentFaction()->name)
+				.setBookLink(creator()->getCurrentFaction()->getName())
 				.$carriageReturn
 				.$line.$carriageReturn;
 				
@@ -103,7 +103,7 @@ if(null !== creator()) {
 				
 				$aptitudes = creator()->getAptitudes();
 				foreach($aptitudes as $apt){
-					echo formatTitle($apt->name)
+					echo formatTitle($apt->getName())
 					.$tab //Apt Name
 					.formatResult($apt->value)//Apt Value Ego
 					.$carriageReturn;
@@ -121,7 +121,7 @@ if(null !== creator()) {
 				
 				$reputations = creator()->getReputations();
 				foreach($reputations as $rep){
-					echo formatTitle($rep->name)
+					echo formatTitle($rep->getName())
 					.$tab //Rep Name
 					.formatResult($rep->value)//Rep Value 
 					.$carriageReturn;
@@ -169,7 +169,7 @@ if(null !== creator()) {
 					$skillCompleteName = "";
 					$prefix = $skill->prefix;
 					if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-					$skillCompleteName .= $skill->name;
+					$skillCompleteName .= $skill->getName();
 					if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) $skillCompleteName .= " *";
 					$skillType = "A";
 					if($skill->isKnowledge()) {
@@ -260,9 +260,9 @@ if(null !== creator()) {
 				foreach($softGears as $gear){
 					if($gear->occurence > 1) $occ = "(".$gear->occurence.") ";
 					else $occ = "";
-					echo formatResult($occ." ".$gear->name)
+					echo formatResult($occ." ".$gear->getName())
 					.$tab
-					.setBookLink($gear->name)
+					.setBookLink($gear->getName())
 					.$carriageReturn;
 				}	
 						
@@ -278,9 +278,9 @@ if(null !== creator()) {
 				foreach($ais as $ai){
 					if($ai->occurence > 1) $occ = "(".$ai->occurence.") ";
 					else $occ = "";
-					echo formatResult($occ." ".$ai->name)
+					echo formatResult($occ." ".$ai->getName())
 					.$tab
-					.setBookLink($ai->name)
+					.setBookLink($ai->getName())
 					.$carriageReturn
 					.$carriageReturn;
 					
@@ -293,7 +293,7 @@ if(null !== creator()) {
 						$skillCompleteName = "";
 						$prefix = $aiSkill->prefix;
 						if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-						$skillCompleteName .= $aiSkill->name;
+						$skillCompleteName .= $aiSkill->getName();
 						$skillAptNonformated .= $skillCompleteName."(";
 						$skillAptNonformated .= $aiSkill->baseValue.")  ".$carriageReturn;
 					}
@@ -420,7 +420,7 @@ if(null !== creator()) {
 
 						$aptitudes = creator()->getAptitudes();
 						foreach($aptitudes as $apt){
-							echo formatTitle($apt->name)
+							echo formatTitle($apt->getName())
 							.$tab //Apt Name
 							.$apt->value # base
 							.$tab
@@ -442,7 +442,7 @@ if(null !== creator()) {
 						$stats = creator()->getStats();
 
 						foreach($stats as $stat) {
-							echo formatResult($stat->name)
+							echo formatResult($stat->getName())
 							.$tab
 							.$stat->getValue()
 							.$carriageReturn;
@@ -473,7 +473,7 @@ if(null !== creator()) {
 							$skillCompleteName = "";
 							$prefix = $skill->prefix;
 							if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-							$skillCompleteName .= $skill->name;
+							$skillCompleteName .= $skill->getName();
 							if($skill->defaultable == EPSkill::$NO_DEFAULTABLE) $skillCompleteName .= " *";
 							$skillType = "A";
 

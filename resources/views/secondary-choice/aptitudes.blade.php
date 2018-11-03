@@ -20,9 +20,9 @@ declare(strict_types=1);
 		 //creator()->activateMorph(null);
          foreach(creator()->getAptitudes() as $m){
         	echo "<li id='".$m->abbreviation."Def' class='apt'>";
-        	echo "		<label>".$m->name."</label>";
+        	echo "		<label>".$m->getName()."</label>";
         	echo "		<input type='number' min=0 step=5 id='".$m->abbreviation."' value='".$m->value."'/>";
-            echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->description.'"></span>';
+            echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$m->getDescription().'"></span>';
         	echo "</li>";
         	
          }

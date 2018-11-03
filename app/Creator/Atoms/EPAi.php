@@ -85,7 +85,7 @@ class EPAi extends EPAtom{
      */
     public function match(EPAtom $atom): bool
     {
-        if (strcasecmp($atom->name,$this->name) == 0){
+        if (strcasecmp($atom->getName(),$this->getName()) == 0){
             return true;
         }
         return false;

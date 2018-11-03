@@ -182,7 +182,7 @@ class EPSkill extends EPAtom{
      * @return bool
      */
     public function match($skill): bool{
-        if (strcasecmp($skill->name,$this->name) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
+        if (strcasecmp($skill->getName(),$this->getName()) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
             return true;
         }
         return false;
@@ -198,7 +198,7 @@ class EPSkill extends EPAtom{
         if (!empty($this->prefix)) {
             $nameStr .= $this->prefix . " : ";
         }
-        $nameStr .= $this->name;
+        $nameStr .= $this->getName();
         if ($this->defaultable == EPSkill::$NO_DEFAULTABLE) {
             $nameStr .= " *";
         }
@@ -235,7 +235,7 @@ class EPSkill extends EPAtom{
     public static function getSkill(array $skills, string $name, string $prefix = '')
     {
         foreach ($skills as $aSkill) {
-            if (strcasecmp($aSkill->name, $name) == 0 && strcasecmp($aSkill->prefix, $prefix) == 0) {
+            if (strcasecmp($aSkill->getName(), $name) == 0 && strcasecmp($aSkill->prefix, $prefix) == 0) {
                 return $aSkill;
             }
         }
@@ -253,8 +253,8 @@ class EPSkill extends EPAtom{
      */
     public static function compareSkillsByPrefixName(EPSkill $a, EPSkill $b): int
     {
-        $an = $a->prefix . $a->name;
-        $bn = $b->prefix . $b->name;
+        $an = $a->prefix . $a->getName();
+        $bn = $b->prefix . $b->getName();
 
         return strcmp($an, $bn);
     }

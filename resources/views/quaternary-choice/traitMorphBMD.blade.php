@@ -12,8 +12,8 @@ if($currentTrait == null){
 }
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentTrait->name);
-$myPanel->addDescription($currentTrait->description);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentTrait->bonusMalus,$currentTrait->name,'morphTrait') );
+$myPanel->startDescriptivePanel($currentTrait->getName());
+$myPanel->addDescription($currentTrait->getDescription());
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentTrait->bonusMalus,$currentTrait->getName(),'morphTrait') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();

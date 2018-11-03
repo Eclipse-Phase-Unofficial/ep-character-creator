@@ -7,10 +7,10 @@ use App\Creator\DisplayHelpers\Panel;
 $currentBck = creator()->getCurrentBackground();
 
 $myPanel = new Panel();
-$myPanel->startDescriptivePanel($currentBck->name);
-$myPanel->addDescription($currentBck->description);
+$myPanel->startDescriptivePanel($currentBck->getName());
+$myPanel->addDescription($currentBck->getDescription());
 $myPanel->addTraits($currentBck->traits);
-$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentBck->bonusMalus,$currentBck->name,'origine') );
+$myPanel->addRawHtml( Helpers::getBMHtml(creator(), $currentBck->bonusMalus,$currentBck->getName(),'origine') );
 echo $myPanel->getHtml();
 echo Panel::endPanel();
 ?>

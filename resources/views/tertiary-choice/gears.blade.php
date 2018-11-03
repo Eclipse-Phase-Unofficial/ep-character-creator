@@ -7,7 +7,7 @@ use App\Creator\DisplayHelpers\Helpers;
 $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
 $gears = EpDatabase()->getGears();
 ?>
-<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
+<label class="descriptionTitle"><?php echo $currentMorph->getName(); ?></label>
 <ul class="mainlist" id="gears">
     <?php
     echo Helpers::getGearSection(creator(), $gears, $currentMorph, EPGear::$WEAPON_KINETIC_GEAR, "Kinetic Weapons");
@@ -28,6 +28,6 @@ $gears = EpDatabase()->getGears();
     echo Helpers::getGearSection(creator(), $gears, $currentMorph, EPGear::$STANDARD_GEAR, "Misc.");
 
     //FREE GEAR SECTION
-    echo Helpers::getFreeGear(creator()->getCurrentMorphGears($currentMorph->name), false);
+    echo Helpers::getFreeGear(creator()->getCurrentMorphGears($currentMorph->getName()), false);
     ?>
 </ul>

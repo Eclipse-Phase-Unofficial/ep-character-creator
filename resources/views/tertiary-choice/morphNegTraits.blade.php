@@ -5,7 +5,7 @@ use App\Creator\DisplayHelpers\Helpers;
 
 $currentMorph = creator()->getCurrentMorphsByName($_SESSION['currentMorph']);
 ?>
-<label class="descriptionTitle"><?php echo $currentMorph->name; ?></label>
+<label class="descriptionTitle"><?php echo $currentMorph->getName(); ?></label>
 <ul class="mainlist" id="morphNegtraits">
     <li class='foldingListSection'>Morph Neg. Traits</li>
 	<?php

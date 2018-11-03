@@ -115,7 +115,7 @@ class EPPsySleight extends EPAtom{
      */
     public function match($atom): bool
     {
-        if (strcasecmp($atom->name, $this->name) == 0 &&
+        if (strcasecmp($atom->getName(), $this->getName()) == 0 &&
             $atom->psyType === $this->psyType &&
             $atom->psyLevel === $this->psyLevel) {
             return true;

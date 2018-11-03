@@ -30,9 +30,9 @@ class Helpers
         $htmlResult = "";
         foreach ($gears as $gear) {
             if (static::isGearLegal($morph, $gear)) {
-                $li = new Li($gear->name, 'morphGear');
+                $li = new Li($gear->getName(), 'morphGear');
                 $li->addCost($gear->getCost(), $gear->isInArray($creator->getCurrentDefaultMorphGear($morph)), 'cr');
-                $li->addBookIcon($gear->name);
+                $li->addBookIcon($gear->getName());
                 $li->addPlusChecked($iconClass, $creator->haveGearOnMorph($gear, $morph));
                 $htmlResult .= $li->getHtml();
             }
@@ -72,7 +72,7 @@ class Helpers
         $output .= "    </li>";
         foreach ($currentGear as $m) {
             if ($m->gearType == EPGear::$FREE_GEAR) {
-                $li = new Li($m->name);
+                $li = new Li($m->getName());
                 $li->addCost($m->getCost(), false, 'Credits');
                 $li->addPlusX("remFree" . $ego_or_morph . "Gear", false);
                 $output .= $li->getHtml();
@@ -169,9 +169,9 @@ class Helpers
             $defaultTraits = array();
         }
 
-        $li = new Li($trait->name, $traitClass);
+        $li = new Li($trait->getName(), $traitClass);
         $li->addCost($trait->cpCost, $trait->isInArray($defaultTraits));
-        $li->addBookIcon($trait->name);
+        $li->addBookIcon($trait->getName());
         $li->addPlusChecked($iconClass, $trait->isInArray($currentTraits));
         return $li->getHtml();
     }
@@ -228,9 +228,9 @@ class Helpers
             foreach ($bonusMalusArray as $bm) {
                 if ($bm->isGranted()) {
                     $output .= "<li class='bmDesc'>";
-                    $output .= $bm->name;
+                    $output .= $bm->getName();
                     if ($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY) {
-                        $output .= "<label class='bmGrantedDesc'>" . $bm->description . "</label>";
+                        $output .= "<label class='bmGrantedDesc'>" . $bm->getDescription() . "</label>";
                     }
                     $output .= "</li>";
                 }
@@ -247,7 +247,7 @@ class Helpers
                     $output .= static::choosePrintOption($creator, $bm, $parentName, $parentType);
                     $output .= "<input id='" . $bm->getUid() . "Parent' type='hidden' value='" . $parentName . "'>";
                     $output .= "<input id='" . $bm->getUid() . "Type' type='hidden' value='" . $parentType . "'>";
-                    $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->name . "'>";
+                    $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->getName() . "'>";
                     $output .= "</label></li>";
                 }
             }
@@ -276,13 +276,13 @@ class Helpers
                                     if ($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION) {
                                         $output .= "+" . $bmMulti->value . " on " . $bmMulti->forTargetNamed;
                                     } else {
-                                        $output .= $bmMulti->name;
+                                        $output .= $bmMulti->getName();
                                     }
                                 }
                             }
                             $output .= "<span class='iconPlusMinus iconebmRemChoice' id='" . $bmMulti->getUid() . "' data-icon='&#x39;'></span>";
                             $output .= "</label>";
-                            $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->name . "'>";
+                            $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->getName() . "'>";
                             $output .= "<input id='" . $bmMulti->getUid() . "ParentId' type='hidden' value='" . $bm->getUid() . "'>";
                             $output .= "</li>";
                         }
@@ -292,7 +292,7 @@ class Helpers
                     foreach ($bm->bonusMalusTypes as $bmMulti) {
                         $output .= "<li>";
                         if (!$bmMulti->isChoice()) {
-                            $output .= "<label class='bmGranted'>" . $bmMulti->name . "</label>";
+                            $output .= "<label class='bmGranted'>" . $bmMulti->getName() . "</label>";
                             if ($bmMulti->selected) {
                                 $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='" . $bmMulti->getUid() . "' data-icon='&#x39;'></span>";
                             } else {
@@ -304,7 +304,7 @@ class Helpers
                             $output .= static::choosePrintOption($creator, $bmMulti, $parentName, $parentType);
                             $output .= "</label>";
                         }
-                        $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->name . "'>";
+                        $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->getName() . "'>";
                         $output .= "<input id='" . $bmMulti->getUid() . "ParentId' type='hidden' value='" . $bm->getUid() . "'>";
                         $output .= "</li>";
                     }
@@ -315,7 +315,7 @@ class Helpers
                 $output .= "<input id='" . $bm->getUid() . "Case' type='hidden' value='" . EPBonusMalus::$MULTIPLE . "'>";
                 $output .= "<input id='" . $bm->getUid() . "Parent' type='hidden' value='" . $parentName . "'>";
                 $output .= "<input id='" . $bm->getUid() . "Type' type='hidden' value='" . $parentType . "'>";
-                $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->name . "'>";
+                $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->getName() . "'>";
             }
         }
         return $output;
@@ -373,7 +373,7 @@ class Helpers
         $output = "";
 
         if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
-            $output .= $bm->name;
+            $output .= $bm->getName();
             if (!empty($skill_list)) {
                 $output .= "<select class='bmChoiceSelect' id='" . $bm->getUid() . "Sel'>";
                 foreach ($skill_list as $skill) {
@@ -408,21 +408,21 @@ class Helpers
         $output = "";
 
         if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
-            $output .= $bm->name;
+            $output .= $bm->getName();
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             if ($parentType == 'morph') {
                 $morph = EpDatabase()->getMorphByName($parentName);
                 if (!empty($morph)) {
                     $banedAptNameList = $creator->getMorphGrantedBMApptitudesNameList($morph);
                     foreach ($creator->getAptitudes() as $apt) {
-                        if (!static::isNameOnList($apt->name, $banedAptNameList)) {
-                            $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
+                        if (!static::isNameOnList($apt->getName(), $banedAptNameList)) {
+                            $output .= "<option value='" . $apt->getName() . "'>" . $apt->getName() . "</option>";
                         }
                     }
                 }
             } else {
                 foreach ($creator->getAptitudes() as $apt) {
-                    $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
+                    $output .= "<option value='" . $apt->getName() . "'>" . $apt->getName() . "</option>";
                 }
             }
             $output .= "</select>";
@@ -448,10 +448,10 @@ class Helpers
         $output = "";
 
         if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
-            $output .= $bm->name;
+            $output .= $bm->getName();
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             foreach ($creator->getReputations() as $apt) {
-                $output .= "<option value='" . $apt->name . "'>" . $apt->name . "</option>";
+                $output .= "<option value='" . $apt->getName() . "'>" . $apt->getName() . "</option>";
             }
             $output .= "</select>";
             $output .= "<span class='iconPlusMinus iconebmChoice'  id='" . $bm->getUid() . "' data-icon='&#x3a;'></span>";

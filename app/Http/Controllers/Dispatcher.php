@@ -133,8 +133,8 @@ if(isset($_POST['setCP'])){
 //GET ORIGINE
 if(isset($_POST['getBcg'])){
 	if(creator()->getCurrentBackground() != null){
-    	$return['currentBcg'] = creator()->getCurrentBackground()->name;
-    	session()->put('currentOrigineName', creator()->getCurrentBackground()->name);
+    	$return['currentBcg'] = creator()->getCurrentBackground()->getName();
+    	session()->put('currentOrigineName', creator()->getCurrentBackground()->getName());
     	//$return['desc'] = creator()->getCurrentBackground()->description;
     }
     else{
@@ -156,8 +156,8 @@ if (isset($_POST['origine'])) {
 //GET FACTION
 if(isset($_POST['getFac'])){
 	if(creator()->getCurrentFaction() != null){
-    	$return['currentFac'] = creator()->getCurrentFaction()->name;
-    	session()->put('currentFactionName', creator()->getCurrentFaction()->name);
+    	$return['currentFac'] = creator()->getCurrentFaction()->getName();
+    	session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
 		//$return['desc'] = creator()->getCurrentFaction()->description;
     }
     else{
@@ -168,7 +168,7 @@ if(isset($_POST['getFac'])){
 if(isset($_POST['faction'])){
     if(EpDatabase()->getBackgroundByName($_POST['faction']) != null &&
        creator()->setFaction(EpDatabase()->getBackgroundByName($_POST['faction']))){
-       session()->put('currentFactionName', creator()->getCurrentFaction()->name);
+       session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
         //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['faction'])->description;
     }
     else{
@@ -191,8 +191,8 @@ if(isset($_POST['posTrait'])){
     else if(!creator()->addTrait($trait)){
         return static::treatCreatorErrors(creator()->getLastError());
     }
-    session()->put('currentTraitName', $trait->name);
-    $return['desc'] = $trait->description;
+    session()->put('currentTraitName', $trait->getName());
+    $return['desc'] = $trait->getDescription();
 }
 
 //SET NEG TRAIT
@@ -210,8 +210,8 @@ if(isset($_POST['negTrait'])){
     else if(!creator()->addTrait($trait)){
         return static::treatCreatorErrors(creator()->getLastError());
     }
-    session()->put('currentTraitName', $trait->name);
-    $return['desc'] = $trait->description;
+    session()->put('currentTraitName', $trait->getName());
+    $return['desc'] = $trait->getDescription();
 }
 
 
@@ -219,7 +219,7 @@ if(isset($_POST['negTrait'])){
 if(isset($_POST['traitHover'])){
 	$trait = EpDatabase()->getTraitByName($_POST['traitHover']);
 	if($trait != null){
-	        session()->put('currentTraitName', $trait->name);
+	        session()->put('currentTraitName', $trait->getName());
 	}
 }
 
@@ -238,13 +238,13 @@ if(isset($_POST['psyS'])){
     else if(!creator()->addPsySleight($psyS)){
         return static::treatCreatorErrors(creator()->getLastError());
     }
-    $return['desc'] = $psyS->description;
-    session()->put('currentPsiSName', $psyS->name);
+    $return['desc'] = $psyS->getDescription();
+    session()->put('currentPsiSName', $psyS->getName());
 }
 //HOVER PSY SLEIGHT
 if(isset($_POST['hoverPsyS'])){
 	$psyS = EpDatabase()->getPsySleightsByName($_POST['hoverPsyS']);
-	session()->put('currentPsiSName', $psyS->name);
+	session()->put('currentPsiSName', $psyS->getName());
 }
 
 //SET MOTIVATION
@@ -346,7 +346,7 @@ if(isset($_POST['skill'])){
 	$skill = creator()->getSkillByAtomUid($_POST['skill']);
 	//error_log("Getting skill id: " . $_POST['skill']. " -> " . $skill->getPrintableName());
 	$return['title'] = $skill->getPrintableName();
-	if($skill->description == null || $skill->description == ""){
+	if($skill->getDescription() == ""){
 		$prefix = $skill->prefix;
 		if($prefix != null || $prefix != ""){
 			$return['desc'] = $provider->getPrefixDescription($prefix);
@@ -356,7 +356,7 @@ if(isset($_POST['skill'])){
 		}
 	}
 	else{
-		$return['desc'] = $skill->description;
+		$return['desc'] = $skill->getDescription();
 	}
 }
 
@@ -447,8 +447,8 @@ if(isset($_POST['remSpeSkill'])){
 //HOVER MORPH
 if (isset($_POST['morphHover'])) {
 	   $morph = EPAtom::getAtomByName(EpDatabase()->getMorphs(),$_POST['morphHover']);
-       $return['title'] = $morph->name;
-	   $return['desc'] = $morph->description;
+       $return['title'] = $morph->getName();
+	   $return['desc'] = $morph->getDescription();
 }
 
 //ADD / REMOVE MORPH
@@ -469,8 +469,8 @@ if (isset($_POST['addRemMorph'])) {
             return static::treatCreatorErrors(creator()->getLastError());
         }
     }
-    $return['title'] = $morph->name;
-    $return['desc'] = $morph->description;
+    $return['title'] = $morph->getName();
+    $return['desc'] = $morph->getDescription();
 }
 
 //GET MORPH SETTINGS
@@ -480,7 +480,7 @@ if (isset($_POST['morphSettings'])) {
         return static::treatCreatorErrors("Morph does not exist (".session('currentMorph').")");
     }
     session()->put('currentMorph',  $_POST['morphSettings']);
-    $return['morphName'] = $morph->name;
+    $return['morphName'] = $morph->getName();
     $return['nickname'] = $morph->nickname;
     $return['location'] = $morph->location;
     $return['age'] = $morph->age;
@@ -528,8 +528,8 @@ if(isset($_POST['morphPosTrait'])){
             return static::treatCreatorErrors(creator()->getLastError());
         }
     }
-    $return['desc'] = $trait->description;
-    session()->put('currentMorphTraitName', $trait->name);
+    $return['desc'] = $trait->getDescription();
+    session()->put('currentMorphTraitName', $trait->getName());
 }
 
 //SET REMOVE MORPH NEG TRAIT
@@ -552,8 +552,8 @@ if(isset($_POST['morphNegTrait'])){
             return static::treatCreatorErrors(creator()->getLastError());
         }
     }
-    $return['desc'] = $trait->description;
-    session()->put('currentMorphTraitName', $trait->name);
+    $return['desc'] = $trait->getDescription();
+    session()->put('currentMorphTraitName', $trait->getName());
 }
 
 //HOVER MORPH NEG-POS TRAIT
@@ -585,8 +585,8 @@ if(isset($_POST['morphImplant'])){
             return static::treatCreatorErrors("Can not remove permanent Implants!");
         }
     }
-    $return['desc'] = $gear->description;
-    session()->put('currentMorphGearName', $gear->name);
+    $return['desc'] = $gear->getDescription();
+    session()->put('currentMorphGearName', $gear->getName());
 }
 
 //SET REMOVE MORPH GEAR
@@ -613,8 +613,8 @@ if(isset($_POST['morphGear'])){
             return static::treatCreatorErrors("Can not remove permanent Gear!");
         }
     }
-    $return['desc'] = $gear->description;
-    session()->put('currentMorphGearName', $gear->name);
+    $return['desc'] = $gear->getDescription();
+    session()->put('currentMorphGearName', $gear->getName());
 }
 
 //SET REMOVE FREE MORPH GEAR
@@ -643,8 +643,8 @@ if(isset($_POST['morphFreeGear'])){
                 return static::treatCreatorErrors("Can not remove permanent Gear!");
             }
         }
-        $return['desc'] = $gear->description;
-        session()->put('currentMorphGearName', $gear->name);
+        $return['desc'] = $gear->getDescription();
+        session()->put('currentMorphGearName', $gear->getName());
     }
 }
 
@@ -667,8 +667,8 @@ if(isset($_POST['egoFreeGear'])){
                 return static::treatCreatorErrors(creator()->getLastError());
             }
         }
-        $return['desc'] = $soft->description;
-        session()->put('currentSoftName', $soft->name);
+        $return['desc'] = $soft->getDescription();
+        session()->put('currentSoftName', $soft->getName());
     }
 }
 
@@ -711,14 +711,14 @@ if(isset($_POST['ai'])){
             return static::treatCreatorErrors(creator()->getLastError());
         }
     }
-    $return['desc'] = $ai->description;
-    session()->put('currentAiName', $ai->name);
+    $return['desc'] = $ai->getDescription();
+    session()->put('currentAiName', $ai->getName());
 }
 
 //HOVER AI
 if(isset($_POST['hoverAi'])){
     $ai = EpDatabase()->getAiByName($_POST['hoverAi']);
-    session()->put('currentAiName', $ai->name);
+    session()->put('currentAiName', $ai->getName());
 }
 
 
@@ -739,14 +739,14 @@ if(isset($_POST['softg'])){
             return static::treatCreatorErrors(creator()->getLastError());
         }
     }
-    $return['desc'] = $soft->description;
-    session()->put('currentSoftName', $soft->name);
+    $return['desc'] = $soft->getDescription();
+    session()->put('currentSoftName', $soft->getName());
 }
 
 //HOVER ON SOFT GEAR
 if(isset($_POST['hoverSoftg'])){
     $soft = EpDatabase()->getGearByName($_POST['hoverSoftg']);
-    session()->put('currentSoftName', $soft->name);
+    session()->put('currentSoftName', $soft->getName());
 }
 
 //ADD MOXIE
@@ -773,7 +773,7 @@ if(isset($_POST['mox'])){
     if(!isset($moxie)){
         return static::treatCreatorErrors(creator()->getLastError());
     }
-    $return['desc'] = $moxie->description;
+    $return['desc'] = $moxie->getDescription();
 }
 
 //SET LAST DETAILS
@@ -817,7 +817,7 @@ if(isset($_POST['addTargetTo'])){
 	}
 	else if($_POST['parentType'] == "morphTrait"){
 		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),(string) session('currentMorph'));
-        $traits = creator()->getCurrentMorphTraits($currentMorph->name);
+        $traits = creator()->getCurrentMorphTraits($currentMorph->getName());
 		if (!empty($traits)){
                     $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;
@@ -893,7 +893,7 @@ if(isset($_POST['removeTargetFrom'])){
 	}
 	else if($_POST['parentType'] == "morphTrait"){
 		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),(string) session('currentMorph'));
-                $traits = creator()->getCurrentMorphTraits($currentMorph->name);
+                $traits = creator()->getCurrentMorphTraits($currentMorph->getName());
                 if (!empty($traits)){
                     $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
                     $bonusMalusArray = $currentMorphTrait->bonusMalus;

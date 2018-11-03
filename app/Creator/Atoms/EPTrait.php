@@ -91,7 +91,7 @@ class EPTrait extends EPAtom{
      */
     public function match($trait): bool
     {
-        if (strcasecmp($trait->name,$this->name) == 0 &&
+        if (strcasecmp($trait->getName(),$this->getName()) == 0 &&
             $trait->traitPosNeg===$this->traitPosNeg &&
             $trait->traitEgoMorph===$this->traitEgoMorph &&
             $trait->cpCost===$this->cpCost &&

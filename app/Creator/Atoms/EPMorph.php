@@ -105,8 +105,6 @@ class EPMorph extends EPAtom {
     function loadSavePack($savePack,$cc = null){
         parent::loadSavePack($savePack);
 
-        $this->name = $savePack['name'];
-        $this->description = $savePack['description'];
         $this->morphType = $savePack['morphType'];
         $this->age = $savePack['age'];
         $this->gender = $savePack['gender'];
@@ -173,7 +171,7 @@ class EPMorph extends EPAtom {
      */
     public function match($morph): bool
     {
-        if (strcasecmp($morph->name,$this->name) == 0 &&
+        if (strcasecmp($morph->getName(),$this->getName()) == 0 &&
             $morph->morphType===$this->morphType &&
             $morph->maxApptitude===$this->maxApptitude &&
             $morph->cost===$this->cost &&

@@ -225,7 +225,7 @@ class EPGear extends EPAtom{
      * @return bool
      */
     public function match($gear): bool{
-        if (strcasecmp($gear->name,$this->name) == 0 &&
+        if (strcasecmp($gear->getName(),$this->getName()) == 0 &&
             $gear->gearType===$this->gearType &&
             $gear->gearRestriction===$this->gearRestriction){
                 return true;

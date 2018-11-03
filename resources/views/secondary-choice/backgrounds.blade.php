@@ -11,9 +11,9 @@ use App\Creator\DisplayHelpers\Li;
 
          foreach(EpDatabase()->getBackgrounds() as $m){
             if($m->backgroundType == EPBackground::$ORIGIN){
-                $li = new Li($m->name,'bck');
-                $li->addBookIcon($m->name);
-                $li->addCheckedBlank("",isset($currentBck) && $currentBck->name == $m->name);
+                $li = new Li($m->getName(),'bck');
+                $li->addBookIcon($m->getName());
+                $li->addCheckedBlank("",isset($currentBck) && $currentBck->getName() == $m->getName());
                 echo $li->getHtml();
             }
          }

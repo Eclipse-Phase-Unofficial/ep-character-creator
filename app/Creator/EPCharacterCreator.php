@@ -254,7 +254,7 @@ class EPCharacterCreator implements Savable
 		//set linked Apt on skill
 		$skillToComplete = $this->character->ego->skills;
 		foreach($skillToComplete as $m){
-			$linkedApt = $this->listProvider->getSkillByNamePrefix($m->name,$m->prefix,$this->character->ego->aptitudes)->linkedApt;
+			$linkedApt = $this->listProvider->getSkillByNamePrefix($m->getName(),$m->prefix,$this->character->ego->aptitudes)->linkedApt;
 			if($linkedApt == null){
 				$linkedApt = $this->getAptitudeByAbbreviation($this->listProvider->getAptForPrefix($m->prefix));
 			}
@@ -286,7 +286,7 @@ class EPCharacterCreator implements Savable
         }
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
-                if (strcmp($m->name,$morph->name) == 0){
+                if (strcmp($m->getName(),$morph->getName()) == 0){
                     $this->character->currentMorphUid = $m->getUid();
                     foreach ($this->getAptitudes() as $a){
                         $a->activMorph = $m;
@@ -417,7 +417,7 @@ class EPCharacterCreator implements Savable
      {
         if (is_array($this->character->ego->psySleights)){
             foreach ($this->character->ego->psySleights as $p){
-                if (strcmp($p->name, $psiName) == 0){
+                if (strcmp($p->getName(), $psiName) == 0){
                     return true;
                 }
             }
@@ -602,10 +602,10 @@ class EPCharacterCreator implements Savable
     {
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
-                if (strcmp($m->name,$morph->name) == 0){
+                if (strcmp($m->getName(),$morph->getName()) == 0){
                     $cm = $this->getCurrentMorph();
                     if (isset($cm)){
-                        if (strcmp($morph->name,$cm->name) == 0){
+                        if (strcmp($morph->getName(),$cm->getName()) == 0){
                             $this->activateMorph(null);
                         }
                     }
@@ -638,10 +638,10 @@ class EPCharacterCreator implements Savable
     {
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
-                if (strcmp($m->name,$morph->name) == 0){
+                if (strcmp($m->getName(),$morph->getName()) == 0){
                     $cm = $this->getCurrentMorph();
                     if (isset($cm)){
-                        if (strcmp($morph->name,$cm->name) == 0){
+                        if (strcmp($morph->getName(),$cm->getName()) == 0){
                             $this->activateMorph(null);
                         }
                     }
@@ -826,7 +826,7 @@ class EPCharacterCreator implements Savable
                 }
 
                 $this->listProvider->connect();
-                $traitToAdd = $this->listProvider->getTraitByName($trait->name);
+                $traitToAdd = $this->listProvider->getTraitByName($trait->getName());
                 $traitToAdd->addToArray($morph->additionalTraits);
             }else{
                 $listOldTraits = $this->back->getCurrentTraits(false);
@@ -931,9 +931,9 @@ class EPCharacterCreator implements Savable
     function sellLowerLevel(EPTrait $trait, ?EPMorph $morph = null)
     {
     	if(isset($morph)){
-    		$traitName = $this->removeLastWord($trait->name);
+    		$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($morph->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
 		        	$t->level < $trait->level){
 		            	$this->removeTrait($t,$morph);
 		            	break;
@@ -941,9 +941,9 @@ class EPCharacterCreator implements Savable
 		    }
     	}
     	else{
-	    	$traitName = $this->removeLastWord($trait->name);
+	    	$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($this->character->ego->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
 		        	$t->level < $trait->level){
 		            	$this->removeTrait($t,null);
 		            	break;
@@ -956,9 +956,9 @@ class EPCharacterCreator implements Savable
     function sellHigherLevel(EPTrait $trait, ?EPMorph $morph = null)
     {
     	if(isset($morph)){
-    		$traitName = $this->removeLastWord($trait->name);
+    		$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($morph->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
 		        	$t->level > $trait->level){
 		            	$this->removeTrait($t,$morph);
 		            	break;
@@ -966,9 +966,9 @@ class EPCharacterCreator implements Savable
 		    }
     	}
     	else{
-	    	$traitName = $this->removeLastWord($trait->name);
+	    	$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($this->character->ego->additionalTraits as $t){
-		        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
 		        	$t->level > $trait->level){
 		            	$this->removeTrait($t,null);
 		            	break;
@@ -981,7 +981,7 @@ class EPCharacterCreator implements Savable
     function addPsySleight(EPPsySleight $psySleight)
     {
         if ($this->creationMode){
-            if ($this->havePsiSleight($psySleight->name)){
+            if ($this->havePsiSleight($psySleight->getName())){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
@@ -990,7 +990,7 @@ class EPCharacterCreator implements Savable
 
             return true;
         }else{
-            if ($this->havePsiSleight($psySleight->name)){
+            if ($this->havePsiSleight($psySleight->getName())){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
@@ -1004,7 +1004,7 @@ class EPCharacterCreator implements Savable
     function removePsySleight(EPPsySleight $psySleight)
     {
         if ($this->creationMode){
-            if (!$this->havePsiSleight($psySleight->name)){
+            if (!$this->havePsiSleight($psySleight->getName())){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
@@ -1014,7 +1014,7 @@ class EPCharacterCreator implements Savable
             return true;
         }
 
-        if (!$this->havePsiSleight($psySleight->name)){
+        if (!$this->havePsiSleight($psySleight->getName())){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego do not have this trait !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
@@ -1453,15 +1453,15 @@ class EPCharacterCreator implements Savable
       if ($this->creationMode){
         if (isset($morphName)){
           foreach ($this->character->morphs as $m){
-            if (strcmp($m->name, $morphName) == 0){
+            if (strcmp($m->getName(), $morphName) == 0){
               foreach ($m->gears as $g){
-                if (strcmp($g->name, $gearName) == 0){
+                if (strcmp($g->getName(), $gearName) == 0){
                   $g->occurence = $occurence;
                   return true;
                 }
               }
               foreach ($m->additionalGears as $g){
-                if (strcmp($g->name, $gearName) == 0){
+                if (strcmp($g->getName(), $gearName) == 0){
                   $g->occurence = $occurence;
                   return true;
                 }
@@ -1474,7 +1474,7 @@ class EPCharacterCreator implements Savable
           return false;
         }else{
           foreach ($this->character->ego->softGears as $sg){
-            if (strcmp($sg->name, $gearName) == 0){
+            if (strcmp($sg->getName(), $gearName) == 0){
               $sg->occurence = $occurence;
               return true;
             }
@@ -1485,16 +1485,16 @@ class EPCharacterCreator implements Savable
       }else{
         if (isset($morphName)){
           foreach ($this->character->morphs as $m){
-            if (strcmp($m->name, $morphName) == 0){
+            if (strcmp($m->getName(), $morphName) == 0){
               foreach ($m->gears as $g){
-                if (strcmp($g->name, $gearName) == 0){
+                if (strcmp($g->getName(), $gearName) == 0){
                   $this->evoCrePoint -= ($occurence - $g->occurence) * $g->getCost();
                   $g->occurence = $occurence;
                   return true;
                 }
               }
               foreach ($m->additionalGears as $g){
-                if (strcmp($g->name, $gearName) == 0){
+                if (strcmp($g->getName(), $gearName) == 0){
                   $this->evoCrePoint -= ($occurence - $g->occurence) * $g->getCost();
                   $g->occurence = $occurence;
                   return true;
@@ -1508,7 +1508,7 @@ class EPCharacterCreator implements Savable
           return false;
         }else{
           foreach ($this->character->ego->softGears as $sg){
-            if (strcmp($sg->name, $gearName) == 0){
+            if (strcmp($sg->getName(), $gearName) == 0){
               $this->evoCrePoint -= ($occurence - $sg->occurence) * $sg->getCost();
               $sg->occurence = $occurence;
               return true;
@@ -1528,13 +1528,13 @@ class EPCharacterCreator implements Savable
 
       if ($this->creationMode){
         foreach ($this->character->ego->ais as $a){
-          if (strcmp($a->name, $iaName) == 0){
+          if (strcmp($a->getName(), $iaName) == 0){
             $a->occurence = $occurence;
             return true;
           }
         }
         foreach ($this->character->ego->defaultAis as $a){
-          if (strcmp($a->name, $iaName) == 0){
+          if (strcmp($a->getName(), $iaName) == 0){
             $a->occurence = $occurence;
             return true;
           }
@@ -1543,14 +1543,14 @@ class EPCharacterCreator implements Savable
         return false;
       }else{
         foreach ($this->character->ego->ais as $a){
-          if (strcmp($a->name, $iaName) == 0){
+          if (strcmp($a->getName(), $iaName) == 0){
             $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
             $a->occurence = $occurence;
             return true;
           }
         }
         foreach ($this->character->ego->defaultAis as $a){
-          if (strcmp($a->name, $iaName) == 0){
+          if (strcmp($a->getName(), $iaName) == 0){
             $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
             $a->occurence = $occurence;
             return true;
@@ -1748,19 +1748,19 @@ class EPCharacterCreator implements Savable
     }
     function getCanPsyChi(){
     	foreach($this->character->ego->traits as $t){
-    		if($t->name == EPCharacterCreator::$PSY_CHI_TRAIT_NAME || $t->name == EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
+    		if($t->getName() == EPCharacterCreator::$PSY_CHI_TRAIT_NAME || $t->getName() == EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
     	}
     	foreach($this->character->ego->additionalTraits as $t){
-    		if($t->name == EPCharacterCreator::$PSY_CHI_TRAIT_NAME || $t->name == EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
+    		if($t->getName() == EPCharacterCreator::$PSY_CHI_TRAIT_NAME || $t->getName() == EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) return true;
     	}
 	    return false;
     }
     function getCanPsyGamma(){
         foreach($this->character->ego->traits as $t){
-            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+            if(strpos($t->getName(),EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
         }
         foreach($this->character->ego->additionalTraits as $t){
-            if(strpos($t->name,EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
+            if(strpos($t->getName(),EPCharacterCreator::$PSY_GAMMA_TRAIT_NAME) !== false) return true;
         }
         return false;
     }
@@ -1968,7 +1968,7 @@ class EPCharacterCreator implements Savable
             $absolute = $reputation->getAbsoluteValue();
             $newValue = min($newValue,$max);
             $newValue = min($newValue,$absolute);
-            $this->setReputation($reputation->name, $newValue);
+            $this->setReputation($reputation->getName(), $newValue);
         }
         foreach ($this->character->ego->skills as $skill){
             $maxValue = $skill->getMaxValue() - $skill->getBonusForCost();
@@ -1987,7 +1987,7 @@ class EPCharacterCreator implements Savable
             foreach ($ai->skills as $aiSkill){
               $maxValue = $aiSkill->getMaxValue() - $aiSkill->getBonusForCost();
               $newValue = min($maxValue,$aiSkill->baseValue);
-              $this->setAiSkillValue($ai,$aiSkill->name,$newValue);
+              $this->setAiSkillValue($ai,$aiSkill->getName(),$newValue);
             }
         }
 //        $this->setStat(EPStat::$MOXIE, $newValue);
@@ -2672,7 +2672,7 @@ class EPCharacterCreator implements Savable
         switch ($bm->bonusMalusType) {
             case EPBonusMalus::$ON_SPECIAL_01: // Special for Feeble negative trait
                 foreach ($this->character->ego->aptitudes as $a){
-                    if (strcmp($bm->forTargetNamed,$a->name) == 0){
+                    if (strcmp($bm->forTargetNamed,$a->getName()) == 0){
                         $a->feebleMax = true;
                         $a->maxValue = min(4,$a->maxValue);
                         $a->minValue = min(0,$a->minValue);
@@ -2697,7 +2697,7 @@ class EPCharacterCreator implements Savable
             break;
             case EPBonusMalus::$ON_APTITUDE:
                 foreach ($this->character->ego->aptitudes as $a){
-                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                    if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $a->morphMod += $bm->value;
@@ -2723,7 +2723,7 @@ class EPCharacterCreator implements Savable
             break;
             case EPBonusMalus::$ON_APTITUDE_EGO_MAX:
                 foreach ($this->character->ego->aptitudes as $a){
-                    if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                    if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $a->maxEgoValueMorphMod += $bm->value;
@@ -2751,42 +2751,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValuePsyMod += $bm->value;
                             }
                         }
@@ -2797,42 +2797,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValuePsyMod += $bm->value;
                             }
                         }
@@ -2843,42 +2843,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:                        
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueMorphMod += $bm->value;
                             }
                         }                                               
                     break;               
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueTraitMod += $bm->value;
                             }
                         } 
                     break;               
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueBackgroundMod += $bm->value;
                             }
                         }
                     break;               
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueFactionMod += $bm->value;
                             }
                         }
                     break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueSoftgearMod += $bm->value;
                             }
                         }
                     break;  
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
-                            if (strcmp($bm->forTargetNamed,$a->name) == 0 || EPAtom::isInGroups($a,$bm->groups)){
+                            if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValuePsyMod += $bm->value;
                             }
                         }
@@ -3486,42 +3486,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->morphMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->traitMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->factionMod += $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->backgroundMod += $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->softgearMod += $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->psyMod += $bm->value;
                             }
                         }                        
@@ -3557,7 +3557,7 @@ class EPCharacterCreator implements Savable
             break;
             case EPBonusMalus::$ON_STAT:
                 foreach ($this->character->ego->stats as $st) {
-                    if (strcmp($st->name,$bm->forTargetNamed) === 0){
+                    if (strcmp($st->getName(),$bm->forTargetNamed) === 0){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $st->morphMod += $bm->value;
@@ -3583,7 +3583,7 @@ class EPCharacterCreator implements Savable
             break;
             case EPBonusMalus::$ON_STAT_MULTIPLI:
                 foreach ($this->character->ego->stats as $st) {
-                    if (strcmp($st->name,$bm->forTargetNamed) === 0){
+                    if (strcmp($st->getName(),$bm->forTargetNamed) === 0){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $st->multiMorphMod *= $bm->value;
@@ -3684,42 +3684,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueMorphMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueTraitMod += $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueFactionMod += $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueBackgroundMod += $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueSoftgearMod += $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValuePsyMod += $bm->value;
                             }
                         }                        
@@ -3730,42 +3730,42 @@ class EPCharacterCreator implements Savable
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueMorphMod = $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueTraitMod = $bm->value;
                             }
                         }                        
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueFactionMod = $bm->value;
                             }
                         }                        
                     break; 
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueBackgroundMod = $bm->value;
                             }
                         }                        
                     break;                
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueSoftgearMod = $bm->value;
                             }
                         }                        
                     break;     
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
-                            if (strcmp($r->name,$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
+                            if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValuePsyMod = $bm->value;
                             }
                         }                        
@@ -3848,14 +3848,14 @@ class EPCharacterCreator implements Savable
     function morphHaveBonusMalus(EPBonusMalus $bonusMalus,EPMorph $mmorph){
         foreach ($mmorph->traits as $t) {
             foreach ($t->bonusMalus as $b) {
-                if (strcmp($b->name,$bonusMalus->name) == 0){
+                if (strcmp($b->getName(),$bonusMalus->getName()) == 0){
                     return true;
                 }                
             }
         }
         foreach ($mmorph->additionalTraits as $t) {
             foreach ($t->bonusMalus as $b) {
-                if (strcmp($b->name,$bonusMalus->name) == 0){
+                if (strcmp($b->getName(),$bonusMalus->getName()) == 0){
                     return true;
                 }                
             }
