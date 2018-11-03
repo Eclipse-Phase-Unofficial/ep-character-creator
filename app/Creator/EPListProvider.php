@@ -529,15 +529,7 @@ class EPListProvider {
                 array_push($bckLimitation, $limitRow['limitationGroup']);
             }
 
-            //obligations
-            $bckObligation = array();
-            $obl = self::$database->query("SELECT `background`, `obligationGroup` FROM `BackgroundObligations` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
-            $obl->setFetchMode(\PDO::FETCH_ASSOC);
-
-            while ($oblRow = $obl->fetch()) {
-                array_push($bckObligation, $oblRow['obligationGroup']);
-            }
-            $bck = new EPBackground($bckRow['name'],$bckRow['description'],$bckRow['type'],$backgroundBonusMalusList,$backgroundTraitList,$bckLimitation,$bckObligation);
+            $bck = new EPBackground($bckRow['name'],$bckRow['description'],$bckRow['type'],$backgroundBonusMalusList,$backgroundTraitList,$bckLimitation);
             //$backgroundList[$bckRow['name']] = $bck;
             array_push($backgroundList, $bck);
         }

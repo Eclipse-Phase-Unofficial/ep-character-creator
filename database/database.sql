@@ -2557,11 +2557,6 @@ CREATE TABLE `BackgroundLimitations` (
 );
 INSERT INTO BackgroundLimitations VALUES('Hyperelite','Hyperelite morph limitation');
 INSERT INTO BackgroundLimitations VALUES('Infolife','Psi trait prohibited');
-CREATE TABLE `BackgroundObligations` (
-  `background` varchar(100) NOT NULL,
-  `obligationGroup` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`obligationGroup`)
-);
 CREATE TABLE IF NOT EXISTS "background_trait" (
   `background` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,

@@ -28,11 +28,6 @@ class EPBackground extends EPAtom{
      * @var array
      */
     public $limitations;
-    /**
-     * @var array
-     */
-    public $obligations;
-    
     
     function getSavePack(): array
     {
@@ -54,11 +49,6 @@ class EPBackground extends EPAtom{
             array_push($limitationsArray, $m);
         } 
         $savePack['limitationsArray'] = $limitationsArray;
-        $obligationsArray = array();
-        foreach($this->obligations as $m){
-            array_push($obligationsArray, $m);
-        } 
-        $savePack['obligationsArray'] = $obligationsArray;
 	    
 	return $savePack;
     }
@@ -79,16 +69,12 @@ class EPBackground extends EPAtom{
         foreach($savePack['limitationsArray'] as $m){
             array_push($this->limitations, $m);
         }
-        foreach($savePack['obligationsArray'] as $m){
-            array_push($this->obligations, $m);
-        }  
     }
-    function __construct($atName,$atDesc,$backgroundType,$bonusMalus = array(),$traits = array(), $limitations = array(),$obligations = array()) {
+    function __construct($atName,$atDesc,$backgroundType,$bonusMalus = array(),$traits = array(), $limitations = array()) {
         parent::__construct(EPAtom::$BACKGROUND, $atName, $atDesc);
         $this->backgroundType = $backgroundType;
         $this->bonusMalus = $bonusMalus;
         $this->traits = $traits;
         $this->limitations = $limitations;
-        $this->obligations = $obligations;
     }
 }
