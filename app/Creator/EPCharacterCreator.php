@@ -471,7 +471,7 @@ class EPCharacterCreator implements Savable
             return true;
         }
     }
-    function addGear($gear, &$morph){
+    function addGear(EPGear $gear, EPMorph &$morph){
         if ($this->creationMode){
             if (!isset($gear)){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
@@ -482,7 +482,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = EpDatabase()->getGearByName($gear->name);
+            $gearToAdd = EpDatabase()->getGearByName($gear->getName());
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
@@ -502,7 +502,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $this->listProvider->connect();
-            $gearToAdd = EpDatabase()->getGearByName($gear->name);
+            $gearToAdd = EpDatabase()->getGearByName($gear->getName());
             //Special Bonus/Malus Implant Reject
             if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
                 $gearToAdd->addToArray($morph->additionalGears);
@@ -904,10 +904,16 @@ class EPCharacterCreator implements Savable
         $this->adjustAll();
         return true;
     }
-    function isLowerLevelBuy($trait,$currentTraits){
-	$traitName = $this->removeLastWord($trait->name);
+
+    /**
+     * @param EPTrait   $trait
+     * @param EPTrait[] $currentTraits
+     * @return bool
+     */
+    function isLowerLevelBuy(EPTrait $trait, array $currentTraits){
+	$traitName = $this->removeLastWord($trait->getName());
         foreach ($currentTraits as $t){
-            if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+            if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
                     $trait->level > $t->level){
                 return true;
             }
@@ -915,11 +921,17 @@ class EPCharacterCreator implements Savable
 
         return false;
     }
-    function isHigherLevelBuy($trait,$currentTraits){
 
-	    $traitName = $this->removeLastWord($trait->name);
+    /**
+     * @param EPTrait   $trait
+     * @param EPTrait[] $currentTraits
+     * @return bool
+     */
+    function isHigherLevelBuy(EPTrait $trait, array $currentTraits){
+
+	    $traitName = $this->removeLastWord($trait->getName());
 	    foreach ($currentTraits as $t){
-	        if (strcmp($this->removeLastWord($t->name), $traitName) == 0 &&
+	        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
 	        	$trait->level < $t->level){
 	            return true;
 	        }
