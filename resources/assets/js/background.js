@@ -34,7 +34,7 @@ export const init = () => {
         shuffle: true,
         delay: 60000,
         // overlay: require('url-loader?emitFile=false!../../../../public/images/vendor/vegas/src/overlays/08.png'),
-        // overlay: '<?php echo createDataURI("images/vendor/vegas/src/overlays/08.png","png"); ?>',
+        // overlay: '<?php //echo createDataURI(public_path("images/vendor/vegas/src/overlays/08.png"),"png"); ?>',
         overlay: 'images/vendor/vegas/src/overlays/08.png',
         slides: backgroundSlides
     });

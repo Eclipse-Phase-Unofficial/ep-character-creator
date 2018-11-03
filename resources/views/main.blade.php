@@ -6,7 +6,11 @@ use App\Creator\EPListProvider;
     error_reporting(0);
     $provider = new EPListProvider(getConfigLocation());
     function createDataURI($image,$image_type){
-        return "data:image/".$image_type.";base64,".base64_encode(file_get_contents($image));
+        $fileContents = file_get_contents($image);
+        if (!$fileContents) {
+            throw new \InvalidArgumentException("File does not exist: $image");
+        }
+        return "data:image/".$image_type.";base64,".base64_encode($fileContents);
     }
 ?>
 <!DOCTYPE html>
@@ -26,7 +30,7 @@ use App\Creator\EPListProvider;
 
         <!-- POPUP  -- DYNAMIC CONTENT -->
         <div id="popup" data-name=""></div>
-        <div id="loading_popup"><center><img src="<?php echo createDataURI("img/ajax-loader.gif","gif"); ?>"></center></div>
+        <div id="loading_popup"><center><img src="<?php echo createDataURI(public_path("img/ajax-loader.gif"),"gif"); ?>"></center></div>
 
         <div id="container">
 
