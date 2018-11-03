@@ -40,3 +40,10 @@ mix.js('resources/assets/js/app.js', 'public/js/app.js')
             }),
         ]
     });
+
+//Do Hot model reloading on port 3030, so we can test the site on port 8080
+mix.options({
+    hmrOptions: {
+        port: '3030'
+    }
+});

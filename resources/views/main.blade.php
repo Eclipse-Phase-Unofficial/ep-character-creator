@@ -128,11 +128,17 @@ use App\Creator\EPListProvider;
             </div>
         </div>
 
+        {{--<link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
+        {{--<link rel="stylesheet" href="{{mix('css/app.css')}}">--}}
         <style>
             {{include public_path('css/vendor.css')}}
             {{include public_path('css/app.css')}}
         </style>
 
+        {{--<script src="{{mix('js/manifest.js')}}" type="text/javascript"></script>--}}
+        {{--<script src="{{mix('js/vendor.js')}}" type="text/javascript"></script>--}}
+        {{--<script src="{{mix('js/app.js')}}" type="text/javascript"></script>--}}
+        {{--<script src="{{mix('js/legacy.js')}}" type="text/javascript"></script>--}}
         <script>
             //Load order is important here
             {{include public_path('js/manifest.js')}}

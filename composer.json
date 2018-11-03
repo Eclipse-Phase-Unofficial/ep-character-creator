@@ -44,7 +44,8 @@
     "fideloper/proxy": "^4.0",
     "laravel/framework": "5.6.*",
     "laravel/tinker": "^1.0",
-    "setasign/fpdf": "^1.8"
+    "setasign/fpdf": "^1.8",
+    "ext-pdo": "*"
   },
   "autoload": {
     "classmap": [
