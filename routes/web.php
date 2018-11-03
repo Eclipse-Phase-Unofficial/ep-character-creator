@@ -109,22 +109,22 @@ Route::prefix('secondary-choice')->group(function () {
 
 //Panel 3
 Route::prefix('tertiary-choice')->group(function () {
-    Route::get('/', function () {
+    Route::get('/aiBMD', function () {
         return view('tertiary-choice.aiBMD');
     });
-    Route::get('/', function () {
+    Route::get('/aptsWithMorph', function () {
         return view('tertiary-choice.aptsWithMorph');
     });
-    Route::get('/', function () {
+    Route::get('/backgroundBMD', function () {
         return view('tertiary-choice.backgroundBMD');
     });
-    Route::get('/', function () {
+    Route::get('/factionBMD', function () {
         return view('tertiary-choice.factionBMD');
     });
-    Route::get('/', function () {
+    Route::get('/gears', function () {
         return view('tertiary-choice.gears');
     });
-    Route::get('/', function () {
+    Route::get('/implants', function () {
         return view('tertiary-choice.implants');
     });
     Route::get('/morphBMD', function () {
