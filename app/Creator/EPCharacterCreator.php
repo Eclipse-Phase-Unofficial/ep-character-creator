@@ -1314,7 +1314,10 @@ class EPCharacterCreator implements Savable
         return $this->character->ego->motivations;
     }
 
-    // All morphs the character has
+    /**
+     * All morphs the character has
+     * @return EPMorph[]
+     */
     function getCurrentMorphs(){
         return $this->character->morphs;
     }
@@ -2583,6 +2586,10 @@ class EPCharacterCreator implements Savable
             $p->isActif = false;
         }
     }
+
+    /**
+     * @return EPPsySleight[]
+     */
     function getCurrentPsySleights(){
 	    return $this->character->ego->psySleights;
     }

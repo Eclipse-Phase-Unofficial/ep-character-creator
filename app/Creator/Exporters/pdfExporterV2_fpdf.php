@@ -3,6 +3,7 @@
 
 namespace App\Creator\Exporters;
 
+use App\Creator\Atoms\EPBonusMalus;
 use App\Creator\Atoms\EPStat;
 use App\Creator\EPFileUtility;
 use App\Creator\EPBook;
@@ -140,7 +141,7 @@ class pdfExporterV2_fpdf {
                 $formattedPsi = array();
                 foreach($psySleights as $sleight)
                 {
-                    $book = new EPBook($sleight->name);
+                    $book = new EPBook($sleight->getName());
                     $item = array();
                     //set the slight token to active or passive
                     if($sleight->psyType == EPPsySleight::$ACTIVE_PSY)
@@ -148,7 +149,7 @@ class pdfExporterV2_fpdf {
                     else
                         $type = "(P) ";
 
-            $item[0] = toUpper($type . $sleight->name);
+            $item[0] = toUpper($type . $sleight->getName());
                     $item[2] = $book->getPrintableName();
                     array_push($formattedPsi,$item);
                 }
@@ -231,10 +232,10 @@ class pdfExporterV2_fpdf {
 						else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
 						else if($morph->morphType == EPMorph::$PODMORPH) $type = "[pod]";
 
-						$pdf->Text(55, 11.5, toUpper($morph->name . " " . $type));//morph Name type
+						$pdf->Text(55, 11.5, toUpper($morph->getName() . " " . $type));//morph Name type
 
 						$pdf->SetFont('Lato-LigIta', '', 5);
-                        $this->writeBookLink($morph->name, 105, 11.5, $pdf);//morph bookLink
+                        $this->writeBookLink($morph->getName(), 105, 11.5, $pdf);//morph bookLink
 
 						$pdf->SetFont('Lato-Lig', '', 8);
 						$pdf->Text(140, 12, toUpper($morph->nickname));//morph nickname
@@ -399,7 +400,7 @@ class pdfExporterV2_fpdf {
                         $formattedMemo = $this->formatMemoData($morphBonusMalus);
                         $pdf->SetXY(80,230);
                         $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
-                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->name . " Memo Overflow");
+                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->getName() . " Memo Overflow");
                     }
 
 			//===================
@@ -453,52 +454,65 @@ class pdfExporterV2_fpdf {
         return $formattedSkills;
     }
 
-    //Prepare aptitude/stats/rep data for printing
-    // @param $functionName The Name of the function used to get the skills value
-    // 'getEgoValue' for ego aptitudes
-    // 'getValue' for morph aptitudes and everything else
-    function formatStats($stats,$functionName = 'getValue')
+    /**
+     * Prepare aptitude/stats/rep data for printing
+     * @param EPStat[]  $stats
+     * @param string $functionName The Name of the function used to get the skills value
+     *                             'getEgoValue' for ego aptitudes
+     *                             'getValue' for morph aptitudes and everything else
+     * @return array
+     */
+    function formatStats(array $stats,string $functionName = 'getValue'): array
     {
         $data = array();
         foreach($stats as $stat)
         {
             $item = array();
-            $item[0] = toUpper($stat->name);
+            $item[0] = toUpper($stat->getName());
             $item[2] = toUpper($stat->$functionName());
             array_push($data,$item);
         }
         return $data;
     }
 
-    //Prepare gear/item/trait data for printing
-    function formatGearData($gears)
+    /**
+     * Prepare gear/item/trait data for printing
+     * @param EPGear[] $gears
+     * @return array
+     */
+    function formatGearData(array $gears): array
     {
         $data = array();
         foreach($gears as $g)
         {
-            $book = new EPBook($g->name);
+            $book = new EPBook($g->getName());
             $item = array();
             $occ = "";
             if($g->occurence > 1)
                 $occ = "(" . $g->occurence . ") ";
 
-            $item[0] = toUpper($occ . $g->name);
+            $item[0] = toUpper($occ . $g->getName());
             $item[2] = $book->getPrintableName();
             array_push($data,$item);
         }
         return $data;
     }
 
-    //Prepare memo data for printing
-    //Bonus/Malus means good/bad in Latin
-    function formatMemoData($filteredBM)
+    /**
+     * Prepare memo data for printing
+     *
+     * Bonus/Malus means good/bad in Latin
+     * @param EPBonusMalus[] $filteredBM
+     * @return array
+     */
+    function formatMemoData(array $filteredBM): array
     {
         $data = array();
         foreach($filteredBM as $bm)
         {
             $item = array();
-            $item[0] = toUpper($bm->name);
-            $item[2] = $bm->description;
+            $item[0] = toUpper($bm->getName());
+            $item[2] = $bm->getDescription();
             array_push($data,$item);
         }
         return $data;
