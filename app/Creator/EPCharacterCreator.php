@@ -1453,81 +1453,56 @@ class EPCharacterCreator implements Savable
         $this->character->ego->traits = array_merge($background_traits,$faction_traits);
     }
 
-    function setOccurenceGear( $gearName, $occurence,$morphName = null){
-      if ($occurence < 1){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
+    /**
+     * Set how many copies of a certain piece of gear a morph has
+     * @param string       $gearName
+     * @param int          $occurence
+     * @param EPMorph|null $morph
+     * @return bool
+     */
+    function setOccurrenceGear(string $gearName, int $occurence, EPMorph $morph = null)
+    {
+        if ($occurence < 1) {
+            array_push($this->errorList,
+                new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
             return false;
-      }
-
-      if ($this->creationMode){
-        if (isset($morphName)){
-          foreach ($this->character->morphs as $m){
-            if (strcmp($m->getName(), $morphName) == 0){
-              foreach ($m->gears as $g){
-                if (strcmp($g->getName(), $gearName) == 0){
-                  $g->occurence = $occurence;
-                  return true;
-                }
-              }
-              foreach ($m->additionalGears as $g){
-                if (strcmp($g->getName(), $gearName) == 0){
-                  $g->occurence = $occurence;
-                  return true;
-                }
-              }
-              array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph not have this gear  !)', EPCreatorErrors::$RULE_ERROR));
-              return false;
-            }
-          }
-          array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character not have this morph  !)', EPCreatorErrors::$RULE_ERROR));
-          return false;
-        }else{
-          foreach ($this->character->ego->softGears as $sg){
-            if (strcmp($sg->getName(), $gearName) == 0){
-              $sg->occurence = $occurence;
-              return true;
-            }
-          }
-          array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this gear !)', EPCreatorErrors::$RULE_ERROR));
-          return false;
         }
-      }else{
-        if (isset($morphName)){
-          foreach ($this->character->morphs as $m){
-            if (strcmp($m->getName(), $morphName) == 0){
-              foreach ($m->gears as $g){
-                if (strcmp($g->getName(), $gearName) == 0){
-                  $this->evoCrePoint -= ($occurence - $g->occurence) * $g->getCost();
-                  $g->occurence = $occurence;
-                  return true;
+        if (isset($morph)) {
+            $gear = EPAtom::getAtomByName($morph->gears, $gearName);
+            if (isset($gear)) {
+                if (!$this->creationMode) {
+                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
                 }
-              }
-              foreach ($m->additionalGears as $g){
-                if (strcmp($g->getName(), $gearName) == 0){
-                  $this->evoCrePoint -= ($occurence - $g->occurence) * $g->getCost();
-                  $g->occurence = $occurence;
-                  return true;
-                }
-              }
-              array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This morph not have this gear  !)', EPCreatorErrors::$RULE_ERROR));
-              return false;
+                $gear->occurence = $occurence;
+                return true;
             }
-          }
-          array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character not have this morph  !)', EPCreatorErrors::$RULE_ERROR));
-          return false;
-        }else{
-          foreach ($this->character->ego->softGears as $sg){
-            if (strcmp($sg->getName(), $gearName) == 0){
-              $this->evoCrePoint -= ($occurence - $sg->occurence) * $sg->getCost();
-              $sg->occurence = $occurence;
-              return true;
-            }
-          }
-          array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this gear !)', EPCreatorErrors::$RULE_ERROR));
-          return false;
-        }
-      }
 
+            $gear = EPAtom::getAtomByName($morph->additionalGears, $gearName);
+            if (isset($gear)) {
+                if (!$this->creationMode) {
+                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
+                }
+                $gear->occurence = $occurence;
+                return true;
+            }
+            array_push($this->errorList,
+                new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (This morph not have this gear  !)',
+                    EPCreatorErrors::$RULE_ERROR));
+            return false;
+        } else {
+            $gear = EPAtom::getAtomByName($this->character->ego->softGears, $gearName);
+            if (isset($gear)) {
+                if (!$this->creationMode) {
+                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
+                }
+                $gear->occurence = $occurence;
+                return true;
+            }
+            array_push($this->errorList,
+                new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (This ego not have this gear !)',
+                    EPCreatorErrors::$RULE_ERROR));
+            return false;
+        }
     }
     function setOccurenceIA($iaName,$occurence){
       if ($occurence < 1){

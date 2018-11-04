@@ -5,12 +5,11 @@ use App\Creator\Atoms\EPAtom;
 use App\Creator\DisplayHelpers\Panel;
 use App\Creator\DisplayHelpers\Helpers;
 
-// $hint = "--dubug:morph";
-$morphGears = EpDatabase()->getGearForMorphName((string) session('currentMorph'));
-$currentGear = EPAtom::getAtomByName($morphGears, (string) session('currentMorphGearName'));
+$currentMorphGearName = (string) session('currentMorphGearName');
+$morph = creator()->getCurrentMorphsByName(session('currentMorph'));
+$currentGear = EPAtom::getAtomByName($morph->getGear(), $currentMorphGearName);
 if($currentGear == null){
-    $currentGear =  EpDatabase()->getGearByName((string) session('currentMorphGearName'));
-    // $hint = "--debug:general";
+    $currentGear =  EpDatabase()->getGearByName($currentMorphGearName);
 }
 
 $myPanel = new Panel();
