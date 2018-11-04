@@ -80,7 +80,7 @@ class EPReputation extends EPAtom{
     }
     
     function __construct($atName, $atDesc, $groups = null, $value = 0, $maxVal = -1) {
-        parent::__construct(EPAtom::$REPUTATION, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->value = $value;
         $this->morphMod = 0;
         $this->traitMod = 0;             

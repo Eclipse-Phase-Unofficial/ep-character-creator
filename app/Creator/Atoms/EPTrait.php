@@ -75,7 +75,7 @@ class EPTrait extends EPAtom
         }	    
     }   
     function __construct($atName, $atDesc, $traitPosNeg, $traitEgoMorph, $cpCost , $bonusMalusArray = array(),$level = 1,$canUse='EVERY') {
-        parent::__construct(EPAtom::$TRAIT, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->traitPosNeg = $traitPosNeg;
         $this->traitEgoMorph = $traitEgoMorph;
         $this->cpCost = $cpCost;

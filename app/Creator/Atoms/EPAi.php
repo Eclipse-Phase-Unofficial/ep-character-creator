@@ -68,7 +68,7 @@ class EPAi extends EPAtom{
 
     function __construct($atName, $aptitudes, $costType, $skills = array(), $atDesc = '')
     {
-        parent::__construct(EPAtom::$AI, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->aptitudes = $aptitudes;
         $this->skills = $skills;
         $this->cost = $costType;

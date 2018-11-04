@@ -142,7 +142,7 @@ class EPMorph extends EPAtom {
         }
     }
     function __construct( $atName,$morphType,$age, $gender,$maxApptitude,$durability,$cpCost,$traits=  array(),$gears=  array(),$bonusMalus=  array(), $atDesc= '',$nickname = '', $location = '',$creditCost=0) {
-        parent::__construct(EPAtom::$MORPH, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->morphType = $morphType;
         $this->age = $age;
         $this->gender = $gender;

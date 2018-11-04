@@ -111,7 +111,7 @@ class EPBonusMalus extends EPAtom{
         }
     }   
     function __construct($atName,$type, $value,$targetName = "", $atDesc = "", $groups = array(),$onCost = 'false',$targetforChoice = "", $typeTarget="",$bonusMalusTypes=array(),$multiOccur = 0) {
-        parent::__construct(EPAtom::$BONUSMALUS, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->bonusMalusType = $type;
         $this->forTargetNamed = $targetName;
         $this->value = $value;

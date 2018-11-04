@@ -18,28 +18,10 @@ use App\Creator\Savable;
  */
 class EPAtom implements Savable
 {
-
-    static $APTITUDE = 'aptitude';
-    static $BACKGROUND = 'background';
-    static $FACTION = 'faction';
-    static $GEAR = 'gear';
-    static $WEAPON ='weapon';
-    static $ARMOR = 'armor';
-    static $MOTIVATION = 'motivation';
-    static $REPUTATION = 'reputation';
-    static $SKILL = 'skill';
-    static $STAT = 'stat';
-    static $TRAIT = 'trait';
-    static $BONUSMALUS = 'bonusmalus';
-    static $MORPH = 'morph';
-    static $AI = 'ai';
-    static $PSY = 'psy';
-
     /**
      * @var string
      */
     private $atomUid;
-    public  $type;
 
     /**
      * @var string
@@ -66,9 +48,8 @@ class EPAtom implements Savable
     public $ratioCostPsyMod;
 
 
-    function __construct(string $atType, string $atName, string $atDesc) {
+    function __construct(string $atName, string $atDesc) {
        $this->atomUid = uniqid('Atom_'.$this->sanitize($atName).'_');
-       $this->type = $atType;
        $this->name = $atName;
        $this->description = $atDesc;
        $this->groups = array();
@@ -91,7 +72,6 @@ class EPAtom implements Savable
 	    $savePack = array();
 
         $savePack['atomUid'] = $this->atomUid;
-	    $savePack['type'] = $this->type;
 	    $savePack['name'] = $this->getName();
 	    $savePack['description'] = $this->getDescription();
 	    $savePack['groups'] = $this->groups;
@@ -109,7 +89,6 @@ class EPAtom implements Savable
 
     function loadSavePack($savePack,$cc = null){
         $this->atomUid = $savePack['atomUid'];
-	    $this->type = $savePack['type'];
 	    $this->name = $savePack['name'];
 	    $this->description = $savePack['description'];
 	    $this->groups = $savePack['groups'];

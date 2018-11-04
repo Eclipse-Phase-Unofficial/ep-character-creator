@@ -186,7 +186,7 @@ class EPGear extends EPAtom{
     function __construct($atName, $atDesc,$gearType, $costType, $armorKinetic = 0,$armorEnergy = 0,$degat = 0,$armorPenetration = 0, $bonusmalus = array(),$gearRestriction='EVERY',
         $unique = true
     ) {
-        parent::__construct(EPAtom::$GEAR, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->gearType = $gearType;
         $this->armorKinetic = $armorKinetic;
         $this->armorEnergy = $armorEnergy;

@@ -166,7 +166,7 @@ class EPAptitude extends EPAtom{
         $this->absoluteMaxValue = $savePack['absoluteMaxValue'];
     }
     function __construct($atName,$abbreviation,$atDesc = '', $groups = array(),$baseValue = 0, $maxValue = 0, $minValue = 0, $absoluteMaxValue = 0) {
-        parent::__construct(EPAtom::$APTITUDE, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->abbreviation = $abbreviation;
         $this->value = $baseValue;
         $this->morphMod = 0;

@@ -92,7 +92,7 @@ class EPPsySleight extends EPAtom{
     }
     
     function __construct($atName, $atDesc, $psyType, $range, $duration, $action, $strainMod,$psyLevel, $bonusMalusArray = array(), $skillNeeded="none") {
-        parent::__construct(EPAtom::$PSY, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->psyType = $psyType;
         $this->range = $range;
         $this->duration = $duration;

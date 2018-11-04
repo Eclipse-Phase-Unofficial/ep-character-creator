@@ -71,7 +71,7 @@ class EPBackground extends EPAtom{
         }
     }
     function __construct($atName,$atDesc,$backgroundType,$bonusMalus = array(),$traits = array(), $limitations = array()) {
-        parent::__construct(EPAtom::$BACKGROUND, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->backgroundType = $backgroundType;
         $this->bonusMalus = $bonusMalus;
         $this->traits = $traits;

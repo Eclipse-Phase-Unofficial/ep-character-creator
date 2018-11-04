@@ -94,7 +94,7 @@ class EPStat extends EPAtom{
         $this->multiPsyMod = $savePack['multiPsyMod']; 
     }
     function __construct($atName, $atDesc, $abbreviation, $groups = array(),$value = 0, &$characterCreator = null) {
-        parent::__construct(EPAtom::$STAT, $atName, $atDesc);
+        parent::__construct($atName, $atDesc);
         $this->abbreviation = $abbreviation;
         $this->value = $value;
         $this->groups = $groups;
