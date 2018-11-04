@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Creator\DisplayHelpers;
 
 use App\Creator\Atoms\EPAi;
+use App\Creator\Atoms\EPGear;
 
 
 /**
@@ -57,17 +58,19 @@ class Panel{
 
     /**
      * Add an option to buy more/less of an item.
+     * @param EPGear $gear
+     * @param string $type
      */
-    function addBuySell($atom,$type){
+    function addBuySell(EPGear $gear,string $type){
         $output = "";
-        if(!$atom->unique){
+        if(!$gear->isUnique()){
             $output .= "<li class='listSection'>";
             $output .= "Buy more of this";
             $output .= "</li>";
             $output .= "<li>";
             $output .= "	<span class='bmGranted'>Number</span>";
             $output .= "	<span class='iconPlusMinus slowTransition' id='removeOccurence_".$type."' data-icon='&#x3b;'></span>";
-            $output .= "	<span class='betweenPlusMinus'>[".$atom->occurence."]</span>";
+            $output .= "	<span class='betweenPlusMinus'>[".$gear->occurence."]</span>";
             $output .= "	<span class='iconPlusMinus slowTransition' id='addOccurence_".$type."' data-icon='&#x3a;'></span>";
             $output .= "</li>";
         }

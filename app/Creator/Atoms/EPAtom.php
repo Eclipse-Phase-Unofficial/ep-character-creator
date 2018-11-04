@@ -42,10 +42,6 @@ class EPAtom implements Savable
     public  $type;
 
     public $occurence;
-    /**
-     * @var bool
-     */
-    public $unique;
 
     /**
      * @var string
@@ -87,7 +83,6 @@ class EPAtom implements Savable
        $this->ratioCostSoftgearMod = 1;
        $this->ratioCostPsyMod = 1;
        $this->occurence = 1;
-       $this->unique = true;
 
         if(empty($this->name))
         {
@@ -112,7 +107,6 @@ class EPAtom implements Savable
 	    $savePack['ratioCostSoftgearMod'] = $this->ratioCostSoftgearMod;
 	    $savePack['ratioCostPsyMod'] = $this->ratioCostPsyMod;
         $savePack['occurence'] = $this->occurence;
-        $savePack['unique'] = $this->unique;
 
 	    return $savePack;
     }
@@ -132,7 +126,6 @@ class EPAtom implements Savable
 	    $this->ratioCostSoftgearMod = $savePack['ratioCostSoftgearMod'];
 	    $this->ratioCostPsyMod = $savePack['ratioCostPsyMod'];
         $this->occurence = $savePack['occurence'];
-        $this->unique = $savePack['unique'];
 
         if(empty($this->name))
         {

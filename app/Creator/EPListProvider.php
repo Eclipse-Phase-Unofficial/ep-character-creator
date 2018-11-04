@@ -544,7 +544,7 @@ class EPListProvider {
     function getListAi(): array
     {
         $aiList = array();
-        $aiRes = self::$database->query("SELECT `name`, `desc`, `cost`, `unique` FROM `muses`");
+        $aiRes = self::$database->query("SELECT `name`, `desc`, `cost` FROM `muses`");
         $aiRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($aiRow = $aiRes->fetch()) {
             //aptitudes
@@ -582,11 +582,6 @@ class EPListProvider {
             }
 
             $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $aiRow['desc']);
-            if ($aiRow['unique'] == "N") {
-                $ai->unique = false;
-            } else {
-                $ai->unique = true;
-            }
             //$aiList[$aiRow['name']] = $ai;
             array_push($aiList, $ai);
         }
@@ -620,8 +615,7 @@ class EPListProvider {
                     }
                 }
             }
-            $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor']);
-            if($gearRow['unique'] == "N") $gear->unique = false;
+            $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor'], $gearRow['unique'] !== "N");
             //$gearList[$gearRow['name']] = $gear;
             array_push($gearList, $gear);
         }
@@ -651,8 +645,7 @@ class EPListProvider {
             }
         }
 
-        $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor']);
-        if($gearRow['unique'] == "N") $gear->unique = false;
+        $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor'], $gearRow['unique'] !== "N");
         return $gear;
     }
     

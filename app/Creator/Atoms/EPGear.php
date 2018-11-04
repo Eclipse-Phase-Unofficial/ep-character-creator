@@ -81,7 +81,12 @@ class EPGear extends EPAtom{
     public $degatPsyMod;
     public $armorEnergyPsyMod;
     public $armorKineticPsyMod;
-   
+
+    /**
+     * @var bool If the player can own more than one (NOTE:  Even if they can, it's just incrementing the "occurence" variable)
+     */
+    private $unique;
+
     //array
     public $bonusMalus;
     
@@ -119,6 +124,7 @@ class EPGear extends EPAtom{
         $savePack['degatPsyMod'] =  $this->degatPsyMod;
         $savePack['armorEnergyPsyMod'] =  $this->armorEnergyPsyMod;
         $savePack['armorKineticPsyMod'] =  $this->armorKineticPsyMod;
+        $savePack['unique'] = $this->unique;
         $bmSavePacks = array();
         foreach($this->bonusMalus as $m){
             array_push($bmSavePacks	, $m->getSavePack());
@@ -160,6 +166,7 @@ class EPGear extends EPAtom{
         $this->degatPsyMod = $savePack['degatPsyMod'];
         $this->armorEnergyPsyMod = $savePack['armorEnergyPsyMod'];
         $this->armorKineticPsyMod = $savePack['armorKineticPsyMod'];
+        $this->unique = $savePack['unique'];
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('','','');
             $savedBm->loadSavePack($m);
@@ -168,7 +175,9 @@ class EPGear extends EPAtom{
     }
     
     
-    function __construct($atName, $atDesc,$gearType, $costType, $armorKinetic = 0,$armorEnergy = 0,$degat = 0,$armorPenetration = 0, $bonusmalus = array(),$gearRestriction='EVERY') {
+    function __construct($atName, $atDesc,$gearType, $costType, $armorKinetic = 0,$armorEnergy = 0,$degat = 0,$armorPenetration = 0, $bonusmalus = array(),$gearRestriction='EVERY',
+        $unique = true
+    ) {
         parent::__construct(EPAtom::$GEAR, $atName, $atDesc);
         $this->gearType = $gearType;
         $this->armorKinetic = $armorKinetic;
@@ -178,6 +187,7 @@ class EPGear extends EPAtom{
         $this->cost = $costType;
         $this->bonusMalus = $bonusmalus;
         $this->gearRestriction = $gearRestriction;
+        $this->unique = $unique;
         $this->armorPenetrationMorphMod = 0;
         $this->degatMorphMod = 0;
         $this->armorEnergyMorphMod = 0;
@@ -203,6 +213,16 @@ class EPGear extends EPAtom{
         $this->armorEnergyPsyMod = 0;
         $this->armorKineticPsyMod = 0;
     }
+
+    /**
+     * If the player can purchase more than one copy of the gear
+     * @return bool
+     */
+    public function isUnique()
+    {
+        return $this->unique;
+    }
+
     function getArmorEnergy(){
         return $this->armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod; 
     }
