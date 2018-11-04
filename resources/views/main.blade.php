@@ -132,11 +132,13 @@ use App\Creator\EPListProvider;
             </div>
         </div>
 
-        {{--<link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
-        {{--<link rel="stylesheet" href="{{mix('css/app.css')}}">--}}
+{{--        <link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
+{{--        <link rel="stylesheet" href="{{mix('css/app.css')}}">--}}
         <style>
-            {{include public_path('css/vendor.css')}}
-            {{include public_path('css/app.css')}}
+            <?php
+            include public_path('css/vendor.css');
+            include public_path('css/app.css');
+            ?>
         </style>
 
         {{--<script src="{{mix('js/manifest.js')}}" type="text/javascript"></script>--}}
@@ -144,11 +146,13 @@ use App\Creator\EPListProvider;
         {{--<script src="{{mix('js/app.js')}}" type="text/javascript"></script>--}}
         {{--<script src="{{mix('js/legacy.js')}}" type="text/javascript"></script>--}}
         <script>
+            <?php
             //Load order is important here
-            {{include public_path('js/manifest.js')}}
-            {{include public_path('js/vendor.js')}}
-            {{include public_path('js/app.js')}}
-            {{include public_path('js/legacy.js')}}
+            include public_path('js/manifest.js');
+            include public_path('js/vendor.js');
+            include public_path('js/app.js');
+            include public_path('js/legacy.js');
+            ?>
 
             $( function() {
                 //NAVIGATION JQUERRY
