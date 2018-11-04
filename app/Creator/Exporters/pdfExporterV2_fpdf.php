@@ -332,12 +332,12 @@ class pdfExporterV2_fpdf {
 
 							$pdf->SetFont('Lato-Lig', '', $fontsize);
 							$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt("[" . $type . "]"));//Weapon type
-							$pdf->Text(($apt_x + 13), $apt_y, PdfHelpers::formatIt($occ . $w->name));//Weapon name
+							$pdf->Text(($apt_x + 13), $apt_y, PdfHelpers::formatIt($occ . $w->getName()));//Weapon name
 							$pdf->Text(($apt_x + 57), $apt_y, PdfHelpers::formatIt("DV: " . $w->degat));//Weapon degats
 							$pdf->Text(($apt_x + 97), $apt_y, PdfHelpers::formatIt("AP : " . $w->armorPenetration));//Weapon Armor penetration
 
 							$pdf->SetFont('Lato-LigIta', '', 6);
-                            $this->writeBookLink($w->name, ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
+                            $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
 
 							$apt_y += $y_space;
 						}
@@ -368,7 +368,7 @@ class pdfExporterV2_fpdf {
 								$occ = "";
 
 							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text( $apt_x, $apt_y, PdfHelpers::formatIt($occ . $a->name));//Armor name
+							$pdf->Text( $apt_x, $apt_y, PdfHelpers::formatIt($occ . $a->getName()));//Armor name
 
 							if($a->armorKinetic == 0 && $a->armorEnergy == 0)
 							{
@@ -381,7 +381,7 @@ class pdfExporterV2_fpdf {
 							}
 
 							$pdf->SetFont('Lato-LigIta', '', 6);
-                            $this->writeBookLink($a->name, ($apt_x + 108), $apt_y, $pdf);//Armor bookLink
+                            $this->writeBookLink($a->getName(), ($apt_x + 108), $apt_y, $pdf);//Armor bookLink
 
 							$apt_y += $y_space;
 						}
@@ -561,17 +561,11 @@ class pdfExporterV2_fpdf {
 		return $final;
 	}
 
-	function getTraits($objArray)
-	{
-		$final = "*";
-		foreach($objArray as $m)
-		{
-			$final .= $m->name . "*";
-		}
-		return $final;
-	}
-
-	function getDescOnlyBM($bonusMalus)
+    /**
+     * @param array $bonusMalus
+     * @return EPBonusMalus[]
+     */
+    function getDescOnlyBM(array $bonusMalus): array
 	{
 		$result = array();
 		foreach($bonusMalus as $bm)
@@ -582,7 +576,11 @@ class pdfExporterV2_fpdf {
 		return $result;
 	}
 
-	function getMorphMemoBM($bonusMalus)
+    /**
+     * @param array $bonusMalus
+     * @return EPBonusMalus[]
+     */
+    function getMorphMemoBM(array $bonusMalus): array
 	{
 		$result = array();
 		foreach($bonusMalus as $bm)
@@ -601,7 +599,11 @@ class pdfExporterV2_fpdf {
 		return $result;
 	}
 
-	function filterWeaponOnly($gears)
+    /**
+     * @param array $gears
+     * @return EPGear[]
+     */
+    function filterWeaponOnly(array $gears): array
 	{
 		$result = array();
 		foreach($gears as $g)
@@ -625,7 +627,11 @@ class pdfExporterV2_fpdf {
 		return $result;
 	}
 
-	function filterArmorOnly($gears)
+    /**
+     * @param array $gears
+     * @return EPGear[]
+     */
+    function filterArmorOnly(array $gears): array
 	{
 		$result = array();
 		foreach($gears as $g)
@@ -636,7 +642,11 @@ class pdfExporterV2_fpdf {
 		return $result;
 	}
 
-	function filterImplantOnly($gears)
+    /**
+     * @param array $gears
+     * @return EPGear[]
+     */
+    function filterImplantOnly(array $gears): array
 	{
 		$result = array();
 		foreach($gears as $g)
@@ -648,7 +658,11 @@ class pdfExporterV2_fpdf {
 	}
 
 
-	function filterGeneralOnly($gears)
+    /**
+     * @param array $gears
+     * @return EPGear[]
+     */
+    function filterGeneralOnly(array $gears): array
 	{
 		$result = array();
 		foreach($gears as $g)

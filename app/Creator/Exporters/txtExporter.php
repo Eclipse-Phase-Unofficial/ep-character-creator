@@ -526,9 +526,9 @@ if(null !== creator()) {
 							if($w->occurence > 1) $occ = "(".$w->occurence.") ";
 							else $occ = "";
 							
-							echo formatResultXL("[".$type."] ".$occ.$w->name."  "."DV: ".$w->degat."  "."AP : ".$w->armorPenetration)//Weapon type 
+							echo formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ".$w->degat."  "."AP : ".$w->armorPenetration)//Weapon type
 							.$tab
-							.setBookLink($w->name)
+							.setBookLink($w->getName())
 							.$carriageReturn;
 						}
 						
@@ -557,11 +557,11 @@ if(null !== creator()) {
 								$protectionKinetic += $a->armorKinetic;
 								$protectionEnergy += $a->armorEnergy;
 							}
-							echo formatResult($occ.$a->name . ($a->gearType == EPGear::$IMPLANT_GEAR ? " (Implant)" : ""))//armor 
+							echo formatResult($occ.$a->getName() . ($a->gearType == EPGear::$IMPLANT_GEAR ? " (Implant)" : ""))//armor
 							.$tab
 							.$protec
 							.$tab
-							.setBookLink($a->name)
+							.setBookLink($a->getName())
 							.$carriageReturn;
 						}
 						
@@ -586,9 +586,9 @@ if(null !== creator()) {
 							if($g->occurence > 1) $occ = "(".$g->occurence.") ";
 							else $occ = "";
 							
-							echo formatResult($occ." ".$g->name)
+							echo formatResult($occ." ".$g->getName())
 							.$tab
-							.setBookLink($g->name)
+							.setBookLink($g->getName())
 							.$carriageReturn;
 						}	
 								
@@ -606,9 +606,9 @@ if(null !== creator()) {
 							if($i->occurence > 1) $occ = "(".$i->occurence.") ";
 							else $occ = "";
 							
-							echo formatResult($occ.$i->name)
+							echo formatResult($occ.$i->getName())
 							.$tab
-							.setBookLink($i->name)
+							.setBookLink($i->getName())
 							.$carriageReturn;
 						}	
 								
@@ -624,10 +624,10 @@ if(null !== creator()) {
 						$morphBonusMalus = creator()->getBonusMalusForMorph($morph);
 						foreach($morphBonusMalus as $bm){
 							
-							echo formatResult($bm->name)
+							echo formatResult($bm->getName())
 							.$carriageReturn;
 							
-							echo formatResult($bm->description)
+							echo formatResult($bm->getDescription())
 							.$carriageReturn
 							.$carriageReturn;
 						}	
@@ -707,8 +707,13 @@ if(null !== creator()) {
 		}
 		return $final;
 	}
-	
-	function getDescOnlyBM($bonusMalus){
+
+
+    /**
+     * @param $bonusMalus
+     * @return EPBonusMalus[]
+     */
+    function getDescOnlyBM($bonusMalus){
 		$result = array();
 		foreach($bonusMalus as $bm){
 			if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY){
@@ -717,7 +722,11 @@ if(null !== creator()) {
 		}
 		return $result;
 	}
-	
+
+    /**
+     * @param $bonusMalus
+     * @return EPBonusMalus[]
+     */
 	function getMorphMemoBM($bonusMalus){
 		$result = array();
 		foreach($bonusMalus as $bm){
@@ -733,8 +742,13 @@ if(null !== creator()) {
 		}
 		return $result;
 	}
-	
-	function filterWeaponOnly($gears){
+
+    /**
+     * @param $gears
+     * @return EPGear[]
+     */
+	function filterWeaponOnly($gears)
+    {
 		$result = array();
 		foreach($gears as $g){
 			if( $g->gearType == EPGear::$WEAPON_MELEE_GEAR ||
@@ -754,7 +768,11 @@ if(null !== creator()) {
 		}
 		return $result;
 	}
-	
+
+    /**
+     * @param $gears
+     * @return EPGear[]
+     */
 	function filterArmorOnly($gears){
 		$result = array();
 		foreach($gears as $g){
@@ -767,7 +785,11 @@ if(null !== creator()) {
 		}
 		return $result;
 	}
-	
+
+    /**
+     * @param $gears
+     * @return EPGear[]
+     */
 	function filterImplantOnly($gears){
 		$result = array();
 		foreach($gears as $g){
@@ -778,7 +800,10 @@ if(null !== creator()) {
 		return $result;
 	}
 
-	
+    /**
+     * @param $gears
+     * @return EPGear[]
+     */
 	function filterGeneralOnly($gears){
 		$result = array();
 		foreach($gears as $g){

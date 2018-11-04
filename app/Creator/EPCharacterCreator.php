@@ -1243,6 +1243,10 @@ class EPCharacterCreator implements Savable
         return $res;
     }
 
+    /**
+     * @param $m
+     * @return EPBonusMalus[]
+     */
     function getBonusMalusForMorph($m){
     	$res = array();
 		$res = array_merge($res, $m->bonusMalus);
