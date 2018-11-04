@@ -320,8 +320,8 @@ class pdfExporterV2_fpdf {
 							else if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
 							else $type = "kinetic";
 
-							if($w->occurence > 1)
-								$occ = "(" . $w->occurence . ") ";
+							if($w->getOccurrence() > 1)
+								$occ = "(" . $w->getOccurrence() . ") ";
 							else
 								$occ = "";
 
@@ -357,8 +357,8 @@ class pdfExporterV2_fpdf {
 
 						foreach($armor as $a)
 						{
-							if($a->occurence > 1)
-								$occ = "(" . $a->occurence . ") ";
+							if($a->getOccurrence() > 1)
+								$occ = "(" . $a->getOccurrence() . ") ";
 							else
 								$occ = "";
 
@@ -488,8 +488,8 @@ class pdfExporterV2_fpdf {
             $book = new EPBook($g->getName());
             $item = array();
             $occ = "";
-            if($g->occurence > 1)
-                $occ = "(" . $g->occurence . ") ";
+            if($g->getOccurrence() > 1)
+                $occ = "(" . $g->getOccurrence() . ") ";
 
             $item[0] = toUpper($occ . $g->getName());
             $item[2] = $book->getPrintableName();

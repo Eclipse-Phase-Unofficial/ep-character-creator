@@ -83,9 +83,14 @@ class EPGear extends EPAtom{
     public $armorKineticPsyMod;
 
     /**
-     * @var bool If the player can own more than one (NOTE:  Even if they can, it's just incrementing the "occurence" variable)
+     * @var bool If the player can own more than one (NOTE:  Even if they can, it's just incrementing the "occurrence" variable)
      */
     private $unique;
+
+    /**
+     * @var int The number of this item the player owns
+     */
+    private $occurrence = 1;
 
     //array
     public $bonusMalus;
@@ -125,6 +130,7 @@ class EPGear extends EPAtom{
         $savePack['armorEnergyPsyMod'] =  $this->armorEnergyPsyMod;
         $savePack['armorKineticPsyMod'] =  $this->armorKineticPsyMod;
         $savePack['unique'] = $this->unique;
+        $savePack['occurrence'] = $this->occurrence;
         $bmSavePacks = array();
         foreach($this->bonusMalus as $m){
             array_push($bmSavePacks	, $m->getSavePack());
@@ -167,6 +173,8 @@ class EPGear extends EPAtom{
         $this->armorEnergyPsyMod = $savePack['armorEnergyPsyMod'];
         $this->armorKineticPsyMod = $savePack['armorKineticPsyMod'];
         $this->unique = $savePack['unique'];
+        //This is for backwards compatibility with older saves
+        $this->occurrence = $savePack['occurrence'] ?? $savePack['occurence'] ?? 1;
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('','','');
             $savedBm->loadSavePack($m);
@@ -221,6 +229,22 @@ class EPGear extends EPAtom{
     public function isUnique()
     {
         return $this->unique;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOccurrence(): int
+    {
+        return $this->occurrence;
+    }
+
+    /**
+     * @param int $occurrence
+     */
+    public function setOccurrence(int $occurrence): void
+    {
+        $this->occurrence = $occurrence;
     }
 
     function getArmorEnergy(){

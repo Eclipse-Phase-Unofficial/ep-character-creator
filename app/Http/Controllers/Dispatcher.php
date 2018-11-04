@@ -929,8 +929,13 @@ if(isset($_POST['removeTargetFrom'])){
 //ADD OCCURENCE
 if(isset($_POST['addOccurence'])){
     if($_POST['addOccurence'] == "SOFT"){
-		$currentOccu = EPAtom::getAtomByName(creator()->getEgoSoftGears(),(string) session('currentSoftName'))->occurence;
-		if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$currentOccu+1)){
+        $currentSoftGearName = (string) session('currentSoftName');
+        /** @var EPGear|null $gear */
+        $gear = EPAtom::getAtomByName(creator()->getEgoSoftGears(),$currentSoftGearName);
+        if (!isset($gear)){
+            return static::treatCreatorErrors("Gear does not exist (".$currentSoftGearName.")");
+        }
+		if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$gear->getOccurrence()+1)){
 			return static::treatCreatorErrors(creator()->getLastError());
 		}
 	}
@@ -941,14 +946,12 @@ if(isset($_POST['addOccurence'])){
         if (!isset($morph)){
             return static::treatCreatorErrors("Morph does not exist (".session('currentMorph').")");
         }
+        /** @var EPGear|null $gear */
 	    $gear = EPAtom::getAtomByName($morph->getGear(), $currentMorphGearName);
         if (!isset($gear)){
             return static::treatCreatorErrors("Gear does not exist (".$currentMorphGearName.")");
         }
-		$currentOccu = $gear->occurence;
-        $return['morph'] = var_export($morph, true);
-        $return['gear'] = var_export($gear, true);
-		if(!creator()->setOccurrenceGear($currentMorphGearName,$currentOccu+1, $morph)){
+		if(!creator()->setOccurrenceGear($currentMorphGearName,$gear->getOccurrence()+1, $morph)){
 			return static::treatCreatorErrors(creator()->getLastError());
 		}
 	}
@@ -959,10 +962,15 @@ if(isset($_POST['addOccurence'])){
 //REMOVE OCCURENCE
 if(isset($_POST['remOccurence'])){
 	if($_POST['remOccurence'] == "SOFT"){
-		$currentOccu = EPAtom::getAtomByName(creator()->getEgoSoftGears(),(string) session('currentSoftName'))->occurence;
-		if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$currentOccu-1)){
-			return static::treatCreatorErrors(creator()->getLastError());
-		}
+        $currentSoftGearName = (string) session('currentSoftName');
+        /** @var EPGear|null $gear */
+        $gear = EPAtom::getAtomByName(creator()->getEgoSoftGears(),$currentSoftGearName);
+        if (!isset($gear)){
+            return static::treatCreatorErrors("Gear does not exist (".$currentSoftGearName.")");
+        }
+        if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$gear->getOccurrence()-1)){
+            return static::treatCreatorErrors(creator()->getLastError());
+        }
 	}
 
 	if($_POST['remOccurence'] == "MORPH"){
@@ -971,12 +979,12 @@ if(isset($_POST['remOccurence'])){
         if (!isset($morph)){
             return static::treatCreatorErrors("Morph does not exist (".session('currentMorph').")");
         }
+        /** @var EPGear|null $gear */
         $gear = EPAtom::getAtomByName($morph->getGear(), $currentMorphGearName);
         if (!isset($gear)){
             return static::treatCreatorErrors("Gear does not exist (".$currentMorphGearName.")");
         }
-        $currentOccu = $gear->occurence;
-		if(!creator()->setOccurrenceGear($currentMorphGearName,$currentOccu-1, $morph)){
+		if(!creator()->setOccurrenceGear($currentMorphGearName,$gear->getOccurrence()-1, $morph)){
 			return static::treatCreatorErrors(creator()->getLastError());
 		}
 	}

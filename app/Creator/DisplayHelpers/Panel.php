@@ -70,7 +70,7 @@ class Panel{
             $output .= "<li>";
             $output .= "	<span class='bmGranted'>Number</span>";
             $output .= "	<span class='iconPlusMinus slowTransition' id='removeOccurence_".$type."' data-icon='&#x3b;'></span>";
-            $output .= "	<span class='betweenPlusMinus'>[".$gear->occurence."]</span>";
+            $output .= "	<span class='betweenPlusMinus'>[".$gear->getOccurrence()."]</span>";
             $output .= "	<span class='iconPlusMinus slowTransition' id='addOccurence_".$type."' data-icon='&#x3a;'></span>";
             $output .= "</li>";
         }

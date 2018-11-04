@@ -554,7 +554,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $gear->removeFromArray($morph->additionalGears);
-            $this->evoCrePoint += $gear->getCost() * $gear->occurence;
+            $this->evoCrePoint += $gear->getCost() * $gear->getOccurrence();
             $this->adjustAll();
             return true;
         }
@@ -1468,12 +1468,13 @@ class EPCharacterCreator implements Savable
      * @return bool
      */
     private function setOccurrenceForGearInArray(array $gearArray, string $gearName, int $occurrence){
+        /** @var EPGear|null $gear */
         $gear = EPAtom::getAtomByName($gearArray, $gearName);
         if (isset($gear)) {
             if (!$this->creationMode) {
-                $this->evoCrePoint -= ($occurrence - $gear->occurence) * $gear->getCost();
+                $this->evoCrePoint -= ($occurrence - $gear->getOccurrence()) * $gear->getCost();
             }
-            $gear->occurence = $occurrence;
+            $gear->setOccurrence($occurrence);
             return true;
         }
         return false;
@@ -1937,7 +1938,7 @@ class EPCharacterCreator implements Savable
                 }
                 if (is_array($m->additionalGears)){
                     foreach ($m->additionalGears as $g){
-                        $cred -= $g->getCost() * $g->occurence;
+                        $cred -= $g->getCost() * $g->getOccurrence();
                     }
                 }
             }
@@ -1951,7 +1952,7 @@ class EPCharacterCreator implements Savable
 
         if (is_array($this->character->ego->softGears)){
             foreach ($this->character->ego->softGears as $s){
-                $cred -= $s->getCost() * $s->occurence;
+                $cred -= $s->getCost() * $s->getOccurrence();
             }
         }
 

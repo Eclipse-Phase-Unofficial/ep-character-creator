@@ -257,7 +257,7 @@ if(null !== creator()) {
 				
 				$softGears = creator()->getEgoSoftGears();
 				foreach($softGears as $gear){
-					if($gear->occurence > 1) $occ = "(".$gear->occurence.") ";
+					if($gear->getOccurrence() > 1) $occ = "(".$gear->getOccurrence().") ";
 					else $occ = "";
 					echo formatResult($occ." ".$gear->getName())
 					.$tab
@@ -520,7 +520,7 @@ if(null !== creator()) {
 							if($w->gearType == EPGear::$WEAPON_SEEKER_GEAR) $type="seeker";
 							if($w->gearType == EPGear::$WEAPON_AMMUNITION) $type="ammo";
 							if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type="melee";
-							if($w->occurence > 1) $occ = "(".$w->occurence.") ";
+							if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
 							else $occ = "";
 							
 							echo formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ".$w->degat."  "."AP : ".$w->armorPenetration)//Weapon type
@@ -542,7 +542,7 @@ if(null !== creator()) {
 						$protectionEnergy = 0;
 
 						foreach($armor as $a){
-							if($a->occurence > 1) $occ = "(".$a->occurence.") ";
+							if($a->getOccurrence() > 1) $occ = "(".$a->getOccurrence().") ";
 							else $occ = "";
 							$protec = "";
 							if($a->armorKinetic == 0 && $a->armorEnergy==0){
@@ -580,7 +580,7 @@ if(null !== creator()) {
 						
 						$gears = filterGeneralOnly($morphGear);
 						foreach($gears as $g){
-							if($g->occurence > 1) $occ = "(".$g->occurence.") ";
+							if($g->getOccurrence() > 1) $occ = "(".$g->getOccurrence().") ";
 							else $occ = "";
 							
 							echo formatResult($occ." ".$g->getName())
@@ -600,7 +600,7 @@ if(null !== creator()) {
 						
 						$implants = filterImplantOnly($morphGear);
 						foreach($implants as $i){
-							if($i->occurence > 1) $occ = "(".$i->occurence.") ";
+							if($i->getOccurrence() > 1) $occ = "(".$i->getOccurrence().") ";
 							else $occ = "";
 							
 							echo formatResult($occ.$i->getName())
