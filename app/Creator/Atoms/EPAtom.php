@@ -39,7 +39,6 @@ class EPAtom implements Savable
      * @var int
      */
     public $cost;
-    public $ratioCost;
     public $ratioCostMorphMod;
     public $ratioCostTraitMod;
     public $ratioCostBackgroundMod;
@@ -54,7 +53,6 @@ class EPAtom implements Savable
        $this->description = $atDesc;
        $this->groups = array();
        $this->cost = 0;
-       $this->ratioCost = 1;
        $this->ratioCostMorphMod = 1;
        $this->ratioCostTraitMod = 1;
        $this->ratioCostBackgroundMod = 1;
@@ -76,7 +74,6 @@ class EPAtom implements Savable
 	    $savePack['description'] = $this->getDescription();
 	    $savePack['groups'] = $this->groups;
 	    $savePack['cost'] = $this->cost;
-        $savePack['ratioCost'] = $this->ratioCost;
 	    $savePack['ratioCostMorphMod'] = $this->ratioCostMorphMod;
 	    $savePack['ratioCostTraitMod'] = $this->ratioCostTraitMod;
 	    $savePack['ratioCostBackgroundMod'] = $this->ratioCostBackgroundMod;
@@ -93,7 +90,6 @@ class EPAtom implements Savable
 	    $this->description = $savePack['description'];
 	    $this->groups = $savePack['groups'];
 	    $this->cost = $savePack['cost'];
-        $this->ratioCost = $savePack['ratioCost'];
 	    $this->ratioCostMorphMod = $savePack['ratioCostMorphMod'];
 	    $this->ratioCostTraitMod = $savePack['ratioCostTraitMod'];
 	    $this->ratioCostBackgroundMod = $savePack['ratioCostBackgroundMod'];
@@ -145,7 +141,7 @@ class EPAtom implements Savable
      */
     public function getCost(): int
     {
-        return (int)round($this->cost * $this->ratioCost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
+        return (int)round($this->cost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
     }
 
     public function getUid(): string
