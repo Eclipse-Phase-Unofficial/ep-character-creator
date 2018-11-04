@@ -239,9 +239,9 @@ if(null !== creator()) {
 				foreach($psySleights as $sleight){
 					 $type = "(P)";
 					 if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) $type="(A)";
-					 echo formatResult($type." ".$sleight->name)
+					 echo formatResult($type." ".$sleight->getName())
 					.$tab
-					.setBookLink($sleight->name)
+					.setBookLink($sleight->getName())
 					.$carriageReturn;
 				}	
 						
@@ -344,8 +344,8 @@ if(null !== creator()) {
 						echo formatTitle("Morph Name")
 						.$tab
 						.": "
-						.formatResult($morph->name." ".$type)
-						.setBookLink($morph->name)
+						.formatResult($morph->getName()." ".$type)
+						.setBookLink($morph->getName())
 						.$carriageReturn
 						.formatTitle("Nickname")
 						.$tab
