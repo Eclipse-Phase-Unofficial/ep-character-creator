@@ -3,7 +3,7 @@
 
 namespace App\Creator\Exporters;
 
-use App\Creator\Atoms\EPBonusMalus;
+use App\Creator\Atoms\EPStat;
 use App\Creator\EPFileUtility;
 use App\Creator\EPBook;
 use App\Creator\Atoms\EPGear;
@@ -61,8 +61,8 @@ class pdfExporterV2_fpdf {
 				$pdf->Text(143, 12, $character->playerName);//Player Name
 
 				//ORIGINES
-        $pdf->Text(37, 26, PdfHelpers::formatIt(creator()->getCurrentBackground()->getName())); //Background
-        $pdf->Text(37, 33, PdfHelpers::formatIt(creator()->getCurrentFaction()->getName())); //Faction
+        $pdf->Text(37, 26, toUpper(creator()->getCurrentBackground()->getName())); //Background
+        $pdf->Text(37, 33, toUpper(creator()->getCurrentFaction()->getName())); //Faction
 
 				$pdf->SetFont('Lato-LigIta', '', 7);
         $this->writeBookLink(creator()->getCurrentBackground()->getName(), 85, 27, $pdf);//Background bookLink
@@ -70,12 +70,12 @@ class pdfExporterV2_fpdf {
 
 				//AGE - SEX
 				$pdf->SetFont('Lato-Lig', '', 10);
-        $pdf->Text(143, 26, PdfHelpers::formatIt($character->birthGender)); //Birth gender
-        $pdf->Text(143, 33, PdfHelpers::formatIt($character->realAge)); //Real age
+        $pdf->Text(143, 26, toUpper($character->birthGender)); //Birth gender
+        $pdf->Text(143, 33, toUpper($character->realAge)); //Real age
 
 				//CREDIT
 				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->Text(10, 53, PdfHelpers::formatIt(creator()->getCredit())); //Credit
+				$pdf->Text(10, 53, toUpper(creator()->getCredit())); //Credit
 
 				$pdf->SetFont('Lato-LigIta', '', 7);
 				$pdf->Text(40, 49, "(EP p.137)");//Credit bookLink
@@ -108,7 +108,7 @@ class pdfExporterV2_fpdf {
 				$pdf->SetXY($apt_x,51);
 				foreach($motivations as $mot)
 				{
-					$pdf->MultiCell(50, 3.5, PdfHelpers::formatIt($mot));//Motivations
+					$pdf->MultiCell(50, 3.5, toUpper($mot));//Motivations
 					$pdf->SetX($apt_x);
 				}
 
@@ -148,7 +148,7 @@ class pdfExporterV2_fpdf {
                     else
                         $type = "(P) ";
 
-            $item[0] = PdfHelpers::formatIt($type . $sleight->name);
+            $item[0] = toUpper($type . $sleight->name);
                     $item[2] = $book->getPrintableName();
                     array_push($formattedPsi,$item);
                 }
@@ -162,14 +162,13 @@ class pdfExporterV2_fpdf {
 
 				//AI
 				$ais = creator()->getEgoAi();
-				$y_space = 1;
 				$apt_x = 132;
 				$apt_y = 155;
 
 				foreach($ais as $ai)
 				{
 					$pdf->SetFont('Lato-Lig', '', 8);
-					$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt($occ . $ai->getName()));//ai name
+					$pdf->Text($apt_x, $apt_y, toUpper($ai->getName()));//ai name
 
 					$pdf->SetFont('Lato-LigIta', '', 6);
             $this->writeBookLink($ai->getName(), ($apt_x + 14), ($apt_y + 2), $pdf);//ai bookLink
@@ -232,17 +231,17 @@ class pdfExporterV2_fpdf {
 						else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
 						else if($morph->morphType == EPMorph::$PODMORPH) $type = "[pod]";
 
-						$pdf->Text(55, 11.5, PdfHelpers::formatIt($morph->name . " " . $type));//morph Name type
+						$pdf->Text(55, 11.5, toUpper($morph->name . " " . $type));//morph Name type
 
 						$pdf->SetFont('Lato-LigIta', '', 5);
                         $this->writeBookLink($morph->name, 105, 11.5, $pdf);//morph bookLink
 
 						$pdf->SetFont('Lato-Lig', '', 8);
-						$pdf->Text(140, 12, PdfHelpers::formatIt($morph->nickname));//morph nickname
-						$pdf->Text(50, 19, PdfHelpers::formatIt($morph->age));//morph apparent age
-						$pdf->Text(140, 19, PdfHelpers::formatIt($morph->location));//morph Location
-						$pdf->Text(50, 26, PdfHelpers::formatIt($character->playerName));//morph player
-						$pdf->Text(140, 26, PdfHelpers::formatIt($morph->gender));//morph gender
+						$pdf->Text(140, 12, toUpper($morph->nickname));//morph nickname
+						$pdf->Text(50, 19, toUpper($morph->age));//morph apparent age
+						$pdf->Text(140, 19, toUpper($morph->location));//morph Location
+						$pdf->Text(50, 26, toUpper($character->playerName));//morph player
+						$pdf->Text(140, 26, toUpper($morph->gender));//morph gender
 
                         //MORPH NEG TRAIT
                         $morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
@@ -326,10 +325,10 @@ class pdfExporterV2_fpdf {
 								$occ = "";
 
 							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt("[" . $type . "]"));//Weapon type
-							$pdf->Text(($apt_x + 13), $apt_y, PdfHelpers::formatIt($occ . $w->getName()));//Weapon name
-							$pdf->Text(($apt_x + 57), $apt_y, PdfHelpers::formatIt("DV: " . $w->degat));//Weapon degats
-							$pdf->Text(($apt_x + 97), $apt_y, PdfHelpers::formatIt("AP : " . $w->armorPenetration));//Weapon Armor penetration
+							$pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
+							$pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
+							$pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->degat));//Weapon degats
+							$pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->armorPenetration));//Weapon Armor penetration
 
 							$pdf->SetFont('Lato-LigIta', '', 6);
                             $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
@@ -363,16 +362,16 @@ class pdfExporterV2_fpdf {
 								$occ = "";
 
 							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text( $apt_x, $apt_y, PdfHelpers::formatIt($occ . $a->getName()));//Armor name
+							$pdf->Text( $apt_x, $apt_y, toUpper($occ . $a->getName()));//Armor name
 
 							if($a->armorKinetic == 0 && $a->armorEnergy == 0)
 							{
-								$pdf->Text(($apt_x + 58), $apt_y, PdfHelpers::formatIt("see memo"));//No protec, see memeo
+								$pdf->Text(($apt_x + 58), $apt_y, toUpper("see memo"));//No protec, see memeo
 							}
 							else
 							{
-								$pdf->Text(($apt_x + 58), $apt_y, PdfHelpers::formatIt("Kin: " . $a->armorKinetic));//Armor Kinetic
-								$pdf->Text(($apt_x + 68), $apt_y, PdfHelpers::formatIt("Ene: " . $a->armorEnergy));//Armor Energy
+								$pdf->Text(($apt_x + 58), $apt_y, toUpper("Kin: " . $a->armorKinetic));//Armor Kinetic
+								$pdf->Text(($apt_x + 68), $apt_y, toUpper("Ene: " . $a->armorEnergy));//Armor Energy
 							}
 
 							$pdf->SetFont('Lato-LigIta', '', 6);
@@ -437,14 +436,14 @@ class pdfExporterV2_fpdf {
                 else
                     $skillType = "A";
 
-                $item[0] = PdfHelpers::formatIt($skillType."   ".$skill->getPrintableName());
-                $item[2] = PdfHelpers::formatIt($skill->$functionName());
+                $item[0] = toUpper($skillType."   ".$skill->getPrintableName());
+                $item[2] = toUpper($skill->$functionName());
                 array_push($formattedSkills,$item);
 
                 if(!empty($skill->specialization))
                 {
                     $item = array();
-                    $item[0] = PdfHelpers::formatIt("     spec[" . $skill->specialization . "]");
+                    $item[0] = toUpper("     spec[" . $skill->specialization . "]");
                     $item[2] = "";
                     $item['isContinuation'] = "Set!";
                     array_push($formattedSkills,$item);
@@ -464,8 +463,8 @@ class pdfExporterV2_fpdf {
         foreach($stats as $stat)
         {
             $item = array();
-            $item[0] = PdfHelpers::formatIt($stat->name);
-            $item[2] = PdfHelpers::formatIt($stat->$functionName());
+            $item[0] = toUpper($stat->name);
+            $item[2] = toUpper($stat->$functionName());
             array_push($data,$item);
         }
         return $data;
@@ -483,7 +482,7 @@ class pdfExporterV2_fpdf {
             if($g->occurence > 1)
                 $occ = "(" . $g->occurence . ") ";
 
-            $item[0] = PdfHelpers::formatIt($occ . $g->name);
+            $item[0] = toUpper($occ . $g->name);
             $item[2] = $book->getPrintableName();
             array_push($data,$item);
         }
@@ -498,7 +497,7 @@ class pdfExporterV2_fpdf {
         foreach($filteredBM as $bm)
         {
             $item = array();
-            $item[0] = PdfHelpers::formatIt($bm->name);
+            $item[0] = toUpper($bm->name);
             $item[2] = $bm->description;
             array_push($data,$item);
         }
@@ -533,150 +532,6 @@ class pdfExporterV2_fpdf {
     }
 
 	//HELPERS ===============================================================
-
-	function getImplants($objArray)
-	{
-		$final = "*";
-		foreach($objArray as $m)
-		{
-			if($m->gearType == EPGear::$IMPLANT_GEAR)
-				$final .= $m->name . "*";
-		}
-		return $final;
-	}
-
-	function getGear($objArray)
-	{
-		$final = "*";
-		foreach($objArray as $m)
-		{
-			if(EPGear::$IMPLANT_GEAR != $m->gearType)
-				$final .= $m->name . "*";
-		}
-		return $final;
-	}
-
-    /**
-     * @param array $bonusMalus
-     * @return EPBonusMalus[]
-     */
-    function getDescOnlyBM(array $bonusMalus): array
-	{
-		$result = array();
-		foreach($bonusMalus as $bm)
-		{
-			if($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY)
-				array_push($result, $bm);
-		}
-		return $result;
-	}
-
-    /**
-     * @param array $bonusMalus
-     * @return EPBonusMalus[]
-     */
-    function getMorphMemoBM(array $bonusMalus): array
-	{
-		$result = array();
-		foreach($bonusMalus as $bm)
-		{
-			if( $bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_ARMOR ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_ENERGY_ARMOR ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_KINETIC_ARMOR ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_ENERGY_WEAPON_DAMAGE ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_KINETIC_WEAPON_DAMAGE ||
-				$bm->bonusMalusType == EPBonusMalus::$ON_MELEE_WEAPON_DAMAGE)
-			{
-				array_push($result, $bm);
-			}
-		}
-		return $result;
-	}
-
-    /**
-     * @param array $gears
-     * @return EPGear[]
-     */
-    function filterWeaponOnly(array $gears): array
-	{
-		$result = array();
-		foreach($gears as $g)
-		{
-			if( $g->gearType == EPGear::$WEAPON_MELEE_GEAR ||
-				$g->gearType == EPGear::$WEAPON_ENERGY_GEAR ||
-				$g->gearType == EPGear::$WEAPON_KINETIC_GEAR ||
-				$g->gearType == EPGear::$WEAPON_AMMUNITION ||
-				$g->gearType == EPGear::$WEAPON_SEEKER_GEAR ||
-				$g->gearType == EPGear::$WEAPON_SPRAY_GEAR)
-			{
-				array_push($result, $g);
-			}
-
-			if( $g->gearType == EPGear::$IMPLANT_GEAR )
-			{
-				if($g->degat != "0")
-					array_push($result, $g);
-			}
-		}
-		return $result;
-	}
-
-    /**
-     * @param array $gears
-     * @return EPGear[]
-     */
-    function filterArmorOnly(array $gears): array
-	{
-		$result = array();
-		foreach($gears as $g)
-		{
-			if( $g->gearType == EPGear::$ARMOR_GEAR)
-				array_push($result, $g);
-		}
-		return $result;
-	}
-
-    /**
-     * @param array $gears
-     * @return EPGear[]
-     */
-    function filterImplantOnly(array $gears): array
-	{
-		$result = array();
-		foreach($gears as $g)
-		{
-			if( $g->gearType == EPGear::$IMPLANT_GEAR)
-				array_push($result, $g);
-		}
-		return $result;
-	}
-
-
-    /**
-     * @param array $gears
-     * @return EPGear[]
-     */
-    function filterGeneralOnly(array $gears): array
-	{
-		$result = array();
-		foreach($gears as $g)
-		{
-			if( $g->gearType == EPGear::$STANDARD_GEAR ||
-				$g->gearType == EPGear::$DRUG_GEAR ||
-				$g->gearType == EPGear::$CHEMICALS_GEAR ||
-				$g->gearType == EPGear::$POISON_GEAR ||
-				$g->gearType == EPGear::$PET_GEAR ||
-				$g->gearType == EPGear::$VEHICLES_GEAR ||
-				$g->gearType == EPGear::$ROBOT_GEAR ||
-				$g->gearType == EPGear::$FREE_GEAR )
-			{
-					array_push($result, $g);
-			}
-		}
-		return $result;
-	}
-
 	function writeBookLink(string $atomName, int $x, int $y, FpdfCustomFonts $pdf)
 	{
         $book = new EPBook($atomName);
@@ -694,7 +549,7 @@ class Overflow
      * A page's worth of data that's overflowed
      * @var array
      */
-    private $page_data;
+    private $pageData;
     /**
      * @var FpdfCustomFonts
      */
@@ -704,22 +559,22 @@ class Overflow
     function __construct(FpdfCustomFonts $pdfWriter)
     {
         $this->pdfWriter = $pdfWriter;
-        $this->page_data = array();
+        $this->pageData  = array();
     }
     function generateOverflowPage($pageName,$data)
     {
         $item = array();
         $item['name'] = $pageName;
         $item['data'] = $data;
-        array_push($this->page_data,$item);
+        array_push($this->pageData,$item);
     }
     function printOverflowPages()
     {
-        foreach($this->page_data as $page)
+        foreach($this->pageData as $page)
         {
             $this->pdfWriter->AddPage('P', 'A4');
             $this->pdfWriter->SetFont('Lato-Reg', '', 30);
-            $this->pdfWriter->Text(5, 15, PdfHelpers::formatIt($page['name']));
+            $this->pdfWriter->Text(5, 15, toUpper($page['name']));
             $this->pdfWriter->SetXY(5,20);
             $format = PdfHelpers::setTwoColFormat(60,90,2,8,8);
             PdfHelpers::writeTwoColumns($this->pdfWriter, $page['data'], $format, 4, 2);
@@ -824,13 +679,5 @@ class PdfHelpers {
 
             $pdf->SetX($x_position);
         }
-    }
-
-    public static function formatIt($string)
-    {
-        if($string == null)
-            $string = " ";
-
-        return strtoupper($string);
     }
 }
