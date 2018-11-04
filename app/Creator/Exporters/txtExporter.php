@@ -276,9 +276,7 @@ if(null !== creator()) {
 				
 				$ais = creator()->getEgoAi();
 				foreach($ais as $ai){
-					if($ai->occurence > 1) $occ = "(".$ai->occurence.") ";
-					else $occ = "";
-					echo formatResult($occ." ".$ai->getName())
+					echo formatResult($ai->getName())
 					.$tab
 					.setBookLink($ai->getName())
 					.$carriageReturn

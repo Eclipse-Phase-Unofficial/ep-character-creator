@@ -463,7 +463,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
             $ai->removeFromArray($this->character->ego->ais);
-            $this->evoCrePoint += $ai->getCost() * $ai->occurence;
+            $this->evoCrePoint += $ai->getCost();
             $this->adjustAll();
             return true;
         }
@@ -1458,35 +1458,42 @@ class EPCharacterCreator implements Savable
     }
 
     /**
+     * Helper function for `setOccurrenceGear`
+     * @param array  $gearArray
+     * @param string $gearName
+     * @param int    $occurrence
+     * @return bool
+     */
+    private function setOccurrenceForGearInArray(array $gearArray, string $gearName, int $occurrence){
+        $gear = EPAtom::getAtomByName($gearArray, $gearName);
+        if (isset($gear)) {
+            if (!$this->creationMode) {
+                $this->evoCrePoint -= ($occurrence - $gear->occurence) * $gear->getCost();
+            }
+            $gear->occurence = $occurrence;
+            return true;
+        }
+        return false;
+    }
+    /**
      * Set how many copies of a certain piece of gear a morph has
      * @param string       $gearName
-     * @param int          $occurence
+     * @param int          $occurrence
      * @param EPMorph|null $morph
      * @return bool
      */
-    function setOccurrenceGear(string $gearName, int $occurence, EPMorph $morph = null)
+    function setOccurrenceGear(string $gearName, int $occurrence, EPMorph $morph = null)
     {
-        if ($occurence < 1) {
+        if ($occurrence < 1) {
             array_push($this->errorList,
                 new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
             return false;
         }
         if (isset($morph)) {
-            $gear = EPAtom::getAtomByName($morph->gears, $gearName);
-            if (isset($gear)) {
-                if (!$this->creationMode) {
-                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
-                }
-                $gear->occurence = $occurence;
+            if ($this->setOccurrenceForGearInArray($morph->gears, $gearName, $occurrence)) {
                 return true;
             }
-
-            $gear = EPAtom::getAtomByName($morph->additionalGears, $gearName);
-            if (isset($gear)) {
-                if (!$this->creationMode) {
-                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
-                }
-                $gear->occurence = $occurence;
+            if ($this->setOccurrenceForGearInArray($morph->additionalGears, $gearName, $occurrence)) {
                 return true;
             }
             array_push($this->errorList,
@@ -1494,12 +1501,7 @@ class EPCharacterCreator implements Savable
                     EPCreatorErrors::$RULE_ERROR));
             return false;
         } else {
-            $gear = EPAtom::getAtomByName($this->character->ego->softGears, $gearName);
-            if (isset($gear)) {
-                if (!$this->creationMode) {
-                    $this->evoCrePoint -= ($occurence - $gear->occurence) * $gear->getCost();
-                }
-                $gear->occurence = $occurence;
+            if ($this->setOccurrenceForGearInArray($this->character->ego->softGears, $gearName, $occurrence)) {
                 return true;
             }
             array_push($this->errorList,
@@ -1507,46 +1509,6 @@ class EPCharacterCreator implements Savable
                     EPCreatorErrors::$RULE_ERROR));
             return false;
         }
-    }
-    function setOccurenceIA($iaName,$occurence){
-      if ($occurence < 1){
-            array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Minimum 1 !)', EPCreatorErrors::$RULE_ERROR));
-            return false;
-      }
-
-      if ($this->creationMode){
-        foreach ($this->character->ego->ais as $a){
-          if (strcmp($a->getName(), $iaName) == 0){
-            $a->occurence = $occurence;
-            return true;
-          }
-        }
-        foreach ($this->character->ego->defaultAis as $a){
-          if (strcmp($a->getName(), $iaName) == 0){
-            $a->occurence = $occurence;
-            return true;
-          }
-        }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this ia !)', EPCreatorErrors::$RULE_ERROR));
-        return false;
-      }else{
-        foreach ($this->character->ego->ais as $a){
-          if (strcmp($a->getName(), $iaName) == 0){
-            $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
-            $a->occurence = $occurence;
-            return true;
-          }
-        }
-        foreach ($this->character->ego->defaultAis as $a){
-          if (strcmp($a->getName(), $iaName) == 0){
-            $this->evoCrePoint -= ($occurence - $a->occurence) * $a->getCost();
-            $a->occurence = $occurence;
-            return true;
-          }
-        }
-        array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This ego not have this ia !)', EPCreatorErrors::$RULE_ERROR));
-        return false;
-      }
     }
 
     // Set the new reputation value
@@ -1980,7 +1942,7 @@ class EPCharacterCreator implements Savable
 
         if (is_array($this->character->ego->ais)){
             foreach ($this->character->ego->ais as $ai){
-                $cred -= $ai->getCost() * $ai->occurence;
+                $cred -= $ai->getCost();
             }
         }
 

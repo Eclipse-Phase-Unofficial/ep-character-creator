@@ -928,15 +928,7 @@ if(isset($_POST['removeTargetFrom'])){
 
 //ADD OCCURENCE
 if(isset($_POST['addOccurence'])){
-
-	if($_POST['addOccurence'] == "AI"){
-		$currentOccu = EpDatabase()->getAiByName((string) session('currentAiName'))->occurence;
-		if(!creator()->setOccurenceIA(session('currentAiName'),$currentOccu+1)){
-			return static::treatCreatorErrors(creator()->getLastError());
-		}
-	}
-
-	if($_POST['addOccurence'] == "SOFT"){
+    if($_POST['addOccurence'] == "SOFT"){
 		$currentOccu = EPAtom::getAtomByName(creator()->getEgoSoftGears(),(string) session('currentSoftName'))->occurence;
 		if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$currentOccu+1)){
 			return static::treatCreatorErrors(creator()->getLastError());
@@ -966,14 +958,6 @@ if(isset($_POST['addOccurence'])){
 
 //REMOVE OCCURENCE
 if(isset($_POST['remOccurence'])){
-
-	if($_POST['remOccurence'] == "AI"){
-		$currentOccu = EpDatabase()->getAiByName((string) session('currentAiName'))->occurence;
-		if(!creator()->setOccurenceIA(session('currentAiName'),$currentOccu-1)){
-			return static::treatCreatorErrors(creator()->getLastError());
-		}
-	}
-
 	if($_POST['remOccurence'] == "SOFT"){
 		$currentOccu = EPAtom::getAtomByName(creator()->getEgoSoftGears(),(string) session('currentSoftName'))->occurence;
 		if(!creator()->setOccurrenceGear((string) session('currentSoftName'),$currentOccu-1)){

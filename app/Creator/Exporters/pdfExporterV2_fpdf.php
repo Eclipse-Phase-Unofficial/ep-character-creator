@@ -168,11 +168,6 @@ class pdfExporterV2_fpdf {
 
 				foreach($ais as $ai)
 				{
-					if($ai->occurence > 1)
-						$occ = "(" . $ai->occurence . ") ";
-					else
-						$occ = "";
-
 					$pdf->SetFont('Lato-Lig', '', 8);
 					$pdf->Text($apt_x, $apt_y, PdfHelpers::formatIt($occ . $ai->getName()));//ai name
 
