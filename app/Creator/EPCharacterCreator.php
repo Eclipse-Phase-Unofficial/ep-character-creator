@@ -347,10 +347,10 @@ class EPCharacterCreator implements Savable
 
     /**
      * Get all the traits for either the current morph or the ego
-     * @param bool $morph
+     * @param bool|EPMorph $morph
      * @return EPTrait[]
      */
-    function getCurrentTraits(bool $morph = false): array
+    function getCurrentTraits($morph = false): array
     {
         if ($morph) {
             return $this->getCurrentMorph()->getTraits();
