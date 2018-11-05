@@ -3802,15 +3802,16 @@ class EPCharacterCreator implements Savable
         return false;
     }
     //HELPERS
-    function removeLastWord($name){
-	    $splitName = mb_split(" ",$name);
-		 array_pop($splitName);
-		 $wLastWord = "";
-		 foreach($splitName as $s){
-		 	$wLastWord .= $s;
-		 	$wLastWord .= " ";
-		 }
-		 return $wLastWord;
+
+    /**
+     * Remove the last word from a name
+     * @param string $name
+     * @return string
+     */
+    function removeLastWord(string $name){
+        $name = trim($name);
+        //Finds the last space followed by non space characters
+        return preg_replace('/\s[^\s]*$/','', $name);
 	}
 	
 	function getMorphGrantedBMApptitudesNameList($morph){
