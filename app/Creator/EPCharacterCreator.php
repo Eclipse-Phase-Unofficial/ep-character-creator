@@ -1079,7 +1079,7 @@ class EPCharacterCreator implements Savable
     function getActiveRestNeed(){
         $need = $this->configValues->getValue('RulesValues','ActiveSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
-            if ($sk->skillType == EPSkill::$ACTIVE_SKILL_TYPE){
+            if ($sk->isActive()){
                 $need -= $this->getRealCPCostForSkill($sk);
             }
         }
@@ -1148,7 +1148,7 @@ class EPCharacterCreator implements Savable
     function getKnowledgeRestNeed(){
         $need = $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
-            if ($sk->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE){
+            if ($sk->isKnowledge()){
                 $need -= $this->getRealCPCostForSkill($sk);
             }
         }
@@ -2949,8 +2949,11 @@ class EPCharacterCreator implements Savable
                 }
             break;
             case EPBonusMalus::$ON_SKILL_TYPE:
+                //If targeting knowledge or Active skills
+                $targetKnowledgeSkills = $bm->forTargetNamed === EPSkill::$KNOWLEDGE_SKILL_TYPE;
+                $targetActiveSkills    = $bm->forTargetNamed === EPSkill::$ACTIVE_SKILL_TYPE;
                 foreach ($this->character->ego->skills as $s){
-                    if (strcmp($s->skillType,$bm->forTargetNamed) == 0){
+                    if (($targetKnowledgeSkills && $s->isKnowledge()) || ($targetActiveSkills && $s->isActive())) {
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 $s->morphMod += $bm->value;

@@ -15,8 +15,14 @@ class EPSkill extends EPAtom{
      
      static $NO_DEFAULTABLE = 'N';
      static $DEFAULTABLE = 'Y';
-     
-     public $skillType;
+
+    /**
+     * Contains either AST or KST
+     * TODO:  Convert this to an 'isActive' bool (with backwards compatibility)
+     * @var string Used to determine if the skill is an active or Knowledge skill
+     */
+     private $skillType;
+
      public $prefix;   
      
      public $baseValue;
