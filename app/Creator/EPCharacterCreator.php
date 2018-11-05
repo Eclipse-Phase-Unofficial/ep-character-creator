@@ -468,46 +468,31 @@ class EPCharacterCreator implements Savable
             return true;
         }
     }
-    function addGear(EPGear $gear, EPMorph &$morph){
-        if ($this->creationMode){
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            $this->listProvider->connect();
-            $gearToAdd = EpDatabase()->getGearByName($gear->getName());
-            //Special Bonus/Malus Implant Reject
-            if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
-                $gearToAdd->addToArray($morph->additionalGears);
-            }else{
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Implant Rejection Level II !)', EPCreatorErrors::$RULE_ERROR));
-                return false;
-            }
-            $this->adjustAll();
-            return true;
-        }else{
-            if (!isset($gear)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No gear !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            if (!isset($morph)){
-                array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No morph !)', EPCreatorErrors::$SYSTEM_ERROR));
-                return false;
-            }
-            $this->listProvider->connect();
-            $gearToAdd = EpDatabase()->getGearByName($gear->getName());
-            //Special Bonus/Malus Implant Reject
-            if (!$morph->implantReject || strcmp($gear->gearType,  EPGear::$IMPLANT_GEAR) != 0){
-                $gearToAdd->addToArray($morph->additionalGears);
-            }
-            $this->evoCrePoint -= $gearToAdd->getCost();
-            $this->adjustAll();
-            return true;
+
+    /**
+     * Add gear to a morph.the morph has the Implant Rejection Level II trait.
+     *
+     * Returns false and pushes an error if
+     * @param EPGear  $gear
+     * @param EPMorph $morph
+     * @return bool
+     */
+    function addGear(EPGear $gear, EPMorph &$morph)
+    {
+        //If the morph can't take implants (Because it has the Implant Rejection Level II trait)
+        if ($morph->implantReject && strcmp($gear->gearType, EPGear::$IMPLANT_GEAR) === 0) {
+            array_push($this->errorList,
+                new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (Implant Rejection Level II !)',
+                    EPCreatorErrors::$RULE_ERROR));
+            return false;
         }
+        $gear->addToArray($morph->additionalGears);
+        if ($this->creationMode) {
+        } else {
+            $this->evoCrePoint -= $gear->getCost();
+        }
+        $this->adjustAll();
+        return true;
     }
 
     function addFreeGear(EPGear $gear, EPMorph &$morph){
@@ -1034,7 +1019,18 @@ class EPCharacterCreator implements Savable
         return true;
     }
 
-    // Create a skill from a user entered name and pre-defined prefix
+    /**
+     * Create a skill from a user entered name and pre-defined prefix
+     *
+     * @param        $name
+     * @param        $linkedApt
+     * @param        $skillType
+     * @param        $defaultable
+     * @param string $prefix
+     * @param null   $groups
+     * @param bool   $nativeLanguage
+     * @return bool
+     */
     function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
         if (!EpDatabase()->prefixExists($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
