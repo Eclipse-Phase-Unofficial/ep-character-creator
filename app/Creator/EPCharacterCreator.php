@@ -2840,42 +2840,42 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostMorphMod *= $bm->value;
+                                $s->multiplyRatioCostMorphMod($bm->value);
                             }else{
                                 $s->morphMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostTraitMod *= $bm->value;
+                                $s->multiplyRatioCostTraitMod($bm->value);
                             }else{
                                 $s->traitMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostFactionMod *= $bm->value;
+                                $s->multiplyRatioCostFactionMod($bm->value);
                             }else{
                                 $s->factionMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostBackgroundMod *= $bm->value;
+                                $s->multiplyRatioCostBackgroundMod($bm->value);
                             }else{
                                 $s->backgroundMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostSoftgearMod *= $bm->value;
+                                $s->multiplyRatioCostSoftgearMod($bm->value);
                             }else{
                                 $s->softgearMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             if ($bm->onCost == 'true'){
-                                $s->ratioCostPsyMod *= $bm->value;
+                                $s->multiplyRatioCostPsyMod($bm->value);
                             }else{
                                 $s->psyMod += $bm->value;
                             }
@@ -3046,7 +3046,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
                                         $g->armorKineticPsyMod += $bm->value;                                        
@@ -3120,7 +3120,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
                                     }
@@ -3193,7 +3193,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorKineticPsyMod += $bm->value;
                                     }
@@ -3266,7 +3266,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
@@ -3339,7 +3339,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
@@ -3412,7 +3412,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
                                     if ($bm->onCost == 'true'){
-                                        $g->multiplyRatioCostPayMod($bm->value);
+                                        $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
@@ -3591,7 +3591,7 @@ class EPCharacterCreator implements Savable
                                     $m->multiplyRatioCostSoftgearMod($bm->value);
                                 break; 
                                 case EPBonusMalus::$FROM_PSY:
-                                    $m->multiplyRatioCostPayMod($bm->value);
+                                    $m->multiplyRatioCostPsyMod($bm->value);
                                 break;                        
                             }                            
                         }
@@ -3765,7 +3765,7 @@ class EPCharacterCreator implements Savable
                                 foreach ($m->additionalGears as $g) {
                                     if (strcmp($g->gearType,EPGear::$IMPLANT_GEAR) == 0){
                                         if ($bm->onCost == 'true'){
-                                            $g->multiplyRatioCostPayMod($bm->value);
+                                            $g->multiplyRatioCostPsyMod($bm->value);
                                         }                                
                                     }                        
                                 }                            

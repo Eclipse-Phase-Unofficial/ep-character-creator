@@ -88,7 +88,7 @@ class EPListProvider {
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
             $bmTypes = $this->getBonusMalusTypes($row['name']);
-            $epBonMal = new EPBonusMalus($row['name'],$row['type'],$row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
+            $epBonMal = new EPBonusMalus($row['name'],$row['type'],(float) $row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
             //$bmList[$row['name']] = $epBonMal;
             array_push($bmList, $epBonMal);
         }
@@ -102,7 +102,7 @@ class EPListProvider {
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
         $bmTypes = $this->getBonusMalusTypes($row['name']);
-        $epBonMal = new EPBonusMalus($row['name'],$row['type'],$row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
+        $epBonMal = new EPBonusMalus($row['name'],$row['type'],(float) $row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
         return $epBonMal;
     }
 

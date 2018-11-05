@@ -110,7 +110,7 @@ class EPBonusMalus extends EPAtom{
             array_push($this->bonusMalusTypes, $savedBm);
         }
     }   
-    function __construct($atName,$type, $value,$targetName = "", $atDesc = "", $groups = array(),$onCost = 'false',$targetforChoice = "", $typeTarget="",$bonusMalusTypes=array(),$multiOccur = 0) {
+    function __construct($atName,$type, float $value,$targetName = "", $atDesc = "", $groups = array(),$onCost = 'false',$targetforChoice = "", $typeTarget="",$bonusMalusTypes=array(),$multiOccur = 0) {
         parent::__construct($atName, $atDesc);
         $this->bonusMalusType = $type;
         $this->forTargetNamed = $targetName;

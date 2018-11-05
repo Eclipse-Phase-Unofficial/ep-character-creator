@@ -264,7 +264,7 @@ class EPAtom implements Savable
      * Multiply RatioCostPsyMod by a value
      * @param float $ratioCostPsyMod
      */
-    public function multiplyRatioCostPayMod(float $ratioCostPsyMod): void
+    public function multiplyRatioCostPsyMod(float $ratioCostPsyMod): void
     {
         $this->ratioCostPsyMod *= $ratioCostPsyMod;
     }
@@ -422,7 +422,7 @@ class EPAtom implements Savable
     /**
      * @param array $atoms
      * @param mixed $groups
-     * @return array
+     * @return EPAtom[]|EPSkill[]
      */
     public static function getGroupMembers(array $atoms, $groups): array
     {
