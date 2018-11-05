@@ -247,6 +247,18 @@ class EPGear extends EPAtom{
         $this->occurrence = $occurrence;
     }
 
+    /**
+     * If the gear is something implanted in a morph
+     *
+     * That means it's been surgically added in the case of biomorphs/podmorphs, or bolted on in the case of synthmorphs.
+     * It can't be easily added or removed without a specialist.
+     * @return bool
+     */
+    public function isImplant(): bool
+    {
+        return $this->gearType === EPGear::$IMPLANT_GEAR;
+    }
+
     function getArmorEnergy(){
         return $this->armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod; 
     }

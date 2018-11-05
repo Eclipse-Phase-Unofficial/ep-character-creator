@@ -554,7 +554,7 @@ if(null !== creator()) {
 								$protectionKinetic += $a->armorKinetic;
 								$protectionEnergy += $a->armorEnergy;
 							}
-							echo formatResult($occ.$a->getName() . ($a->gearType == EPGear::$IMPLANT_GEAR ? " (Implant)" : ""))//armor
+							echo formatResult($occ.$a->getName() . ($a->isImplant() ? " (Implant)" : ""))//armor
 							.$tab
 							.$protec
 							.$tab

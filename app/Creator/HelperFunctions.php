@@ -121,10 +121,10 @@ function filterWeaponOnly(array $gears): array
             array_push($result, $g);
         }
 
-        if( $g->gearType == EPGear::$IMPLANT_GEAR )
-        {
-            if($g->degat != "0")
+        if ($g->isImplant()) {
+            if ($g->degat != "0") {
                 array_push($result, $g);
+            }
         }
     }
     return $result;
@@ -152,10 +152,10 @@ function filterArmorOnly(array $gears): array
 function filterImplantOnly(array $gears): array
 {
     $result = array();
-    foreach($gears as $g)
-    {
-        if( $g->gearType == EPGear::$IMPLANT_GEAR)
+    foreach ($gears as $g) {
+        if ($g->isImplant()) {
             array_push($result, $g);
+        }
     }
     return $result;
 }

@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Creator\Atoms\EPGear;
 use App\Creator\DisplayHelpers\Helpers;
 
 $currentMorph = creator()->getCurrentMorphsByName((string) session('currentMorph'));
@@ -12,7 +11,7 @@ $currentMorph = creator()->getCurrentMorphsByName((string) session('currentMorph
     <?php
         $listFiltered = array();
         foreach(EpDatabase()->getGears() as $m){
-            if($m->gearType == EPGear::$IMPLANT_GEAR){
+            if ($m->isImplant()) {
                 array_push($listFiltered, $m);
             }
         }
