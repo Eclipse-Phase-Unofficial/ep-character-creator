@@ -38,13 +38,31 @@ class EPAtom implements Savable
     /**
      * @var int
      */
-    public $cost;
-    public $ratioCostMorphMod;
-    public $ratioCostTraitMod;
-    public $ratioCostBackgroundMod;
-    public $ratioCostFactionMod;
-    public $ratioCostSoftgearMod;
-    public $ratioCostPsyMod;
+    protected $cost;
+    /**
+     * @var float
+     */
+    protected $ratioCostMorphMod;
+    /**
+     * @var float
+     */
+    protected $ratioCostTraitMod;
+    /**
+     * @var float
+     */
+    protected $ratioCostBackgroundMod;
+    /**
+     * @var float
+     */
+    protected $ratioCostFactionMod;
+    /**
+     * @var float
+     */
+    protected $ratioCostSoftgearMod;
+    /**
+     * @var float
+     */
+    protected $ratioCostPsyMod;
 
 
     function __construct(string $atName, string $atDesc) {
@@ -147,6 +165,108 @@ class EPAtom implements Savable
     public function getUid(): string
     {
         return $this->atomUid;
+    }
+
+    /**
+     * Reset ratioCostMorphMod to 1
+     */
+    public function resetRatioCostMorphMod(): void
+    {
+        $this->ratioCostMorphMod = 1;
+    }
+
+    /**
+     * Multiply ratioCostMorphMod by a value
+     * @param float $ratioCostMorphMod
+     */
+    public function multiplyRatioCostMorphMod(float $ratioCostMorphMod): void
+    {
+        $this->ratioCostMorphMod *= $ratioCostMorphMod;
+    }
+
+    /**
+     * Reset ratioCostTraitMod to 1
+     */
+    public function resetRatioCostTraitMod(): void
+    {
+        $this->ratioCostTraitMod = 1;
+    }
+
+    /**
+     * Multiply ratioCostTraitMod by a value
+     * @param float $ratioCostTraitMod
+     */
+    public function multiplyRatioCostTraitMod(float $ratioCostTraitMod): void
+    {
+        $this->ratioCostTraitMod *= $ratioCostTraitMod;
+    }
+
+    /**
+     * Reset ratioCostBackgroundMod to 1
+     */
+    public function resetRatioCostBackgroundMod(): void
+    {
+        $this->ratioCostBackgroundMod = 1;
+    }
+
+    /**
+     * Multiply ratioCostBackgroundMod by a value
+     * @param float $ratioCostBackgroundMod
+     */
+    public function multiplyRatioCostBackgroundMod(float $ratioCostBackgroundMod): void
+    {
+        $this->ratioCostBackgroundMod *= $ratioCostBackgroundMod;
+    }
+
+    /**
+     * Reset ratioCostFactionMod to 1
+     */
+    public function resetRatioCostFactionMod(): void
+    {
+        $this->ratioCostFactionMod = 1;
+    }
+
+    /**
+     * Multiply ratioCostFactionMod by a value
+     * @param float $ratioCostFactionMod
+     */
+    public function multiplyRatioCostFactionMod(float $ratioCostFactionMod): void
+    {
+        $this->ratioCostFactionMod *= $ratioCostFactionMod;
+    }
+
+    /**
+     * Reset ratioCostSoftgearMod to 1
+     */
+    public function resetRatioCostSoftgearMod(): void
+    {
+        $this->ratioCostSoftgearMod = 1;
+    }
+
+    /**
+     * Multiply ratioCostSoftgearMod by a value
+     * @param float $ratioCostSoftgearMod
+     */
+    public function multiplyRatioCostSoftgearMod(float $ratioCostSoftgearMod): void
+    {
+        $this->ratioCostSoftgearMod *= $ratioCostSoftgearMod;
+    }
+
+    /**
+     * Reset ratioCostPsyMod to 1
+     */
+    public function resetRatioCostPsyMod(): void
+    {
+        $this->ratioCostPsyMod = 1;
+    }
+
+    /**
+     * Multiply RatioCostPsyMod by a value
+     * @param float $ratioCostPsyMod
+     */
+    public function multiplyRatioCostPayMod(float $ratioCostPsyMod): void
+    {
+        $this->ratioCostPsyMod *= $ratioCostPsyMod;
     }
 
     //Strip any character that could cause an issue in an id tag
