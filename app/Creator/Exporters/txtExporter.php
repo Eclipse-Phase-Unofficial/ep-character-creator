@@ -205,9 +205,9 @@ if(null !== creator()) {
 				
 				$egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
-					echo formatResult($trait->name)
+					echo formatResult($trait->getName())
 					.$tab
-					.setBookLink($trait->name)
+					.setBookLink($trait->getName())
 					.$carriageReturn;
 				}	
 						
@@ -221,9 +221,9 @@ if(null !== creator()) {
 				
 				$egoNegTraits = EPTrait::getPositiveTraits(creator()->character->ego->getTraits());
 				foreach($egoNegTraits as $trait){
-					 echo formatResult($trait->name)
+					 echo formatResult($trait->getName())
 					.$tab
-					.setBookLink($trait->name)
+					.setBookLink($trait->getName())
 					.$carriageReturn;
 				}	
 						
@@ -381,9 +381,9 @@ if(null !== creator()) {
 						
 						$morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
-							echo formatResult($trait->name)
+							echo formatResult($trait->getName())
 							.$tab
-							.setBookLink($trait->name)
+							.setBookLink($trait->getName())
 							.$carriageReturn;
 						}	
 								
@@ -397,9 +397,9 @@ if(null !== creator()) {
 						
 						$morphNegTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
 						foreach($morphNegTraits as $trait){
-							 echo formatResult($trait->name)
+							 echo formatResult($trait->getName())
 							.$tab
-							.setBookLink($trait->name)
+							.setBookLink($trait->getName())
 							.$carriageReturn;
 						}	
 								

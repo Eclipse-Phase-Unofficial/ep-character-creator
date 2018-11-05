@@ -32,7 +32,7 @@ declare(strict_types=1);
 		 echo "</li>";
 		 if(isset($currentMorphs) && count($currentMorphs) > 0){
 			 foreach($currentMorphs as $m){
-	 			 	echo "		<li><label class='aptMorph' id='".$m->name."'>".$m->name."</label></li>";
+	 			 	echo "		<li><label class='aptMorph' id='".$m->getName()."'>".$m->getName()."</label></li>";
 	 		 } 
 	 	 }
 

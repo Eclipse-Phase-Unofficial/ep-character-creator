@@ -168,7 +168,7 @@ class EPTrait extends EPAtom
     /**
      * Get all positive traits from an array
      * @param EPTrait[] $traitsArray
-     * @return array
+     * @return EPTrait[]
      */
     static function getPositiveTraits(array $traitsArray): array
     {
@@ -184,7 +184,7 @@ class EPTrait extends EPAtom
     /**
      * Get all negative traits from an array
      * @param EPTrait[] $traitsArray
-     * @return array
+     * @return EPTrait[]
      */
     static function getNegativeTraits(array $traitsArray): array
     {

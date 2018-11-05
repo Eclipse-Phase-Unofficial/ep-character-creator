@@ -22,7 +22,7 @@ use App\Creator\Atoms\EPStat;
 		 echo "With morph : ";
 		 echo "</li>";
 		 foreach($currentMorphs as $m){
- 			 	echo "		<li class='callStatMorph'><label id='".$m->name."'>".$m->name."</label></li>";
+ 			 	echo "		<li class='callStatMorph'><label id='".$m->getName()."'>".$m->getName()."</label></li>";
  		 } 
    	?>
 </ul>

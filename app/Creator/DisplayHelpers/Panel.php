@@ -5,6 +5,7 @@ namespace App\Creator\DisplayHelpers;
 
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPGear;
+use App\Creator\Atoms\EPTrait;
 
 
 /**
@@ -34,9 +35,9 @@ class Panel{
      *
      * If a panel previously existed, this resets the panel.
      *
-     *  @param $atomName - The name of the item being described (Both printed, and used to add the book page.
+     *  @param string $atomName The name of the item being described (Both printed, and used to add the book page.)
      */
-    function startDescriptivePanel($atomName){
+    function startDescriptivePanel(string $atomName){
         $output  = "<span class='descriptionTitle'>".$atomName."</span>";
         $output .= "<ul class='mainlist' id='bmdList'>";
         $output .= Helpers::getBPHtml($atomName);
@@ -45,8 +46,9 @@ class Panel{
 
     /**
      * Add a description section.
+     * @param string $description
      */
-    function addDescription($description){
+    function addDescription(string $description){
         $output  = "<li class='listSection'>";
         $output .= "Description";
         $output .= "</li>";
@@ -79,8 +81,9 @@ class Panel{
 
     /**
      * Add a Traits section if it exists.
+     * @param EPTrait[] $traits
      */
-    function addTraits($traits){
+    function addTraits(array $traits){
         $output = "";
         if(!empty($traits)){
             $output .= "<li class='listSection'>";
@@ -88,7 +91,7 @@ class Panel{
             $output .= "</li>";
             foreach($traits as $t){
                 $output .= "<li>";
-                $output .= "<span class='bmGranted'>".$t->name."</span>";
+                $output .= "<span class='bmGranted'>".$t->getName()."</span>";
                 $output .= "</li>";
             }
         }
@@ -97,6 +100,7 @@ class Panel{
 
     /**
      * Add AI Skills and Aptitudes if they exist.
+     * @param EPAi $ai
      */
     function addAi(EPAi $ai){
         $output = "";
@@ -127,8 +131,9 @@ class Panel{
 
     /**
      * Add Armor and Offensive sections if they exist.
+     * @param EPGear $gear
      */
-    function addArmor($gear){
+    function addArmor(EPGear $gear){
         $output = "";
         if($gear->armorEnergy != 0 || $gear->armorKinetic != 0){
             $output .= "<li class='listSection'>";
@@ -157,8 +162,9 @@ class Panel{
 
     /**
      * Add raw HTML.
+     * @param string $input
      */
-    function addRawHtml($input){
+    function addRawHtml(string $input){
         $this->html .= $input;
     }
 
