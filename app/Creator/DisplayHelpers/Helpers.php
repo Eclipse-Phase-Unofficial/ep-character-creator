@@ -219,6 +219,10 @@ class Helpers
     static function getBMHtml(EPCharacterCreator $creator, array $bonusMalusArray, string $parentName, string $parentType)
     {
         $output = "";
+        $morph  = null;
+        if ($parentType === 'morph') {
+            $morph = EpDatabase()->getMorphByName($parentName);
+        }
 
         //GRANTED BM
         if (static::grantedExist($bonusMalusArray)) {
@@ -244,7 +248,7 @@ class Helpers
             foreach ($bonusMalusArray as $bm) {
                 if ($bm->isChoice()) {
                     $output .= "<li><label class='bmChoiceInput'>";
-                    $output .= static::choosePrintOption($creator, $bm, $parentName, $parentType);
+                    $output .= static::choosePrintOption($creator, $bm, $morph, $parentType);
                     $output .= "<input id='" . $bm->getUid() . "Parent' type='hidden' value='" . $parentName . "'>";
                     $output .= "<input id='" . $bm->getUid() . "Type' type='hidden' value='" . $parentType . "'>";
                     $output .= "<input id='" . $bm->getUid() . "BmName' type='hidden' value='" . $bm->getName() . "'>";
@@ -301,7 +305,7 @@ class Helpers
                             $output .= "<input id='" . $bmMulti->getUid() . "Sel' type='hidden' value='" . $bmMulti->forTargetNamed . "'>";
                         } else {
                             $output .= "<label class='bmChoiceInput'>";
-                            $output .= static::choosePrintOption($creator, $bmMulti, $parentName, $parentType);
+                            $output .= static::choosePrintOption($creator, $bmMulti, $morph, $parentType);
                             $output .= "</label>";
                         }
                         $output .= "<input id='" . $bmMulti->getUid() . "MultiName' type='hidden' value='" . $bmMulti->getName() . "'>";
@@ -325,11 +329,11 @@ class Helpers
      * Choose which item to print based on the BM type.
      * @param EPCharacterCreator $creator
      * @param EPBonusMalus       $bm
-     * @param string             $parentName
+     * @param EPMorph|null       $morph
      * @param string             $parentType
      * @return string
      */
-    static function choosePrintOption(EPCharacterCreator $creator, EPBonusMalus $bm, string $parentName, string $parentType)
+    static function choosePrintOption(EPCharacterCreator $creator, EPBonusMalus $bm, ?EPMorph $morph, string $parentType)
     {
         $activeSkills    = $creator->character->ego->getActiveSkills();
         $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
@@ -346,7 +350,7 @@ class Helpers
                         return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills));
                     } else {
                         if ($bm->targetForChoice == EPBonusMalus::$ON_APTITUDE) {
-                            return static::getAptitudeOptions($creator, $bm, $parentName, $parentType);
+                            return static::getAptitudeOptions($creator, $bm, $morph, $parentType);
                         } else {
                             if ($bm->targetForChoice == EPBonusMalus::$ON_REPUTATION) {
                                 return static::getReputationOptions($creator, $bm);
@@ -399,25 +403,22 @@ class Helpers
      * Get the options to select/deselect an aptitude
      * @param EPCharacterCreator $creator
      * @param EPBonusMalus       $bm
-     * @param string             $parentName
+     * @param EPMorph|null       $morph
      * @param string             $parentType
      * @return string
      */
-    static function getAptitudeOptions(EPCharacterCreator $creator, EPBonusMalus $bm, string $parentName, string $parentType)
+    static function getAptitudeOptions(EPCharacterCreator $creator, EPBonusMalus $bm, ?EPMorph $morph, string $parentType)
     {
         $output = "";
 
         if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
             $output .= $bm->getName();
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
-            if ($parentType == 'morph') {
-                $morph = EpDatabase()->getMorphByName($parentName);
-                if (!empty($morph)) {
-                    $banedAptNameList = $creator->getMorphGrantedBMApptitudesNameList($morph);
-                    foreach ($creator->getAptitudes() as $apt) {
-                        if (!static::isNameOnList($apt->getName(), $banedAptNameList)) {
-                            $output .= "<option value='" . $apt->getName() . "'>" . $apt->getName() . "</option>";
-                        }
+            if ($parentType == 'morph' && !empty($morph)) {
+                $banedAptNameList = $creator->getMorphGrantedBMApptitudesNameList($morph);
+                foreach ($creator->getAptitudes() as $apt) {
+                    if (!static::isNameOnList($apt->getName(), $banedAptNameList)) {
+                        $output .= "<option value='" . $apt->getName() . "'>" . $apt->getName() . "</option>";
                     }
                 }
             } else {
