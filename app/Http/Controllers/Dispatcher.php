@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Creator\Atoms\EPMorph;
 use App\Creator\EPCharacterCreator;
 use App\Creator\EPCreatorErrors;
 use App\Creator\EPListProvider;
@@ -143,22 +144,22 @@ if(isset($_POST['getBcg'])){
 }
 //SET ORIGINE
 if (isset($_POST['origine'])) {
-    if(EpDatabase()->getBackgroundByName($_POST['origine']) != null &&
-       creator()->setBackground(EpDatabase()->getBackgroundByName($_POST['origine']))){
-        session()->put('currentOrigineName', $_POST['origine']);
-        //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['origine'])->description;
+    $background = EpDatabase()->getBackgroundByName($_POST['origine']);
+    if(!isset($background)) {
+        return static::treatCreatorErrors("Background '" . $_POST['origine'] . "' does not exist!'");
+    }
+    if(creator()->setBackground($background)){
+        session()->put('currentOrigineName', creator()->getCurrentBackground()->getName());
     }
     else{
         return static::treatCreatorErrors(creator()->getLastError());
     }
-
 }
 //GET FACTION
 if(isset($_POST['getFac'])){
 	if(creator()->getCurrentFaction() != null){
     	$return['currentFac'] = creator()->getCurrentFaction()->getName();
     	session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
-		//$return['desc'] = creator()->getCurrentFaction()->description;
     }
     else{
 	    $return['currentFac'] = null;
@@ -166,8 +167,11 @@ if(isset($_POST['getFac'])){
 }
 //SET FACTION
 if(isset($_POST['faction'])){
-    if(EpDatabase()->getBackgroundByName($_POST['faction']) != null &&
-       creator()->setFaction(EpDatabase()->getBackgroundByName($_POST['faction']))){
+    $faction = EpDatabase()->getBackgroundByName($_POST['faction']);
+    if(!isset($faction)) {
+        return static::treatCreatorErrors("Faction '" . $_POST['faction'] . "' does not exist!'");
+    }
+    if (creator()->setFaction($faction)){
        session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
         //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['faction'])->description;
     }
@@ -217,10 +221,7 @@ if(isset($_POST['negTrait'])){
 
 //HOVER POS/NEG TRAIT
 if(isset($_POST['traitHover'])){
-	$trait = EpDatabase()->getTraitByName($_POST['traitHover']);
-	if($trait != null){
-	        session()->put('currentTraitName', $trait->getName());
-	}
+    session()->put('currentTraitName', (string) $_POST['traitHover']);
 }
 
 //SET PSY SLEIGHT
@@ -243,8 +244,7 @@ if(isset($_POST['psyS'])){
 }
 //HOVER PSY SLEIGHT
 if(isset($_POST['hoverPsyS'])){
-	$psyS = EpDatabase()->getPsySleightsByName($_POST['hoverPsyS']);
-	session()->put('currentPsiSName', $psyS->getName());
+	session()->put('currentPsiSName', (string) $_POST['hoverPsyS']);
 }
 
 //SET MOTIVATION
@@ -497,9 +497,9 @@ if (isset($_POST['currentMorphUsed'])) {
 
 //SET MORPH SETTINGS
 if (isset($_POST['morphSettingsChange'])) {
-    $morph = EPAtom::getAtomByName(EpDatabase()->getMorphs(),$_POST['morphSettingsChange']);
+    $morph = creator()->getCurrentMorphsByName($_POST['morphSettingsChange']);
     if(!isset($morph)){
-        return static::treatCreatorErrors("Morph does not exist (".session('currentMorph').")");
+        return static::treatCreatorErrors("Morph does not exist (".$_POST['morphSettingsChange'].")");
     }
     session()->put('currentMorph',  $_POST['morphSettingsChange']);
     $morph->nickname = $_POST['morphNickname'];
@@ -717,8 +717,7 @@ if(isset($_POST['ai'])){
 
 //HOVER AI
 if(isset($_POST['hoverAi'])){
-    $ai = EpDatabase()->getAiByName($_POST['hoverAi']);
-    session()->put('currentAiName', $ai->getName());
+    session()->put('currentAiName', (string) $_POST['hoverAi']);
 }
 
 
@@ -745,8 +744,7 @@ if(isset($_POST['softg'])){
 
 //HOVER ON SOFT GEAR
 if(isset($_POST['hoverSoftg'])){
-    $soft = EpDatabase()->getGearByName($_POST['hoverSoftg']);
-    session()->put('currentSoftName', $soft->getName());
+    session()->put('currentSoftName', (string) $_POST['hoverSoftg']);
 }
 
 //ADD MOXIE
@@ -786,46 +784,64 @@ if (isset($_POST['lastDetailsChange'])) {
 }
 
 
-//BONUS MALUS MANAGEMENT
+//Add a BONUS MALUS to a target
 if(isset($_POST['addTargetTo'])){
     //error_log(print_r($_POST,true));
     if(!isset($_POST['targetVal'])){
         return static::treatCreatorErrors(new EPCreatorErrors("Must select an item!",EPCreatorErrors::$SYSTEM_ERROR));
     }
+    $parentName      = $_POST['parentName'];
+    $bonusMalusArray = [];
 
-	if($_POST['parentType'] == "origine"){
-		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
-		$bonusMalusArray = $currentBck->bonusMalus;
-	}
-	else if($_POST['parentType'] == "faction"){
-		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
-		$bonusMalusArray = $currentBck->bonusMalus;
-	}
-	else if($_POST['parentType'] == "trait"){
-		$currentTrait = EPAtom::getAtomByName(creator()->getCurrentTraits(),$_POST['parentName']);
-		if(!isset($currentTrait)){
-			$currentTrait = EpDatabase()->getTraitByName($_POST['parentName']);
-		}
-		$bonusMalusArray = $currentTrait->bonusMalus;
-	}
-	else if($_POST['parentType'] == "morph"){
-		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),$_POST['parentName']);
-		if(!isset($currentMorph)){
-			$currentMorph = EpDatabase()->getMorphByName($_POST['parentName']);
-		}
-		$bonusMalusArray = $currentMorph->bonusMalus;
-	}
-	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),(string) session('currentMorph'));
-        $traits = creator()->getCurrentMorphTraits($currentMorph->getName());
-		if (!empty($traits)){
-                    $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
-                    $bonusMalusArray = $currentMorphTrait->bonusMalus;
-                }
-	}
-	else{
-		return static::treatCreatorErrors(new EPCreatorErrors("Unknown parent type",EPCreatorErrors::$SYSTEM_ERROR));
-	}
+    switch ($_POST['parentType']) {
+        case "origine":
+            $background = creator()->getCurrentBackground();
+            if ($background->getName() !== $parentName) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for your current background!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $background->bonusMalus;
+            break;
+        case "faction":
+            $faction = creator()->getCurrentFaction();
+            if ($faction->getName() !== $parentName) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for your current faction!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $faction->bonusMalus;
+            break;
+        case "trait":
+            $currentTrait = EPAtom::getAtomByName(creator()->getCurrentTraits(), $parentName);
+            if (!isset($currentTrait)) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for traits you possess!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $currentTrait->bonusMalus;
+            break;
+        case "morph":
+            $currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(), $parentName);
+            if (!isset($currentMorph)) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for morphs you possess!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $currentMorph->bonusMalus;
+            break;
+        case "morphTrait":
+            if (session('currentMorph') != $parentName) {
+                error_log("Setting Bonus/Malus for morph '$parentName', when the current Morph is '" . session('currentMorph') . "''");
+            }
+            /** @var EPMorph $currentMorph */
+            $currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(), (string)session('currentMorph'));
+            $traits       = $currentMorph->getTraits();
+            if (!empty($traits)) {
+                $currentMorphTrait = EPAtom::getAtomByName($traits, $_POST['parentName']);
+                $bonusMalusArray   = $currentMorphTrait->bonusMalus;
+            }
+            break;
+        default:
+            return static::treatCreatorErrors(new EPCreatorErrors("Unknown parent type",
+                EPCreatorErrors::$SYSTEM_ERROR));
+    }
 
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = EPAtom::getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
@@ -873,35 +889,62 @@ if(isset($_POST['addTargetTo'])){
     creator()->adjustAll();
 }
 
+//Remove a BONUS MALUS from a target
 if(isset($_POST['removeTargetFrom'])){
 	//error_log(print_r($_POST,true));
-	if($_POST['parentType'] == "origine"){
-		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
-		$bonusMalusArray = $currentBck->bonusMalus;
-	}
-	else if($_POST['parentType'] == "faction"){
-		$currentBck = EpDatabase()->getBackgroundByName($_POST['parentName']);
-		$bonusMalusArray = $currentBck->bonusMalus;
-	}
-	else if($_POST['parentType'] == "trait"){
-		$currentTrait = EpDatabase()->getTraitByName($_POST['parentName']);
-		$bonusMalusArray = $currentTrait->bonusMalus;
-	}
-	else if($_POST['parentType'] == "morph"){
-		$currentMorph = EpDatabase()->getMorphByName($_POST['parentName']);
-		$bonusMalusArray = $currentMorph->bonusMalus;
-	}
-	else if($_POST['parentType'] == "morphTrait"){
-		$currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(),(string) session('currentMorph'));
-                $traits = creator()->getCurrentMorphTraits($currentMorph->getName());
-                if (!empty($traits)){
-                    $currentMorphTrait = EPAtom::getAtomByName($traits,$_POST['parentName']);
-                    $bonusMalusArray = $currentMorphTrait->bonusMalus;
-                }
-	}
-	else{
-		return static::treatCreatorErrors(new EPCreatorErrors("Unknown parent type",EPCreatorErrors::$SYSTEM_ERROR));
-	}
+    $parentName      = $_POST['parentName'];
+    $bonusMalusArray = [];
+
+    switch ($_POST['parentType']) {
+        case "origine":
+            $background = creator()->getCurrentBackground();
+            if ($background->getName() !== $parentName) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for your current background!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $background->bonusMalus;
+            break;
+        case "faction":
+            $faction = creator()->getCurrentFaction();
+            if ($faction->getName() !== $parentName) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for your current faction!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $faction->bonusMalus;
+            break;
+        case "trait":
+            $currentTrait = EPAtom::getAtomByName(creator()->getCurrentTraits(), $parentName);
+            if (!isset($currentTrait)) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for traits you possess!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $currentTrait->bonusMalus;
+            break;
+        case "morph":
+            $currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(), $parentName);
+            if (!isset($currentMorph)) {
+                return static::treatCreatorErrors(new EPCreatorErrors("May only set Bonus/Malus for morphs you possess!",
+                    EPCreatorErrors::$SYSTEM_ERROR));
+            }
+            $bonusMalusArray = $currentMorph->bonusMalus;
+            break;
+        case "morphTrait":
+            if (session('currentMorph') != $parentName) {
+                error_log("Setting Bonus/Malus for morph '$parentName', when the current Morph is '" . session('currentMorph') . "''");
+            }
+            /** @var EPMorph $currentMorph */
+            $currentMorph = EPAtom::getAtomByName(creator()->getCurrentMorphs(), (string)session('currentMorph'));
+            $traits       = $currentMorph->getTraits();
+            if (!empty($traits)) {
+                $currentMorphTrait = EPAtom::getAtomByName($traits, $_POST['parentName']);
+                $bonusMalusArray   = $currentMorphTrait->bonusMalus;
+            }
+            break;
+        default:
+            return static::treatCreatorErrors(new EPCreatorErrors("Unknown parent type",
+                EPCreatorErrors::$SYSTEM_ERROR));
+    }
+
 	if($_POST['bMcase'] == EPBonusMalus::$MULTIPLE){
 		$candidatParent = EPAtom::getAtomByUid($bonusMalusArray,$_POST['parentBmId']);
         if(!isset($candidatParent)){
