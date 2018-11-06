@@ -503,10 +503,6 @@ class EPCharacterCreator implements Savable
         $this->adjustAll();
     }
 
-    function getCurrentPsySleight(){
-        return $this->character->ego->psySleights;
-    }
-
     function removeGear(EPGear $gear,EPMorph &$morph): bool
     {
         if ($this->creationMode){
