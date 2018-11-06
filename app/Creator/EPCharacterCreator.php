@@ -1868,6 +1868,11 @@ class EPCharacterCreator implements Savable
             }
         }
     }
+
+    /**
+     * Adjust values to account for any new minimum and maximums
+     * TODO:  These should be done on the EPAtom object by setters!
+     */
     function adjustValues(){
         foreach ($this->character->ego->aptitudes as $aptitude){
             $newValue = $aptitude->value;
