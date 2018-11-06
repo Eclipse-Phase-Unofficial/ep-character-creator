@@ -1553,18 +1553,6 @@ class EPCharacterCreator implements Savable
             $s->maxValue = $newValue;
         }
     }
-    function setAiSkillValue($ai,$name,$value = 0){
-        $sk = EpDatabase()->getAiSkillByName($ai,$name);
-
-        if (!isset($sk)){
-            return false;
-        }
-        if ($sk->baseValue == $value){
-            return true;
-        }
-        $sk->baseValue = $value;
-        return true;
-    }
     function setSkillValue($id,$value = 0){
         $sk = $this->getSkillByAtomUid($id);
         if (!isset($sk)){
@@ -1919,7 +1907,7 @@ class EPCharacterCreator implements Savable
             foreach ($ai->skills as $aiSkill){
               $maxValue = $aiSkill->getMaxValue() - $aiSkill->getBonusForCost();
               $newValue = min($maxValue,$aiSkill->baseValue);
-              $this->setAiSkillValue($ai,$aiSkill->getName(),$newValue);
+              $aiSkill->baseValue = $newValue;
             }
         }
 //        $this->setStat(EPStat::$MOXIE, $newValue);
