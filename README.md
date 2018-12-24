@@ -2,9 +2,9 @@
 
 A web-based character creator application for the Eclipse Phase role-playing game.
 
-* [Source](https://github.com/EmperorArthur/ep-character-creator)
-* [Releases](https://github.com/EmperorArthur/ep-character-creator/releases)
-* [Issues](https://github.com/EmperorArthur/ep-character-creator/issues)
+* [Source](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator)
+* [Releases](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/releases)
+* [Issues](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/issues)
 * Websites that Host EPCC
     * [next-loop.com](http://eclipsephase.next-loop.com/)
     * [cd-net.net](https://www.cd-net.net/ep-character-creator/)
@@ -13,13 +13,14 @@ A web-based character creator application for the Eclipse Phase role-playing gam
 
 This work is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License**.
 
-You can read the full license description [here](https://github.com/EmperorArthur/ep-character-creator/blob/master/LICENSE.txt).
+You can read the full license description [here](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/LICENSE.txt).
 
-### Derivative Work
 
-You can download the original source code for EPCC V 1.0 (03.2014) from
-[GitHub](https://github.com/rbewley4/ep-character-creator/releases/tag/v1.0.0).
+## Authors
+See [here](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/Authors.md) for a list of everyone who has contributed to this project.
 
+## Version
+The current version is **1.51 Gate Jump**!  See the [Changelog](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/CHANGELOG.md). 
 
 ## EPCC Configuration
 
@@ -79,7 +80,7 @@ WARNING:  If you use this feature, skip the `sed` step when creating the databas
 ## Testing
 ### Using the built in php web server
 1. Set up the database.
-2. From a command prompt in the `src` directory run `php -S localhost:8080`
+2. From a command prompt in the top level of this project run `php artisan serve`
 3. Browse to http://localhost:8080
 
 ### Using Docker-Compose
@@ -107,8 +108,7 @@ Docker will automatically re-build it on next run
 
 ## Deployment
 1. Ensure that the web server is pointing to the src directory.
-2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessible!
-3. Set the Google Analytics Id.
+2. Set the Google Analytics Id in 'config.ini'.
 
 ### Deployment via Docker (Recommended)
 Run `docker image build -f Standalone.Dockerfile .`
