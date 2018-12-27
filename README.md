@@ -7,7 +7,7 @@ A web-based character creator application for the Eclipse Phase role-playing gam
 * [Issues](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/issues)
 * Websites that Host EPCC
     * [next-loop.com](http://eclipsephase.next-loop.com/)
-    * [cd-net.net](https://www.cd-net.net/ep-character-creator/)
+    * [cd-net.net](https://epcc.cd-net.net/)
 
 ## License
 
