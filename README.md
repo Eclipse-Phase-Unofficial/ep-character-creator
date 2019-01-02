@@ -2,24 +2,25 @@
 
 A web-based character creator application for the Eclipse Phase role-playing game.
 
-* [Source](https://github.com/EmperorArthur/ep-character-creator)
-* [Releases](https://github.com/EmperorArthur/ep-character-creator/releases)
-* [Issues](https://github.com/EmperorArthur/ep-character-creator/issues)
+* [Source](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator)
+* [Releases](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/releases)
+* [Issues](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/issues)
 * Websites that Host EPCC
     * [next-loop.com](http://eclipsephase.next-loop.com/)
-    * [cd-net.net](https://www.cd-net.net/ep-character-creator/)
+    * [cd-net.net](https://epcc.cd-net.net/)
 
 ## License
 
 This work is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License**.
 
-You can read the full license description [here](https://github.com/EmperorArthur/ep-character-creator/blob/master/LICENSE.txt).
+You can read the full license description [here](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/LICENSE.txt).
 
-### Derivative Work
 
-You can download the original source code for EPCC V 1.0 (03.2014) from
-[GitHub](https://github.com/rbewley4/ep-character-creator/releases/tag/v1.0.0).
+## Authors
+See [here](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/Authors.md) for a list of everyone who has contributed to this project.
 
+## Version
+The current version is **1.51 Gate Jump**!  See the [Changelog](https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/blob/master/CHANGELOG.md). 
 
 ## EPCC Configuration
 
@@ -27,12 +28,12 @@ There is a single configuration file for EPCC: [src/php/config.ini](https://gith
 You will need to maintain a separate version of that file outside of this repository for your production environment.
 
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
-[src/sql/init/FullDatabase.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/src/sql/FullDatabase.sql).
+[src/database/database.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/database/database.sql).
 
 ## Setup
 You will need:
 
-* [php 5.6 or greater](https://php.net)
+* [php 7.2 or greater](https://php.net)
 * Either: [mySql 14.14 or greater](https://dev.mysql.com/downloads/)
 * Or: [sqlite3](https://www.sqlite.org/download.html)
 
@@ -40,12 +41,12 @@ You will need:
 #### SQLite:
 1. Create a sqlite3 database
     ```bash
-    sed 's/\\n/ /g' FullDatabase.sql > tmp.sql
-    sqlite3 --init tmp.sql FullDatabase.sqlite3
+    sed 's/\\n/ /g' database.sql > tmp.sql
+    sqlite3 --init tmp.sql database.sqlite3
     ```
 3. configure database access in php/config.ini
     ```ini
-    databasePDO = 'sqlite:../../../sql/init/FullDatabase.sqlite3'
+    databasePDO = 'sqlite:../../../database/database.sqlite3'
     ````
 
 #### MySql
@@ -58,7 +59,7 @@ You will need:
     ```
 2. Import the database
     ```
-    mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < sql/init/FullDatabase.sql
+    mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < database/database.sql
     ```
 3. configure database access in php/config.ini
     ```
@@ -71,7 +72,7 @@ You will need:
 #### SQLite:
 To save changes made to the Sqlite database run:
 ```bash
-echo -e ".once FullDatabase.sql\n.dump"|sqlite3 FullDatabase.sqlite3
+echo -e ".once database.sql\n.dump"|sqlite3 database.sqlite
 ```
 WARNING:  If you use this feature, skip the `sed` step when creating the database.
 
@@ -79,7 +80,7 @@ WARNING:  If you use this feature, skip the `sed` step when creating the databas
 ## Testing
 ### Using the built in php web server
 1. Set up the database.
-2. From a command prompt in the `src` directory run `php -S localhost:8080`
+2. From a command prompt in the top level of this project run `php artisan serve`
 3. Browse to http://localhost:8080
 
 ### Using Docker-Compose
@@ -107,8 +108,7 @@ Docker will automatically re-build it on next run
 
 ## Deployment
 1. Ensure that the web server is pointing to the src directory.
-2. IMPORTANT : Remove the "management" and sql folders before making the site publicly accessible!
-3. Set the Google Analytics Id.
+2. Set the Google Analytics Id in 'config.ini'.
 
 ### Deployment via Docker (Recommended)
 Run `docker image build -f Standalone.Dockerfile .`

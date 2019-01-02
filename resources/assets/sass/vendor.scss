@@ -1,0 +1,16 @@
+// Fonts
+@import "https://fonts.googleapis.com/css?family=Lato:400,700,400italic";
+
+//Browser CSS normalization
+@import "~normalize.css";
+
+//Jquery UI
+@import "~jquery-ui/themes/base/all.css";
+
+//Vegas (Background slideshow)
+@import '~vegas/src/sass/vegas';
+//Override the default image so we only include the one used by the site
+.vegas-overlay {
+  opacity: .5;
+  background: transparent url('~vegas/src/overlays/08.png') center center repeat
+}

@@ -1,0 +1,575 @@
+/* ==========================================================================
+   HTML5 Boilerplate styles - h5bp.com (generated via initializr.com)
+   ========================================================================== */
+
+html,
+button,
+input,
+select,
+textarea {
+    height: 100%;
+    color: hsl(200,10%,40%);
+}
+
+body {
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+img {
+    vertical-align: middle;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+html, body{
+	height:100%;
+	font-family: 'Lato', sans-serif;
+}
+
+#container{
+	position: relative;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/************Book Icons************/
+
+.bookIcon{
+    display: block;
+    width:25px;
+    height:25px;
+    background: url(/img/EP-sup.png) no-repeat;
+    position: absolute;
+    right: 2em;
+    /* Vertically center the icon */
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+.RW{
+}
+
+.PAN{
+    background-position: 0 -30px;
+}
+
+.SW{
+    background-position: 0 -60px;
+}
+
+.GC{
+    background-position: 0 -90px;
+}
+
+.TH{
+    background-position: 0 -120px;
+}
+
+.EP{
+    background-position: 0 -150px;
+}
+
+/* PRIMARY, SECONDAY, TERTIARY and QUATERNARY panels */
+section.panel {
+	position: relative;
+	float: left;
+	height: 100%;
+	margin-left: 1px;
+	width: 20em;
+	/*background-color: rgba(242, 242, 242, .2);*/
+	overflow: auto;
+	text-transform: uppercase;
+	z-index: 1;
+}
+
+/*PRIMARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
+#primary{
+    margin-left: 0;
+}
+
+
+/*première colonne*/
+#main-nav li{
+    padding-left: 0;
+}
+
+#main-nav a{
+	display: block;
+	text-decoration: none;
+	color: hsl(200,10%,40%);
+}
+
+#main-nav a:hover{
+	color: rgb(186, 0, 80);
+	background-color: rgba(254, 254, 254, .85);
+}
+
+#main-nav a.active{
+	color: white;
+	background-color: rgb(186, 0, 80);
+	border-top: 1px solid rgba(186, 0, 80, 1);
+	border-bottom: 1px solid rgba(186, 0, 80, 1);
+}
+
+/************SHARED************/
+/* There's one of each of these per panel */
+.mainlist{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	background-color: rgba(242, 242, 242, .8);
+	line-height:3em;
+}
+
+.mainlist li{
+	padding-left: 1em;
+	margin: 0;
+	position: relative;
+	vertical-align: middle;
+	border-top: 1px solid rgba(245, 245, 245, .8);
+	border-bottom: 1px solid rgba(148,155,153,.8);
+}
+
+.mainlist li:hover{
+	color: rgb(186, 0, 80);
+	background-color: rgba(254, 254, 254, .85);
+}
+
+.listSection{
+	font-size: x-small;
+	color: rgb(186, 0, 80);
+	background-color: rgba(202,194,194,0.61);
+}
+
+.foldingListSection{
+	font-size: x-small;
+	color: rgb(186, 0, 80);
+	background-color: rgba(202,194,194,0.61);
+	padding-left: 1em;
+	display: block;
+	line-height:3em;
+	padding-right: 1em;
+}
+
+.slowTransition{
+	-webkit-transition: opacity .3s ease .2s;
+	   -moz-transition: opacity .3s ease .2s;
+	    -ms-transition: opacity .3s ease .2s;
+	     -o-transition: opacity .3s ease .2s;
+	        transition: opacity .3s ease .2s;
+}
+
+.slowTransition:hover{
+	opacity: 1;
+}
+
+.icone{
+    display: inline-block;
+    width: 3em;
+    text-align: center;
+    border-right: 1px solid rgba(148,155,153,.6);
+    margin-right: 1em;
+}
+
+.btnhelp{
+	float: right;
+	padding-right: 1em;
+	opacity: .2;
+
+}
+
+a.active .btnhelp{
+	opacity: 1;
+}
+
+/* All plus or minus icons, also works with 'X' icons */
+.iconPlusMinus{
+	float: right;
+	padding-right: 1em;
+	padding-left: 1em;
+	opacity: .8;
+
+}
+
+.iconPlusMinus:hover{
+	color: rgb(186, 0, 80);
+}
+
+/* All Plus or Checked icons */
+.addOrSelectedIcon{
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    transform: translate(0,-50%);
+}
+
+.betweenPlusMinus{
+	float: right;
+}
+
+.costInfo {
+    font-size: x-small;
+    display: block;
+    text-align: right;
+    position: absolute;
+    right: 1em;
+    top: -2em;
+}
+
+/*SECONDARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/*aptitudes*/
+
+#aptitudes input{
+	width: 3em;
+	height: 1em;
+	right: 3em;
+	top: 1em;
+	display: block;
+	position: absolute;
+	text-align: center;
+}
+
+/*reputations*/
+#reputations input{
+	width: 3em;
+	height: 1em;
+	right: 3em;
+	top: 1em;
+	display: block;
+	position: absolute;
+	text-align: center;
+}
+
+/*skills*/
+
+#enterSkill input{
+    width: 7.5em;
+}
+
+.skills {
+	color: hsl(200,10%,40%);
+	background: rgba(242, 242, 242, .8);
+	text-transform: uppercase;
+}
+
+/* Skill Specialization */
+.speLabel{
+	font-size: x-small;
+}
+
+.skills tbody td {
+	font-size: small;
+}
+
+.actskillbase,
+.knoskillbase{
+	width: 3em;
+	text-align: center;
+}
+
+.skills tbody tr:hover{
+	color: rgb(186, 0, 80);
+	background-color: rgba(254, 254, 254, .85);
+}
+
+.skillTotal{
+  font-weight: bold;
+}
+
+/* Popup box for skill Specialization */
+.spezBox {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+    width: 150px;
+    position: absolute;
+    margin: 20px; padding: 10px;
+    visibility: hidden;
+    z-index: 1;
+}
+
+.spezInt {
+    width: 97%;
+}
+
+/* Aptitudes and Stats with morph */
+.score {
+    width: 3em;
+    float: right;
+    text-align: left;
+}
+
+.score_rep {
+	display: block;
+	text-align: right;
+	position: absolute;
+	right: 10em;
+	top: 0;
+	padding-right: 1em;
+}
+
+
+
+/*morphs*/
+
+#morphs a{
+	display: block;
+	height:  3em;
+	width: 100%;
+	overflow: hidden;
+	line-height:3em;
+	text-decoration: none;
+	color: hsl(200,10%,40%);
+	text-transform: uppercase;
+	border-top: 1px solid rgba(245, 245, 245, .6);
+	border-bottom: 1px solid rgba(148,155,153,.6);
+	background-color: rgba(242, 242, 242, .8);
+}
+
+#morphs a:hover{
+	color: rgb(186, 0, 80);
+	background-color: rgba(254, 254, 254, .85);
+}
+
+#morphs a.active{
+	color: white;
+	background-color: rgb(186, 0, 80);
+	border-top: 1px solid rgba(186, 0, 80, 1);
+	width: 100%;
+}
+
+/*Last details*/
+
+#lastDetails{
+	width: 20em;
+}
+
+#lastDetails input[type="text"]{
+	width: 8em;
+	line-height: 1em;
+	text-align: left;
+}
+
+#lastDetails input[type="number"]{
+	width: 3em;
+	line-height: 1em;
+	text-align: right;
+}
+
+#lastDetails select{
+	width: 6em;
+	line-height: 1em;
+	text-align: left;
+}
+
+#lastDetails textarea{
+	width: 17em;
+	text-align: left;
+    height: 400px;
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+
+
+
+
+/*TERTIARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+.bmGrantedDesc{
+	font-size: x-small;
+	text-transform:none;
+	text-align: justify;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	padding-left: 1em;
+	display: block;
+	line-height:1em;
+	padding-right: 1em;
+	padding-bottom: 1em;
+}
+
+
+.bmChoice{
+	font-size: x-small;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	padding-left: 1em;
+	display: block;
+	line-height:3em;
+	padding-right: 1em;
+}
+.bmChoiceInput{
+	font-size: x-small;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	padding-left: 1em;
+	display: block;
+	line-height:6em;
+	padding-right: 1em;
+}
+
+.bmChoiceInput input{
+	top: 3.5em;
+	left: 1em;
+	height: 1.5em;
+	width: 20em;
+	position: absolute;
+	color: #000000;
+}
+
+.bmChoiceSelect{
+	font-size: x-small;
+	padding-left: 1em;
+	line-height:6em;
+	padding-right: 1em;
+	top: 4em;
+	left: 1em;
+	height: 1.5em;
+	width: 20em;
+	position: absolute;
+}
+
+.bmDesc{
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	border-top: 1px solid rgba(245, 245, 245, .8);
+	border-bottom: 1px solid rgba(148,155,153,.8);
+	padding: 1em;
+	text-transform:none;
+	line-height:1em;
+}
+
+.bmMultiSelected{
+	color: rgb(186, 0, 80);
+    background: rgba(242, 242, 242, .8);
+}
+
+#tertiary_infos{
+	visibility: hidden;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	border-top: 1px solid rgba(245, 245, 245, .8);
+	border-bottom: 1px solid rgba(148,155,153,.8);
+	padding: 1em;
+}
+
+#morph-settings input[type="text"]{
+	width: 8em;
+	line-height: 1em;
+	text-align: left;
+}
+
+#morph-settings input[type="number"]{
+	width: 3em;
+	line-height: 1em;
+	text-align: right;
+}
+
+#morph-settings select{
+	width: 6em;
+	line-height: 1em;
+	text-align: left;
+}
+
+/*QUTERNARY			///////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+#quaternary_infos{
+	visibility: hidden;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	border-top: 1px solid rgba(245, 245, 245, .8);
+	border-bottom: 1px solid rgba(148,155,153,.8);
+	padding: 1em;
+}
+
+.listSectionClose{
+	font-size: xx-small;
+	background-color: rgba(202,194,194,0.61);
+	padding-left: 1em;
+	display: block;
+	line-height:1em;
+	padding-right: 1em;
+}
+
+.bmChoice{
+	font-size: x-small;
+	color: hsl(200,10%,40%);
+	background-color: rgba(242, 242, 242, .8);
+	padding-left: 1em;
+	display: block;
+	line-height:3em;
+	padding-right: 1em;
+}
+
+.bmMultiSelected{
+	color: rgb(186, 0, 80);
+    background: rgba(242, 242, 242, .8);
+}
+
+/*messages*/
+#messages{
+	position: absolute;
+	top: 0;
+	right: 50%;
+	transform: translate(50%,0);
+	margin:0;
+	background-color: rgba(255, 255, 255, .95);
+	font-size:1.25em;
+	color: hsl(200,10%,40%);
+	text-align: center;
+	vertical-align: middle;
+	display: none;
+	z-index: 100; /* This should be on top of everything else */
+}
+
+#user-messages{
+	visibility: visible;
+	display: block;
+}
+
+.rest{
+	color: rgb(186, 0, 80);
+	left: 5em;
+}
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+#saveName {
+    width: 296px;
+}
+
+.descriptionTitle{
+    color: rgb(186, 0, 80);
+    background-color: rgba(242, 242, 242, .8);
+    padding-left: 1em;
+    display: block;
+    line-height:3em;
+    padding-right: 1em;
+    border-top: 1px solid rgba(245, 245, 245, .8);
+    border-bottom: 1px solid rgba(148,155,153,.8);
+    text-transform: uppercase;
+}

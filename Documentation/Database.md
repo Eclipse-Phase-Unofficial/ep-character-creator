@@ -15,8 +15,8 @@ BEGIN TRANSACTION;
 ```
 Then run these two commands:
 ```bash
-sed -i 's/INSERT INTO \"\([A-z]*\)\"/INSERT INTO \1/' FullDatabase.sql  
-sed -i 's/CREATE TABLE `\([a-Z]*\)`/DROP TABLE IF EXISTS `\1`;\n\0/' FullDatabase.sql
+sed -i 's/INSERT INTO \"\([A-z]*\)\"/INSERT INTO \1/' database.sql  
+sed -i 's/CREATE TABLE `\([a-Z]*\)`/DROP TABLE IF EXISTS `\1`;\n\0/' database.sql
 ```
 
 The first command removes the quotes from around the table name on the INSERT statements.
