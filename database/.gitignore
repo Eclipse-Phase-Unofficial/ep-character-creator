@@ -1,0 +1,3 @@
+#Users should create their own database from the provided .sql files
+#This prevents multiple copies of the database from becoming unsynced
+*.sqlite
