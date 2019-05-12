@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+if [[ $1 = "halt" ]]; then
+   echo "ERROR: A program crashed!"
+   exit 255
+fi
+echo "Supervisor exiting"
+exit 0

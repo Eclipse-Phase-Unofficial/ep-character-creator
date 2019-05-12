@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "Starting php-fpm"
+exec php-fpm

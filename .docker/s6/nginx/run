@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo "Starting nginx"
+# The option works around a bug in the current alpine version of nginx
+# It can be removed later
+exec nginx -g "pid /tmp/nginx.pid;"

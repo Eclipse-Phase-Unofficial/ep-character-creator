@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+SERVICE=`basename $PWD`
+echo "$SERVICE exiting: Code $1"
+s6-svscanctl -0 /etc/s6/ 2> /dev/null
+exit 125
