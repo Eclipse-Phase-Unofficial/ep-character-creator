@@ -19,7 +19,6 @@ docker-compose.yml
 
 
 # Ignore generated files, caches, basically everything in the .gitignore
-*~
 *.kdev4
 vendor/
 /node_modules
@@ -41,4 +40,7 @@ public/images/vendor
 public/mix-manifest.json
 .phpstorm.meta.php
 _ide_helper.php
-*.sqlite
+
+#These are still in the gitignore, but need special handling to work in dockerignore
+**/*~
+**/*.sqlite

@@ -41,11 +41,12 @@ RUN touch $DB_DATABASE && \
     sed --in-place 's/\\n/ /g' /var/www/html/database/database.sql && \
     sqlite3 --init /var/www/html/database/database.sql $DB_DATABASE
 
+#Set default mode to standalone
+#This is done before the final stage so the javasscript is compiled with the correct Google Analytics ID
+RUN mv standalone.env .env
+
 #Re-run composer because we now have a few more Classes, and compile the javascript/css for production
 RUN composer install --no-interaction --no-dev --optimize-autoloader && npm run production
-
-#Set default mode to standalone
-RUN mv standalone.env .env
 
 #Needed for nginx to run
 USER root
