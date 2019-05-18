@@ -30,12 +30,36 @@ You will need to maintain a separate version of that file outside of this reposi
 The rest of the information (Eclipse Phase content) is stored in the database. There is a full SQL dump of the database in
 [src/database/database.sql](https://github.com/EmperorArthur/ep-character-creator/blob/master/database/database.sql).
 
-## Setup
+## Running via Docker
+
+Docker is the recommended, and only officially supported method or running this app.
+While the setup steps below can be used for development, it is **highly recommended** that deployment be done via Docker.
+
+The following command builds an image of the applciation that is ready to be deployed.
+```bash
+docker image build --tag ep-character-creator .
+```
+
+The official docker image can be found [here](https://hub.docker.com/r/emperorarthur/ep-character-creator/)
+
+In most cases the following command will allow you to test the build image locally.
+It exposes a webserver on port 8080 that you can access to view the container.
+```bash
+docker container run --rm -it -p 8080:80 --name epcc ep-character-creator
+```
+
+If deploying to the internet, you may want to consider using your own '.env' file.
+Doing so allows you to change things like the error reporting location, or almost any other configuration.
+Simply add `--enf-file custom.env` to the run command above.
+
+NOTE:  Because of how javascript is compiled, `MIX_GOOGLE_ANALYTICS_ID` can only be set by changing "standalone.env" at build time.
+
+##  Local Development and Testing
 You will need:
 
 * [php 7.2 or greater](https://php.net)
 * Either: [mySql 14.14 or greater](https://dev.mysql.com/downloads/)
-* Or: [sqlite3](https://www.sqlite.org/download.html)
+* Or: [sqlite3](https://www.sqlite.org/download.html) (Recommended)
 
 ### Database Setup
 #### SQLite:
@@ -76,41 +100,7 @@ echo -e ".once database.sql\n.dump"|sqlite3 database.sqlite
 ```
 WARNING:  If you use this feature, skip the `sed` step when creating the database.
 
-
-## Testing
 ### Using the built in php web server
 1. Set up the database.
 2. From a command prompt in the top level of this project run `php artisan serve`
 3. Browse to http://localhost:8080
-
-### Using Docker-Compose
-
-If you have [Docker](https://www.docker.com/) installed, you can use the `docker-compose` command to run EPCC:
-
-```bash
-cd ep-character-creator/
-docker-compose up
-```
-
-This will host EPCC at [http://localhost:8080](http://localhost:8080).
-
-The first time you run the command, it will take a few minutes complete, but subsequent runs will be very fast.
-
-If you experience an issue with EPCC not rendering properly, then the database is probably still being seeded.
-Look at the console output, and wait for *mysqld* to start accepting connections. The line should look like this: 
-
-```
-epcc-db    | 2017-09-03T00:41:29.240576Z 0 [Note] mysqld: ready for connections.
-```
-
-In the event that the database needs to be updated, run the command `docker volume rm epcharactercreator_epcc-db-data` to delete the database.
-Docker will automatically re-build it on next run
-
-## Deployment
-1. Ensure that the web server is pointing to the src directory.
-2. Set the Google Analytics Id in 'config.ini'.
-
-### Deployment via Docker (Recommended)
-Run `docker image build -f Standalone.Dockerfile .`
-
-If you would like a pre-build image, see [here](https://hub.docker.com/r/emperorarthur/ep-character-creator/).
