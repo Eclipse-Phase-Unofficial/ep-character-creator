@@ -13,14 +13,15 @@ use App\Creator\Atoms\EPPsySleight;
 use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPTrait;
 use App\Creator\DisplayHelpers\FpdfCustomFonts;
+use Error;
 
-	/*
-		Overview of the PDF export
+/*
+    Overview of the PDF export
 
-		Ego - 1 page
+    Ego - 1 page
 
-		Morph(s) - 1 page each
-	*/
+    Morph(s) - 1 page each
+*/
 class pdfExporterV2_fpdf {
     public function export(){
         if(empty(creator())) {
@@ -32,8 +33,6 @@ class pdfExporterV2_fpdf {
 		//Disable automatic page breaks
         $pdf->SetAutoPageBreak(false);
 
-		$morphs = creator()->getCurrentMorphs();
-
         //Set some formatting to be used later
         $traitFormat = PdfHelpers::setTwoColFormat(30,15,1,8,7);        //For traits, and psi
         $skillFormat = PdfHelpers::setTwoColFormat(55,7,1,9,9);         //For skills
@@ -41,9 +40,33 @@ class pdfExporterV2_fpdf {
 		//PDF EXPORT ================================================================
 
 
-			//EGO ================================================================
+        //EGO ================================================================
+        $character = creator()->character;
+        $characterName = $character->charName;
+        $playerName = $character->playerName;
+        try{$backgroundName = creator()->getCurrentBackground()->getName();} catch (Error $e){$backgroundName = '';};
+        try{$factionName = creator()->getCurrentFaction()->getName();} catch (Error $e){$factionName = '';};
+        $birthGender =  toUpper($character->birthGender);
+        $realAge =  toUpper($character->realAge);
+        $credits = toUpper(creator()->getCredit());
+        $aptitudes = creator()->getAptitudes();
+        $reputations = $this->formatStats(creator()->getReputations());
+        $motivations = creator()->getMotivations();
+        $skillList = creator()->getSkills();
+        $egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
+        $egoPosTraits = EPTrait::getPositiveTraits(creator()->character->ego->getTraits());
+        $psySleights = creator()->getCurrentPsySleights();
+        $ais = creator()->getEgoAi();
+        $egoBonusMalus = creator()->getBonusMalusEgo();
+//         $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
 
-				$pdf->AddPage('P', 'A4');//A4 EGO PAGE
+        $softGears = $this->formatGearData(creator()->getEgoSoftGears());
+        $formattedStats = $this->formatStats($aptitudes,'getEgoValue');
+
+        //TODO: This is actually displayed on each morph page...
+        $notes = $character->note;
+
+        $pdf->AddPage('P', 'A4');//A4 EGO PAGE
 
 				//SET BAGROUNT PNG-----------------------------
         $pdf->Image(public_path() . "/img/pdf/EP_BCK_PDF_EGO.png", 0, 0, -150);
@@ -53,357 +76,349 @@ class pdfExporterV2_fpdf {
 				$pdf->AddFont('Lato-LigIta', '', 'Lato-LightItalic.php');
 				$pdf->AddFont('Lato-Reg', '', 'Lato-Regular.php');
 
-				//BEGIN FILLING SHEET------------------------------
-				$character = creator()->character;
+        //BEGIN FILLING SHEET------------------------------
 
-				//NAMES
-				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->Text(60, 12, $character->charName);//Character Name
-				$pdf->Text(143, 12, $character->playerName);//Player Name
+        //NAMES
+        $pdf->SetFont('Lato-Lig', '', 10);
+        $pdf->Text(60, 12, $characterName);
+        $pdf->Text(143, 12, $playerName);
 
-				//ORIGINES
-        $pdf->Text(37, 26, toUpper(creator()->getCurrentBackground()->getName())); //Background
-        $pdf->Text(37, 33, toUpper(creator()->getCurrentFaction()->getName())); //Faction
+        //ORIGINS
+        $pdf->Text(37, 26, toUpper($backgroundName));
+        $pdf->Text(37, 33, toUpper($factionName));
 
-				$pdf->SetFont('Lato-LigIta', '', 7);
-        $this->writeBookLink(creator()->getCurrentBackground()->getName(), 85, 27, $pdf);//Background bookLink
-        $this->writeBookLink(creator()->getCurrentFaction()->getName(), 85, 34, $pdf);//Faction bookLink
+        $pdf->SetFont('Lato-LigIta', '', 7);
+        $this->writeBookLink($backgroundName, 85, 27, $pdf);//Background bookLink
+        $this->writeBookLink($factionName, 85, 34, $pdf);//Faction bookLink
 
-				//AGE - SEX
-				$pdf->SetFont('Lato-Lig', '', 10);
-        $pdf->Text(143, 26, toUpper($character->birthGender)); //Birth gender
-        $pdf->Text(143, 33, toUpper($character->realAge)); //Real age
+        //AGE - SEX
+        $pdf->SetFont('Lato-Lig', '', 10);
+        $pdf->Text(143, 26,$birthGender); //Birth gender
+        $pdf->Text(143, 33,$realAge); //Real age
 
-				//CREDIT
-				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->Text(10, 53, toUpper(creator()->getCredit())); //Credit
+        //CREDIT
+        $pdf->SetFont('Lato-Lig', '', 10);
+        $pdf->Text(10, 53, $credits); //Credit
 
-				$pdf->SetFont('Lato-LigIta', '', 7);
-				$pdf->Text(40, 49, "(EP p.137)");//Credit bookLink
+        $pdf->SetFont('Lato-LigIta', '', 7);
+        $pdf->Text(40, 49, "(EP p.137)");//Credit bookLink
 
-				//EGO APTITUDES
-				$pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
+        //EGO APTITUDES
+        $pdf->Text(90, 49, "(EP p.122)");//Aptitudes bookLink
 
-                $aptitudes = creator()->getAptitudes();
-        $formattedStats = $this->formatStats($aptitudes,'getEgoValue');
-                $pdf->SetXY(58,50);
-                $format = PdfHelpers::setTwoColFormat(30,10,2,10,10);
-                PdfHelpers::writeTwoColumns($pdf,$formattedStats,$format,3.5,2);
+        $pdf->SetXY(58,50);
+        $format = PdfHelpers::setTwoColFormat(30,10,2,10,10);
+        PdfHelpers::writeTwoColumns($pdf,$formattedStats,$format,3.5,2);
 
-				//REPUTATION
-				$pdf->SetFont('Lato-LigIta', '', 7);
-				$pdf->Text(138, 49, "(EP p.285)");//Reputation bookLink
+        //REPUTATION
+        $pdf->SetFont('Lato-LigIta', '', 7);
+        $pdf->Text(138, 49, "(EP p.285)");//Reputation bookLink
 
-        $reputations = $this->formatStats(creator()->getReputations());
-                $pdf->SetXY(111,50);
-                $format = PdfHelpers::setTwoColFormat(25,10,2,10,10);
-                PdfHelpers::writeTwoColumns($pdf,$reputations,$format,3.5,2);
 
-				//MOTIVATION
-				$pdf->SetFont('Lato-LigIta', '', 7);
-				$pdf->Text(192, 49, "(EP p.120)");//Motivation bookLink
+        $pdf->SetXY(111,50);
+        $format = PdfHelpers::setTwoColFormat(25,10,2,10,10);
+        PdfHelpers::writeTwoColumns($pdf,$reputations,$format,3.5,2);
 
-				$motivations = creator()->getMotivations();
-				$apt_x = 158;
-				$pdf->SetFont('Lato-Lig', '', 10);
-				$pdf->SetXY($apt_x,51);
-				foreach($motivations as $mot)
-				{
-					$pdf->MultiCell(50, 3.5, toUpper($mot));//Motivations
-					$pdf->SetX($apt_x);
-				}
+        //MOTIVATION
+        $pdf->SetFont('Lato-LigIta', '', 7);
+        $pdf->Text(192, 49, "(EP p.120)");//Motivation bookLink
 
-				//EGO SKILLS
-				$pdf->SetFont('Lato-LigIta', '', 7);
-				$pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
+        $apt_x = 158;
+        $pdf->SetFont('Lato-Lig', '', 10);
+        $pdf->SetXY($apt_x,51);
+        foreach($motivations as $mot)
+        {
+            $pdf->MultiCell(50, 3.5, toUpper($mot));//Motivations
+            $pdf->SetX($apt_x);
+        }
 
-                $skillList = creator()->getSkills();
-                $formattedSkills = $this->formatSkills($skillList,'getEgoValue');
-                $pdf->SetXY(8,84);
-                $this->writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
+        //EGO SKILLS
+        $pdf->SetFont('Lato-LigIta', '', 7);
+        $pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
 
-                //EGO NEG TRAIT
-                $egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
+        $formattedSkills = $this->formatSkills($skillList,'getEgoValue');
+        $pdf->SetXY(8,84);
+        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
+
+        //EGO NEG TRAIT
         $formattedNegTraits = $this->formatGearData($egoNegTraits);
-                $pdf->SetXY(80,102);
+        $pdf->SetXY(80,102);
         $format = PdfHelpers::setTwoColFormat(18,15,1,8,7);
         PdfHelpers::writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
-                //EGO POS TRAIT
-                $egoPosTraits = EPTrait::getPositiveTraits(creator()->character->ego->getTraits());
+        //EGO POS TRAIT
         $formattedPosTraits = $this->formatGearData($egoPosTraits);
-                $pdf->SetXY(116,102);
+        $pdf->SetXY(116,102);
         $format = PdfHelpers::setTwoColFormat(25,15,1,8,7);
         PdfHelpers::writeTwoColumns($pdf,$formattedPosTraits,$format,3);
 
-                //PSI SLEIGHTS
-                $psySleights = creator()->getCurrentPsySleights();
-                $formattedPsi = array();
-                foreach($psySleights as $sleight)
-                {
-                    $book = new EPBook($sleight->getName());
-                    $item = array();
-                    //set the slight token to active or passive
-                    if($sleight->psyType == EPPsySleight::$ACTIVE_PSY)
-                        $type = "(A) ";
-                    else
-                        $type = "(P) ";
+        //PSI SLEIGHTS
+        $formattedPsi = array();
+        foreach($psySleights as $sleight)
+        {
+            $book = new EPBook($sleight->getName());
+            $item = array();
+            //set the slight token to active or passive
+            if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) {
+                $type = "(A) ";
+            } else {
+                $type = "(P) ";
+            }
 
             $item[0] = toUpper($type . $sleight->getName());
-                    $item[2] = $book->getPrintableName();
-                    array_push($formattedPsi,$item);
-                }
-                $pdf->SetXY(158,102);
+            $item[2] = $book->getPrintableName();
+            array_push($formattedPsi,$item);
+        }
+        $pdf->SetXY(158,102);
         PdfHelpers::writeTwoColumns($pdf,$formattedPsi,$traitFormat,3);
 
-                //SOFT GEAR
-        $softGears = $this->formatGearData(creator()->getEgoSoftGears());
-                $pdf->SetXY(85,152);
-                PdfHelpers::writeTwoColumns($pdf,$softGears,$traitFormat,3);
+        //SOFT GEAR
+        $pdf->SetXY(85,152);
+        PdfHelpers::writeTwoColumns($pdf,$softGears,$traitFormat,3);
 
-				//AI
-				$ais = creator()->getEgoAi();
-				$apt_x = 132;
-				$apt_y = 155;
+        //AI
+        $apt_x = 132;
+        $apt_y = 155;
 
-				foreach($ais as $ai)
-				{
-					$pdf->SetFont('Lato-Lig', '', 8);
-					$pdf->Text($apt_x, $apt_y, toUpper($ai->getName()));//ai name
+        foreach($ais as $ai) {
+            $pdf->SetFont('Lato-Lig', '', 8);
+            $pdf->Text($apt_x, $apt_y, toUpper($ai->getName()));//ai name
 
-					$pdf->SetFont('Lato-LigIta', '', 6);
+            $pdf->SetFont('Lato-LigIta', '', 6);
             $this->writeBookLink($ai->getName(), ($apt_x + 14), ($apt_y + 2), $pdf);//ai bookLink
 
-					$skillAptNonformated = "";
-					foreach($ai->aptitudes as $aiApt)
-					{
-						$skillAptNonformated .= $aiApt->abbreviation . "[";
-						$skillAptNonformated .= $aiApt->value . "]\n";
-					}
+            $skillAptNonformated = "";
+            foreach($ai->aptitudes as $aiApt) {
+                $skillAptNonformated .= $aiApt->abbreviation . "[";
+                $skillAptNonformated .= $aiApt->value . "]\n";
+            }
 
-					//construct a skill string for each skill
-					foreach($ai->skills as $aiSkill)
-					{
-						$skillCompleteName = "";
-						if(!empty($aiSkill->prefix))
-							$skillCompleteName = $aiSkill->prefix . " : ";
+            //construct a skill string for each skill
+            foreach($ai->skills as $aiSkill) {
+                $skillCompleteName = "";
+                if(!empty($aiSkill->prefix))
+                    $skillCompleteName = $aiSkill->prefix . " : ";
 
-						$skillCompleteName .= $aiSkill->getName();
-						$skillAptNonformated .= $skillCompleteName . "(";
-						$skillAptNonformated .= $aiSkill->baseValue . ")\n";
-					}
+                $skillCompleteName .= $aiSkill->getName();
+                $skillAptNonformated .= $skillCompleteName . "(";
+                $skillAptNonformated .= $aiSkill->baseValue . ")\n";
+            }
 
-					$pdf->SetFont('Lato-LigIta', '', 7);
-					$pdf->SetXY($apt_x + 27,$apt_y);
-					$pdf->MultiCell(30,3,$skillAptNonformated);
-					$pdf->Line($apt_x+27,$pdf->GetY(),$apt_x+57,$pdf->GetY());
+            $pdf->SetFont('Lato-LigIta', '', 7);
+            $pdf->SetXY($apt_x + 27,$apt_y);
+            $pdf->MultiCell(30,3,$skillAptNonformated);
+            $pdf->Line($apt_x+27,$pdf->GetY(),$apt_x+57,$pdf->GetY());
 
-					$apt_y = $pdf->GetY();
-				}
+            $apt_y = $pdf->GetY();
+        }
 
-                //MEMO (all ego bonus malus)
-                $egoBonusMalus = creator()->getBonusMalusEgo();
-//                 $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
+        //MEMO (all ego bonus malus)
         $formattedMemo = $this->formatMemoData($egoBonusMalus);
-                $pdf->SetXY(80,230);
-                $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
+        $pdf->SetXY(80,230);
+        $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
         $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,"Ego Memo Overflow");
 
-				//END EGO PAGE
+        //END EGO PAGE
 
-					//MORPHS ============================================================
+        //MORPHS ============================================================
 
-					//DO ONE PAGE PER MORPH
-					$morphs = creator()->getCurrentMorphs();
-					foreach($morphs as $morph)
-					{
-						//ACTIVATE THE MORPH
-						creator()->activateMorph($morph);
-						$pdf->AddPage('P', 'A4');//A4 MORPH
+        //DO ONE PAGE PER MORPH
+        $morphs = creator()->getCurrentMorphs();
+        foreach($morphs as $morph)
+        {
+            creator()->activateMorph($morph); //ACTIVATE THE MORPH
+            //Morph Type
+            if($morph->morphType == EPMorph::$BIOMORPH) $type = "[bio]";
+            else if($morph->morphType == EPMorph::$SYNTHMORPH) $type = "[synth]";
+            else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
+            else if($morph->morphType == EPMorph::$PODMORPH) $type = "[pod]";
+            $morphName = $morph->getName();
+            $morphNickname = toUpper($morph->nickname);
+            $morphAge = toUpper($morph->age); //Apparent age of the morph
+            $morphLocation = toUpper($morph->location);
+            $morphGender = toUpper($morph->gender);
+            $morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
+            $morphPosTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
+            $skillList = creator()->getSkills();
+            $morphGear = creator()->getGearForCurrentMorph();
 
-						//SET BAGROUNT PNG-----------------------------
-						$pdf->Image(public_path() . "/img/pdf/EP_BCK_PDF_MORPH.png", 0, 0, -150);
+            $stats = $this->formatStats(creator()->getStats());
+            $aptitudes = $this->formatStats(creator()->getAptitudes());
+            $formattedNegTraits = $this->formatGearData($morphNegTraits);
+            $formattedPosTraits = $this->formatGearData($morphPosTraits);
+            $formattedSkills = $this->formatSkills($skillList,'getValue');
+            $weapons = filterWeaponOnly($morphGear); //TODO: This filter should be on the EPAtom
+            $armor = filterArmorOnly($morphGear); //TODO: This filter should be on the EPAtom
+            $gear = filterGeneralOnly($morphGear); //TODO: This filter should be on the EPAtom
+            $formattedGear = $this->formatGearData($gear);
 
-						$pdf->SetFont('Lato-Lig', '', 8);
+            $pdf->AddPage('P', 'A4');//A4 MORPH
 
-						//DETAILS DATA$skillList
-						if($morph->morphType == EPMorph::$BIOMORPH) $type = "[bio]";
-						else if($morph->morphType == EPMorph::$SYNTHMORPH) $type = "[synth]";
-						else if($morph->morphType == EPMorph::$INFOMORPH) $type = "[info]";
-						else if($morph->morphType == EPMorph::$PODMORPH) $type = "[pod]";
+            //SET BAGROUNT PNG-----------------------------
+            $pdf->Image(public_path() . "/img/pdf/EP_BCK_PDF_MORPH.png", 0, 0, -150);
 
-						$pdf->Text(55, 11.5, toUpper($morph->getName() . " " . $type));//morph Name type
+            $pdf->SetFont('Lato-Lig', '', 8);
 
-						$pdf->SetFont('Lato-LigIta', '', 5);
-                        $this->writeBookLink($morph->getName(), 105, 11.5, $pdf);//morph bookLink
+            //DETAILS DATA$skillList
 
-						$pdf->SetFont('Lato-Lig', '', 8);
-						$pdf->Text(140, 12, toUpper($morph->nickname));//morph nickname
-						$pdf->Text(50, 19, toUpper($morph->age));//morph apparent age
-						$pdf->Text(140, 19, toUpper($morph->location));//morph Location
-						$pdf->Text(50, 26, toUpper($character->playerName));//morph player
-						$pdf->Text(140, 26, toUpper($morph->gender));//morph gender
+            $pdf->Text(55, 11.5, toUpper($morphName . " " . $type));//morph Name type
 
-                        //MORPH NEG TRAIT
-                        $morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
-                        $formattedNegTraits = $this->formatGearData($morphNegTraits);
-                        $pdf->SetXY(5,43);
-                        PdfHelpers::writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
+            $pdf->SetFont('Lato-LigIta', '', 5);
+            $this->writeBookLink($morphName, 105, 11.5, $pdf);//morph bookLink
 
+            $pdf->SetFont('Lato-Lig', '', 8);
+            $pdf->Text(140, 12, $morphNickname);//morph nickname
+            $pdf->Text(50, 19, $morphAge);
+            $pdf->Text(140, 19, $morphLocation);
+            $pdf->Text(50, 26, $playerName);
+            $pdf->Text(140, 26, $morphGender);
 
-                        //MORPH POS TRAIT
-                        $morphPosTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
-                        $formattedPosTraits = $this->formatGearData($morphPosTraits);
-                        $pdf->SetXY(52,43);
-                        PdfHelpers::writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
+            //MORPH NEG TRAIT
+            $pdf->SetXY(5,43);
+            PdfHelpers::writeTwoColumns($pdf,$formattedNegTraits,$traitFormat,4);
 
-						//MORPH STATS
-						$pdf->SetFont('Lato-LigIta', '', 7);
-						$pdf->Text(118, 40, "(EP p.121)");//Stats bookLink
+            //MORPH POS TRAIT
+            $pdf->SetXY(52,43);
+            PdfHelpers::writeTwoColumns($pdf,$formattedPosTraits,$traitFormat,4);
 
-                        $stats = $this->formatStats(creator()->getStats());
-                        $pdf->SetXY(102,43);
-                        $format = PdfHelpers::setTwoColFormat(28,7,1,7,7);
-                        PdfHelpers::writeTwoColumns($pdf,$stats,$format,3.5,2);
+            //MORPH STATS
+            $pdf->SetFont('Lato-LigIta', '', 7);
+            $pdf->Text(118, 40, "(EP p.121)");//Stats bookLink
 
-						//MORPH APTITUDES
-						$pdf->SetFont('Lato-LigIta', '', 7);
-						$pdf->Text(173, 40, "(EP p.122)");//Aptitude bookLink
+            $pdf->SetXY(102,43);
+            $format = PdfHelpers::setTwoColFormat(28,7,1,7,7);
+            PdfHelpers::writeTwoColumns($pdf,$stats,$format,3.5,2);
 
-                        $aptitudes = $this->formatStats(creator()->getAptitudes());
-                        $pdf->SetXY(142,43);
-                        $format = PdfHelpers::setTwoColFormat(30,10,2,10,10);
-                        PdfHelpers::writeTwoColumns($pdf,$aptitudes,$format,3.5,2);
+            //MORPH APTITUDES
+            $pdf->SetFont('Lato-LigIta', '', 7);
+            $pdf->Text(173, 40, "(EP p.122)");//Aptitude bookLink
 
-						//MORPH SKILLS
-						$pdf->SetFont('Lato-LigIta', '', 7);
-						$pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
-						$skillList = creator()->getSkills();
-                        $formattedSkills = $this->formatSkills($skillList,'getValue');
-                        $pdf->SetXY(8,84);
-                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Morph Skills Overflow");
+            $pdf->SetXY(142,43);
+            $format = PdfHelpers::setTwoColFormat(30,10,2,10,10);
+            PdfHelpers::writeTwoColumns($pdf,$aptitudes,$format,3.5,2);
 
-						//NOTES
-						$apt_x = 81;
-						$apt_y = 81;
-						$pdf->SetFont('Lato-Lig', '', 5);
-						$pdf->SetXY($apt_x,$apt_y);
-						$pdf->MultiCell(95,2,$character->note,0,'l');
+            //MORPH SKILLS
+            $pdf->SetFont('Lato-LigIta', '', 7);
+            $pdf->Text(64, 79, "(EP p.176)");//Skills bookLink
+            $pdf->SetXY(8,84);
+            $this->writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Morph Skills Overflow");
 
-						//WEAPONS
-						$morphGear = creator()->getGearForCurrentMorph();
-						$weapons = filterWeaponOnly($morphGear);
-						$apt_x = 83;
+            //NOTES
+            $apt_x = 81;
+            $apt_y = 81;
+            $pdf->SetFont('Lato-Lig', '', 5);
+            $pdf->SetXY($apt_x,$apt_y);
+            $pdf->MultiCell(95,2, $notes,0,'l');
 
-						//if more than 8 weapon, change fontsize and spaces
-						if(count($weapons) <= 8)
-						{ //default
-							$fontsize = 8;
-							$y_space = 3.5;
-							$apt_y = 112;
-						}
-						else
-						{ //overflow resize
-							$fontsize = 5;
-							$y_space = 2;
-							$apt_y = 110.5;
-						}
+            //WEAPONS
+            $apt_x = 83;
 
-						foreach($weapons as $w)
-						{
+            //if more than 8 weapon, change fontsize and spaces
+            if(count($weapons) <= 8)
+            { //default
+                $fontsize = 8;
+                $y_space = 3.5;
+                $apt_y = 112;
+            }
+            else
+            { //overflow resize
+                $fontsize = 5;
+                $y_space = 2;
+                $apt_y = 110.5;
+            }
 
-							if($w->gearType == EPGear::$WEAPON_ENERGY_GEAR) $type = "energy";
-							else if($w->gearType == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type = "explos.";
-							else if($w->gearType == EPGear::$WEAPON_SPRAY_GEAR) $type = "spray";
-							else if($w->gearType == EPGear::$WEAPON_SEEKER_GEAR) $type = "seeker";
-							else if($w->gearType == EPGear::$WEAPON_AMMUNITION) $type = "ammo";
-							else if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
-							else $type = "kinetic";
+            foreach($weapons as $w)
+            {
 
-							if($w->getOccurrence() > 1)
-								$occ = "(" . $w->getOccurrence() . ") ";
-							else
-								$occ = "";
+                if($w->gearType == EPGear::$WEAPON_ENERGY_GEAR) $type = "energy";
+                else if($w->gearType == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type = "explos.";
+                else if($w->gearType == EPGear::$WEAPON_SPRAY_GEAR) $type = "spray";
+                else if($w->gearType == EPGear::$WEAPON_SEEKER_GEAR) $type = "seeker";
+                else if($w->gearType == EPGear::$WEAPON_AMMUNITION) $type = "ammo";
+                else if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
+                else $type = "kinetic";
 
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
-							$pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
-							$pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->degat));//Weapon degats
-							$pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->armorPenetration));//Weapon Armor penetration
+                if($w->getOccurrence() > 1)
+                    $occ = "(" . $w->getOccurrence() . ") ";
+                else
+                    $occ = "";
 
-							$pdf->SetFont('Lato-LigIta', '', 6);
-                            $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
+                $pdf->SetFont('Lato-Lig', '', $fontsize);
+                $pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
+                $pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
+                $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->degat));//Weapon degats
+                $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->armorPenetration));//Weapon Armor penetration
 
-							$apt_y += $y_space;
-						}
+                $pdf->SetFont('Lato-LigIta', '', 6);
+                $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
 
-						//ARMORS
-						$armor = filterArmorOnly($morphGear);
-						$apt_x = 83;
+                $apt_y += $y_space;
+            }
 
-						//if more than 5 armour then change fontsize and spaces
-						if(count($armor) <= 5)
-						{
-							$fontsize = 8;
-							$y_space = 3.5;
-							$apt_y = 145;
-						}
-						else
-						{
-							$fontsize = 5;
-							$y_space = 2;
-							$apt_y = 143;
-						}
+            //ARMORS
+            $apt_x = 83;
 
-						foreach($armor as $a)
-						{
-							if($a->getOccurrence() > 1)
-								$occ = "(" . $a->getOccurrence() . ") ";
-							else
-								$occ = "";
+            //if more than 5 armour then change fontsize and spaces
+            if(count($armor) <= 5)
+            {
+                $fontsize = 8;
+                $y_space = 3.5;
+                $apt_y = 145;
+            }
+            else
+            {
+                $fontsize = 5;
+                $y_space = 2;
+                $apt_y = 143;
+            }
 
-							$pdf->SetFont('Lato-Lig', '', $fontsize);
-							$pdf->Text( $apt_x, $apt_y, toUpper($occ . $a->getName()));//Armor name
+            foreach($armor as $a)
+            {
+                if($a->getOccurrence() > 1)
+                    $occ = "(" . $a->getOccurrence() . ") ";
+                else
+                    $occ = "";
 
-							if($a->armorKinetic == 0 && $a->armorEnergy == 0)
-							{
-								$pdf->Text(($apt_x + 58), $apt_y, toUpper("see memo"));//No protec, see memeo
-							}
-							else
-							{
-								$pdf->Text(($apt_x + 58), $apt_y, toUpper("Kin: " . $a->armorKinetic));//Armor Kinetic
-								$pdf->Text(($apt_x + 68), $apt_y, toUpper("Ene: " . $a->armorEnergy));//Armor Energy
-							}
+                $pdf->SetFont('Lato-Lig', '', $fontsize);
+                $pdf->Text( $apt_x, $apt_y, toUpper($occ . $a->getName()));//Armor name
 
-							$pdf->SetFont('Lato-LigIta', '', 6);
-                            $this->writeBookLink($a->getName(), ($apt_x + 108), $apt_y, $pdf);//Armor bookLink
+                if($a->armorKinetic == 0 && $a->armorEnergy == 0)
+                {
+                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("see memo"));//No protec, see memeo
+                }
+                else
+                {
+                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("Kin: " . $a->armorKinetic));//Armor Kinetic
+                    $pdf->Text(($apt_x + 68), $apt_y, toUpper("Ene: " . $a->armorEnergy));//Armor Energy
+                }
 
-							$apt_y += $y_space;
-						}
+                $pdf->SetFont('Lato-LigIta', '', 6);
+                $this->writeBookLink($a->getName(), ($apt_x + 108), $apt_y, $pdf);//Armor bookLink
 
-                        //GEAR
-                        $gear = filterGeneralOnly($morphGear);
-                        $formattedGear = $this->formatGearData($gear);
-                        $pdf->SetXY(83,168);
-                        $format = PdfHelpers::setTwoColFormat(35,18,1,7,7);
-                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
+                $apt_y += $y_space;
+            }
 
-                        //IMPLANTS
-                        $implants = filterImplantOnly($morphGear);
-                        $formattedImplants = $this->formatGearData($implants);
-                        $pdf->SetXY(140,168);
-                        $format = PdfHelpers::setTwoColFormat(40,20,1,7,7);
-                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
+            //GEAR
+            $pdf->SetXY(83,168);
+            $format = PdfHelpers::setTwoColFormat(35,18,1,7,7);
+            $this->writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
 
-                        //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
-                        $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
-                        $formattedMemo = $this->formatMemoData($morphBonusMalus);
-                        $pdf->SetXY(80,230);
-                        $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
-                        $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->getName() . " Memo Overflow");
-                    }
+            //IMPLANTS
+            $implants = filterImplantOnly($morphGear);
+            $formattedImplants = $this->formatGearData($implants);
+            $pdf->SetXY(140,168);
+            $format = PdfHelpers::setTwoColFormat(40,20,1,7,7);
+            $this->writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
 
-			//===================
+            //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
+            $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
+            $formattedMemo = $this->formatMemoData($morphBonusMalus);
+            $pdf->SetXY(80,230);
+            $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
+            $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->getName() . " Memo Overflow");
+        }
+
+        //===================
         $ovf->printOverflowPages();
 		$file_util = new EPFileUtility(creator()->character);
 		$filename = $file_util->buildExportFilename('EPCharacter', 'pdf');
@@ -546,6 +561,7 @@ class pdfExporterV2_fpdf {
     }
 
 	//HELPERS ===============================================================
+    //TODO:  This should all be in tables linked by ids or on the models themselves
 	function writeBookLink(string $atomName, int $x, int $y, FpdfCustomFonts $pdf)
 	{
         $book = new EPBook($atomName);
