@@ -60,7 +60,10 @@ class pdfExporterV2_fpdf {
         $egoBonusMalus = creator()->getBonusMalusEgo();
 //         $egoBonusMalus = getDescOnlyBM($egoBonusMalus);
 
+        $formattedSkills = $this->formatSkills($skillList,'getEgoValue');
+        $formattedNegTraits = $this->formatGearData($egoNegTraits);
         $softGears = $this->formatGearData(creator()->getEgoSoftGears());
+        $formattedPosTraits = $this->formatGearData($egoPosTraits);
         $formattedStats = $this->formatStats($aptitudes,'getEgoValue');
 
         //TODO: This is actually displayed on each morph page...
@@ -136,18 +139,15 @@ class pdfExporterV2_fpdf {
         $pdf->SetFont('Lato-LigIta', '', 7);
         $pdf->Text(64, 81, "(EP p.176)");//Skills bookLink
 
-        $formattedSkills = $this->formatSkills($skillList,'getEgoValue');
         $pdf->SetXY(8,84);
         $this->writeTwoColumnsOvf($ovf,$pdf,$formattedSkills,$skillFormat,3.5,2,60,"Ego Skills Overflow");
 
         //EGO NEG TRAIT
-        $formattedNegTraits = $this->formatGearData($egoNegTraits);
         $pdf->SetXY(80,102);
         $format = PdfHelpers::setTwoColFormat(18,15,1,8,7);
         PdfHelpers::writeTwoColumns($pdf,$formattedNegTraits,$format,3);
 
         //EGO POS TRAIT
-        $formattedPosTraits = $this->formatGearData($egoPosTraits);
         $pdf->SetXY(116,102);
         $format = PdfHelpers::setTwoColFormat(25,15,1,8,7);
         PdfHelpers::writeTwoColumns($pdf,$formattedPosTraits,$format,3);
@@ -241,6 +241,7 @@ class pdfExporterV2_fpdf {
             $morphPosTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
             $skillList = creator()->getSkills();
             $morphGear = creator()->getGearForCurrentMorph();
+            $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
 
             $stats = $this->formatStats(creator()->getStats());
             $aptitudes = $this->formatStats(creator()->getAptitudes());
@@ -250,7 +251,10 @@ class pdfExporterV2_fpdf {
             $weapons = filterWeaponOnly($morphGear); //TODO: This filter should be on the EPAtom
             $armor = filterArmorOnly($morphGear); //TODO: This filter should be on the EPAtom
             $gear = filterGeneralOnly($morphGear); //TODO: This filter should be on the EPAtom
+            $implants = filterImplantOnly($morphGear); //TODO: This filter should be on the EPAtom
             $formattedGear = $this->formatGearData($gear);
+            $formattedImplants = $this->formatGearData($implants);
+            $formattedMemo = $this->formatMemoData($morphBonusMalus);
 
             $pdf->AddPage('P', 'A4');//A4 MORPH
 
@@ -404,15 +408,11 @@ class pdfExporterV2_fpdf {
             $this->writeTwoColumnsOvf($ovf,$pdf,$formattedGear,$format,3,0,15,"Gear Overflow");
 
             //IMPLANTS
-            $implants = filterImplantOnly($morphGear);
-            $formattedImplants = $this->formatGearData($implants);
             $pdf->SetXY(140,168);
             $format = PdfHelpers::setTwoColFormat(40,20,1,7,7);
             $this->writeTwoColumnsOvf($ovf,$pdf,$formattedImplants,$format,3,0,18,"Implant Overflow");
 
             //MEMO (all morph bonus malus descriptive only, enargy degat and kinetic degat and melle degat)
-            $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
-            $formattedMemo = $this->formatMemoData($morphBonusMalus);
             $pdf->SetXY(80,230);
             $format = PdfHelpers::setTwoColFormat(45,80,2,7,5);
             $this->writeTwoColumnsOvf($ovf,$pdf,$formattedMemo,$format,3,2,14,$morph->getName() . " Memo Overflow");
@@ -501,12 +501,12 @@ class pdfExporterV2_fpdf {
         foreach($gears as $g)
         {
             $book = new EPBook($g->getName());
-            $item = array();
-            $occ = "";
-            if($g->getOccurrence() > 1)
-                $occ = "(" . $g->getOccurrence() . ") ";
+            try{$count = $g->getOccurrence();} catch (Error $e){$count = 0;};
 
-            $item[0] = toUpper($occ . $g->getName());
+            $item = array();
+            $item[0] = toUpper($g->getName());
+            if($count > 1)
+                $item[0] = toUpper("(" . $count . ") ". $g->getName());
             $item[2] = $book->getPrintableName();
             array_push($data,$item);
         }
