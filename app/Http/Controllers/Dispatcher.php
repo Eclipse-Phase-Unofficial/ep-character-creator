@@ -135,7 +135,6 @@ if(isset($_POST['setCP'])){
 if(isset($_POST['getBcg'])){
 	if(creator()->getCurrentBackground() != null){
     	$return['currentBcg'] = creator()->getCurrentBackground()->getName();
-    	session()->put('currentOrigineName', creator()->getCurrentBackground()->getName());
     	//$return['desc'] = creator()->getCurrentBackground()->description;
     }
     else{
@@ -148,18 +147,13 @@ if (isset($_POST['origine'])) {
     if(!isset($background)) {
         return static::treatCreatorErrors("Background '" . $_POST['origine'] . "' does not exist!'");
     }
-    if(creator()->setBackground($background)){
-        session()->put('currentOrigineName', creator()->getCurrentBackground()->getName());
-    }
-    else{
-        return static::treatCreatorErrors(creator()->getLastError());
+    if(!creator()->setBackground($background)){return static::treatCreatorErrors(creator()->getLastError());
     }
 }
 //GET FACTION
 if(isset($_POST['getFac'])){
 	if(creator()->getCurrentFaction() != null){
     	$return['currentFac'] = creator()->getCurrentFaction()->getName();
-    	session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
     }
     else{
 	    $return['currentFac'] = null;
@@ -171,11 +165,7 @@ if(isset($_POST['faction'])){
     if(!isset($faction)) {
         return static::treatCreatorErrors("Faction '" . $_POST['faction'] . "' does not exist!'");
     }
-    if (creator()->setFaction($faction)){
-       session()->put('currentFactionName', creator()->getCurrentFaction()->getName());
-        //$return['desc'] = EpDatabase()->getBackgroundByName($_POST['faction'])->description;
-    }
-    else{
+    if (!creator()->setFaction($faction)){
         return static::treatCreatorErrors(creator()->getLastError());
     }
 }
