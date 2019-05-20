@@ -1257,6 +1257,9 @@ class EPCharacterCreator implements Savable
         return $res;
     }
 
+    /**
+     * @return EPBonusMalus[]
+     */
     function getBonusMalusEgo(){
     	$res = array();
     	foreach ($this->character->ego->traits as $t){
