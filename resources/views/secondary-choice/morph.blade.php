@@ -43,7 +43,7 @@ use App\Creator\DisplayHelpers\Li;
      */
     function getFormatedMorphList(array $totalMorphList, array $currentList)
     {
-             $provider = new EPListProvider(getConfigLocation());
+             $provider = new EPListProvider();
 	         $htmlBlock = "";
 	         foreach($totalMorphList as $m){
                 $li = new Li($m->getName(),'morphHover');

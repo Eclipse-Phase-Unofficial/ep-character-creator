@@ -78,11 +78,10 @@ class EPCharacterCreator implements Savable
         $this->character->ego->skills = $this->listProvider->getListSkills($this->character->ego->aptitudes);
     }
     private function loadStats(){
-        $this->character->ego->stats = $this->listProvider->getListStats($this->configValues,$this);
+        $this->character->ego->stats = $this->listProvider->getListStats($this);
     }
     private function loadAptitudes(){
-        $this->character->ego->aptitudes = $this->listProvider->getListAptitudes($this->configValues->getValue('RulesValues','AptitudesMinValue'),
-            $this->configValues->getValue('RulesValues','AptitudesMaxValue'));
+        $this->character->ego->aptitudes = $this->listProvider->getListAptitudes();
         //TODO:  Move this to another function
         $this->aptitudePoints -= count($this->character->ego->aptitudes) * $this->configValues->getValue('RulesValues','AptitudesMinValue');
     }
@@ -1684,7 +1683,7 @@ class EPCharacterCreator implements Savable
 	    return $this->nativeLanguageSet;
     }
     private function init($pathToConfig,$amountCP){
-        $this->listProvider = new EPListProvider($pathToConfig);
+        $this->listProvider = new EPListProvider();
         $this->configValues = new EPConfigFile($pathToConfig);
         $this->errorList = array();
         $this->aptitudePoints = $this->configValues->getValue('RulesValues','AptitudesPoint');

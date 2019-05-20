@@ -22,7 +22,7 @@ use App\Creator\Atoms\EPSkill;
 	<li>
 		<select id="knoprefix">
 		<?php
-			 $provider = new EPListProvider(getConfigLocation());
+			 $provider = new EPListProvider();
 			 $prefixList =  $provider->getListPrefix();
 	         foreach($prefixList as $m){
 	         	if($provider->getTypeForPrefix($m) == EPSkill::$KNOWLEDGE_SKILL_TYPE){

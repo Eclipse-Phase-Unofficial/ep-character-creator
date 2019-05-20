@@ -4,7 +4,7 @@ declare(strict_types=1);
 use App\Creator\EPListProvider;
 
     error_reporting(0);
-    $provider = new EPListProvider(getConfigLocation());
+    $provider = new EPListProvider();
     function createDataURI($image,$image_type){
         $fileContents = file_get_contents($image);
         if (!$fileContents) {

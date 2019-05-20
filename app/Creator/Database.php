@@ -66,7 +66,7 @@ class Database
     public function __construct()
     {
         $config   = new EPConfigFile(getConfigLocation());
-        $provider = new EPListProvider(getConfigLocation());
+        $provider = new EPListProvider();
         $provider->connect();
 
         // To be removed from EPCharacterCreator
@@ -80,9 +80,8 @@ class Database
 
         //To be removed from EPEgo
         $this->reputations = $provider->getListReputation();
-        $this->aptitudes   = $provider->getListAptitudes($config->getValue('RulesValues', 'AptitudesMinValue'),
-            $config->getValue('RulesValues', 'AptitudesMaxValue'));
-        $this->stats       = $provider->getListStats($config);  //TODO:  This does not handle the creator here.
+        $this->aptitudes   = $provider->getListAptitudes();
+        $this->stats       = $provider->getListStats();  //TODO:  This does not handle the creator here.
         $this->skills      = $provider->getListSkills($this->aptitudes);
         usort($this->skills, [Atoms\EPSkill::class, 'compareSkillsByPrefixName']);
     }

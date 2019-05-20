@@ -63,7 +63,7 @@ class Dispatcher extends Controller
 $return = array();
 $return['error'] = false;
 $configValues = new EPConfigFile(getConfigLocation());
-$provider = new EPListProvider(getConfigLocation());
+$provider = new EPListProvider();
 	//error_log(print_r($_POST,true));
 	//error_log(print_r($_FILES,true));
 	//error_log(print_r($_SESSION,true));

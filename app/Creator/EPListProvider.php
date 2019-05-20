@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Creator;
 
+use \Illuminate\Support\Facades\DB;
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPAptitude;
 use App\Creator\Atoms\EPBackground;
@@ -29,34 +30,17 @@ class EPListProvider {
      * @var \PDO
      */
     private static $database;
-    /**
-     * @var EPConfigFile
-     */
-    private $configValues;
 
-    function connect(){
-        $databasePDO = $this->configValues->getValue('SQLValues','databasePDO');
-        $databaseUser = $this->configValues->getValue('SQLValues','databaseUser');
-        $databasePassword = $this->configValues->getValue('SQLValues','databasePassword');
-
-        try
-        {
-            self::$database = new \PDO($databasePDO, $databaseUser, $databasePassword);
-            if(!self::$database->query("SELECT * FROM `aptitudes`"))
-                throw new \PDOException('Aptitude table in Database is empty!  Database connection Error?');
-        }
-        catch (\PDOException $e)
-        {
-            error_log('Database connection failed: ');
-            error_log('  '.$databasePDO);
-            error_log('  '.$e->getMessage());
-            error_log('  Current Dir:  '.getcwd());
+    function connect()
+    {
+        self::$database = DB::connection()->getPdo();
+        if (!self::$database->query("SELECT * FROM `aptitudes`")) {
+            throw new \PDOException('Aptitude table in Database is empty!  Database connection Error?');
         }
     }
 
-    function __construct($configPath) {
+    function __construct() {
         $this->errors = array();
-        $this->configValues = new EPConfigFile($configPath);
         $this->connect();
     }
     
@@ -188,20 +172,15 @@ class EPListProvider {
     // ==== APTITUDE ======
 
     /**
-     * @param int $minValue
-     * @param int $maxValue
      * @return EPAptitude[]
      */
-    function getListAptitudes(int $minValue = 0, int $maxValue = 0): array
+    function getListAptitudes(): array
     {
         $apt = array();
-        if ($minValue == 0){
-            $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
-        }
-        if ($maxValue == 0){
-            $maxValue = $this->configValues->getValue('RulesValues', 'AptitudesMaxValue');
-        }
-        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
+        $minValue = config('epcc.AptitudesMinValue');
+        $maxValue = config('epcc.AptitudesMaxValue');
+        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
+
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
@@ -214,6 +193,7 @@ class EPListProvider {
     }
 
     /**
+     * TODO:  Remove this unused piece of code
      * @param int $minValue
      * @param int $maxValue
      * @return EPAptitude[]
@@ -223,13 +203,13 @@ class EPListProvider {
        $apt = array();
 
        if ($minValue == 0){
-           $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
+           $minValue = config('epcc.AptitudesMinValue');
        }
        if ($maxValue == 0){
-           $maxValue = $this->configValues->getValue('RulesValues', 'AptitudesMaxValue');
+           $maxValue = config('epcc.AptitudesMaxValue');
        }
        
-       $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
+       $absMax = config('epcc.AbsoluteAptitudesMaxValue');
        
        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
        $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -241,16 +221,11 @@ class EPListProvider {
         return $apt;
     }
 
-    function getAptitudeByName(string $aptName, int $minValue = 0, int $maxValue = 0): EPAptitude
+    function getAptitudeByName(string $aptName): EPAptitude
     {
-        if ($minValue == 0){
-            $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
-        }
-        if ($maxValue == 0){
-            $maxValue = $this->configValues->getValue('RulesValues', 'AptitudesMaxValue');
-        }
-
-        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
+        $minValue = config('epcc.AptitudesMinValue');
+        $maxValue = config('epcc.AptitudesMaxValue');
+        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
 
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `name` = '".$this->adjustForSQL($aptName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -260,15 +235,11 @@ class EPListProvider {
         return $epAppt;
     }
 
-    function getAptitudeByAbbreviation(string $abbrev, int $minValue = 0, int $maxValue = 0): EPAptitude
+    function getAptitudeByAbbreviation(string $abbrev): EPAptitude
     {
-        if ($minValue == 0){
-            $minValue = $this->configValues->getValue('RulesValues', 'AptitudesMinValue');
-        }
-        if ($maxValue == 0){
-            $maxValue = $this->configValues->getValue('RulesValues', 'AptitudesMaxValue');
-        }
-        $absMax = $this->configValues->getValue('RulesValues', 'AbsoluteAptitudesMaxValue');
+        $minValue = config('epcc.AptitudesMinValue');
+        $maxValue = config('epcc.AptitudesMaxValue');
+        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
 
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `abbreviation` = '".$abbrev."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -282,11 +253,10 @@ class EPListProvider {
     //TODO:  Some do and some don't take EPCharacterCreator. None of them should take it, but that's ongoing.
 
     /**
-     * @param EPConfigFile            $configValues
      * @param EPCharacterCreator|null $cc
      * @return EPStat[]
      */
-    function getListStats(EPConfigFile $configValues,?EPCharacterCreator &$cc=null): array
+    function getListStats(?EPCharacterCreator &$cc=null): array
     {
         $stats = array();
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stats`");
@@ -295,10 +265,10 @@ class EPListProvider {
             $groups = $this->getListGroups($row['name']);
             $epStats = new EPStat($row['name'], $row['description'], $row['abbreviation'], $groups,0,$cc);
             if (strcmp($epStats->abbreviation,EPStat::$MOXIE) == 0){
-                $epStats->value = $configValues->getValue('RulesValues','MoxieStartValue');
+                $epStats->value = config('epcc.MoxieStartValue');
             }
             if (strcmp($epStats->abbreviation,EPStat::$SPEED) == 0){
-                $epStats->value = $configValues->getValue('RulesValues','SpeedStartValue');
+                $epStats->value = config('epcc.SpeedStartValue');
             }
             //$stats[$row['abbreviation']] = $epStats;
             array_push($stats, $epStats);
@@ -472,7 +442,7 @@ class EPListProvider {
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epReputation = new EPReputation($row['name'],$row['description'],$groups,0,$this->configValues->getValue('RulesValues', 'RepMaxPoint'));
+            $epReputation = new EPReputation($row['name'],$row['description'],$groups,0, config('epcc.RepMaxPoint'));
             //$reputations[$row['name']] = $epReputation;
             array_push($reputations, $epReputation);
         }

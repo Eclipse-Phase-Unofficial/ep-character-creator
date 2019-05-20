@@ -43,7 +43,7 @@ class EPBook
 
     function __construct(string $bookName)
     {
-        $provider        = new EPListProvider(getConfigLocation());
+        $provider        = new EPListProvider();
         $this->bookName  = $provider->getBookForName($bookName) ?? '';
         $this->page      = $provider->getPageForName($bookName) ?? 'Unknown';
         $this->shortBook = self::SHORT_NAMES[$this->bookName] ?? '';
