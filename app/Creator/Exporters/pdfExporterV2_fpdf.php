@@ -50,7 +50,7 @@ class pdfExporterV2_fpdf {
         $realAge =  toUpper($character->realAge);
         $credits = toUpper(creator()->getCredit());
         $aptitudes = creator()->getAptitudes();
-        $reputations = $this->formatStats(creator()->getReputations());
+        $reputations = creator()->getReputations();
         $motivations = creator()->getMotivations();
         $skillList = creator()->getSkills();
         $egoNegTraits = EPTrait::getNegativeTraits(creator()->character->ego->getTraits());
@@ -120,7 +120,7 @@ class pdfExporterV2_fpdf {
 
         $pdf->SetXY(111,50);
         $format = PdfHelpers::setTwoColFormat(25,10,2,10,10);
-        PdfHelpers::writeTwoColumns($pdf,$reputations,$format,3.5,2);
+        PdfHelpers::writeTwoColumns($pdf, $this->formatStats($reputations), $format,3.5,2);
 
         //MOTIVATION
         $pdf->SetFont('Lato-LigIta', '', 7);
@@ -239,12 +239,16 @@ class pdfExporterV2_fpdf {
             $morphGender = toUpper($morph->gender);
             $morphNegTraits = EPTrait::getNegativeTraits(creator()->getCurrentTraits($morph));
             $morphPosTraits = EPTrait::getPositiveTraits(creator()->getCurrentTraits($morph));
-            $skillList = creator()->getSkills();
-            $morphGear = creator()->getGearForCurrentMorph();
-            $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
 
+            //These change based on the currently selected morph
+            //TODO: These (or a modifier) should be on the morph object itself.
+            $skillList = creator()->getSkills();
             $stats = $this->formatStats(creator()->getStats());
             $aptitudes = $this->formatStats(creator()->getAptitudes());
+            $morphGear = creator()->getGearForCurrentMorph();
+
+            $morphBonusMalus = creator()->getBonusMalusForMorph($morph);
+
             $formattedNegTraits = $this->formatGearData($morphNegTraits);
             $formattedPosTraits = $this->formatGearData($morphPosTraits);
             $formattedSkills = $this->formatSkills($skillList,'getValue');
