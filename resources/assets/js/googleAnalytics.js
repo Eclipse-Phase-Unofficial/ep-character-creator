@@ -37,6 +37,9 @@
 
 
 export const init = () => {
+    // This grabs process in case the Analytics Id hasn't been compiled in
+    let process = window.process || {env:{MIX_GOOGLE_ANALYTICS_ID: 'UA-463340-1'}};
+
     // Initialize the command queue in case analytics.js hasn't loaded yet.
     window.ga = window.ga || ((...args) => (ga.q = ga.q || []).push(args));
 

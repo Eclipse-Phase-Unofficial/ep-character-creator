@@ -8,6 +8,7 @@ return [
     'releaseDate' => "(December 2018)",
     'versionNumber' => 1.51,
     'versionNumberMin' => 0.91,
+    'googleAnalyticsId' => env('MIX_GOOGLE_ANALYTICS_ID', 'UA-463340-1'),
     //RulesValues
     'AptitudesPoint' => 105,
     'AptitudesMinValue' => 5,

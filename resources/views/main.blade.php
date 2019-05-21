@@ -146,6 +146,9 @@ use App\Creator\EPListProvider;
         {{--<script src="{{mix('js/app.js')}}" type="text/javascript"></script>--}}
         {{--<script src="{{mix('js/legacy.js')}}" type="text/javascript"></script>--}}
         <script>
+            var process = {};
+            process.env = {};
+            process.env.MIX_GOOGLE_ANALYTICS_ID = "{{config('epcc.googleAnalyticsId')}}";
             <?php
             //Load order is important here
             include public_path('js/manifest.js');

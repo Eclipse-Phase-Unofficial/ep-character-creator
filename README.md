@@ -51,8 +51,6 @@ If deploying to the internet, you may want to consider using your own '.env' fil
 Doing so allows you to change things like the error reporting location, or almost any other configuration.
 Simply add `--enf-file custom.env` to the run command above.
 
-NOTE:  Because of how javascript is compiled, `MIX_GOOGLE_ANALYTICS_ID` can only be set by changing "standalone.env" at build time.
-
 ##  Local Development and Testing
 You will need:
 
