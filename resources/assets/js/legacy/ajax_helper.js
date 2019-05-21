@@ -117,6 +117,9 @@ function loadPanel(id,url){
         setupFoldingList();
     });
     $(id).attr('src',url);
+    //Tell Google analytics about the change
+    ga('set', 'page', url);
+    ga('send', 'pageview');
 }
 
 /**
