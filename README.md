@@ -65,10 +65,7 @@ You will need:
     sed 's/\\n/ /g' database.sql > tmp.sql
     sqlite3 --init tmp.sql database.sqlite3
     ```
-3. configure database access in php/config.ini
-    ```ini
-    databasePDO = 'sqlite:../../../database/database.sqlite3'
-    ````
+3. Copy `standalone.env` to `.env`.
 
 #### MySql
 1. create a MySql database
@@ -82,12 +79,8 @@ You will need:
     ```
     mysql -h localhost -u epcc_www -p'$DATABASE_PASSWORD' EclipsePhaseData < database/database.sql
     ```
-3. configure database access in php/config.ini
-    ```
-    databaseUser = "epcc_www"
-    databasePassword = "$DATABASE_PASSWORD"
-    databasePDO = "mysql:dbname=<Database Name>;host=<DATABASE SERVER>("localhost" for local server);port=<Database Port> (for my sql generaly : 3306)"
-    ```
+3. Configure database access in your custom `.env` file.  
+See [here](https://laravel.com/docs/5.6/database#configuration) for how to do that.
 
 ### Saving database changes
 #### SQLite:

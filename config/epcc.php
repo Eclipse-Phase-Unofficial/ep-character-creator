@@ -1,11 +1,13 @@
 <?php
 
+use Carbon\Carbon as Carbon;
+
 //This replaces the old confi.ini file that the character creator was using before
 //TODO:  Some of the settings here probably belong somewhere else, like app
 //TODO:  Some of these should probably be loaded from the .env file
 return [
     'versionName' => "Gate Jump",
-    'releaseDate' => "(December 2018)",
+    'releaseDate' => Carbon::parse("December 2018"),
     'versionNumber' => 1.51,
     'versionNumberMin' => 0.91,
     'googleAnalyticsId' => env('MIX_GOOGLE_ANALYTICS_ID', 'UA-463340-1'),

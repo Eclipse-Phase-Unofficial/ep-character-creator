@@ -65,7 +65,6 @@ class Database
      */
     public function __construct()
     {
-        $config   = new EPConfigFile(getConfigLocation());
         $provider = new EPListProvider();
         $provider->connect();
 

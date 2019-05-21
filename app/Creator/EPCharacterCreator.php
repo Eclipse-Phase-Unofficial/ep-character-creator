@@ -33,10 +33,7 @@ class EPCharacterCreator implements Savable
     public $reputationPointsBackgroundMod;
     public $reputationPointsSoftGearMod;
     public $reputationPointsPsyMod;
-    /**
-     * @var EPConfigFile
-     */
-    public  $configValues;
+
     public  $errorList;
     /**
      * @var EPCharacter
@@ -83,7 +80,7 @@ class EPCharacterCreator implements Savable
     private function loadAptitudes(){
         $this->character->ego->aptitudes = $this->listProvider->getListAptitudes();
         //TODO:  Move this to another function
-        $this->aptitudePoints -= count($this->character->ego->aptitudes) * $this->configValues->getValue('RulesValues','AptitudesMinValue');
+        $this->aptitudePoints -= count($this->character->ego->aptitudes) * config('epcc.AptitudesMinValue');
     }
 
     /// Getters
@@ -190,8 +187,8 @@ class EPCharacterCreator implements Savable
     {
 		$savePack = array();
 		
-        $savePack['versionName'] = $this->configValues->getValue('GeneralValues','versionName');
-        $savePack['versionNumber'] = $this->configValues->getValue('GeneralValues','versionNumber');
+        $savePack['versionName'] = config('epcc.versionName');
+        $savePack['versionNumber'] = config('epcc.versionNumber');
                 
         $savePack['initialCreationPoints'] = $this->initialCreationPoints;
 		$savePack['aptitudePoints'] = $this->aptitudePoints;
@@ -262,14 +259,14 @@ class EPCharacterCreator implements Savable
 		
 				
     }
-    function __construct($pathToConfig,$amountCP = -1){
+    function __construct($amountCP = -1){
         $this->creationMode = true;
         $this->validation = new EPValidation();
         $this->evoRezPoint = 0;
         $this->evoRepPoint = 0;
         $this->evoCrePoint = 0;  
         $this->evoCrePointPurchased = 0;
-        $this->init($pathToConfig,$amountCP);
+        $this->init($amountCP);
     }
     function activateMorph(?EPMorph $morph = null){
         if (!isset($morph)){
@@ -665,9 +662,9 @@ class EPCharacterCreator implements Savable
             return false;
         }
         if ($this->creationMode){
-            $this->evoCrePoint -= $this->configValues->getValue('RulesValues','SpecializationCost');
+            $this->evoCrePoint -= config('epcc.SpecializationCost');
         }else{
-            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SpecializationCost');
+            $this->evoRezPoint -= config('epcc.SpecializationCost');
         }
         $skill->specialization = $name;
         return true;
@@ -681,9 +678,9 @@ class EPCharacterCreator implements Savable
             return false;
         }
         if ($this->creationMode){
-            $this->evoCrePoint += $this->configValues->getValue('RulesValues','SpecializationCost');
+            $this->evoCrePoint += config('epcc.SpecializationCost');
         }else{
-            $this->evoRezPoint += $this->configValues->getValue('RulesValues','SpecializationCost');
+            $this->evoRezPoint += config('epcc.SpecializationCost');
         }
         $skill->specialization = '';
         return true;
@@ -750,13 +747,13 @@ class EPCharacterCreator implements Savable
             //More error checking
             if ($trait->isPositive()){
                 $totPosTrait = $this->getSumPosTraits();
-                if ($totPosTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointPositiveTrait')){
+                if ($totPosTrait + $trait->cpCost > config('epcc.MaxPointPositiveTrait')){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Positive Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
             }else{
                 $totNegTrait = $this->getSumNegTraits();
-                if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTrait')){
+                if ($totNegTrait + $trait->cpCost > config('epcc.MaxPointNegativeTrait')){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
@@ -764,7 +761,7 @@ class EPCharacterCreator implements Savable
             if (isset($morph)){
                 if ($trait->isNegative()){
                     $totNegTrait = $this->getSumNegMorphTraits();
-                    if ($totNegTrait + $trait->cpCost > $this->configValues->getValue('RulesValues','MaxPointNegativeTraitOnMorph')){
+                    if ($totNegTrait + $trait->cpCost > config('epcc.MaxPointNegativeTraitOnMorph')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP for morphs outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
@@ -985,7 +982,7 @@ class EPCharacterCreator implements Savable
             }
             $psySleight->buyinCreationMode = false;
             array_push($this->character->ego->psySleights,$psySleight);
-            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','PsyCpCost');
+            $this->evoRezPoint -= config('epcc.PsyCpCost');
             return true;
         }
     }
@@ -1009,7 +1006,7 @@ class EPCharacterCreator implements Savable
         }
         $psySleight->removeFromArray($this->character->ego->psySleights);
         if (!$psySleight->buyinCreationMode){
-            $this->evoRezPoint += $this->configValues->getValue('RulesValues','PsyCpCost');
+            $this->evoRezPoint += config('epcc.PsyCpCost');
         }
         return true;
     }
@@ -1047,7 +1044,7 @@ class EPCharacterCreator implements Savable
         }
         if($nativeLanguage){
             $ns->isNativeTongue = true;
-            $ns->nativeTongueBonus = $this->configValues->getValue('RulesValues','NativeTongueBaseValue');
+            $ns->nativeTongueBonus = config('epcc.NativeTongueBaseValue');
             $this->nativeLanguageSet = true;
         }
         $this->adjustAll();
@@ -1072,7 +1069,7 @@ class EPCharacterCreator implements Savable
         return true;
     }
     function getActiveRestNeed(){
-        $need = $this->configValues->getValue('RulesValues','ActiveSkillsMinimum');
+        $need = config('epcc.ActiveSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
             if ($sk->isActive()){
                 $need -= $this->getRealCPCostForSkill($sk);
@@ -1141,7 +1138,7 @@ class EPCharacterCreator implements Savable
     }
 
     function getKnowledgeRestNeed(){
-        $need = $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum');
+        $need = config('epcc.KnowledgeSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
             if ($sk->isKnowledge()){
                 $need -= $this->getRealCPCostForSkill($sk);
@@ -1356,7 +1353,7 @@ class EPCharacterCreator implements Savable
             }
 
             $apt->value = $newValue;
-            $this->aptitudePoints = max(0,$this->configValues->getValue('RulesValues','AptitudesPoint')-$this->getSumAptitudes());
+            $this->aptitudePoints = max(0, config('epcc.AptitudesPoint') - $this->getSumAptitudes());
             $this->adjustValues();
             return true;
         }else{
@@ -1385,13 +1382,13 @@ class EPCharacterCreator implements Savable
             $oldApt = $this->back->getAptitudeByAbbreviation($apt->abbreviation);
             $diff = $newValue - $apt->value;
             if ($newValue < $oldApt->value){
-                $this->evoRezPoint += max(0,$apt->value - $oldApt->value) * $this->configValues->getValue('RulesValues','AptitudePointCost');
+                $this->evoRezPoint += max(0,$apt->value - $oldApt->value) * config('epcc.AptitudePointCost');
                 $apt->value = $newValue;
                 $this->checkSkillsForChangeAptitudeValue($apt,$diff);
                 return true;
             }else{
                 $apt->value = max($apt->value,$oldApt->value);
-                $this->evoRezPoint -= ($newValue - $apt->value) * $this->configValues->getValue('RulesValues','AptitudePointCost');
+                $this->evoRezPoint -= ($newValue - $apt->value) * config('epcc.AptitudePointCost');
                 $apt->value = $newValue;
                 $this->checkSkillsForChangeAptitudeValue($apt,$diff);
                 return true;
@@ -1404,14 +1401,14 @@ class EPCharacterCreator implements Savable
         if ($diff > 0){
             foreach ($this->character->ego->skills as $sk) {
                 if (strcmp($sk->linkedApt->abbreviation,$apt->abbreviation) == 0){
-                    $up = ($sk->baseValue + $sk->getBonusForCost()) - $this->configValues->getValue('RulesValues','SkillLimitForImprove');
+                    $up = ($sk->baseValue + $sk->getBonusForCost()) - config('epcc.SkillLimitForImprove');
                     $this->evoRezPoint -= max(0,min($up,$diff));
                 }
             }
         }else{
             foreach ($this->character->ego->skills as $sk) {
                 if (strcmp($sk->linkedApt->abbreviation,$apt->abbreviation) == 0){
-                    $t = max(0,$this->configValues->getValue('RulesValues','SkillLimitForImprove') - ($sk->baseValue + $sk->getBonusForCost()));
+                    $t = max(0,config('epcc.SkillLimitForImprove') - ($sk->baseValue + $sk->getBonusForCost()));
                     $t = max(0,-$diff - $t);
                     $this->evoRezPoint += $t;
                 }
@@ -1588,12 +1585,12 @@ class EPCharacterCreator implements Savable
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level ('.$sk->getMaxValue().') outdated ('.$value.')('.$sk->getBonusForCost().') !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }else{
-                        if($sk->baseValue + $sk->getBonusForCost() >= $this->configValues->getValue('RulesValues','SkillLimitForImprove')){
-                            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SkillPointUpperCost');
+                        if($sk->baseValue + $sk->getBonusForCost() >= config('epcc.SkillLimitForImprove')){
+                            $this->evoRezPoint -= config('epcc.SkillPointUpperCost');
                             $sk->baseValue += 1;
                             $diff -= 1;
                         }else if ($sk->baseValue >= $oldSk->baseValue){
-                            $this->evoRezPoint -= $this->configValues->getValue('RulesValues','SkillPointUnderCost');
+                            $this->evoRezPoint -= config('epcc.SkillPointUnderCost');
                             $sk->baseValue += 1;
                             $diff -= 1;
                         }else{
@@ -1603,12 +1600,12 @@ class EPCharacterCreator implements Savable
                     }
                 }else{
                     if ($sk->baseValue > $oldSk->baseValue){
-                        if ($sk->baseValue + $sk->getBonusForCost() > $this->configValues->getValue('RulesValues','SkillLimitForImprove')){
-                            $this->evoRezPoint += $this->configValues->getValue('RulesValues','SkillPointUpperCost');
+                        if ($sk->baseValue + $sk->getBonusForCost() > config('epcc.SkillLimitForImprove')){
+                            $this->evoRezPoint += config('epcc.SkillPointUpperCost');
                             $sk->baseValue -= 1;
                             $diff += 1;
                         }else{
-                            $this->evoRezPoint += $this->configValues->getValue('RulesValues','SkillPointUnderCost');
+                            $this->evoRezPoint += config('epcc.SkillPointUnderCost');
                             $sk->baseValue -= 1;
                             $diff += 1;
                         }
@@ -1637,16 +1634,16 @@ class EPCharacterCreator implements Savable
                     if ($newValue == $stat->value){
                         return true;
                     }
-                    if ($newValue < $this->configValues->getValue('RulesValues','MoxMinPoint')){
+                    if ($newValue < config('epcc.MoxMinPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
-                    if ($newValue > $this->configValues->getValue('RulesValues','MoxMaxPoint')){
+                    if ($newValue > config('epcc.MoxMaxPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
                     $diff = $newValue - $stat->value;
-                    $need = $diff * $this->configValues->getValue('RulesValues','MoxiePointCost');
+                    $need = $diff * config('epcc.MoxiePointCost');
                     $stat->value = $newValue;
                     return true;
                 }
@@ -1660,16 +1657,16 @@ class EPCharacterCreator implements Savable
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
-                    if ($newValue < $this->configValues->getValue('RulesValues','MoxMinPoint')){
+                    if ($newValue < config('epcc.MoxMinPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Min level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
-                    if ($newValue > $this->configValues->getValue('RulesValues','MoxEvoMaxPoint')){
+                    if ($newValue > config('epcc.MoxEvoMaxPoint')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max level for Mox outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
                     $diff = $stat->value - $newValue;
-                    $this->evoRezPoint += $diff * $this->configValues->getValue('RulesValues','MoxiePointCost');
+                    $this->evoRezPoint += $diff * config('epcc.MoxiePointCost');
                     $stat->value = $newValue;
                     return true;
                 }
@@ -1682,12 +1679,11 @@ class EPCharacterCreator implements Savable
     function isNativeLanguageSet(){
 	    return $this->nativeLanguageSet;
     }
-    private function init($pathToConfig,$amountCP){
+    private function init($amountCP){
         $this->listProvider = new EPListProvider();
-        $this->configValues = new EPConfigFile($pathToConfig);
         $this->errorList = array();
-        $this->aptitudePoints = $this->configValues->getValue('RulesValues','AptitudesPoint');
-        $this->reputationPoints = $this->configValues->getValue('RulesValues','RepStart');
+        $this->aptitudePoints = config('epcc.AptitudesPoint');
+        $this->reputationPoints = config('epcc.RepStart');  //TODO:  Is this a duplicate of Ego (further down)?
         $this->reputationPointsMorphMod = 0;
         $this->reputationPointsTraitMod = 0;
         $this->reputationPointsFactionMod = 0;
@@ -1695,8 +1691,8 @@ class EPCharacterCreator implements Savable
         $this->reputationPointsSoftGearMod = 0;
         $this->reputationPointsPsyMod = 0;
         $this->character = new EPCharacter();
-        $this->character->ego->credit = $this->configValues->getValue('RulesValues','CreditStart');
-        $this->character->ego->rep = $this->configValues->getValue('RulesValues','RepStart');
+        $this->character->ego->credit = config('epcc.CreditStart');
+        $this->character->ego->rep = config('epcc.RepStart');
 
         $this->loadAptitudes();
         $this->loadStats();
@@ -1712,11 +1708,9 @@ class EPCharacterCreator implements Savable
 
         $amountCP = intval($amountCP);
         if ($amountCP < 0 ){
-            $amountCP = $this->configValues->getValue('RulesValues','CreationPoint');
+            $amountCP = config('epcc.CreationPoint');
         }
-        $amountCP = max($amountCP,
-                $this->configValues->getValue('RulesValues','ActiveSkillsMinimum') +
-                $this->configValues->getValue('RulesValues','KnowledgeSkillsMinimum'));
+        $amountCP = max($amountCP, config('epcc.ActiveSkillsMinimum') + config('epcc.KnowledgeSkillsMinimum'));
 
     	$this->initialCreationPoints = $amountCP;
 
@@ -1728,7 +1722,7 @@ class EPCharacterCreator implements Savable
         }else{
             $rez = $this->evoRezPoint;
             $rez -= $this->getCostForReputation();
-            $rez -= $this->evoCrePointPurchased * $this->configValues->getValue('RulesValues','CreditPointCost');
+            $rez -= $this->evoCrePointPurchased * config('epcc.CreditPointCost');
 
 
             return $rez;
@@ -1744,7 +1738,7 @@ class EPCharacterCreator implements Savable
         $ret -= $this->getCostForReputation();
         $ret -= $this->getCostForSkills();
         $ret -= $this->getCostForPsysleights();
-        $ret -= $this->character->ego->creditPurchased * $this->configValues->getValue('RulesValues','CreditPointCost');
+        $ret -= $this->character->ego->creditPurchased * config('epcc.CreditPointCost');
 
         if ($this->creationMode){
             return $ret;
@@ -1823,8 +1817,8 @@ class EPCharacterCreator implements Savable
     }
     function resetStartValues(){
         foreach ($this->character->ego->aptitudes as $a){
-            $a->maxValue = $this->configValues->getValue('RulesValues','AptitudesMaxValue');
-            $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue');
+            $a->maxValue = config('epcc.AptitudesMaxValue');
+            $a->minValue = config('epcc.AptitudesMinValue');
             $a->maxEgoValue = $a->maxValue;
             $a->minEgoValue = $a->minValue;
             $a->maxMorphValue = $a->maxValue;
@@ -1836,22 +1830,22 @@ class EPCharacterCreator implements Savable
         }
         foreach ($this->character->ego->reputations as $r){
             if ($this->creationMode){
-                $r->maxValue = $this->configValues->getValue('RulesValues','RepMaxPoint');
+                $r->maxValue = config('epcc.RepMaxPoint');
             }else{
-                $r->maxValue = $this->configValues->getValue('RulesValues','EvoMaxRepValue');
+                $r->maxValue = config('epcc.EvoMaxRepValue');
             }
         }
         foreach ($this->character->ego->skills as $s){
             if ($this->creationMode){
-                $s->maxValue = $this->configValues->getValue('RulesValues','SkillMaxPoint');
+                $s->maxValue = config('epcc.SkillMaxPoint');
             }else{
-                $s->maxValue = $this->configValues->getValue('RulesValues','SkillEvolutionMaxPoint');
+                $s->maxValue = config('epcc.SkillEvolutionMaxPoint');
             }
         }
         foreach ($this->character->ego->ais as $ia){
             foreach ($ia->aptitudes as $a){
-                $a->maxValue = $this->configValues->getValue('RulesValues','AptitudesMaxValue');
-                $a->minValue = $this->configValues->getValue('RulesValues','AptitudesMinValue');
+                $a->maxValue = config('epcc.AptitudesMaxValue');
+                $a->minValue = config('epcc.AptitudesMinValue');
                 $a->maxEgoValue = $a->maxValue;
                 $a->minEgoValue = $a->minValue;
                 $a->maxMorphValue = $a->maxValue;
@@ -1859,9 +1853,9 @@ class EPCharacterCreator implements Savable
             }
             foreach ($ia->skills as $s){
                 if ($this->creationMode){
-                    $s->maxValue = $this->configValues->getValue('RulesValues','SkillMaxPoint');
+                    $s->maxValue = config('epcc.SkillMaxPoint');
                 }else{
-                    $s->maxValue = $this->configValues->getValue('RulesValues','SkillEvolutionMaxPoint');
+                    $s->maxValue = config('epcc.SkillEvolutionMaxPoint');
                 }
             }
         }
@@ -2382,12 +2376,12 @@ class EPCharacterCreator implements Savable
     }
     function getCostForApts(){
         $cost = $this->getSumAptitudes();
-        $cost = max(0,$cost - $this->configValues->getValue('RulesValues','AptitudesPoint'));
-        return $cost * $this->configValues->getValue('RulesValues','AptitudePointCost');
+        $cost = max(0,$cost - config('epcc.AptitudesPoint'));
+        return $cost * config('epcc.AptitudePointCost');
     }
     function getCostForStats(){
-        $cost = $this->getStatByAbbreviation(EPStat::$MOXIE)->value - $this->configValues->getValue('RulesValues','MoxieStartValue');
-        return $cost * $this->configValues->getValue('RulesValues','MoxiePointCost');
+        $cost = $this->getStatByAbbreviation(EPStat::$MOXIE)->value - config('epcc.MoxieStartValue');
+        return $cost * config('epcc.MoxiePointCost');
     }
     function getCostForMorphs(){
         $cost = 0;
@@ -2402,7 +2396,7 @@ class EPCharacterCreator implements Savable
     function getCostForReputation(){
         $c = $this->getReputationPointsRemaining();
         if ($c < 0){
-            return abs($c) * $this->configValues->getValue('RulesValues','RepPointCost');
+            return abs($c) * config('epcc.RepPointCost');
         }
         return 0;
     }
@@ -2411,14 +2405,14 @@ class EPCharacterCreator implements Savable
         foreach ($this->character->ego->skills as $s){
                  $cost += $this->getRealCPCostForSkill($s);
                  if (!empty($s->specialization)){
-                     $cost += $this->configValues->getValue('RulesValues','SpecializationCost');;
+                     $cost += config('epcc.SpecializationCost');;
                  }
         }
         return $cost;
     }
     function getCostForPsysleights(): int
     {
-        $costPer = $this->configValues->getValue('RulesValues','PsyCpCost');
+        $costPer = config('epcc.PsyCpCost');
         return count($this->character->ego->psySleights) * $costPer;
     }
     function getRealCPCostForSkill(EPSkill $skill){
@@ -2427,10 +2421,10 @@ class EPCharacterCreator implements Savable
 
             $val = $skill->baseValue;
 
-            $skill->baseValue += $this->configValues->getValue('RulesValues','NativeTongueBonus');
+            $skill->baseValue += config('epcc.NativeTongueBonus');
             $cost1 =  $this->getRealCPCostForSkill($skill);
 
-            $skill->baseValue = $this->configValues->getValue('RulesValues','NativeTongueBonus');
+            $skill->baseValue = config('epcc.NativeTongueBonus');
             $cost2 =  $this->getRealCPCostForSkill($skill);
 
             $res = $cost1 - $cost2;
@@ -2439,14 +2433,14 @@ class EPCharacterCreator implements Savable
             $skill->baseValue = $val;
             return $res;
         }else{
-            $downPart = max(0,$this->configValues->getValue('RulesValues','SkillLimitForImprove') -$skill->getBonusForCost());
+            $downPart = max(0,config('epcc.SkillLimitForImprove') -$skill->getBonusForCost());
             $downPart = min($downPart,$skill->baseValue);
-            $upPart = $skill->baseValue + $skill->getBonusForCost() - $this->configValues->getValue('RulesValues','SkillLimitForImprove');
+            $upPart = $skill->baseValue + $skill->getBonusForCost() - config('epcc.SkillLimitForImprove');
             $upPart = max(0,$upPart);
             $upPart = min($upPart,$skill->baseValue);
 
-            return $downPart * $this->configValues->getValue('RulesValues','SkillPointUnderCost') * $skill->getRatioCost()
-                + $upPart * $this->configValues->getValue('RulesValues','SkillPointUpperCost') * $skill->getRatioCost();
+            return $downPart * config('epcc.SkillPointUnderCost') * $skill->getRatioCost()
+                + $upPart * config('epcc.SkillPointUpperCost') * $skill->getRatioCost();
         }
     }
     function getReputationByName($name){
@@ -2468,25 +2462,25 @@ class EPCharacterCreator implements Savable
 
     function purchaseCredit($cpAmount){
         if ($this->creationMode){
-            if ($cpAmount + $this->character->ego->creditPurchased * $this->configValues->getValue('RulesValues','CreditPointCost') > $this->configValues->getValue('RulesValues','MaxCreditPurchaseWithCp')){
+            if ($cpAmount + $this->character->ego->creditPurchased * config('epcc.CreditPointCost') > config('epcc.MaxCreditPurchaseWithCp')){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max 100 CP!)', EPCreatorErrors::$RULE_ERROR));
                 return false;
             }
 
-            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
+            $cred = $cpAmount / config('epcc.CreditPointCost');
             $this->character->ego->creditPurchased += $cred;
             $this->character->ego->credit += $cred;
 
             return true;
         }else{
-            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
+            $cred = $cpAmount / config('epcc.CreditPointCost');
             $this->evoCrePointPurchased += $cred;
             return true;
         }
     }
     function saleCredit($cpAmount){
         if ($this->creationMode){
-            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
+            $cred = $cpAmount / config('epcc.CreditPointCost');
             if ($cred > $this->character->ego->creditPurchased){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (No enough crédits purchased !)', EPCreatorErrors::$RULE_ERROR));
                 return false;
@@ -2500,7 +2494,7 @@ class EPCharacterCreator implements Savable
 
             return true;
         }else{
-            $cred = $cpAmount / $this->configValues->getValue('RulesValues','CreditPointCost');
+            $cred = $cpAmount / config('epcc.CreditPointCost');
             if ($cred > $this->evoCrePointPurchased){
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (To credits sales (max:'.$this->evoCrePointPurchased.') !)', EPCreatorErrors::$RULE_ERROR));
                 return false;

@@ -22,21 +22,6 @@ function creator(): ?EPCharacterCreator
 }
 
 /**
- * Get the location of the configuration file
- * TO Override this, set the 'EPCC_CONFIG_PATH' environment variable to the location of whatever config file you want.
- *
- * @return string
- */
-function getConfigLocation(): string
-{
-    // Allow file path to be overridden by environment. (For some docker builds)
-    if(isset($_ENV['EPCC_CONFIG_PATH'])) {
-        return $_ENV['EPCC_CONFIG_PATH'];
-    }
-    return __DIR__ . '/../../config.ini';
-}
-
-/**
  * Returns a singleton of the Database class
  * @return Database
  */

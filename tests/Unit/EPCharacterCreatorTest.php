@@ -17,7 +17,7 @@ class EPCharacterCreatorTest extends TestCase
 {
     public function testCreatingACreator()
     {
-        $creator = new EPCharacterCreator(getConfigLocation(), 1000);
+        $creator = new EPCharacterCreator(1000);
         $this->assertInstanceOf(EPCharacterCreator::class, $creator);
     }
 }

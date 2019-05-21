@@ -1,9 +1,5 @@
 <?php
 declare(strict_types=1);
-
-use App\Creator\EPConfigFile;
-
-$config = new EPConfigFile(getConfigLocation());
 ?>
 <table class="popup_table" id="table_reset" align="center">
 	<tr align="center">
@@ -52,8 +48,9 @@ $config = new EPConfigFile(getConfigLocation());
 	
 	<tr align="center">
 		<td>
-            <?php echo $config->getVersionName(); ?><br>
-            <small><a href="https://github.com/EmperorArthur/ep-character-creator/" target="_blank"><?php echo $config->getVersionString(); ?><a/></small>
+			{{config('epcc.versionName')}}
+            <br>
+            <small><a href="https://github.com/EmperorArthur/ep-character-creator/" target="_blank">@component('components.version')@endcomponent</a></small>
 			<br><br>
 		</td>
 	</tr>

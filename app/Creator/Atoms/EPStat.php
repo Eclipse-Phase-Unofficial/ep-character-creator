@@ -168,7 +168,7 @@ class EPStat extends EPAtom{
             case EPStat::$SPEED:
                 $res = $this->value + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod;
                 if (!empty($this->cc)){
-                    $res = min($res,$this->cc->configValues->getValue('RulesValues','SpeedMaxValue'));
+                    $res = min($res, config('epcc.SpeedMaxValue'));
                 }
                 return round($res * $multi);
                 break;

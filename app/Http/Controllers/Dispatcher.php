@@ -9,7 +9,6 @@ use App\Creator\EPCreatorErrors;
 use App\Creator\EPListProvider;
 use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPStat;
-use App\Creator\EPConfigFile;
 use App\Creator\Atoms\EPBonusMalus;
 use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPAtom;
@@ -62,7 +61,6 @@ class Dispatcher extends Controller
 //INIT
 $return = array();
 $return['error'] = false;
-$configValues = new EPConfigFile(getConfigLocation());
 $provider = new EPListProvider();
 	//error_log(print_r($_POST,true));
 	//error_log(print_r($_FILES,true));
@@ -76,18 +74,19 @@ if (isset($_POST['load_char'])) {
     }
     $saveFile = json_decode(session('fileToLoad'),true);
 
-    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < $configValues->getValue('GeneralValues','versionNumberMin')){
+    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < config('epcc.versionNumberMin')){
         return static::treatCreatorErrors(new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
     }
-    session()->put('cc', new EPCharacterCreator(getConfigLocation()));
-    creator()->back = new EPCharacterCreator(getConfigLocation());
+    session()->put('cc', new EPCharacterCreator());
+    creator()->back = new EPCharacterCreator();
 
     creator()->loadSavePack($saveFile);
     creator()->back->loadSavePack($saveFile);
-    creator()->back->setMaxRepValue($configValues->getValue('RulesValues','EvoMaxRepValue'));
-    creator()->setMaxRepValue($configValues->getValue('RulesValues','EvoMaxRepValue'));
-    creator()->back->setMaxSkillValue($configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
-    creator()->setMaxSkillValue($configValues->getValue('RulesValues','SkillEvolutionMaxPoint'));
+    //TODO:  These should be set in the creator itself
+    creator()->back->setMaxRepValue(config('epcc.EvoMaxRepValue'));
+    creator()->setMaxRepValue(config('epcc.EvoMaxRepValue'));
+    creator()->back->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
+    creator()->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
 
     // Save pack and user both say we are in creation mode
     if (creator()->creationMode == true && $_POST['creationMode'] == "true" ){
@@ -127,7 +126,7 @@ if (isset($_POST['firstTime'])) {
 //SET CP FOR A NEW CHARACTER
 if(isset($_POST['setCP'])){
 	//CHARACTER CREATOR
-    session()->put('cc', new EPCharacterCreator(getConfigLocation(),$_POST['setCP']));
+    session()->put('cc', new EPCharacterCreator($_POST['setCP']));
     //error_log("NEW CHAR");
 }
 
