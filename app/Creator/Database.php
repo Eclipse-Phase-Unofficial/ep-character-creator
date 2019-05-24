@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Creator;
 
 use App\Creator\Atoms\EPAtom;
+use App\Creator\Atoms\EPSkill;
 
 class Database
 {
@@ -262,6 +263,21 @@ class Database
             }
         }
         return $output;
+    }
+
+    /**
+     * @param string $name
+     * @param string $prefix
+     * @return EPSkill|null
+     */
+    function getSkillByNamePrefix(string $name, string $prefix): ?EPSkill
+    {
+        foreach ($this->skills as $skill) {
+            if (strcmp($skill->prefix, $prefix) == 0 && strcmp($skill->getName(), $name) == 0) {
+                return $skill;
+            }
+        }
+        return null;
     }
 
 

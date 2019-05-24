@@ -23,6 +23,10 @@ class EPSkill extends EPAtom{
      */
      private $skillType;
 
+    /**
+     * TODO:  Make this private with a getter (no setter)
+     * @var string
+     */
      public $prefix;   
      
      public $baseValue;

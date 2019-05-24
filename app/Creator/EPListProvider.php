@@ -61,24 +61,6 @@ class EPListProvider {
     
     //==== BONUS MALUS =========
 
-    /**
-     * @return EPBonusMalus[]
-     */
-    function getListBonusMalus(): array
-    {
-        $bmList = array();
-        $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus`;");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $groups = $this->getListGroups($row['name']);
-            $bmTypes = $this->getBonusMalusTypes($row['name']);
-            $epBonMal = new EPBonusMalus($row['name'],$row['type'],(float) $row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
-            //$bmList[$row['name']] = $epBonMal;
-            array_push($bmList, $epBonMal);
-        }
-        return $bmList;
-    }
-
     function getBonusMalusByName(string $name): EPBonusMalus
     {
         $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';");
@@ -192,35 +174,6 @@ class EPListProvider {
         return $apt;
     }
 
-    /**
-     * TODO:  Remove this unused piece of code
-     * @param int $minValue
-     * @param int $maxValue
-     * @return EPAptitude[]
-     */
-    function getListAptitudesComplete(int $minValue = 0, int $maxValue = 0): array
-    {
-       $apt = array();
-
-       if ($minValue == 0){
-           $minValue = config('epcc.AptitudesMinValue');
-       }
-       if ($maxValue == 0){
-           $maxValue = config('epcc.AptitudesMaxValue');
-       }
-       
-       $absMax = config('epcc.AbsoluteAptitudesMaxValue');
-       
-       $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
-       $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $groups = $this->getListGroups($row['name']);
-            $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups,$minValue,$maxValue,$minValue,$absMax);
-            array_push($apt, $epAppt);
-        }
-        return $apt;
-    }
-
     function getAptitudeByName(string $aptName): EPAptitude
     {
         $minValue = config('epcc.AptitudesMinValue');
@@ -274,16 +227,6 @@ class EPListProvider {
             array_push($stats, $epStats);
         }
         return $stats;
-    }
-    
-    function getStatByName(string $statName): EPStat
-    {
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stats` WHERE `name`='".$this->adjustForSQL($statName)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        $groups = $this->getListGroups($row['name']);
-        $epStats = new EPStat($row['name'], $row['description'], $row['abbreviation'], $groups);
-        return $epStats;
     }
     
     //=== PREFIX ===
@@ -367,30 +310,6 @@ class EPListProvider {
 
         $groups = $this->getListGroups($row['name']);
         $epSkills = new EPSkill($row['name'],$row['desc'],$this->getAptByAbreviation($listApt,$row['linkedApt']),$row['skillType'],$row['defaultable'],$row['prefix'],$groups);
-        return $epSkills;
-    }
-
-    /**
-     * TODO:  Remove this
-     *
-     * @param string $name
-     * @param mixed  $listApt TODO:  Determine the type here
-     * @return EPSkill
-     * @deprecated Name alone does not uniquely identify a skill
-     */
-    function getSkillByName(string $name,$listApt): EPSkill
-    {
-        $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-
-        $groups = $this->getListGroups($row['name']);
-        if ($row['defaultable']== 'Y'){
-            $defaultTable = EPSkill::$DEFAULTABLE;
-        }else{
-            $defaultTable = EPSkill::$NO_DEFAULTABLE;
-        }
-        $epSkills = new EPSkill($row['name'],$row['desc'],$this->getAptByAbreviation($listApt,$row['linkedApt']),$row['skillType'],$defaultTable,$row['prefix'],$groups);
         return $epSkills;
     }
     
@@ -591,7 +510,13 @@ class EPListProvider {
         }
         return $gearList;
     }
-    
+
+    /**
+     * TODO: This can create duplicate gear from what is in the master EPDatabase collection.
+     * If one of those is changed then this copy is not affected.
+     * @param string $name
+     * @return EPGear
+     */
     function getGearByName(string $name): EPGear
     {
         $bonusMalusGearList = array();
@@ -728,37 +653,6 @@ class EPListProvider {
         $book = $row['book'];
         return $book;
     }
-
-    /**
-     * TODO:  Remove this
-     * @return array
-     * @deprecated Don't think it's used anywhere
-     */
-    function getListBook(){
-        $nameBook = array();
-        $res = self::$database->query("SELECT `name`,`book` FROM `AtomBook`");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $nameBook[$row['name']] = $row['book'];
-        }
-        return $nameBook;
-    }
-
-    /**
-     * TODO:  Remove this
-     * @param $name
-     * @return bool
-     * @deprecated Don't think it's used anywhere
-     */
-    function isNameOnBookList($name){
-        $res = self::$database->query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        if(empty($row)) return false;
-        $book = $row['book'];
-        if(empty($book)) return false;
-        else return true;
-    }
     
     //PAGE
     function getPageForName(string $name): ?string
@@ -770,38 +664,4 @@ class EPListProvider {
         $page = $row['page'];
         return $page;
     }
-
-    /**
-     * TODO:  Remove this
-     * @return array
-     * @deprecated Don't think it's used anywhere
-     */
-    function getListPage(){
-        $namePage = array();
-        $res = self::$database->query("SELECT `name`,`page` FROM `AtomPage`");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $namePage[$row['name']] = $row['page'];
-        }
-        return $namePage;
-    }
-
-    /**
-     * TODO:  Remove this
-     * @param $name
-     * @return bool
-     * @deprecated Don't think it's used anywhere
-     */
-    function isNameOnPageList($name){
-        $res = self::$database->query("SELECT `page` FROM `AtomPage` WHERE `name` = '".$this->adjustForSQL($name)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        if(empty($row)) return false;
-        $page = $row['page'];
-        if(empty($page)) return false;
-        else return true;
-    }
-    
-    
-    
 }  

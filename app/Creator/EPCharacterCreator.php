@@ -69,16 +69,16 @@ class EPCharacterCreator implements Savable
 
     /// Loaders
     private function loadReps(){
-        $this->character->ego->reputations = $this->listProvider->getListReputation();
+        $this->character->ego->reputations = EpDatabase()->getReputations();
     }
     private function loadSkills(){
-        $this->character->ego->skills = $this->listProvider->getListSkills($this->character->ego->aptitudes);
+        $this->character->ego->skills = EpDatabase()->getSkills();
     }
     private function loadStats(){
         $this->character->ego->stats = $this->listProvider->getListStats($this);
     }
     private function loadAptitudes(){
-        $this->character->ego->aptitudes = $this->listProvider->getListAptitudes();
+        $this->character->ego->aptitudes = EpDatabase()->getAptitudes();
         //TODO:  Move this to another function
         $this->aptitudePoints -= count($this->character->ego->aptitudes) * config('epcc.AptitudesMinValue');
     }
@@ -214,7 +214,7 @@ class EPCharacterCreator implements Savable
 		return $savePack;
 		
     }
-    
+
     function loadSavePack($savePack,$cc = null){
         $this->initialCreationPoints = $savePack['initialCreationPoints'];
 		$this->aptitudePoints = $savePack['aptitudePoints'];
@@ -244,10 +244,16 @@ class EPCharacterCreator implements Savable
 			$m->cc = $this;
 		}
 		
-		//set linked Apt on skill
+		//Skills have pointers to their linked aptitudes.
+        //Except they are not stored as pointers, and are instead stored as separate full objects.
+        //This means we need to re-associate each skill with the actual aptitude so modifications automatically take place
+        //TODO:  This should be in EPEgo
+        //TODO:  Skills should more clearly indicate
 		$skillToComplete = $this->character->ego->skills;
 		foreach($skillToComplete as $m){
-			$linkedApt = $this->listProvider->getSkillByNamePrefix($m->getName(),$m->prefix,$this->character->ego->aptitudes)->linkedApt;
+		    //For normal skills, it's as simple as getting the EPEgo from the database
+			$linkedApt = EpDatabase()->getSkillByNamePrefix($m->getName(),$m->prefix)->linkedApt;
+			//For user created skills (which don't exist in the database), link them based on their prefix
 			if($linkedApt == null){
 				$linkedApt = $this->getAptitudeByAbbreviation($this->listProvider->getAptForPrefix($m->prefix));
 			}
