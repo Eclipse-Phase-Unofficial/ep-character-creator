@@ -39,35 +39,99 @@ use App\Creator\EPListProvider;
         		<nav id="main-nav">
                 <ul class="mainlist">
                     <?php
-                    $main_menu = array(
-                        array("backgrounds","&#x2f;","Background"),
-                        array("faction","&#x30;","Faction"),
-                        array("motivations","&#x28;","Motivations"),
-                        array("aptitudes","&#x21;","Aptitudes"),
-                        array("rep","&#x24;","Rep","rep"),
-                        array("posTrait","&#x35;","ego pos. traits"),
-//                         array("neuTrait","&#x34;","ego neutral traits"),
-                        array("negTrait","&#x36;","ego neg. traits"),
-                        array("activeSkills","&#x2d;","Active Skills"),
-                        array("knowledgeSkills","&#x2e;","Knowledge Skills"),
-                        array("morph","&#x32;","Morph","morph"),
-                        array("soft","&#x33;","Ai's & Soft Gear"),
-                        array("psy","&#x34;","Psi Sleights"),
-                        array("credit","&#x38;","Credit"),
-                        array("moxie","&#x37;","Stat"),
-                        array("lastdetails","&#x27;","Last Details")
-                        );
+                    $main_menu = [
+                        [
+                            'id'   => "backgrounds",
+                            'icon' => "icon-globe",
+                            'name' => "Background"
+                        ],
+                        [
+                            'id'   => "faction",
+                            'icon' => "icon-users",
+                            'name' => "Faction"
+                        ],
+                        [
+                            'id'   => "motivations",
+                            'icon' => "icon-heart",
+                            'name' => "Motivations"
+                        ],
+                        [
+                            'id'   => "aptitudes",
+                            'icon' => "icon-cog",
+                            'name' => "Aptitudes"
+                        ],
+                        [
+                            'id'   => "rep",
+                            'icon' => "icon-star-2",
+                            'name' => "Rep"
+                        ],
+                        [
+                            'id'   => "posTrait",
+                            'icon' => "icon-circle",
+                            'name' => "ego pos. traits"
+                        ],
+//                        [
+//                            'id'   => "neuTrait",
+//                            'icon' => "icon-contrast",
+//                            'name' => "ego neutral traits"
+//                        ],
+                        [
+                            'id'   => "negTrait",
+                            'icon' => "icon-radio-unchecked",
+                            'name' => "ego neg. traits"
+                        ],
+                        [
+                            'id'   => "activeSkills",
+                            'icon' => "icon-tools",
+                            'name' => "Active Skills"
+                        ],
+                        [
+                            'id'   => "knowledgeSkills",
+                            'icon' => "icon-brain",
+                            'name' => "Knowledge Skills"
+                        ],
+                        [
+                            'id'   => "morph",
+                            'icon' => "icon-user-2",
+                            'name' => "Morph"
+                        ],
+                        [
+                            'id'   => "soft",
+                            'icon' => "icon-cart",
+                            'name' => "Ai's & Soft Gear"
+                        ],
+                        [
+                            'id'   => "psy",
+                            'icon' => "icon-radio-unchecked",
+                            'name' => "Psi Sleights"
+                        ],
+                        [
+                            'id'   => "credit",
+                            'icon' => "icon-credit",
+                            'name' => "Credit"
+                        ],
+                        [
+                            'id'   => "moxie",
+                            'icon' => "icon-moxie",
+                            'name' => "Stat"
+                        ],
+                        [
+                            'id'   => "lastdetails",
+                            'icon' => "icon-equalizer",
+                            'name' => "Last Details"
+                        ]
+                    ];
                     function createElement($item_class,$icon,$display_name, EPListProvider $provider){
                         echo '<li>';
                         echo '  <a class="'.$item_class.'" href="#">';
-                        echo '      <span class="icone" data-icon="'.$icon.'"></span>';
+                        echo '      <span class="icone '.$icon.'"></span>';
                         echo        $display_name;
-                        echo '      <span class="btnhelp slowTransition" data-icon="&#x2a;" title="'.$provider->getInfosById($item_class).'"></span>';
+                        echo '      <span class="btnhelp slowTransition icon-question" title="'.$provider->getInfosById($item_class).'"></span>';
                         echo '  </a>';
                         echo '</li>';
                     };
                     foreach ($main_menu as $i){
-                        createElement($i[0],$i[1],$i[2], $provider);
+                        createElement($i['id'],$i['icon'],$i['name'], $provider);
                     }
                     ?>
     			</ul>
