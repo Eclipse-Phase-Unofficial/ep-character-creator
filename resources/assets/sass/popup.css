@@ -28,43 +28,33 @@
 /*===============POPUPS=====================*/
 
 #popup {
+    opacity: 0;
+    visibility: hidden;
+
     /* centered */
     position: fixed;
     right: 50%;
     top: 50%;
     transform: translate(50%,-50%);
 
-    display: inline-block;
-    opacity: 0;
-    padding: 15px;
-    text-align: justify;
-    visibility: hidden;
-    z-index: 2;
-
     width: 85%;
     height: 80%;
 
+    display: inline-block;
+    padding: 15px;
+    text-align: justify;
+    z-index: 2;
+    transition: opacity .5s;
+}
+
+#popup, .popup {
     color: hsl(200,10%,40%);
     background-color: rgba(242, 242, 242, .8);
     border-top: 1px solid rgba(245, 245, 245, .8);
     border-bottom: 1px solid rgba(148,155,153,.8);
 
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -ms-border-radius: 10px;
-    -o-border-radius: 10px;
     border-radius: 10px;
-
-    -webkit-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -moz-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -ms-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-    -o-box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
     box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-
-    -webkit-transition: opacity .5s;
-    -moz-transition: opacity .5s;
-    -ms-transition: opacity .5s;
-    -o-transition: opacity .5s;
     transition: opacity .5s;
 }
 

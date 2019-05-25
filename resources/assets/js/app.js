@@ -16,6 +16,7 @@ let Vue = require('vue');
 
 Vue.component('points-tracker', require('./components/PointsTracker').default);
 Vue.component('panel-one', require('./components/PanelOne').default);
+Vue.component('about', require('./components/About').default);
 
 const app = new Vue({
     el: '#container'
