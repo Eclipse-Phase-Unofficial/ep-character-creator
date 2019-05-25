@@ -16,6 +16,7 @@ mix.setPublicPath('public/')
     .extract([      //Extract these to vendor.js
         'jquery',
         'jquery-ui/ui/widgets/tooltip',
+        'vue',
         // 'vegas', //Causes Errors if here!
     ])
     .scripts('resources/assets/js/legacy/*', 'public/js/legacy.js') //Combine all the legacy files into one

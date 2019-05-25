@@ -8,3 +8,11 @@ require('./googleAnalytics').init();
 
 //Background slide show
 require('./background').init();
+
+let Vue = require('vue');
+
+Vue.component('points-tracker', require('./components/PointsTracker').default);
+
+const app = new Vue({
+    el: '#container'
+});

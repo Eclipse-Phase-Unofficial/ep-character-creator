@@ -80,19 +80,7 @@ use App\Creator\EPListProvider;
             <section id="quaternary" class="panel"></section>
 
         	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
-        	<section class="points">
-                <div id='RZ'>RZ <span id="rez_remain" class="rest"></span>
-                    <span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span></span>
-                </div>
-                <div id='CP'>CP <span id="creation_remain" class="rest"></span>
-                    <span class="btnhelp slowTransition" data-icon="&#x2a;" title="<?php echo $provider->getInfosById('points'); ?>"></span></span>
-                </div>
-                <div id='AP'>AP <span id="aptitude_remain" class="rest"></span></div>
-                <div id='ASR'>ASR <span id="asr_remain" class="rest"></span></div>
-                <div id='KSR'>KSR <span id="ksr_remain" class="rest"></span></div>
-                <div id='RP'>RP <span id="reputation_remain" class="rest"></span></div>
-                <div id='CR'>CR <span id="credit_remain" class="rest"></span></div>
-        	</section>
+            <points-tracker></points-tracker>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>
             <div id="menu">
