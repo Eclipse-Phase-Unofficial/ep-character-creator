@@ -15,11 +15,6 @@ $("#saveButton").click(function() {
     loadPopup("#save_popup","popup-contents/save_popup");
 });
 
-// Check button
-$("#validateButton").click(function() {
-        loadPopup("#validation_popup", "popup-contents/validation",true);
-});
-
 // Reset button
 $("#settingsButton").click(function() {
         loadPopup("reload_popup","popup-contents/reset",false,true);

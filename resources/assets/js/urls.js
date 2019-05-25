@@ -1,3 +1,4 @@
 export default {
-    'version': '/api/version'
+    'version': '/api/version',
+    'validate': '/api/validate',
 }

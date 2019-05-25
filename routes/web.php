@@ -24,6 +24,7 @@ Route::prefix('api')->group(function () {
 //            Use this once Laravel allows Carbon 2: 'releaseDate' => config('epcc.releaseDate')->isoFormat('MMMM G')
         ];
     });
+    Route::get('/validate', 'characterValidationController@read');
 });
 
 Route::prefix('others')->group(function () {
@@ -42,6 +43,7 @@ Route::prefix('export')->group(function () {
         if(!$exporter->export()){
             return response("Bad news, something went wrong, we can not print your character, verify your character and try again.", 500);
         }
+        return Response("Something went wrong", 500);
     });
     Route::get('/txt', function() {
         include(app_path('Creator/Exporters/txtExporter.php'));
@@ -57,9 +59,6 @@ Route::prefix('popup-contents')->group(function () {
     });
     Route::get('/save_popup', function () {
         return view('popup-contents.save_popup');
-    });
-    Route::get('/validation', function () {
-        return view('popup-contents.validation');
     });
 });
 

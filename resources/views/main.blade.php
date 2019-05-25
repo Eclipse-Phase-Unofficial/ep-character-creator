@@ -56,10 +56,10 @@ declare(strict_types=1);
                     <!-- <span class="button_icone" data-icon="&#x30;"></span> -->
                     Load
                 </button>
-                <button class="popupButton" id="validateButton">
-                    <!-- <span class="button_icone" data-icon="&#x2b;"></span> -->
+                <button class="popupButton" href="#validation-modal" uk-toggle>
                     Check
                 </button>
+                <validation id="validation-modal"></validation>
                 <div class='dropdown'>
                     <button class="popupButton" id="exportButton">
                         <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
