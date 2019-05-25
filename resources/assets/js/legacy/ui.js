@@ -20,24 +20,9 @@ $("#validateButton").click(function() {
         loadPopup("#validation_popup", "popup-contents/validation",true);
 });
 
-// Txt export button
-$("#exportTxtButton").click(function() {
-        window.open("./export/txt");
-});
-
-// Pdf export button
-$("#exportPdfButton").click(function() {
-        window.open("./export/pdf");
-});
-
 // Reset button
 $("#settingsButton").click(function() {
         loadPopup("reload_popup","popup-contents/reset",false,true);
-});
-
-// About button
-$("#aboutButton").click(function() {
-        loadPopup("#about_popup", "popup-contents/about",true);
 });
 
 //**************************************************

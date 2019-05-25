@@ -47,7 +47,7 @@ declare(strict_types=1);
             <points-tracker></points-tracker>
         	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         	<section id="messages"></section>
-            <div id="menu">
+            <div id="mainMenu">
                 <button class="popupButton" id="saveButton">
                     <!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
                     Save
@@ -68,8 +68,8 @@ declare(strict_types=1);
                     </button>
                     <div class='dropdown-content'>
                         <ul>
-                            <li><a id="exportPdfButton" href="#">PDF</a></li>
-                            <li><a id="exportTxtButton" href="#">TXT</a></li>
+                            <li><a id="exportPdfButton" href="/export/pdf" target="_blank">PDF</a></li>
+                            <li><a id="exportTxtButton" href="/export/txt" target="_blank">TXT</a></li>
                         </ul>
                     </div>
                 </div>
