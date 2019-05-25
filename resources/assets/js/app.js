@@ -3,6 +3,9 @@ import './bootstrap';
 //jQuery-ui
 require('jquery-ui/ui/widgets/tooltip');
 
+//UiKit
+require('uikit');
+
 //Google Analytics
 require('./googleAnalytics').init();
 

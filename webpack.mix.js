@@ -17,6 +17,7 @@ mix.setPublicPath('public/')
         'jquery',
         'jquery-ui/ui/widgets/tooltip',
         'vue',
+        'uikit'
         // 'vegas', //Causes Errors if here!
     ])
     .scripts('resources/assets/js/legacy/*', 'public/js/legacy.js') //Combine all the legacy files into one
