@@ -80,12 +80,7 @@ declare(strict_types=1);
                 <button class="popupButton" href="#about-modal" uk-toggle>
                     About
                 </button>
-                <div id="about-modal" class="uk-flex-top" uk-modal>
-                    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical popup">
-                        <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <about></about>
-                    </div>
-                </div>
+                <about id="about-modal"></about>
             </div>
         </div>
 
