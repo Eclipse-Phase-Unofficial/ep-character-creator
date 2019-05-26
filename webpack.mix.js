@@ -17,6 +17,7 @@ mix.setPublicPath('public/')
         'jquery',
         'jquery-ui/ui/widgets/tooltip',
         'vue',
+        'vuex',
         'uikit'
         // 'vegas', //Causes Errors if here!
     ])

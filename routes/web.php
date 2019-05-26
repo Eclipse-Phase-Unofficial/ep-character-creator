@@ -24,7 +24,11 @@ Route::prefix('api')->group(function () {
 //            Use this once Laravel allows Carbon 2: 'releaseDate' => config('epcc.releaseDate')->isoFormat('MMMM G')
         ];
     });
+    Route::prefix('creator')->group(function () {
+        Route::get('/', 'HighLevelCreatorController@index');
+    });
     Route::get('/validate', 'characterValidationController@read');
+
 });
 
 Route::prefix('others')->group(function () {
