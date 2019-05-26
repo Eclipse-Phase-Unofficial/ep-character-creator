@@ -14,7 +14,7 @@ export default {
     },
     mutations: {
         //Update everything that the user must spend
-        set_required(state, payload) {
+        setRequired(state, payload) {
             state.rezPointsRemaining = payload.rezPointsRemaining;
             state.creationPointsRemaining = payload.creationPointsRemaining;
             state.aptitudePointsRemaining = payload.aptitudePointsRemaining;
@@ -22,7 +22,7 @@ export default {
             state.minimumKnowledgeSkill = payload.minimumKnowledgeSkill;
             state.reputationPointsRemaining = payload.reputationPointsRemaining;
         },
-        set_credits(state, credits) {
+        setCredits(state, credits) {
             state.credits = credits;
         }
     },
@@ -31,7 +31,7 @@ export default {
             axios.get(urls.creator)
                 .then(response => {
                     let data = response.data;
-                    context.commit('set_required', {
+                    context.commit('setRequired', {
                         rezPointsRemaining: data.rez_remain,
                         creationPointsRemaining: data.creation_remain,
                         aptitudePointsRemaining: data.aptitude_remain,
@@ -39,7 +39,7 @@ export default {
                         minimumKnowledgeSkill: data.ksr_remain,
                         reputationPointsRemaining: data.reputation_remain,
                     });
-                    context.commit('set_credits', data.credits);
+                    context.commit('setCredits', data.credits);
                 })
                 .catch(error => {
                     console.log('Error Getting Creator');
