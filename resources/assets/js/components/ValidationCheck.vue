@@ -47,8 +47,8 @@
         methods: {
             // This happens whenever the Modal is shown (via UiKit)
             shown: function (event) {
-                // ga('set', 'page', '/validate');
-                // ga('send', 'pageview');
+                ga('set', 'page', '/validate');
+                ga('send', 'pageview');
                 axios.get(urls.validate)
                     .then(response => {
                         this.isValid = response.data.isValid;
