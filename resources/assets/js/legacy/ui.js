@@ -12,7 +12,7 @@ $("#loadButton").click(function() {
 
 // Save button
 $("#saveButton").click(function() {
-    loadPopup("#save_popup","popup-contents/save_popup");
+    window.location = '/api/creator/save';
 });
 
 // Reset button

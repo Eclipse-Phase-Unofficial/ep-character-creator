@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Creator\EPFileUtility;
 use App\Creator\EPValidation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,7 +22,7 @@ class HighLevelCreatorController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request)
+    public function get(Request $request)
     {
         $return = [];
         $return['rez_remain'] = creator()->getRezPoints();
@@ -51,9 +52,15 @@ class HighLevelCreatorController extends Controller
      *
      * @return Response
      */
-    public function show()
+    public function save()
     {
-        //
+        $file_util = new EPFileUtility(creator()->character);
+        $filename = $file_util->buildExportFilename('EPCharacterSave', 'json');
+
+        $json = json_encode(creator()->getSavePack());
+        return response($json)->withHeaders([
+            'Content-Disposition' => "attachment; filename=$filename"
+        ]);
     }
 
     /**
