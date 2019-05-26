@@ -25,7 +25,8 @@ Vue.component('validation', require('./components/ValidationCheck').default);
 
 const store = new Vuex.Store({
     modules: {
-        highLevel: require('./store/modules/highLevelCreator').default
+        highLevel: require('./store/modules/highLevelCreator').default,
+        character: require('./store/modules/character').default,
     }
 });
 

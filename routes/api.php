@@ -26,3 +26,6 @@ Route::prefix('creator')->group(function () {
     Route::get('/', 'HighLevelCreatorController@index');
     Route::get('/validate', 'HighLevelCreatorController@validateCharacter');
 });
+Route::prefix('character')->group(function () {
+    Route::get('', 'CharacterController@get');
+});
