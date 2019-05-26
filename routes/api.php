@@ -13,6 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/version', function() {
+    return [
+        'version'     => config('epcc.versionNumber'),
+        'versionName' => config('epcc.versionName'),
+        'releaseDate' => config('epcc.releaseDate')->format('F Y')
+//            Use this once Laravel allows Carbon 2: 'releaseDate' => config('epcc.releaseDate')->isoFormat('MMMM G')
+    ];
+});
+
+Route::prefix('creator')->group(function () {
+    Route::get('/', 'HighLevelCreatorController@index');
+    Route::get('/validate', 'characterValidationController@read');
 });

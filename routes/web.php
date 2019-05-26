@@ -15,22 +15,6 @@ Route::get('/', function () {
     return view('main');
 });
 
-Route::prefix('api')->group(function () {
-    Route::get('/version', function() {
-        return [
-            'version'     => config('epcc.versionNumber'),
-            'versionName' => config('epcc.versionName'),
-            'releaseDate' => config('epcc.releaseDate')->format('F Y')
-//            Use this once Laravel allows Carbon 2: 'releaseDate' => config('epcc.releaseDate')->isoFormat('MMMM G')
-        ];
-    });
-    Route::prefix('creator')->group(function () {
-        Route::get('/', 'HighLevelCreatorController@index');
-    });
-    Route::get('/validate', 'characterValidationController@read');
-
-});
-
 Route::prefix('others')->group(function () {
     Route::post('/save', 'SaveLoadController@save')->name('save');
     Route::get('/uploadFile', function() {
