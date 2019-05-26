@@ -24,5 +24,5 @@ Route::get('/version', function() {
 
 Route::prefix('creator')->group(function () {
     Route::get('/', 'HighLevelCreatorController@index');
-    Route::get('/validate', 'characterValidationController@read');
+    Route::get('/validate', 'HighLevelCreatorController@validateCharacter');
 });
