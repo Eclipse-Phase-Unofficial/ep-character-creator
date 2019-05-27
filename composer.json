@@ -2,7 +2,7 @@
   "name": "eclipse-phase-unofficial/ep-character-creator",
   "description": "A web-based character creator application for the Eclipse Phase role-playing game.",
   "type": "project",
-  "license": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported",
+  "license": "Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unsupported",
   "authors": [
     {
       "name": "Arthur Moore",
@@ -44,7 +44,7 @@
     "ext-curl": "*",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.1",
-    "laravel/framework": "5.6.*",
+    "laravel/framework": "5.7.*",
     "laravel/tinker": "^1.0",
     "sentry/sentry-laravel": "^1.0",
     "setasign/fpdf": "^1.8"
@@ -60,6 +60,7 @@
     "files": ["app/Creator/HelperFunctions.php"]
   },
   "require-dev": {
+    "beyondcode/laravel-dump-server": "^1.0",
     "barryvdh/laravel-ide-helper": "^2.6",
     "filp/whoops": "^2.3",
     "fzaninotto/faker": "^1.8",
@@ -85,11 +86,11 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
     "post-create-project-cmd": [
-      "@php artisan key:generate"
+      "@php artisan key:generate --ansi"
     ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover"
+      "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
       "Illuminate\\Foundation\\ComposerScripts::postUpdate",
