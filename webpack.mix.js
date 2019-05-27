@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+const mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.setPublicPath('public/')
-    .js('resources/assets/js/app.js', 'js/app.js')
+    .js('resources/js/app.js', 'js/app.js')
     .extract([      //Extract these to vendor.js
         'jquery',
         'jquery-ui/ui/widgets/tooltip',
@@ -21,9 +21,9 @@ mix.setPublicPath('public/')
         'uikit'
         // 'vegas', //Causes Errors if here!
     ])
-    .scripts('resources/assets/js/legacy/*', 'public/js/legacy.js') //Combine all the legacy files into one
-    .sass('resources/assets/sass/app.scss', 'css')
-    .sass('resources/assets/sass/vendor.scss', 'css')
+    .scripts('resources/js/legacy/*', 'public/js/legacy.js') //Combine all the legacy files into one
+    .sass('resources/sass/app.scss', 'css')
+    .sass('resources/sass/vendor.scss', 'css')
     .options({
         postCss: [
             //This lets us use @import on urls
