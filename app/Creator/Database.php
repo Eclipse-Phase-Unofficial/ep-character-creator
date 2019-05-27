@@ -270,8 +270,9 @@ class Database
      * @param string $prefix
      * @return EPSkill|null
      */
-    function getSkillByNamePrefix(string $name, string $prefix): ?EPSkill
+    function getSkillByNamePrefix(string $name, ?string $prefix = ''): ?EPSkill
     {
+        $prefix = $prefix ?? '';
         foreach ($this->skills as $skill) {
             if (strcmp($skill->prefix, $prefix) == 0 && strcmp($skill->getName(), $name) == 0) {
                 return $skill;

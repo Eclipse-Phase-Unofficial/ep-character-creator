@@ -69,7 +69,7 @@ class EPTrait extends EPAtom
         $this->cpCost = $savePack['cpCost'];	    
         $this->level = $savePack['level'];
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }	    

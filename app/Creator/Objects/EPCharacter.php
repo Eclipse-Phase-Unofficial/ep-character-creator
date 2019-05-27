@@ -60,7 +60,7 @@ class EPCharacter implements \App\Creator\Savable
         $morphSavePack = $savePack['morphSavePacks'];
         if(!empty($morphSavePack)){
                 foreach($morphSavePack as $m){
-                    $moph = new EPMorph('','','','','','','');
+                    $moph = new EPMorph('temp','','','','','',0);
                     $moph->loadSavePack($m);
                     array_push($this->morphs, $moph);
                 }

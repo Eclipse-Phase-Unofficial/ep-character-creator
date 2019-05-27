@@ -200,7 +200,7 @@ class EPEgo implements \App\Creator\Savable
 	    	$this->faction = $faction;
 	    }
 	    if($savePack['backgroundSavePack'] != null){
-	    	$faction = new EPBackground('','','');
+	    	$faction = new EPBackground('temp','','');
 	    	$faction->loadSavePack($savePack['backgroundSavePack']);
 	    	$this->background = $faction;
 	    }
@@ -212,65 +212,65 @@ class EPEgo implements \App\Creator\Savable
 	    //must be done before skills !
 	    $this->aptitudes = array();
 	    foreach($savePack['aptitudesSavePacks'] as $m){
-	    	$savedAptitude = new EPAptitude('','');
+	    	$savedAptitude = new EPAptitude('temp','');
 	    	$savedAptitude->loadSavePack($m);
 	    	array_push($this->aptitudes, $savedAptitude);
 	    }
 
         $this->skills = array();
 	    foreach($savePack['skillsSavePacks'] as $m){
-	    	$savedSkill = new EPSkill('','','','','');
+	    	$savedSkill = new EPSkill('temp','','','','');
 	    	$savedSkill->loadSavePack($m);
 	    	array_push($this->skills, $savedSkill);
 	    }
 
 	    $this->reputations = array();
 	    foreach($savePack['reputationSavePack'] as $m){
-	    	$savedRep = new EPReputation('','');
+	    	$savedRep = new EPReputation('temp','');
 	    	$savedRep->loadSavePack($m);
 	    	array_push($this->reputations, $savedRep);
 	    }
 
         $this->stats = array();
 	    foreach($savePack['statsSavePacks'] as $m){
-	    	$savedStat = new EPStat('','','',0,$cc);
+	    	$savedStat = new EPStat('temp','','',0,$cc);
 	    	$savedStat->loadSavePack($m);
 	    	array_push($this->stats, $savedStat);
 	    }
 
 	    foreach($savePack['traitSavePacks'] as $m){
-	    	$savedTrait = new EPTrait('','','','','');
+	    	$savedTrait = new EPTrait('temp','','','',0);
 	    	$savedTrait->loadSavePack($m);
 	    	array_push($this->traits, $savedTrait);
 	    }
 
 	    foreach($savePack['additionaTraitsSavePacks'] as $m){
-	    	$savedAddTrait = new EPTrait('','','','','');
+	    	$savedAddTrait = new EPTrait('temp','','','',0);
 	    	$savedAddTrait->loadSavePack($m);
 	    	array_push($this->additionalTraits, $savedAddTrait);
 	    }
 
 	    foreach($savePack['softGearSavePacks'] as $m){
-	    	$savedSoftG = new EPGear('','','','');
+	    	$savedSoftG = new EPGear('temp','','','');
 	    	$savedSoftG->loadSavePack($m);
 	    	array_push($this->softGears, $savedSoftG);
 	    }
 
 	    foreach($savePack['aiSavePacks'] as $m){
-	    	$savedAi = new EPAi('',array(),'');
+	    	$savedAi = new EPAi('temp',array(),'');
 	    	$savedAi->loadSavePack($m,$cc);
 	    	array_push($this->ais, $savedAi);
 	    }
 
         $this->defaultAis = array();
 	    foreach($savePack['defaultAisSavePacks'] as $m){
-	    	$defSavedAi = new EPAi('',array(),'');
+	    	$defSavedAi = new EPAi('temp',array(),'');
 	    	$defSavedAi->loadSavePack($m,$cc);
 	    	array_push($this->defaultAis, $defSavedAi);
 	    }
 
 		foreach($savePack['psySleightSavePacks'] as $m){
-	    	$savedPsyS = new EPPsySleight('','','','','','','','');
+	    	$savedPsyS = new EPPsySleight('temp','','','','','','','');
 	    	$savedPsyS->loadSavePack($m);
 	    	array_push($this->psySleights, $savedPsyS);
 	    }

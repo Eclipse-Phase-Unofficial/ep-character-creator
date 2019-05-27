@@ -50,17 +50,17 @@ class EPAi extends EPAtom{
         parent::loadSavePack($savePack);
 
         foreach($savePack['aptitudesSavePacks'] as $m){
-            $savedAptitude = new EPAptitude('','');
+            $savedAptitude = new EPAptitude('temp','');
             $savedAptitude->loadSavePack($m);
             array_push($this->aptitudes, $savedAptitude);
         }	    
         foreach($savePack['skillsSavePacks'] as $m){
-            $savedSkill = new EPSkill('','','','','');
+            $savedSkill = new EPSkill('temp','','','','');
             $savedSkill->loadSavePack($m);
             array_push($this->skills, $savedSkill);
         }
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }    

@@ -57,12 +57,12 @@ class EPBackground extends EPAtom{
 	    	    
         $this->backgroundType = $savePack['backgroundType'];
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }
         foreach($savePack['traitSavePacks'] as $m){
-            $savedTrait = new EPTrait('','','','','');
+            $savedTrait = new EPTrait('temp','','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->traits, $savedTrait);
         }

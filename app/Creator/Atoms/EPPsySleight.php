@@ -85,7 +85,7 @@ class EPPsySleight extends EPAtom{
         $this->skillNeeded = $savePack['skillNeeded'];
         $this->buyInCreationMode = $savePack['buyInCreationMode'];
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }

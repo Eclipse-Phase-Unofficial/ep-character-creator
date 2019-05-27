@@ -116,27 +116,27 @@ class EPMorph extends EPAtom {
         $this->buyInCreationMode = $savePack['buyInCreationMode'];
 
         foreach($savePack['traitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('','','','','');
+            $savedTrait = new EPTrait('temp','','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->traits, $savedTrait);
         }
         foreach($savePack['additionalTraitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('','','','','');
+            $savedTrait = new EPTrait('temp','','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->additionalTraits, $savedTrait);
         }
         foreach($savePack['gearSavePacks'] as $m){
-            $savedGear = new EPGear('','','','');
+            $savedGear = new EPGear('temp','','','');
             $savedGear->loadSavePack($m);
             array_push($this->gears, $savedGear);
         }
         foreach($savePack['addGearSavePacks'] as $m){
-            $savedGear = new EPGear('','','','');
+            $savedGear = new EPGear('temp','','','');
             $savedGear->loadSavePack($m);
             array_push($this->additionalGears, $savedGear);
         }
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }
