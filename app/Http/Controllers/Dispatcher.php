@@ -1023,18 +1023,6 @@ if(isset($_POST['remOccurence'])){
 
 }
 
-
-//GET CREATION POINTS -- MUST STAY LAST !!
-if(isset($_POST['getCrePoint']) && null !== creator()) {
-	$return['creation_remain'] = creator()->getCreationPoint();
-	$return['credit_remain'] = creator()->getCredit();
-	$return['aptitude_remain'] = creator()->getAptitudePoint();
-	$return['reputation_remain'] = creator()->getReputationPoints();
-    $return['rez_remain'] = creator()->getRezPoints();
-    $return['asr_remain'] = creator()->getActiveRestNeed();
-    $return['ksr_remain'] = creator()->getKnowledgeRestNeed();
-}
-
 //error_log(print_r($return,true));
 
 return $return;
