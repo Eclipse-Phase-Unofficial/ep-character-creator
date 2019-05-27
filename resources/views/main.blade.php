@@ -52,10 +52,10 @@ declare(strict_types=1);
                     <!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
                     Save
                 </button>
-                <button class="popupButton" id="loadButton">
-                    <!-- <span class="button_icone" data-icon="&#x30;"></span> -->
+                <button class="popupButton" href="#load-modal" uk-toggle>
                     Load
                 </button>
+                <load-dialog id="load-modal"></load-dialog>
                 <button class="popupButton" href="#validation-modal" uk-toggle>
                     Check
                 </button>

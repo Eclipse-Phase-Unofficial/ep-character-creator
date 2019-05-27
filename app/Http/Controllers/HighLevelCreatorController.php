@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Creator\EPCharacterCreator;
+use App\Creator\EPCreatorErrors;
 use App\Creator\EPFileUtility;
 use App\Creator\EPValidation;
 use Illuminate\Http\Request;
@@ -72,7 +74,54 @@ class HighLevelCreatorController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'file' => 'required|array',
+            'creationMode' => 'required',
+            'rezPoints' => 'required_if:creationMode,==,false',
+            'reputationPoints' => 'required_if:creationMode,==,false',
+            'creditsEarned' => 'required_if:creationMode,==,false',
+        ]);
+
+        $saveFile = $request->get('file');
+
+        if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < config('epcc.versionNumberMin')){
+            return response(['Errors' => ["Incompatible file version!"]]);
+        }
+        session()->put('cc', new EPCharacterCreator());
+        creator()->back = new EPCharacterCreator();
+
+        creator()->loadSavePack($saveFile);
+        creator()->back->loadSavePack($saveFile);
+        //TODO:  These should be set in the creator itself
+        creator()->back->setMaxRepValue(config('epcc.EvoMaxRepValue'));
+        creator()->setMaxRepValue(config('epcc.EvoMaxRepValue'));
+        creator()->back->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
+        creator()->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
+
+        // Save pack and user both say we are in creation mode
+        if (creator()->creationMode == true && $request->get('creationMode') ){
+            creator()->creationMode = true; //We stay in creation mode
+        }else{
+            // Make sure it's a valid character for play
+            if (creator()->checkValidation()){
+                // Switch to Evo Mode
+                creator()->creationMode = false;
+                creator()->evoRezPoint += $request->get('rezPoints');
+                creator()->evoRepPoint += $request->get('reputationPoints');
+                creator()->evoCrePoint += $request->get('creditsEarned');
+            }else{
+                // Stay in creation mode
+                creator()->creationMode = true;
+                //return static::treatCreatorErrors(new EPCreatorErrors("File is not valid for play!  Staying in creation mode!",EPCreatorErrors::$RULE_ERROR));
+            }
+
+        }
+
+        if (!empty(creator()->character->morphs)){
+            creator()->activateMorph(creator()->character->morphs[0]);
+        }
+        creator()->adjustAll();
+        return response(['Success' => True]);
     }
 
     private static function buildValidationResponsePart(string $name, bool $isValid, string $errorMessage): array

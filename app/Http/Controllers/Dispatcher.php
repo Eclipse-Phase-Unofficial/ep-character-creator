@@ -67,52 +67,6 @@ $provider = new EPListProvider();
 	//error_log(print_r($_SESSION,true));
 //     returnErrors($return,"Forced Error!");
 
-//if a file to load LOAD FILE
-if (isset($_POST['load_char'])) {
-    if(empty(session('fileToLoad'))){
-        return static::treatCreatorErrors(new EPCreatorErrors("No File Selected!",EPCreatorErrors::$SYSTEM_ERROR));
-    }
-    $saveFile = json_decode(session('fileToLoad'),true);
-
-    if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < config('epcc.versionNumberMin')){
-        return static::treatCreatorErrors(new EPCreatorErrors("Incompatible file version!",EPCreatorErrors::$SYSTEM_ERROR));
-    }
-    session()->put('cc', new EPCharacterCreator());
-    creator()->back = new EPCharacterCreator();
-
-    creator()->loadSavePack($saveFile);
-    creator()->back->loadSavePack($saveFile);
-    //TODO:  These should be set in the creator itself
-    creator()->back->setMaxRepValue(config('epcc.EvoMaxRepValue'));
-    creator()->setMaxRepValue(config('epcc.EvoMaxRepValue'));
-    creator()->back->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
-    creator()->setMaxSkillValue(config('epcc.SkillEvolutionMaxPoint'));
-
-    // Save pack and user both say we are in creation mode
-    if (creator()->creationMode == true && $_POST['creationMode'] == "true" ){
-        creator()->creationMode = true; //We stay in creation mode
-    }else{
-        // Make sure it's a valid character for play
-        if (creator()->checkValidation()){
-            // Switch to Evo Mode
-            creator()->creationMode = false;
-            creator()->evoRezPoint += $_POST['rezPoints'];
-            creator()->evoRepPoint += $_POST['repPoints'];
-            creator()->evoCrePoint += $_POST['credPoints'];
-        }else{
-            // Stay in creation mode
-            creator()->creationMode = true;
-            //return static::treatCreatorErrors(new EPCreatorErrors("File is not valid for play!  Staying in creation mode!",EPCreatorErrors::$RULE_ERROR));
-        }
-
-    }
-
-    if (!empty(creator()->character->morphs)){
-        creator()->activateMorph(creator()->character->morphs[0]);
-    }
-    creator()->adjustAll();
-}
-
 //FIRST RUN
 if (isset($_POST['firstTime'])) {
     if(null === creator()) {
