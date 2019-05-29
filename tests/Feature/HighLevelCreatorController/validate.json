@@ -1,0 +1,55 @@
+{
+  "isValid": false,
+  "validators": {
+    "Background": {
+      "name": "Background",
+      "isValid": false,
+      "errorMessage": "You have to choose a background."
+    },
+    "Faction": {
+      "name": "Faction",
+      "isValid": false,
+      "errorMessage": "You have to choose a faction."
+    },
+    "Motivations": {
+      "name": "Motivations",
+      "isValid": false,
+      "errorMessage": "You have to choose at least three motivations."
+    },
+    "Active Skills": {
+      "name": "Active Skills",
+      "isValid": false,
+      "errorMessage": "<b>(Need: 400CP)<\/b> You have to spend more points on your Active Skills."
+    },
+    "Knowlege Skills": {
+      "name": "Knowlege Skills",
+      "isValid": false,
+      "errorMessage": "<b>(Need: 300CP)<\/b> You have to spend more points on your Knowlege Skills."
+    },
+    "Creation Points": {
+      "name": "Creation Points",
+      "isValid": false,
+      "errorMessage": "<b>(Unspent: 1000AP)<\/b> You have unspent Creation Points."
+    },
+    "Aptitude Points": {
+      "name": "Aptitude Points",
+      "isValid": false,
+      "errorMessage": "<b>(Unspent: 70AP)<\/b> You have unspent Aptitude Points."
+    },
+    "Reputation Points": {
+      "name": "Reputation Points",
+      "isValid": false,
+      "errorMessage": "<b>(Unspent: 50RP)<\/b> You have unspent Reputation Points."
+    },
+    "Morph(s)": {
+      "name": "Morph(s)",
+      "isValid": false,
+      "errorMessage": "You have to choose at least one Morph."
+    },
+    "Character name": {
+      "name": "Character name",
+      "isValid": false,
+      "errorMessage": "Your Character must have a name."
+    }
+  }
+}

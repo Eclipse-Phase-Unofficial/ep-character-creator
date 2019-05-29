@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Creator\EPCharacterCreator;
-use App\Creator\EPCreatorErrors;
 use App\Creator\EPFileUtility;
 use App\Creator\EPValidation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Handle high level details of the Character Creator.
@@ -71,6 +71,7 @@ class HighLevelCreatorController extends Controller
      * Has the side effect of destroying the old one
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request)
     {
