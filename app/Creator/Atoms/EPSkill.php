@@ -42,8 +42,7 @@ class EPSkill extends EPAtom{
      public $tempSkill; //for skill not loaded from database
      public $specialization;
      public $isNativeTongue;
-     public $nativeTongueBonus;
-     
+
      public $groups;
 
     /**
@@ -69,18 +68,73 @@ class EPSkill extends EPAtom{
      function getRatioCost(){
          return $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostFactionMod * $this->ratioCostBackgroundMod * $this->ratioCostPsyMod * $this->ratioCostSoftgearMod;
      }
-     function getValue(){
-         if (isset($this->linkedApt)){
-             $lnk = $this->linkedApt->getValue();
-         }else{
-             $lnk = 0;
-         }
-         if (strcmp($this->defaultable,  EPSkill::$DEFAULTABLE) == 0 || $this->baseValue > 0){
-             return $lnk + $this->baseValue + $this->nativeTongueBonus + $this->morphMod + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
-         } 
-         return 0;
-     }
-     function getBonusForCost(){
+
+    /**
+     * Get the base value a player sees without a morph
+     * @return int
+     */
+    function getEgoValue(){
+        $lnk = isset($this->linkedApt)? $this->linkedApt->getEgoValue(): 0;
+        $nativeTongueBonus = $this->isNativeTongue ? config('epcc.NativeTongueBaseValue') : 0;
+        return $lnk + $this->baseValue + $nativeTongueBonus + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
+    }
+    /**
+     * Get the total skill value
+     * @return int
+     */
+    function getValue(){
+        // Only defaultable skills and skills that the user has put at least a point into are usable
+        if (strcmp($this->defaultable,  EPSkill::$DEFAULTABLE) == 0 || $this->baseValue > 0){
+            return $this->morphMod + $this->getEgoValue();
+        }
+        return 0;
+    }
+
+    /**
+     * This is the cost for all the skill points
+     * @return int
+     */
+    function getCost(): int
+    {
+        $baseValue = $this->baseValue;
+        $bonusValue = $this->getBonusForCost();
+        $totalCostValue = $baseValue + $bonusValue;
+
+        //Normally if raising an aptitude would cause a skill to raise above 60,
+        // the player must pay the normal double cost.
+        //However, Native Tongue is a special case, and that doesn't happen.
+        //It's impossible to work backwards in some cases, so we're just going to say it always costs base.
+        //Languages are no longer skills in 2nd edition so this problem goes away!
+        if($this->isNativeTongue)
+        {
+            return $baseValue * config('epcc.SkillPointUnderCost');
+        }
+        //If the skill is under 60, then things are easy
+        if($totalCostValue < config('epcc.SkillLimitForImprove'))
+        {
+            return $baseValue * config('epcc.SkillPointUnderCost');
+        }
+
+        //If just the bonus is greater than or equal to 60, then we can say everything costs double
+        if($bonusValue >= config('epcc.SkillLimitForImprove'))
+        {
+            return $this->baseValue * config('epcc.SkillPointUpperCost');
+        }
+
+        //Re-phrase the limit in relation to the bonus (thanks to the if statement, we know it will always be positive)
+        $newLimit =  config('epcc.SkillLimitForImprove') - $bonusValue;
+
+        //Since the skill is over 60, and the new limit is positive, this works
+        $underLimitCost = $newLimit * config('epcc.SkillPointUnderCost');
+        $overLimitCost = $baseValue - $newLimit * config('epcc.SkillPointUpperCost');
+        return $underLimitCost + $overLimitCost;
+    }
+
+    /**
+     * How many skill points are from extra bonuses (specifically for calculating the cost of the skill)
+     * @return int
+     */
+    function getBonusForCost(){
          if (isset($this->linkedApt)){
              $lnk = $this->linkedApt->getValueForCpCost();
          }else{
@@ -88,14 +142,6 @@ class EPSkill extends EPAtom{
          }
          return $lnk + $this->backgroundMod + $this->factionMod;       
      }
-     function getEgoValue(){
-	 	if (isset($this->linkedApt)){
-             $lnk = $this->linkedApt->getEgoValue();
-         }else{
-             $lnk = 0;
-         }
-        return $lnk + $this->baseValue + $this->nativeTongueBonus + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
-     } 
      
     function getSavePack(): array
     {
@@ -114,7 +160,6 @@ class EPSkill extends EPAtom{
         $savePack['tempSkill'] =  $this->tempSkill; 
         $savePack['specialization'] =  $this->specialization;
         $savePack['isNativeTongue'] =  $this->isNativeTongue;
-        $savePack['nativeTongueBonus'] =  $this->nativeTongueBonus; 
         $groupsArray = array();
         if(!empty($this->groups)){
                 foreach($this->groups as $m){
@@ -129,6 +174,9 @@ class EPSkill extends EPAtom{
         $savePack['maxValueBackgroundMod'] =  $this->maxValueBackgroundMod;
         $savePack['maxValuePsyMod'] =  $this->maxValuePsyMod;
         $savePack['maxValueSoftgearMod'] =  $this->maxValueSoftgearMod;	       
+
+        //For backwards compatibility
+        $savePack['nativeTongueBonus'] =  $this->isNativeTongue ? config('epcc.NativeTongueBaseValue') : 0;
 
         return $savePack;
     }
@@ -148,7 +196,6 @@ class EPSkill extends EPAtom{
         $this->tempSkill = $savePack['tempSkill']; 
         $this->specialization = $savePack['specialization'];
         $this->isNativeTongue = $savePack['isNativeTongue'];
-        $this->nativeTongueBonus = $savePack['nativeTongueBonus'];             
         if(isset($savePack['groupsArray'])){
                 foreach($savePack['groupsArray'] as $m){
                     array_push($this->groups, $m);
@@ -179,7 +226,6 @@ class EPSkill extends EPAtom{
          $this->tempSkill = $tempSkill;
          $this->specialization = '';
          $this->isNativeTongue = false;
-         $this->nativeTongueBonus = 0;
      }
 
     /**

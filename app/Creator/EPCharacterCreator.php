@@ -1050,7 +1050,6 @@ class EPCharacterCreator implements Savable
         }
         if($nativeLanguage){
             $ns->isNativeTongue = true;
-            $ns->nativeTongueBonus = config('epcc.NativeTongueBaseValue');
             $this->nativeLanguageSet = true;
         }
         $this->adjustAll();
@@ -1078,7 +1077,7 @@ class EPCharacterCreator implements Savable
         $need = config('epcc.ActiveSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
             if ($sk->isActive()){
-                $need -= $this->getRealCPCostForSkill($sk);
+                $need -= $sk->getCost();
             }
         }
         return max(0,$need);
@@ -1147,7 +1146,7 @@ class EPCharacterCreator implements Savable
         $need = config('epcc.KnowledgeSkillsMinimum');
         foreach ($this->character->ego->skills as $sk){
             if ($sk->isKnowledge()){
-                $need -= $this->getRealCPCostForSkill($sk);
+                $need -= $sk->getCost();
             }
         }
         return max(0,$need);
@@ -2406,10 +2405,16 @@ class EPCharacterCreator implements Savable
         }
         return 0;
     }
+
+    /**
+     * Get the total cost for all skills
+     * @return int
+     */
     function getCostForSkills(){
         $cost = 0;
         foreach ($this->character->ego->skills as $s){
-                 $cost += $this->getRealCPCostForSkill($s);
+                 $cost += $s->getCost();
+                 //TODO:  This should be in EPSkill!
                  if (!empty($s->specialization)){
                      $cost += config('epcc.SpecializationCost');;
                  }
@@ -2421,34 +2426,6 @@ class EPCharacterCreator implements Savable
         $costPer = config('epcc.PsyCpCost');
         return count($this->character->ego->psySleights) * $costPer;
     }
-    function getRealCPCostForSkill(EPSkill $skill){
-        if ($skill->isNativeTongue === true){
-            $skill->isNativeTongue = false;
-
-            $val = $skill->baseValue;
-
-            $skill->baseValue += config('epcc.NativeTongueBonus');
-            $cost1 =  $this->getRealCPCostForSkill($skill);
-
-            $skill->baseValue = config('epcc.NativeTongueBonus');
-            $cost2 =  $this->getRealCPCostForSkill($skill);
-
-            $res = $cost1 - $cost2;
-
-            $skill->isNativeTongue = true;
-            $skill->baseValue = $val;
-            return $res;
-        }else{
-            $downPart = max(0,config('epcc.SkillLimitForImprove') -$skill->getBonusForCost());
-            $downPart = min($downPart,$skill->baseValue);
-            $upPart = $skill->baseValue + $skill->getBonusForCost() - config('epcc.SkillLimitForImprove');
-            $upPart = max(0,$upPart);
-            $upPart = min($upPart,$skill->baseValue);
-
-            return $downPart * config('epcc.SkillPointUnderCost') * $skill->getRatioCost()
-                + $upPart * config('epcc.SkillPointUpperCost') * $skill->getRatioCost();
-        }
-    }
     function getReputationByName($name){
         $ret = EPAtom::getAtomByName($this->character->ego->reputations,$name);
         if($ret == null){
@@ -2457,11 +2434,17 @@ class EPCharacterCreator implements Savable
         return $ret;
     }
 
-    private function getDiffCost($sk,$value){
+    /**
+     * See how much it would cost to move a skill to a new value
+     * @param EPSkill $sk
+     * @param int     $value
+     * @return int
+     */
+    private function getDiffCost(EPSkill $sk, int $value){
         $val = $sk->baseValue;
-        $vStart = $this->getRealCPCostForSkill($sk);
+        $vStart = $sk->getCost();
         $sk->baseValue = $value;
-        $vEnd = $this->getRealCPCostForSkill($sk);
+        $vEnd = $sk->getCost();
         $sk->baseValue = $val;
         return $vEnd - $vStart;
     }
