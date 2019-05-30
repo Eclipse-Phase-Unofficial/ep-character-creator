@@ -66,7 +66,7 @@ class EPAtom implements Savable
 
 
     function __construct(string $atName, string $atDesc) {
-       $this->atomUid = uniqid('Atom_'.$this->sanitize($atName).'_');
+        $this->atomUid = uniqid();
        $this->name = $atName;
        $this->description = $atDesc;
        $this->groups = array();
@@ -126,8 +126,7 @@ class EPAtom implements Savable
      */
     function __clone()
     {
-        $this->atomUid = uniqid('Atom_' . $this->sanitize($this->getName()) . '_');
-        error_log(static::class . " cloned!");
+        $this->atomUid = uniqid();
     }
 
     /**
@@ -267,18 +266,6 @@ class EPAtom implements Savable
     public function multiplyRatioCostPsyMod(float $ratioCostPsyMod): void
     {
         $this->ratioCostPsyMod *= $ratioCostPsyMod;
-    }
-
-    //Strip any character that could cause an issue in an id tag
-
-    /**
-     * @param string $input
-     * @return string
-     */
-    private function sanitize(string $input): string
-    {
-        $badChars = '/[^A-Z,^a-z,^0-9]/';
-        return preg_replace($badChars, '_', $input);
     }
 
     /**
