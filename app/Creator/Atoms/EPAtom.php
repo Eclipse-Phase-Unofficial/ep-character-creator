@@ -66,6 +66,11 @@ class EPAtom implements Savable
 
 
     function __construct(string $atName, string $atDesc) {
+        if(empty($atName))
+        {
+            throw new \InvalidArgumentException("Name may never be empty");
+        }
+
         $this->atomUid = uniqid();
        $this->name = $atName;
        $this->description = $atDesc;
@@ -77,11 +82,6 @@ class EPAtom implements Savable
        $this->ratioCostFactionMod = 1;
        $this->ratioCostSoftgearMod = 1;
        $this->ratioCostPsyMod = 1;
-
-        if(empty($this->name))
-        {
-            throw new \InvalidArgumentException("Name may never be empty");
-        }
     }
      function getSavePack(): array
      {
