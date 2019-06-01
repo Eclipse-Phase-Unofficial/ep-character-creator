@@ -29,59 +29,10 @@ declare(strict_types=1);
         <div id="popup" data-name=""></div>
         <div id="loading_popup"><center><img src="<?php echo createDataURI(public_path("img/ajax-loader.gif"),"gif"); ?>"></center></div>
 
+        <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
+        <section id="messages"></section>
         <div id="container">
-
-            <!-- Ego/Morph MENU - STATIC CONTENT-->
-        	<section id="primary" class="panel">
-        		<nav id="main-nav">
-                    <panel-one></panel-one>
-    			</nav>
-        	</section>
-
-            <!-- AJAX Panels-->
-            <section id="secondary" class="panel"></section>
-            <section id="tertiary" class="panel"></section>
-            <section id="quaternary" class="panel"></section>
-
-        	<!-- REMAINAING POINTS - DYNAMIC CONTENT-->
-            <points-tracker></points-tracker>
-        	<!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
-        	<section id="messages"></section>
-            <div id="mainMenu">
-                <button class="popupButton" id="saveButton">
-                    <!-- <span class="button_icone" data-icon="&#x2d;"></span> -->
-                    Save
-                </button>
-                <button class="popupButton" href="#load-modal" uk-toggle>
-                    Load
-                </button>
-                <load-dialog id="load-modal"></load-dialog>
-                <button class="popupButton" href="#validation-modal" uk-toggle>
-                    Check
-                </button>
-                <validation id="validation-modal"></validation>
-                <div class='dropdown'>
-                    <button class="popupButton" id="exportButton">
-                        <!-- <span class="button_icone" data-icon="&#x2c;"></span> -->
-                        Export
-                        &#x25BC;
-                    </button>
-                    <div class='dropdown-content'>
-                        <ul>
-                            <li><a id="exportPdfButton" href="/export/pdf" target="_blank">PDF</a></li>
-                            <li><a id="exportTxtButton" href="/export/txt" target="_blank">TXT</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="popupButton" id="settingsButton">
-                    <!-- <span class="button_icone" data-icon="&#x21;"></span> -->
-                    Reset
-                </button>
-                <button class="popupButton" href="#about-modal" uk-toggle>
-                    About
-                </button>
-                <about id="about-modal"></about>
-            </div>
+            <router-view></router-view>
         </div>
 
 {{--        <link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
