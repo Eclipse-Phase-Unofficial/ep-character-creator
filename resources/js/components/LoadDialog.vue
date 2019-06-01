@@ -63,8 +63,8 @@
         methods: {
             // This happens whenever the Modal is shown (via UiKit)
             shown: function (event) {
-                // ga('set', 'page', '/load');
-                // ga('send', 'pageview');
+                ga('set', 'page', '/load');
+                ga('send', 'pageview');
             },
             loadCharacter: function (event) {
                 // Max size of 8MB.  If we're hitting this limit there's a problem.
@@ -74,43 +74,32 @@
                     return
                 }
                 let me = this;
-                let reader = new FileReader();
-                reader.onload = function (event) {
-                    if (event.target.readyState !== 2){
-                        endLoading();
-                        alert('Unable to read file!');
-                        return
-                    }
-                    let json = {};
-                    try {
-                        json = JSON.parse(event.target.result);
-                    } catch (e) {
-                        endLoading();
-                        alert('The selected file did not contain parsable JSON data!');
-                        return
-                    }
-                    axios.post(urls.load, {
-                        'file': json,
-                        'creationMode': me.creationMode,
-                        'rezPoints': me.rezPoints,
-                        'reputationPoints': me.reputationPoints,
-                        'creditsEarned': me.creditsEarned,
-                    })
-                        .then(response => {
-                            endLoading();
-                            location.reload();
-                        })
-                        .catch(error => {
-                            endLoading();
-                            console.log('Error Loading Character');
-                            console.log(error);
-                            if (error.response){
-                                alert(error.response.data.message);
-                            }
-                        });
-                };
                 startLoading();
-                reader.readAsText(this.file);
+                readJsonFile(this.file)
+                    .then(json => {
+                        axios.post(urls.load, {
+                            'file': json,
+                            'creationMode': me.creationMode,
+                            'rezPoints': me.rezPoints,
+                            'reputationPoints': me.reputationPoints,
+                            'creditsEarned': me.creditsEarned,
+                        })
+                            .then(response => {
+                                endLoading();
+                                location.reload();
+                            })
+                            .catch(error => {
+                                endLoading();
+                                console.log('Error Loading Character');
+                                console.log(error);
+                                if (error.response){
+                                    alert(error.response.data.message);
+                                }
+                            });
+                    }).catch(error => {
+                        endLoading();
+                        alert(error.message);
+                });
             }
         }
     }

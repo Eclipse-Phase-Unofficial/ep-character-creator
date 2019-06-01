@@ -52,7 +52,6 @@
         },
         data: function () {
             return {
-                //TODO:  Get these via an API
                 versionName: '',
                 releaseDate: '',
                 version: 0
