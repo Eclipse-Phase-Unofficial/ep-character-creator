@@ -8,6 +8,14 @@ use Illuminate\Http\Response;
 class CharacterController extends Controller
 {
     /**
+     * Only allow access if a creator already exists
+     */
+    public function __construct()
+    {
+        $this->middleware('creator');
+    }
+
+    /**
      * Display a listing of the resource.
      * This includes the "Last Details" of a character (which are used for more than just "Last Details)
      *

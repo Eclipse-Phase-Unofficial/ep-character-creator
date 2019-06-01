@@ -19,6 +19,16 @@ use Illuminate\Validation\ValidationException;
 class HighLevelCreatorController extends Controller
 {
     /**
+     * Only allow access if a creator already exists
+     *
+     * Unlike most controllers, this one has exceptions so a creator can be made/loaded
+     */
+    public function __construct()
+    {
+        $this->middleware('creator', ['except' => ['store', 'update']]);
+    }
+
+    /**
      * Display information about the current Character Creator
      *
      * @param Request $request
