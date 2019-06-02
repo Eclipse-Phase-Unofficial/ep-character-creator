@@ -1,4 +1,4 @@
-The Eclipse Phase Character Creator credits it's existance to many people who have been kind enough to donate their time to this project.
+The Eclipse Phase Character Creator credits it's existence to many people who have been kind enough to donate their time to this project.
 
 # Authors
     * Arthur Moore (EmperorArthur)      [Starting in 2015]
