@@ -2,6 +2,7 @@
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical popup">
             <button class="uk-modal-close-default" type="button" uk-close></button>
+            <a href="https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
             <div class="popup_contents">
                 <h1><b><u> About</u></b></h1>
                 <p>Eclipse Phase Character Creator ({{versionName}})</p>
@@ -10,7 +11,7 @@
                     role-playing game.</p>
                 <p>
                     Please submit all suggestions and bug reports to the
-                    <a href="https://github.com/EmperorArthur/ep-character-creator/issues" target="_blank">Issues</a>
+                    <a href="https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/issues" target="_blank">Issues</a>
                     page.
                 </p>
                 <p>
