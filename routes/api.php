@@ -25,6 +25,7 @@ Route::get('/version', function() {
 
 Route::prefix('creator')->group(function () {
     Route::get('/', 'HighLevelCreatorController@get');
+    Route::post('/', 'HighLevelCreatorController@store');
     Route::get('/validate', 'HighLevelCreatorController@validateCharacter');
     Route::get('/save', 'HighLevelCreatorController@save');
     Route::post('/load', 'HighLevelCreatorController@update');

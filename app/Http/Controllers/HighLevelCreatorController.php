@@ -53,10 +53,15 @@ class HighLevelCreatorController extends Controller
      * Has the side effect of destroying the old one
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'creationPoints' => 'required|int',
+        ]);
+        session()->put('cc', new EPCharacterCreator($request->get('creationPoints')));
+        return response(['Success' => True]);
     }
 
     /**
