@@ -23,9 +23,10 @@
                 </ul>
             </div>
         </div>
-        <button class="popupButton" id="settingsButton">
-            Reset
+        <button class="popupButton" href="#new-character-modal" uk-toggle>
+            New
         </button>
+        <new-character-modal id="new-character-modal"></new-character-modal>
         <button class="popupButton" href="#about-modal" uk-toggle>
             About
         </button>

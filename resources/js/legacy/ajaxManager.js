@@ -15,27 +15,7 @@ var focusOnSkill = "";
 
 $(document).ready(function(){
 
-        //FIRST OPEN WEB PAGE -- INIT
-        if(firstTime){
-
-        	startLoading();
-        	//initialize character and extract first data
-            ajax_helper({
-                        firstTime : 'first',
-                        getCrePoint : 'get'
-                },
-                function(response){
-                    if(response.sessionExist){
-                        setRemainingPoint(response);
-                        endLoading();
-                    }
-                    else{
-                        loadPopup("reload_popup","popup-contents/reset");
-                        endLoading();
-                    }
-                });
-            firstTime = false;
-        }
+    endLoading();
 
         //Tooltips (used for help buttons)
         $(document).tooltip({

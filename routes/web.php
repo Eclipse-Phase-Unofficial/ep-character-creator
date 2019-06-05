@@ -15,16 +15,6 @@ Route::get('/', function () {
     return view('main');
 });
 
-Route::prefix('others')->group(function () {
-    Route::post('/save', 'SaveLoadController@save')->name('save');
-    Route::get('/uploadFile', function() {
-        return view('popup-contents.upload_file_iframe');
-    });
-    Route::post('/uploadFile', function() {
-        return view('popup-contents.upload_file_iframe');
-    });
-});
-
 Route::prefix('export')->group(function () {
     Route::get('/pdf', function() {
         $exporter = new \App\Creator\Exporters\pdfExporterV2_fpdf();
@@ -35,18 +25,6 @@ Route::prefix('export')->group(function () {
     });
     Route::get('/txt', function() {
         include(app_path('Creator/Exporters/txtExporter.php'));
-    });
-});
-
-Route::prefix('popup-contents')->group(function () {
-    Route::get('/load', function () {
-        return view('popup-contents.load');
-    });
-    Route::get('/reset', function () {
-        return view('popup-contents.reset');
-    });
-    Route::get('/save_popup', function () {
-        return view('popup-contents.save_popup');
     });
 });
 
@@ -169,18 +147,6 @@ Route::post('/dispatcher', 'Dispatcher@process');
 //All the routes to get and set data
 //These were all originally in dispatcher.php
 Route::prefix('dispatch')->group(function () {
-    //if a file to load LOAD FILE
-    Route::post('load_char', function () {
-    });
-
-    //FIRST RUN (originally 'firstTime')
-    Route::get('creatorExists', function () {
-    });
-
-    //SET CP FOR A NEW CHARACTER
-    Route::post('setCP', function () {
-    });
-
     Route::prefix('ego')->group(function () {
         //GET BACKGROUND (originally 'getBcg')
         Route::get('backgrounds/{background}', function () {
@@ -320,3 +286,8 @@ Route::prefix('dispatch')->group(function () {
         });
     });
 });
+
+//Never 404, always let the SPA handle it
+Route::get('/{any}', function () {
+    return view('main');
+})->where('any', '.*');

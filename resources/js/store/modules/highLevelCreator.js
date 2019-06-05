@@ -4,8 +4,8 @@ export default {
     namespaced: true,
     state: {
         //These are the points displayed in the upper right corner
-        'rezPointsRemaining': 0,
-        'creationPointsRemaining': 0,
+        'rezPointsRemaining': 'N/A',
+        'creationPointsRemaining': 'N/A',
         'aptitudePointsRemaining': 0,
         'minimumActiveSkill': 0,    //The number of points that **must** be spent on Active Skills
         'minimumKnowledgeSkill': 0, //The number of points that **must** be spent on Knowledge Skills
@@ -24,6 +24,15 @@ export default {
         },
         setCredits(state, credits) {
             state.credits = credits;
+        },
+        clearAll(state, payload) {
+            state.rezPointsRemaining = 'N/A';
+            state.creationPointsRemaining = 'N/A';
+            state.aptitudePointsRemaining = 0;
+            state.minimumActiveSkill = 0;
+            state.minimumKnowledgeSkill = 0;
+            state.reputationPointsRemaining = 0;
+            state.credits = 0;
         }
     },
     actions: {
@@ -44,6 +53,15 @@ export default {
                         resolve(context)
                     })
                     .catch(error => {
+                        if(error.response.status === 401) {
+                            console.log('Creator does not exist');
+                            context.commit('clearAll');
+                            // TODO:  This relies on the Global "app"
+                            // This is here because it triggers even if the route did not change
+                            app.$router.push({name: 'welcome'});
+                            resolve(context);
+                            return;
+                        }
                         console.log('Error Getting Creator');
                         console.log(error);
                         reject(error)
@@ -51,5 +69,9 @@ export default {
             });
         }
     },
-    getters: {}
+    getters: {
+        creatorExists: state => {
+            return !(state.rezPointsRemaining === 'N/A' && state.creationPointsRemaining === 'N/A')
+        }
+    },
 }
