@@ -1,8 +1,10 @@
 <template>
     <div id="mainMenu">
-        <button class="popupButton" id="saveButton">
-            Save
-        </button>
+        <a href="/api/creator/save">
+            <button class="popupButton">
+                Save
+            </button>
+        </a>
         <button class="popupButton" href="#load-modal" uk-toggle>
             Load
         </button>

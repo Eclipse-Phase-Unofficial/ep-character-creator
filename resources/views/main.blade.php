@@ -26,7 +26,6 @@ declare(strict_types=1);
     <body>
 
         <!-- POPUP  -- DYNAMIC CONTENT -->
-        <div id="popup" data-name=""></div>
         <div id="loading_popup"><center><img src="<?php echo createDataURI(public_path("img/ajax-loader.gif"),"gif"); ?>"></center></div>
 
         <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
