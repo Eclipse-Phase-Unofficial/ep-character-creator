@@ -1,6 +1,6 @@
 <template>
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical popup" style="min-width: 80ch">
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="popup_contents">
                 <h1><b><u>Load Character</u></b></h1>
@@ -31,6 +31,7 @@
                             <input class="uk-input uk-form-width-xsmall" id="creditsEarned" type="number" min="0" v-model="creditsEarned">
                         </div>
                     </div>
+                    <br>
                     <button type="submit" class="popupInnerButton">
                         Load
                     </button>
@@ -86,6 +87,7 @@
                         })
                             .then(response => {
                                 endLoading();
+                                //TODO:  Don't reload, just close everything and update as appropriate on load finishing
                                 location.reload();
                             })
                             .catch(error => {

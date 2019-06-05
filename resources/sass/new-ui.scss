@@ -1,0 +1,37 @@
+
+//These are meant to give a unique almost video-game feel to the windows.
+//They are meant to be a mixture between usable, and the cool UIs seen in video games.
+@mixin game() {
+  box-sizing: border-box;
+  border: 2px solid grey;
+  border-radius: 1.5em;
+}
+
+.game-style {
+  @include game();
+}
+
+//This is meant to give a nice mostly opaque background with a game interface type double hard border (when using two of them).
+//Add 'uk-padding-remove' to the outer box to cut down on the extra space
+.game-box {
+  @include game();
+  --margin: 0.5em;
+  --margin-top: var(--margin);
+  --margin-right: var(--margin);
+  width: calc(100% - (var(--margin) + var(--margin-right)));
+  height: calc(100% - (var(--margin) + var(--margin-top)));
+  min-height: max-content; /* Make sure if the page overflows the box still fits */
+  /* Using this because margin-top was causing a vertical scroll bar to appear */
+  transform: translateY(var(--margin-top));
+  margin-left: var(--margin);
+  /* This is needed for when the min-height property is triggered */
+  margin-bottom: var(--margin);
+  padding: 0.5em;
+  background: rgba(211, 211, 211, 0.8);
+
+  //Modified game-box to accommodate the interface elements (navbar, etc.)
+  .outer-box {
+    --margin-top: 5em;
+    --margin-right: 5em;
+  }
+}

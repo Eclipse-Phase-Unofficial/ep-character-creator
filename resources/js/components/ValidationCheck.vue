@@ -1,6 +1,6 @@
 <template>
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical popup" style="min-width: 80ch">
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="popup_contents">
                 <h1><b><u>Character Validation</u></b></h1>

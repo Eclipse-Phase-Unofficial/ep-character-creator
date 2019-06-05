@@ -1,6 +1,6 @@
 <template>
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical popup">
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <a href="https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
             <div class="popup_contents">
