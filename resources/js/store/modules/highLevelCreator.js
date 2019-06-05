@@ -28,23 +28,27 @@ export default {
     },
     actions: {
         getHighLevelCreatorInfo (context) {
-            axios.get(urls.creator)
-                .then(response => {
-                    let data = response.data;
-                    context.commit('setRequired', {
-                        rezPointsRemaining: data.rez_remain,
-                        creationPointsRemaining: data.creation_remain,
-                        aptitudePointsRemaining: data.aptitude_remain,
-                        minimumActiveSkill: data.asr_remain,
-                        minimumKnowledgeSkill: data.ksr_remain,
-                        reputationPointsRemaining: data.reputation_remain,
+            return new Promise((resolve, reject) => {
+                axios.get(urls.creator)
+                    .then(response => {
+                        let data = response.data;
+                        context.commit('setRequired', {
+                            rezPointsRemaining: data.rez_remain,
+                            creationPointsRemaining: data.creation_remain,
+                            aptitudePointsRemaining: data.aptitude_remain,
+                            minimumActiveSkill: data.asr_remain,
+                            minimumKnowledgeSkill: data.ksr_remain,
+                            reputationPointsRemaining: data.reputation_remain,
+                        });
+                        context.commit('setCredits', data.credits);
+                        resolve(context)
+                    })
+                    .catch(error => {
+                        console.log('Error Getting Creator');
+                        console.log(error);
+                        reject(error)
                     });
-                    context.commit('setCredits', data.credits);
-                })
-                .catch(error => {
-                    console.log('Error Getting Creator');
-                    console.log(error)
-                });
+            });
         }
     },
     getters: {}
