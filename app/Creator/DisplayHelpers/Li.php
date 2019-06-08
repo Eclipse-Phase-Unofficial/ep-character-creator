@@ -36,13 +36,13 @@ class Li{
     /**
      * Tell the user how much the li costs.
      *
-     * @param $cost      - The item's cost. (if 0, nothing is displayed)
-     * @param $isDefault - If the item is automatically given to the player. (if true, "(Granted)" is displayed; takes precidence over $isDefault)
-     * @param $units     - What is being charged
+     * @param int    $cost      The item's cost. (if 0, nothing is displayed)
+     * @param bool   $isDefault If the item is automatically given to the player. (if true, "(Granted)" is displayed; takes precidence over $isDefault)
+     * @param string $units     What is being charged
      *
      * @example $item->addCost(1): Gives "(1 cp)"
      */
-    function addCost($cost,$isDefault = False, $units = "cp"){
+    function addCost(int $cost, bool $isDefault = False, string $units = "cp"){
         $this->cost = $cost;
         $this->cost_isDefault = $isDefault;
         $this->cost_units = $units;
@@ -61,9 +61,9 @@ class Li{
     /**
      * Add a book icon to the li.
      *
-     * @param $id - The id used to look up what icon to use.
+     * @param string $id The id used to look up what icon to use.
      */
-    function addBookIcon($id){
+    function addBookIcon(string $id){
         $this->html .= Helpers::getListStampHtml($id);
     }
 
@@ -72,7 +72,7 @@ class Li{
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
      *
-     * @param string $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param string $iconClass The class of the icon itself. (Used by javascript for ajax calls.)
      * @param bool   $isChecked
      */
     function addPlusChecked(string $iconClass, bool $isChecked = False){
@@ -88,10 +88,10 @@ class Li{
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
      *
-     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
-     * @param $isPlus    - Display the plus icon, or the minus icon.
+     * @param string $iconClass The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param bool   $isPlus    Display the plus icon, or the minus icon.
      */
-    function addPlusMinus($iconClass,$isPlus = True){
+    function addPlusMinus(string $iconClass, bool $isPlus = True){
         $icon = Icon::$plus;
         if(!$isPlus){
             $icon = Icon::$minus;
@@ -104,10 +104,10 @@ class Li{
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
      *
-     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
-     * @param $isPlus    - Display the plus icon, or the 'X' icon.
+     * @param string $iconClass The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param bool   $isPlus    Display the plus icon, or the 'X' icon.
      */
-    function addPlusX($iconClass,$isPlus = True){
+    function addPlusX(string $iconClass, bool $isPlus = True){
         $icon = Icon::$plus;
         if(!$isPlus){
             $icon = Icon::$X;
@@ -120,10 +120,10 @@ class Li{
      *
      * WARNING:  The icon will have the same id as the main li. (To fix this other code must be changed...)
      *
-     * @param $iconClass - The class of the icon itself. (Used by javascript for ajax calls.)
-     * @param $isChecked - Display the checked icon, or a blank space.
+     * @param string $iconClass The class of the icon itself. (Used by javascript for ajax calls.)
+     * @param bool   $isChecked Display the checked icon, or a blank space.
      */
-    function addCheckedBlank($iconClass,$isChecked = False){
+    function addCheckedBlank(string $iconClass, bool $isChecked = False){
         $icon = Icon::$checked;
         if(!$isChecked){
             $icon = '';
@@ -133,6 +133,7 @@ class Li{
 
     /**
      * Get the final html of the li.
+     * @return string The final HTML of the Li element
      */
     function getHtml(){
         $output  = "<li class='".$this->class."' id='".$this->id."' data-cost='".$this->cost."' data-cost_isDefault='".$this->cost_isDefault."' data-cost_units='".$this->cost_units."' >";

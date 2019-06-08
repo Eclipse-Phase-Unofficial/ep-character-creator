@@ -22,10 +22,10 @@ class Helpers
      * @param EPCharacterCreator $creator
      * @param EPGear[]           $gears
      * @param EPMorph            $morph
-     * @param                    $iconClass
+     * @param string             $iconClass
      * @return string
      */
-    static function getFormatedMorphGearList(EPCharacterCreator $creator, array $gears, EPMorph $morph, $iconClass)
+    static function getFormatedMorphGearList(EPCharacterCreator $creator, array $gears, EPMorph $morph, string $iconClass)
     {
         $htmlResult = "";
         foreach ($gears as $gear) {
@@ -114,7 +114,12 @@ class Helpers
         return $output;
     }
 
-    static function isGearLegal($morph, $gear)
+    /**
+     * @param EPMorph $morph
+     * @param EPGear  $gear
+     * @return bool
+     */
+    static function isGearLegal(EPMorph $morph,EPGear $gear)
     {
         //Removed so infomorphs can buy gear
         //if($morph->morphType == EPMorph::$INFOMORPH)
@@ -160,6 +165,14 @@ class Helpers
         return false;
     }
 
+    /**
+     * @param EPTrait   $trait
+     * @param EPTrait[] $currentTraits
+     * @param EPTrait[] $defaultTraits
+     * @param string    $traitClass
+     * @param string    $iconClass
+     * @return string HTML for an Li element
+     */
     static function getDynamicTraitLi(EPTrait $trait, array $currentTraits, array $defaultTraits, string $traitClass, string $iconClass)
     {
         if ($currentTraits == null) {
@@ -176,7 +189,12 @@ class Helpers
         return $li->getHtml();
     }
 
-    static function isTraitLegal($morph, $trait)
+    /**
+     * @param EPMorph $morph
+     * @param EPTrait $trait
+     * @return bool
+     */
+    static function isTraitLegal(EPMorph $morph, EPTrait $trait)
     {
         if ($morph->morphType == EPMorph::$INFOMORPH) {
             return false;
@@ -366,8 +384,12 @@ class Helpers
 
     /**
      * Get the options to select/deselect a skill
+     * @param EPBonusMalus $bm
+     * @param EPSkill[]    $skill_list
+     * @param bool         $prefix_skill
+     * @return string HTML for a Select box, or an error message
      */
-    static function getSkillOptions(EPBonusMalus $bm, $skill_list, $prefix_skill = false)
+    static function getSkillOptions(EPBonusMalus $bm, array $skill_list, bool $prefix_skill = false)
     {
         //Handle Prefix only skill selection
         if ($prefix_skill == true && !empty($bm->typeTarget)) {
@@ -497,7 +519,7 @@ class Helpers
      * All the skills in an array that have a certain prefix
      * @param EPSkill[] $skillArray
      * @param string    $prefix
-     * @return array
+     * @return EPSkill[]
      */
     static function skillsWithPrefix(array $skillArray, string $prefix)
     {
@@ -510,7 +532,12 @@ class Helpers
         return $outArray;
     }
 
-    static function isNameOnList($name, $list)
+    /**
+     * @param string   $name
+     * @param string[] $list
+     * @return bool
+     */
+    static function isNameOnList(string $name, array $list)
     {
         foreach ($list as $s) {
             if ($name == $s) {
@@ -520,7 +547,11 @@ class Helpers
         return false;
     }
 
-    static function getSelectedOnMulti($bmMulti)
+    /**
+     * @param EPBonusMalus $bmMulti
+     * @return int
+     */
+    static function getSelectedOnMulti(EPBonusMalus $bmMulti)
     {
         $count = 0;
         foreach ($bmMulti->bonusMalusTypes as $bm) {
@@ -535,8 +566,10 @@ class Helpers
      * Print out the html for a book reference
      *
      * This is designed to be slotted in with other elements in an unordered list.
+     * @param string $atomName
+     * @return string
      */
-    static function getBPHtml($atomName){
+    static function getBPHtml(string $atomName){
         $book = new EPBook($atomName);
         $output = "<li class='listSection'>";
         $output .= "Find more at";
@@ -549,8 +582,10 @@ class Helpers
 
     /**
      * Get a book's icon
+     * @param string $atomName
+     * @return string
      */
-    static function getListStampHtml($atomName){
+    static function getListStampHtml(string $atomName){
         $book = new EPBook($atomName);
         return "<span class='bookIcon ".$book->getAbbreviation()."'></span>";
     }
