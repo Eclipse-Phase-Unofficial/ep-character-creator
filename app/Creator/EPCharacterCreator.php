@@ -265,14 +265,49 @@ class EPCharacterCreator implements Savable
 		
 				
     }
-    function __construct($amountCP = -1){
+    function __construct(int $amountCP = -1){
         $this->creationMode = true;
         $this->validation = new EPValidation();
         $this->evoRezPoint = 0;
         $this->evoRepPoint = 0;
         $this->evoCrePoint = 0;  
         $this->evoCrePointPurchased = 0;
-        $this->init($amountCP);
+
+        $this->listProvider = new EPListProvider();
+        $this->errorList = array();
+        $this->aptitudePoints = config('epcc.AptitudesPoint');
+        $this->reputationPoints = config('epcc.RepStart');  //TODO:  Is this a duplicate of Ego (further down)?
+        $this->reputationPointsMorphMod = 0;
+        $this->reputationPointsTraitMod = 0;
+        $this->reputationPointsFactionMod = 0;
+        $this->reputationPointsBackgroundMod = 0;
+        $this->reputationPointsSoftGearMod = 0;
+        $this->reputationPointsPsyMod = 0;
+        $this->character = new EPCharacter();
+        $this->character->ego->credit = config('epcc.CreditStart');
+        $this->character->ego->rep = config('epcc.RepStart');
+
+        $this->loadAptitudes();
+        $this->loadStats();
+        $this->loadSkills();
+        $this->loadReps();
+
+        $defaultAi = EpDatabase()->getAiByName('Standard Muse');
+        if (isset($defaultAi)){
+            $this->character->ego->addDefaultAi($defaultAi);
+        }
+
+        $this->nativeLanguageSet = false;
+
+        if ($amountCP < 0 ){
+            $amountCP = config('epcc.CreationPoint');
+        }
+        //Set the CP a character can start at to at least the minimum needed to fulfil the skill requirements
+        $amountCP = max($amountCP, config('epcc.ActiveSkillsMinimum') + config('epcc.KnowledgeSkillsMinimum'));
+
+        $this->initialCreationPoints = $amountCP;
+
+        $this->adjustAll();
     }
     function activateMorph(?EPMorph $morph = null){
         if (!isset($morph)){
@@ -1020,28 +1055,35 @@ class EPCharacterCreator implements Savable
     /**
      * Create a skill from a user entered name and pre-defined prefix
      *
-     * @param        $name
-     * @param        $linkedApt
-     * @param        $skillType
-     * @param        $defaultable
-     * @param string $prefix
-     * @param null   $groups
-     * @param bool   $nativeLanguage
+     * @param string   $name
+     * @param string   $linkedApt
+     * @param string   $skillType
+     * @param string   $defaultable
+     * @param string   $prefix
+     * @param string[] $groups
+     * @param bool     $nativeLanguage
      * @return bool
      */
-    function addSkill($name, $linkedApt, $skillType, $defaultable, $prefix = '', $groups = null,$nativeLanguage = false){
+    function addSkill(
+        string $name,
+        string $linkedApt,
+        string $skillType,
+        string $defaultable,
+        string $prefix = '',
+        $groups = [],
+        bool $nativeLanguage = false
+    ) {
         if (!EpDatabase()->prefixExists($prefix)){
             array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Prefix not exist !)', EPCreatorErrors::$SYSTEM_ERROR));
             return false;
         }
         $ns = new EPSkill($name,
                           '',
-                          $this->getAptitudeByAbbreviation($linkedApt),
                           $skillType,
                           $defaultable,
+                          $this->getAptitudeByAbbreviation($linkedApt),
                           $prefix,
                           $groups,
-                          0,
                           true
                           );
         if (!$ns->addToArray($this->character->ego->skills)){
@@ -1683,43 +1725,6 @@ class EPCharacterCreator implements Savable
     }
     function isNativeLanguageSet(){
 	    return $this->nativeLanguageSet;
-    }
-    private function init($amountCP){
-        $this->listProvider = new EPListProvider();
-        $this->errorList = array();
-        $this->aptitudePoints = config('epcc.AptitudesPoint');
-        $this->reputationPoints = config('epcc.RepStart');  //TODO:  Is this a duplicate of Ego (further down)?
-        $this->reputationPointsMorphMod = 0;
-        $this->reputationPointsTraitMod = 0;
-        $this->reputationPointsFactionMod = 0;
-        $this->reputationPointsBackgroundMod = 0;
-        $this->reputationPointsSoftGearMod = 0;
-        $this->reputationPointsPsyMod = 0;
-        $this->character = new EPCharacter();
-        $this->character->ego->credit = config('epcc.CreditStart');
-        $this->character->ego->rep = config('epcc.RepStart');
-
-        $this->loadAptitudes();
-        $this->loadStats();
-        $this->loadSkills();
-        $this->loadReps();
-
-        $defaultAi = EpDatabase()->getAiByName('Standard Muse');
-        if (isset($defaultAi)){
-            $this->character->ego->addDefaultAi($defaultAi);
-        }
-
-        $this->nativeLanguageSet = false;
-
-        $amountCP = intval($amountCP);
-        if ($amountCP < 0 ){
-            $amountCP = config('epcc.CreationPoint');
-        }
-        $amountCP = max($amountCP, config('epcc.ActiveSkillsMinimum') + config('epcc.KnowledgeSkillsMinimum'));
-
-    	$this->initialCreationPoints = $amountCP;
-
-        $this->adjustAll();
     }
     function getRezPoints(){
         if ($this->creationMode){
@@ -3788,7 +3793,7 @@ class EPCharacterCreator implements Savable
         return preg_replace('/\s[^\s]*$/','', $name);
 	}
 	
-	function getMorphGrantedBMApptitudesNameList($morph){
+	function getMorphGrantedBMApptitudesNameList(EPMorph $morph){
 		$aptNameList = array();
 		foreach($morph->bonusMalus as $bm){
 			if($bm->bonusMalusType == EPBonusMalus::$ON_APTITUDE){

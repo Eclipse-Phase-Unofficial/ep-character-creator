@@ -17,9 +17,10 @@ class EPSkill extends EPAtom{
      static $DEFAULTABLE = 'Y';
 
     /**
-     * Contains either AST or KST
-     * TODO:  Convert this to an 'isActive' bool (with backwards compatibility)
-     * @var string Used to determine if the skill is an active or Knowledge skill
+     * An enum of [$ACTIVE_SKILL_TYPE, $KNOWLEDGE_SKILL_TYPE]
+     * Used to determine if the skill is an active or Knowledge skill
+     * TODO:  Convert this to an 'isActiveSkill' bool
+     * @var string
      */
      private $skillType;
 
@@ -27,8 +28,10 @@ class EPSkill extends EPAtom{
      * TODO:  Make this private with a getter (no setter)
      * @var string
      */
-     public $prefix;   
-     
+     public $prefix;
+    /**
+     * @var int
+     */
      public $baseValue;
      
      public $morphMod;
@@ -37,7 +40,11 @@ class EPSkill extends EPAtom{
      public $factionMod;
      public $softgearMod;
      public $psyMod;
-     
+    /**
+     * An Enum of [$DEFAULTABLE, $NO_DEFAULTABLE]
+     * TODO:  Convert this to an 'isDefaultable' bool
+     * @var string
+     */
      public $defaultable;
      public $tempSkill; //for skill not loaded from database
      public $specialization;
@@ -47,8 +54,9 @@ class EPSkill extends EPAtom{
 
     /**
      * Linked Aptitude
-     * //TODO:  Rename this to be more clear
-     * @var EPAptitude
+     * TODO: Rename this to be more clear
+     * TODO: Use a getter, and handle the null case better
+     * @var EPAptitude|null
      */
     public $linkedApt;
      
@@ -209,12 +217,34 @@ class EPSkill extends EPAtom{
         $this->maxValuePsyMod = $savePack['maxValuePsyMod'];
         $this->maxValueSoftgearMod = $savePack['maxValueSoftgearMod'];	 
     }
-    function __construct($atName, $atDesc, $linkedApt,$skillType,$defaultable,$prefix="",$groups = array(),$baseValue = 0, $tempSkill = false) {
-         parent::__construct(trim($atName), trim($atDesc));
-         $this->linkedApt = $linkedApt;
+
+    /**
+     * EPSkill constructor.
+     * @param string          $name
+     * @param string          $description
+     * @param string          $skillType
+     * @param string          $defaultable
+     * @param EPAptitude|null $linkedAptitude
+     * @param string          $prefix
+     * @param array           $groups
+     * @param bool            $isTempSkill
+     */
+    function __construct(
+        string $name,
+        string $description,
+        string $skillType,
+        string $defaultable,
+        EPAptitude $linkedAptitude = null,
+        string $prefix = "",
+        array $groups = array(),
+        bool $isTempSkill = false
+    ) {
+        //The `trim`s are because this could be user created.
+         parent::__construct(trim($name), trim($description));
+         $this->linkedApt = $linkedAptitude;
          $this->skillType = $skillType;
          $this->prefix = trim($prefix);
-         $this->baseValue = $baseValue;
+         $this->baseValue = 0;
          $this->defaultable = $defaultable;
          $this->groups = $groups;
          $this->morphMod = 0;
@@ -223,7 +253,7 @@ class EPSkill extends EPAtom{
          $this->factionMod = 0;
          $this->softgearMod = 0;
          $this->psyMod = 0;
-         $this->tempSkill = $tempSkill;
+         $this->tempSkill = $isTempSkill;
          $this->specialization = '';
          $this->isNativeTongue = false;
      }

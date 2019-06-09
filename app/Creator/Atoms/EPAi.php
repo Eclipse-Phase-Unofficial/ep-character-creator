@@ -45,7 +45,7 @@ class EPAi extends EPAtom{
         $savePack['bmSavePacks'] = $bmSavePacks;
 
         return $savePack;
-    }  
+    }
     function loadSavePack($savePack,$cc = null){
         parent::loadSavePack($savePack);
 
@@ -55,7 +55,7 @@ class EPAi extends EPAtom{
             array_push($this->aptitudes, $savedAptitude);
         }	    
         foreach($savePack['skillsSavePacks'] as $m){
-            $savedSkill = new EPSkill('temp','','','','');
+            $savedSkill = new EPSkill('temp','','','');
             $savedSkill->loadSavePack($m);
             array_push($this->skills, $savedSkill);
         }
@@ -66,12 +66,20 @@ class EPAi extends EPAtom{
         }    
     }
 
-    function __construct($atName, $aptitudes, $costType, $skills = array(), $atDesc = '')
+    /**
+     * EPAi constructor.
+     * @param string       $name
+     * @param EPAptitude[] $aptitudes
+     * @param int          $cost
+     * @param EPSkill[]    $skills
+     * @param string       $description
+     */
+    function __construct(string $name, array $aptitudes, int $cost, $skills = array(), string $description = '')
     {
-        parent::__construct($atName, $atDesc);
+        parent::__construct($name, $description);
         $this->aptitudes = $aptitudes;
         $this->skills = $skills;
-        $this->cost = $costType;
+        $this->cost = $cost;
         $this->bonusMalus = array();
     }
 

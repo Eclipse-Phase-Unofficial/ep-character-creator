@@ -21,16 +21,42 @@ class EPMorph extends EPAtom {
     static $GENDER_FEMAL = 'F';
     static $GENDER_NONE = 'N';
 
+    /**
+     * An Enum of [$BIOMORPH, $SYNTHMORPH, $PODMORPH, $INFOMORPH]
+     * @var string
+     */
     public $morphType;
+    /**
+     * @var int
+     */
     public $age;
+    /**
+     * @var string
+     */
     public $gender;
 
+    /**
+     * TODO:  Rename this to fix the spelling mistake
+     * @var int
+     */
     public $maxApptitude;
 
+    /**
+     * @var int
+     */
     public $durability;
+    /**
+     * @var string
+     */
     public $nickname;
+    /**
+     * @var string
+     */
     public $location;
 
+    /**
+     * @var int
+     */
     public $cpCost;
     public $buyInCreationMode;
 
@@ -116,22 +142,22 @@ class EPMorph extends EPAtom {
         $this->buyInCreationMode = $savePack['buyInCreationMode'];
 
         foreach($savePack['traitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','','',0);
+            $savedTrait = new EPTrait('temp','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->traits, $savedTrait);
         }
         foreach($savePack['additionalTraitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','','',0);
+            $savedTrait = new EPTrait('temp','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->additionalTraits, $savedTrait);
         }
         foreach($savePack['gearSavePacks'] as $m){
-            $savedGear = new EPGear('temp','','','');
+            $savedGear = new EPGear('temp','','',0);
             $savedGear->loadSavePack($m);
             array_push($this->gears, $savedGear);
         }
         foreach($savePack['addGearSavePacks'] as $m){
-            $savedGear = new EPGear('temp','','','');
+            $savedGear = new EPGear('temp','','',0);
             $savedGear->loadSavePack($m);
             array_push($this->additionalGears, $savedGear);
         }
@@ -141,12 +167,37 @@ class EPMorph extends EPAtom {
             array_push($this->bonusMalus, $savedBm);
         }
     }
-    function __construct( $atName,$morphType,$age, $gender,$maxApptitude,$durability,$cpCost,$traits=  array(),$gears=  array(),$bonusMalus=  array(), $atDesc= '',$nickname = '', $location = '',$creditCost=0) {
-        parent::__construct($atName, $atDesc);
+
+    /**
+     * EPMorph constructor.
+     * @param string         $name
+     * @param string         $morphType
+     * @param int            $maxAptitude
+     * @param int            $durability
+     * @param int            $cpCost
+     * @param EPTrait[]      $traits
+     * @param EPGear[]       $gears
+     * @param EPBonusMalus[] $bonusMalus
+     * @param string         $description
+     * @param int            $creditCost
+     */
+    function __construct(
+        string $name,
+        string $morphType,
+        int $maxAptitude,
+        int $durability,
+        int $cpCost,
+        array $traits = array(),
+        array $gears = array(),
+        array $bonusMalus = array(),
+        string $description = '',
+        int $creditCost = 0
+    ) {
+        parent::__construct($name, $description);
         $this->morphType = $morphType;
-        $this->age = $age;
-        $this->gender = $gender;
-        $this->maxApptitude = $maxApptitude;
+        $this->age = 0;
+        $this->gender = self::$GENDER_NONE;
+        $this->maxApptitude = $maxAptitude;
         $this->durability = $durability;
         $this->cpCost = $cpCost;
         $this->traits = $traits;
@@ -154,8 +205,8 @@ class EPMorph extends EPAtom {
         $this->gears = $gears;
         $this->additionalGears = array();
         $this->bonusMalus = $bonusMalus;
-        $this->nickname = $nickname;
-        $this->location = $location;
+        $this->nickname = '';
+        $this->location = '';
         $this->cost = $creditCost;
         $this->buyInCreationMode = true;
         $this->implantReject = false;

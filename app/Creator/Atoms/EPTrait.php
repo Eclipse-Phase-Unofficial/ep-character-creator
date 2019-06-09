@@ -17,18 +17,33 @@ class EPTrait extends EPAtom
     static $EGO_TRAIT = 'EGO';
     static $MORPH_TRAIT = 'MOR';
     
-    //GUI use for filtering the listes
+    //GUI use for filtering the lists
     static $CAN_USE_EVERYBODY = 'EVERY';
     static $CAN_USE_BIO = 'BIO';
     static $CAN_USE_SYNTH = 'SYNTH';
     static $CAN_USE_POD = 'POD';
-    //-----
+    /*
+     * An enum value of [$CAN_USE_EVERYBODY, $CAN_USE_BIO, $CAN_USE_SYNTH, $CAN_USE_POD]
+     * @var string
+     */
     public $canUse;
     public $mandatory;
     //-----
-    
+
+    /*
+     * TODO: Convert this to getters for positive, negative, and neutral (which is distinguished by costing 0CP)
+     * @var string
+     */
     public $traitPosNeg;
+    /*
+     * TODO:  Convert this to a private bool with a getter
+     * @var string
+     */
     public $traitEgoMorph;
+    /*
+     * TODO: Convert this to a private variable with a getter
+     * @var int
+     */
     public $cpCost;
     
     public $level;
@@ -73,9 +88,30 @@ class EPTrait extends EPAtom
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }	    
-    }   
-    function __construct($atName, $atDesc, $traitPosNeg, $traitEgoMorph, $cpCost , $bonusMalusArray = array(),$level = 1,$canUse='EVERY') {
-        parent::__construct($atName, $atDesc);
+    }
+
+    /**
+     * EPTrait constructor.
+     * @param string         $name
+     * @param string         $description
+     * @param string         $traitPosNeg     Traits can be positive, negative, or neutral.  However, neutral traits are distinguished by costing 0CP
+     * @param string         $traitEgoMorph
+     * @param int            $cpCost
+     * @param EPBonusMalus[] $bonusMalusArray
+     * @param int            $level
+     * @param string         $canUse          An enum value of [$CAN_USE_EVERYBODY, $CAN_USE_BIO, $CAN_USE_SYNTH, $CAN_USE_POD]
+     */
+    function __construct(
+        string $name,
+        string $traitPosNeg,
+        string $traitEgoMorph,
+        int $cpCost,
+        string $description = '',
+        array $bonusMalusArray = array(),
+        int $level = 1,
+        string $canUse = 'EVERY'
+    ) {
+        parent::__construct($name, $description);
         $this->traitPosNeg = $traitPosNeg;
         $this->traitEgoMorph = $traitEgoMorph;
         $this->cpCost = $cpCost;

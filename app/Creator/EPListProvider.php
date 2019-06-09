@@ -63,12 +63,14 @@ class EPListProvider {
 
     function getBonusMalusByName(string $name): EPBonusMalus
     {
+//        TODO:  Rename 'traget'ForCh to 'target'ForChoice
         $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
         $bmTypes = $this->getBonusMalusTypes($row['name']);
-        $epBonMal = new EPBonusMalus($row['name'],$row['type'],(float) $row['value'],$row['target'],$row['desc'],$groups,$row['onCost'],$row['tragetForCh'], $row['typeTarget'],$bmTypes,$row['multiOccur']);
+        $epBonMal = new EPBonusMalus($row['name'], $row['type'], (float)$row['value'], $row['target'], $row['desc'],
+            $groups, $row['onCost'], $row['tragetForCh'], $row['typeTarget'], $bmTypes, intval($row['multiOccur']));
         return $epBonMal;
     }
 
@@ -119,7 +121,8 @@ class EPListProvider {
                     }
                 }
             }
-            $trait = new EPTrait($traitRow['name'],$traitRow['desc'],$traitRow['side'],$traitRow['onwhat'],$traitRow['cpCost'],$bonusMalusTraitList,$traitRow['level'],$traitRow['JustFor']);
+            $trait = new EPTrait($traitRow['name'], $traitRow['side'], $traitRow['onwhat'], intval($traitRow['cpCost']),
+                $traitRow['desc'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
             array_push($traitList, $trait);
         }
         return $traitList;
@@ -147,7 +150,8 @@ class EPListProvider {
                 }
             }
         }
-        $trait = new EPTrait($traitRow['name'],$traitRow['desc'],$traitRow['side'],$traitRow['onwhat'],$traitRow['cpCost'],$bonusMalusTraitList,$traitRow['level'],$traitRow['JustFor']);
+        $trait = new EPTrait($traitRow['name'], $traitRow['side'], $traitRow['onwhat'], intval($traitRow['cpCost']),
+            $traitRow['desc'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
         return $trait;
     }
     
@@ -159,15 +163,12 @@ class EPListProvider {
     function getListAptitudes(): array
     {
         $apt = array();
-        $minValue = config('epcc.AptitudesMinValue');
-        $maxValue = config('epcc.AptitudesMaxValue');
-        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
 
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups,$minValue,$maxValue,$minValue,$absMax);
+            $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
             //$apt[$epAppt->abbreviation] = $epAppt;
             array_push($apt, $epAppt);
         }
@@ -176,29 +177,21 @@ class EPListProvider {
 
     function getAptitudeByName(string $aptName): EPAptitude
     {
-        $minValue = config('epcc.AptitudesMinValue');
-        $maxValue = config('epcc.AptitudesMaxValue');
-        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
-
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `name` = '".$this->adjustForSQL($aptName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
-        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups,$minValue,$maxValue,$minValue,$absMax);
+        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
         return $epAppt;
     }
 
     function getAptitudeByAbbreviation(string $abbrev): EPAptitude
     {
-        $minValue = config('epcc.AptitudesMinValue');
-        $maxValue = config('epcc.AptitudesMaxValue');
-        $absMax = config('epcc.AbsoluteAptitudesMaxValue');
-
         $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `abbreviation` = '".$abbrev."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
-        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups,$minValue,$maxValue,$minValue,$absMax);
+        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
         return $epAppt;
     }
     
@@ -216,7 +209,7 @@ class EPListProvider {
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epStats = new EPStat($row['name'], $row['description'], $row['abbreviation'], $groups,0,$cc);
+            $epStats = new EPStat($row['name'], $row['description'], $row['abbreviation'], $groups,$cc);
             if (strcmp($epStats->abbreviation,EPStat::$MOXIE) == 0){
                 $epStats->value = config('epcc.MoxieStartValue');
             }
@@ -290,7 +283,8 @@ class EPListProvider {
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epSkills = new EPSkill($row['name'],$row['desc'], $this->getAptByAbreviation($listApt,$row['linkedApt']),$row['skillType'],$row['defaultable'],$row['prefix'],$groups);
+            $epSkills = new EPSkill($row['name'], $row['desc'], $row['skillType'], $row['defaultable'],
+                $this->getAptByAbreviation($listApt, $row['linkedApt']), $row['prefix'], $groups);
             array_push($skills, $epSkills);
         }
         return $skills;
@@ -309,7 +303,8 @@ class EPListProvider {
         $row = $res->fetch();
 
         $groups = $this->getListGroups($row['name']);
-        $epSkills = new EPSkill($row['name'],$row['desc'],$this->getAptByAbreviation($listApt,$row['linkedApt']),$row['skillType'],$row['defaultable'],$row['prefix'],$groups);
+        $epSkills = new EPSkill($row['name'], $row['desc'], $row['skillType'], $row['defaultable'],
+            $this->getAptByAbreviation($listApt, $row['linkedApt']), $row['prefix'], $groups);
         return $epSkills;
     }
     
@@ -361,7 +356,7 @@ class EPListProvider {
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epReputation = new EPReputation($row['name'],$row['description'],$groups,0, config('epcc.RepMaxPoint'));
+            $epReputation = new EPReputation($row['name'], $row['description'], $groups);
             //$reputations[$row['name']] = $epReputation;
             array_push($reputations, $epReputation);
         }
@@ -418,7 +413,7 @@ class EPListProvider {
                 array_push($bckLimitation, $limitRow['limitationGroup']);
             }
 
-            $bck = new EPBackground($bckRow['name'],$bckRow['description'],$bckRow['type'],$backgroundBonusMalusList,$backgroundTraitList,$bckLimitation);
+            $bck = new EPBackground($bckRow['name'], $bckRow['type'], $backgroundBonusMalusList, $backgroundTraitList, $bckLimitation, $bckRow['description']);
             //$backgroundList[$bckRow['name']] = $bck;
             array_push($backgroundList, $bck);
         }
@@ -504,7 +499,9 @@ class EPListProvider {
                     }
                 }
             }
-            $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor'], $gearRow['unique'] !== "N");
+            $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
+                intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['degat'], intval($gearRow['armorPene']),
+                $bonusMalusGearList, $gearRow['JustFor'], $gearRow['unique'] !== "N");
             //$gearList[$gearRow['name']] = $gear;
             array_push($gearList, $gear);
         }
@@ -540,13 +537,16 @@ class EPListProvider {
             }
         }
 
-        $gear = new EPGear($gearRow['name'],$gearRow['description'],$gearRow['type'],  intval($gearRow['cost']),$gearRow['armorKinetic'],$gearRow['armorEnergy'],$gearRow['degat'],$gearRow['armorPene'],$bonusMalusGearList,$gearRow['JustFor'], $gearRow['unique'] !== "N");
+        $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
+            intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['degat'],
+            intval($gearRow['armorPene']), $bonusMalusGearList, $gearRow['JustFor'], $gearRow['unique'] !== "N");
         return $gear;
     }
     
     //==== MORPH =====
 
     /**
+     * TODO:  Remove Gender and age from the database.  They are no longer used. Also change DB Types to ints where appropriate
      * @return EPMorph[]
      */
     function getListMorph(): array
@@ -599,7 +599,9 @@ class EPListProvider {
                     array_push($morphTraitList, $epTraits);
                 }
             }
-            $morph = new EPMorph($morphRow['name'],$morphRow['type'],$morphRow['age'],$morphRow['gender'],$morphRow['maxApptitude'],$morphRow['durablility'],$morphRow['cpCost'],$morphTraitList,$morphGearsList,$morphBonusMalusList,$morphRow['description'],"","",  intval($morphRow['creditCost']));
+            $morph = new EPMorph($morphRow['name'], $morphRow['type'], intval($morphRow['maxApptitude']),
+                intval($morphRow['durablility']), intval($morphRow['cpCost']), $morphTraitList, $morphGearsList, $morphBonusMalusList,
+                $morphRow['description'], intval($morphRow['creditCost']));
             array_push($morphList, $morph);
             //$morphList[$morphRow['name']] = $morph;
         }

@@ -165,10 +165,18 @@ class EPAptitude extends EPAtom{
         $this->activMorph = $savePack['activMorph'];
         $this->absoluteMaxValue = $savePack['absoluteMaxValue'];
     }
-    function __construct($atName,$abbreviation,$atDesc = '', $groups = array(),$baseValue = 0, $maxValue = 0, $minValue = 0, $absoluteMaxValue = 0) {
-        parent::__construct($atName, $atDesc);
+
+    /**
+     * EPAptitude constructor.
+     * @param string   $name
+     * @param string   $abbreviation One of [$COGNITION, $COORDINATION, $INTUITION, $REFLEXS, $SAVVY, $SOMATICS, $WILLPOWER]
+     * @param string   $description
+     * @param string[] $groups
+     */
+    function __construct(string $name, string $abbreviation, string $description = '', array $groups = array()) {
+        parent::__construct($name, $description);
         $this->abbreviation = $abbreviation;
-        $this->value = $baseValue;
+        $this->value            = config('epcc.AptitudesMinValue');
         $this->morphMod = 0;
         $this->traitMod = 0;             
         $this->backgroundMod = 0;
@@ -176,14 +184,14 @@ class EPAptitude extends EPAtom{
         $this->softgearMod = 0;
         $this->psyMod = 0;
         $this->groups = $groups;
-        $this->maxValue = $maxValue;
-        $this->minValue = $minValue;
-        $this->minEgoValue = $minValue;
-        $this->maxEgoValue = $maxValue;
-        $this->minMorphValue = $minValue;
-        $this->maxMorphValue = $maxValue;
+        $this->maxValue         = config('epcc.AptitudesMaxValue');
+        $this->minValue         = config('epcc.AptitudesMinValue');
+        $this->minEgoValue      = config('epcc.AptitudesMinValue');
+        $this->maxEgoValue      = config('epcc.AptitudesMaxValue');
+        $this->minMorphValue    = config('epcc.AptitudesMinValue');
+        $this->maxMorphValue    = config('epcc.AptitudesMaxValue');
         $this->activMorph = null;
         $this->feebleMax = false;
-        $this->absoluteMaxValue = $absoluteMaxValue;
+        $this->absoluteMaxValue = config('epcc.AbsoluteAptitudesMaxValue');
     }
 }

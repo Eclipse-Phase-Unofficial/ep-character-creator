@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace App\Creator\Objects;
 
 use App\Creator\Atoms\EPMorph;
+use App\Creator\Savable;
 
 /**
  * The character's general information.
  *
  * @author reinhardt
  */
-class EPCharacter implements \App\Creator\Savable
+class EPCharacter implements Savable
 {
     /**
      * @var EPEgo
@@ -60,7 +61,7 @@ class EPCharacter implements \App\Creator\Savable
         $morphSavePack = $savePack['morphSavePacks'];
         if(!empty($morphSavePack)){
                 foreach($morphSavePack as $m){
-                    $moph = new EPMorph('temp','','','','','',0);
+                    $moph = new EPMorph('temp','',0,0,0);
                     $moph->loadSavePack($m);
                     array_push($this->morphs, $moph);
                 }

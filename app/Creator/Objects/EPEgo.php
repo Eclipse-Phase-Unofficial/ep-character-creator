@@ -12,6 +12,7 @@ use App\Creator\Atoms\EPReputation;
 use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPStat;
 use App\Creator\Atoms\EPTrait;
+use App\Creator\Savable;
 
 /**
  * The Character's Ego.
@@ -21,7 +22,7 @@ use App\Creator\Atoms\EPTrait;
  *
  * @author reinhardt
  */
-class EPEgo implements \App\Creator\Savable
+class EPEgo implements Savable
 {
 
      //values
@@ -195,12 +196,12 @@ class EPEgo implements \App\Creator\Savable
 	    $this->creditPurchased = $savePack['creditPurchased'];
 
 	    if($savePack['factionSavePack'] != null){
-	    	$faction = new EPBackground('','','');
+	    	$faction = new EPBackground('temp','');
 	    	$faction->loadSavePack($savePack['factionSavePack']);
 	    	$this->faction = $faction;
 	    }
 	    if($savePack['backgroundSavePack'] != null){
-	    	$faction = new EPBackground('temp','','');
+	    	$faction = new EPBackground('temp','');
 	    	$faction->loadSavePack($savePack['backgroundSavePack']);
 	    	$this->background = $faction;
 	    }
@@ -219,7 +220,7 @@ class EPEgo implements \App\Creator\Savable
 
         $this->skills = array();
 	    foreach($savePack['skillsSavePacks'] as $m){
-	    	$savedSkill = new EPSkill('temp','','','','');
+	    	$savedSkill = new EPSkill('temp','','','');
 	    	$savedSkill->loadSavePack($m);
 	    	array_push($this->skills, $savedSkill);
 	    }
@@ -233,38 +234,38 @@ class EPEgo implements \App\Creator\Savable
 
         $this->stats = array();
 	    foreach($savePack['statsSavePacks'] as $m){
-	    	$savedStat = new EPStat('temp','','',0,$cc);
+	    	$savedStat = new EPStat('temp','','',$cc);
 	    	$savedStat->loadSavePack($m);
 	    	array_push($this->stats, $savedStat);
 	    }
 
 	    foreach($savePack['traitSavePacks'] as $m){
-	    	$savedTrait = new EPTrait('temp','','','',0);
+	    	$savedTrait = new EPTrait('temp','','',0);
 	    	$savedTrait->loadSavePack($m);
 	    	array_push($this->traits, $savedTrait);
 	    }
 
 	    foreach($savePack['additionaTraitsSavePacks'] as $m){
-	    	$savedAddTrait = new EPTrait('temp','','','',0);
+	    	$savedAddTrait = new EPTrait('temp','','',0);
 	    	$savedAddTrait->loadSavePack($m);
 	    	array_push($this->additionalTraits, $savedAddTrait);
 	    }
 
 	    foreach($savePack['softGearSavePacks'] as $m){
-	    	$savedSoftG = new EPGear('temp','','','');
+	    	$savedSoftG = new EPGear('temp','','',0);
 	    	$savedSoftG->loadSavePack($m);
 	    	array_push($this->softGears, $savedSoftG);
 	    }
 
 	    foreach($savePack['aiSavePacks'] as $m){
-	    	$savedAi = new EPAi('temp',array(),'');
+	    	$savedAi = new EPAi('temp',array(),0);
 	    	$savedAi->loadSavePack($m,$cc);
 	    	array_push($this->ais, $savedAi);
 	    }
 
         $this->defaultAis = array();
 	    foreach($savePack['defaultAisSavePacks'] as $m){
-	    	$defSavedAi = new EPAi('temp',array(),'');
+	    	$defSavedAi = new EPAi('temp',array(),0);
 	    	$defSavedAi->loadSavePack($m,$cc);
 	    	array_push($this->defaultAis, $defSavedAi);
 	    }

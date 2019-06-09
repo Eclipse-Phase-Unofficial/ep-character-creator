@@ -11,8 +11,10 @@ namespace App\Creator\Atoms;
  * @author reinhardt
  */
 class EPReputation extends EPAtom{
-    
-    
+
+    /**
+     * @var int
+     */
     public $value;
     
     public $morphMod;
@@ -21,7 +23,10 @@ class EPReputation extends EPAtom{
     public $factionMod;
     public $softgearMod;
     public $psyMod;
-    
+
+    /**
+     * @var int
+     */
     public $maxValue;
     public $maxValueMorphMod;
     public $maxValueTraitMod;
@@ -78,10 +83,17 @@ class EPReputation extends EPAtom{
         $this->psyMod = $savePack['psyMod'];
         $this->maxValue = $savePack['maxValue'];   
     }
-    
-    function __construct($atName, $atDesc, $groups = null, $value = 0, $maxVal = -1) {
-        parent::__construct($atName, $atDesc);
-        $this->value = $value;
+
+    /**
+     * EPReputation constructor.
+     * @param string   $name
+     * @param string   $description
+     * @param string[] $groups
+     */
+    function __construct(string $name, string $description, array $groups = array())
+    {
+        parent::__construct($name, $description);
+        $this->value = 0;
         $this->morphMod = 0;
         $this->traitMod = 0;             
         $this->backgroundMod = 0;
@@ -89,7 +101,7 @@ class EPReputation extends EPAtom{
         $this->softgearMod = 0;
         $this->psyMod = 0;
         $this->groups = $groups;
-        $this->maxValue = $maxVal;
+        $this->maxValue = config('epcc.RepMaxPoint');
     }
     function getValue(){
         return $this->value + $this->morphMod + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;

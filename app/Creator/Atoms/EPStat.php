@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use App\Creator\EPCharacterCreator;
+
 /**
  * Calculated Stats & Moxie.
  *
@@ -22,6 +24,9 @@ class EPStat extends EPAtom{
     static $DAMAGEBONUS = 'DB';
     
     public $abbreviation;
+    /**
+     * @var int
+     */
     public $value;
 
     /**
@@ -93,10 +98,25 @@ class EPStat extends EPAtom{
         $this->multiGearMod = $savePack['multiGearMod'];
         $this->multiPsyMod = $savePack['multiPsyMod']; 
     }
-    function __construct($atName, $atDesc, $abbreviation, $groups = array(),$value = 0, &$characterCreator = null) {
-        parent::__construct($atName, $atDesc);
+
+    /**
+     * EPStat constructor.
+     * @param string                  $name
+     * @param string                  $description
+     * @param string                  $abbreviation
+     * @param string[]                $groups
+     * @param EPCharacterCreator|null $characterCreator
+     */
+    function __construct(
+        string $name,
+        string $description,
+        string $abbreviation,
+        array $groups = array(),
+        ?EPCharacterCreator &$characterCreator = null
+    ) {
+        parent::__construct($name, $description);
         $this->abbreviation = $abbreviation;
-        $this->value = $value;
+        $this->value = 0;
         $this->groups = $groups;
         $this->cc = $characterCreator;
         $this->morphMod = 0;

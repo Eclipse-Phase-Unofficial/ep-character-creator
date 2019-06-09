@@ -8,6 +8,9 @@ namespace App\Creator\Atoms;
  *
  * This includes morph implants, soft-gear used by the ego, and any additional item on anything.
  *
+ * TODO: Subclass this to handle those cases separately.  Armor, weapons, misc physical goods, and soft gear are all extremely different things
+ * Note: Implants are often just regular gear, so probably worth converting to an 'isImplant' bool
+ *
  * @author reinhardt
  */
 class EPGear extends EPAtom{
@@ -45,11 +48,25 @@ class EPGear extends EPAtom{
     
     public $armorEnergy;
     public $armorKinetic;
-    
+
+    /**
+     * The amount of damage a weapon/ammo does
+     * TODO:  Rename this
+     * @var string
+     */
     public $degat;
     public $armorPenetration;
-    
+
+    /**
+     * An Enum of most static/const values, except the $CAN_USE ones
+     * @var string
+     */
     public $gearType;
+
+    /**
+     * An Enum of the $CAN_USE static/const values
+     * @var string
+     */
     public $gearRestriction;
         
     public $armorPenetrationMorphMod;
@@ -176,26 +193,49 @@ class EPGear extends EPAtom{
         //This is for backwards compatibility with older saves
         $this->occurrence = $savePack['occurrence'] ?? $savePack['occurence'] ?? 1;
         foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('','','');
+            $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }
     }
-    
-    
-    function __construct($atName, $atDesc,$gearType, $costType, $armorKinetic = 0,$armorEnergy = 0,$degat = 0,$armorPenetration = 0, $bonusmalus = array(),$gearRestriction='EVERY',
-        $unique = true
+
+    /**
+     * EPGear constructor.
+     * @param string         $name
+     * @param string         $description
+     * @param string         $gearType
+     * @param int            $cost
+     * @param int            $armorKinetic
+     * @param int            $armorEnergy
+     * @param string         $degat
+     * @param int            $armorPenetration
+     * @param EPBonusMalus[] $bonusmalus
+     * @param string         $gearRestriction
+     * @param bool           $isUnique
+     */
+    function __construct(
+        string $name,
+        string $description,
+        string $gearType,
+        int $cost,
+        int $armorKinetic = 0,
+        int $armorEnergy = 0,
+        string $degat = '0',
+        int $armorPenetration = 0,
+        array $bonusmalus = array(),
+        string $gearRestriction = 'EVERY',
+        bool $isUnique = true
     ) {
-        parent::__construct($atName, $atDesc);
+        parent::__construct($name, $description);
         $this->gearType = $gearType;
         $this->armorKinetic = $armorKinetic;
         $this->armorEnergy = $armorEnergy;
         $this->degat = $degat;
         $this->armorPenetration = $armorPenetration;
-        $this->cost = $costType;
+        $this->cost = $cost;
         $this->bonusMalus = $bonusmalus;
         $this->gearRestriction = $gearRestriction;
-        $this->unique = $unique;
+        $this->unique = $isUnique;
         $this->armorPenetrationMorphMod = 0;
         $this->degatMorphMod = 0;
         $this->armorEnergyMorphMod = 0;

@@ -29,15 +29,45 @@ class EPPsySleight extends EPAtom{
     static $ACTION_AUTOMATIC = 'automatic' ;
     static $ACTION_QUICK = 'quick' ;
     static $ACTION_TASK = 'task' ;
-    static $ACTION_COMPLEX = 'complex' ; 
-   
+    static $ACTION_COMPLEX = 'complex' ;
+
+    /**
+     * TODO:  Convert this to an 'isActiveType' bool
+     * An Enum value of [$ACTIVE_PSY, $PASSIVE_PSY]
+     * @var string
+     */
     public $psyType;
+    /**
+     * An Enum of the $RANGE_... static/const values
+     * @var string
+     */
     public $range;
+    /**
+     * An Enum of the $DURATION_... static/const values
+     * @var string
+     */
     public $duration;
+    /**
+     * An Enum of the $ACTION_... static/const values
+     * @var string
+     */
     public $action;
     public $strainMod;
+    /**
+     * TODO:  Rename this to 'isActive'
+     * @var bool
+     */
     public $isActif;
+    /**
+     * An Enum of [$LEVEL_CHI_PSY, $LEVEL_GAMMA_PSY]
+     * TODO:  Convert this to a bool of 'isPsyGamma'
+     * @var string
+     */
     public $psyLevel;
+    /**
+     * Never actually used for anything
+     * @var string
+     */
     public $skillNeeded;
     public $buyInCreationMode;
 
@@ -90,9 +120,33 @@ class EPPsySleight extends EPAtom{
             array_push($this->bonusMalus, $savedBm);
         }
     }
-    
-    function __construct($atName, $atDesc, $psyType, $range, $duration, $action, $strainMod,$psyLevel, $bonusMalusArray = array(), $skillNeeded="none") {
-        parent::__construct($atName, $atDesc);
+
+    /**
+     * EPPsySleight constructor.
+     * @param string         $name
+     * @param string         $description
+     * @param string         $psyType
+     * @param string         $range
+     * @param string         $duration
+     * @param string         $action
+     * @param string         $strainMod
+     * @param string         $psyLevel
+     * @param EPBonusMalus[] $bonusMalusArray
+     * @param string         $skillNeeded
+     */
+    function __construct(
+        string $name,
+        string $description,
+        string $psyType,
+        string $range,
+        string $duration,
+        string $action,
+        string $strainMod,
+        string $psyLevel,
+        array $bonusMalusArray = array(),
+        string $skillNeeded = "none"
+    ) {
+        parent::__construct($name, $description);
         $this->psyType = $psyType;
         $this->range = $range;
         $this->duration = $duration;

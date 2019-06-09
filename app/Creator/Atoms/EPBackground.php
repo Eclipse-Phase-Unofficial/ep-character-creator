@@ -62,7 +62,7 @@ class EPBackground extends EPAtom{
             array_push($this->bonusMalus, $savedBm);
         }
         foreach($savePack['traitSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','','',0);
+            $savedTrait = new EPTrait('temp','','',0);
             $savedTrait->loadSavePack($m);
             array_push($this->traits, $savedTrait);
         }
@@ -70,8 +70,25 @@ class EPBackground extends EPAtom{
             array_push($this->limitations, $m);
         }
     }
-    function __construct($atName,$atDesc,$backgroundType,$bonusMalus = array(),$traits = array(), $limitations = array()) {
-        parent::__construct($atName, $atDesc);
+
+    /**
+     * EPBackground constructor.
+     * @param string         $name
+     * @param string         $backgroundType Either of these two: [$ORIGIN, $FACTION]
+     * @param EPBonusMalus[] $bonusMalus
+     * @param EPTrait[]      $traits
+     * @param array          $limitations
+     * @param string         $description
+     */
+    function __construct(
+        string $name,
+        string $backgroundType,
+        array $bonusMalus = array(),
+        array $traits = array(),
+        array $limitations = array(),
+        string $description = ''
+    ) {
+        parent::__construct($name, $description);
         $this->backgroundType = $backgroundType;
         $this->bonusMalus = $bonusMalus;
         $this->traits = $traits;

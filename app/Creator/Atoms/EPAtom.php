@@ -33,6 +33,9 @@ class EPAtom implements Savable
      */
     private $description;
 
+    /**
+     * @var string[]
+     */
     public $groups;
 
     /**
@@ -65,15 +68,20 @@ class EPAtom implements Savable
     protected $ratioCostPsyMod;
 
 
-    function __construct(string $atName, string $atDesc) {
-        if(empty($atName))
+    /**
+     * EPAtom constructor.
+     * @param string $name        Commonly used as a DB selector and for things it really shouldn't be, so mandatory for now.
+     * @param string $description
+     */
+    function __construct(string $name, string $description = '') {
+        if(empty($name))
         {
             throw new \InvalidArgumentException("Name may never be empty");
         }
 
         $this->atomUid = uniqid();
-       $this->name = $atName;
-       $this->description = $atDesc;
+        $this->name        = $name;
+        $this->description = $description;
        $this->groups = array();
        $this->cost = 0;
        $this->ratioCostMorphMod = 1;
