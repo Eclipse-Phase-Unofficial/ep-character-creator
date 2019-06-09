@@ -2615,7 +2615,7 @@ CREATE TABLE IF NOT EXISTS "bonusMalus"
   desc text NOT NULL,
   type varchar(3) NOT NULL,
   target varchar(60) NOT NULL,
-  value float NOT NULL,
+  value integer NOT NULL,
   tragetForCh varchar(20) NOT NULL,
   typeTarget varchar(20) NOT NULL,
   onCost varchar(20) NOT NULL,

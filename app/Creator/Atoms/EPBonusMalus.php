@@ -70,8 +70,7 @@ class EPBonusMalus extends EPAtom{
     public $forTargetNamed;
     /**
      * Value of the bonus or malus
-     * TODO:  Consider converting this to an int (including in the database)
-     * @var float
+     * @var int
      */
     public $value;
 
@@ -150,7 +149,7 @@ class EPBonusMalus extends EPAtom{
      * EPBonusMalus constructor.
      * @param string         $name
      * @param string         $type
-     * @param float          $value
+     * @param int          $value
      * @param string         $targetName
      * @param string         $description
      * @param string[]       $groups
@@ -163,7 +162,7 @@ class EPBonusMalus extends EPAtom{
     function __construct(
         string $name,
         string $type,
-        float $value,
+        int $value,
         string $targetName = "",
         string $description = "",
         array $groups = array(),
