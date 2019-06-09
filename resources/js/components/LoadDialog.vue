@@ -2,7 +2,7 @@
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="popup_contents">
+            <div class="uk-text-center">
                 <h1><b><u>Load Character</u></b></h1>
                 Load a character you saved earlier to make changes, or to update it as you earn rez points.
                 <form class="uk-form-horizontal" style="display: inline-block" @submit.prevent="loadCharacter">

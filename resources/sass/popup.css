@@ -12,8 +12,6 @@
     padding: 10px 25px;
 /*  Make the button oval shaped */
     border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
     color: hsl(200,10%,40%);
     background-color: rgba(242, 242, 242, .8);
     border-top: 1px solid rgba(245, 245, 245, .8);
@@ -55,10 +53,6 @@
     transition: opacity .5s;
 }
 
-.popup_contents{
-    text-align:center;
-}
-
 /*Validation*/
 .valideIcone{
 	color: #48ffaa;
@@ -66,10 +60,4 @@
 
 .invalidIcone{
 	color: #f41010;
-}
-
-/*paypalButton*/
-#paypalButton{
-	width: auto !important;
-	height: auto !important;
 }

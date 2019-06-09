@@ -2,7 +2,7 @@
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="popup_contents">
+            <div class="uk-text-center">
                 <h1><b><u>Character Validation</u></b></h1>
                 <table align="center" style="text-align: left">
                     <tr v-for="validator in validators" v-bind:key="validator.name">

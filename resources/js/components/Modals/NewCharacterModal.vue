@@ -2,7 +2,7 @@
     <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
-            <div class="popup_contents">
+            <div class="uk-text-center">
                 <h1><b><u>New Character</u></b></h1>
                 <p>Create a character from scratch.</p>
                 <p>Please choose how many creation points (Min 700 CP) to create your character with.  1000 is the recommended "normal" amount.</p>
