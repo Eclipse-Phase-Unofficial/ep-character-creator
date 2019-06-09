@@ -17,7 +17,10 @@ class EPCharacter implements Savable
      * @var EPEgo
      */
     public $ego;
-    public $currentMorphUid;
+    /**
+     * @var EPMorph|null
+     */
+    public $currentMorph;
 
     /**
      * @var EPMorph[]
@@ -47,7 +50,7 @@ class EPCharacter implements Savable
         }
         $savePack['morphSavePacks'] =  $morphSavePack;
         $savePack['egoSavePack'] = $this->ego->getSavePack();
-        $savePack['currentMorphUid'] = $this->currentMorphUid;
+        $savePack['currentMorphUid'] = ''; //For backwards compatibility
 
         return $savePack;
     }
@@ -68,12 +71,11 @@ class EPCharacter implements Savable
                 }
         }
         $this->ego->loadSavePack($savePack['egoSavePack']);
-        $this->currentMorphUid = $savePack['currentMorphUid'];
     }
     function __construct() {
         $this->ego = new EPEgo();
         $this->morphs = array();
-        $this->currentMorphUid = '';
+        $this->currentMorph = null;
         $this->playerName = '';
         $this->charName = '';
         $this->realAge = '';

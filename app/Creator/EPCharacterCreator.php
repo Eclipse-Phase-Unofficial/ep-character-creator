@@ -312,7 +312,7 @@ class EPCharacterCreator implements Savable
     }
     function activateMorph(?EPMorph $morph = null){
         if (!isset($morph)){
-            $this->character->currentMorphUid = '';
+            $this->character->currentMorph = null;
             foreach ($this->getAptitudes() as $a){
                 $a->activMorph = null;
             }
@@ -322,7 +322,7 @@ class EPCharacterCreator implements Savable
         if (is_array($this->character->morphs)){
             foreach ($this->character->morphs as $m){
                 if (strcmp($m->getName(),$morph->getName()) == 0){
-                    $this->character->currentMorphUid = $m->getUid();
+                    $this->character->currentMorph = $m;
                     foreach ($this->getAptitudes() as $a){
                         $a->activMorph = $m;
                     }
@@ -1128,7 +1128,7 @@ class EPCharacterCreator implements Savable
 
     function getCurrentMorph(): ?EPMorph
     {
-        return EPAtom::getAtomByUid($this->character->morphs, $this->character->currentMorphUid);
+        return $this->character->currentMorph;
     }
     function getCredit(){
         if ($this->creationMode){

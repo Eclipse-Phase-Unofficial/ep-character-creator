@@ -29,7 +29,7 @@ class CharacterController extends Controller
         $return['realAge'] = $character->realAge;
         $return['birthGender'] = $character->birthGender;
         $return['note'] = $character->note;
-        $return['currentMorphUid'] = $character->currentMorphUid;
+        $return['currentMorphUid'] = $character->currentMorph? $character->currentMorph->getUid(): null;
         return response($return);
     }
 
