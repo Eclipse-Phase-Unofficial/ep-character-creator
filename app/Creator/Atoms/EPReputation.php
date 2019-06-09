@@ -71,7 +71,7 @@ class EPReputation extends EPAtom{
         
         return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
+    function loadSavePack($savePack){
 	parent::loadSavePack($savePack);    
 	    
         $this->value = $savePack['value'];

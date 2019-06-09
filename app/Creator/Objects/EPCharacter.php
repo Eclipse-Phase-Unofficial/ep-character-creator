@@ -51,8 +51,9 @@ class EPCharacter implements Savable
 
         return $savePack;
     }
-    
-    function loadSavePack($savePack,$cc = null){
+
+    function loadSavePack($savePack)
+    {
         $this->playerName = $savePack['playerName'];
         $this->charName = $savePack['charName'];
         $this->realAge = $savePack['realAge'];
@@ -66,7 +67,7 @@ class EPCharacter implements Savable
                     array_push($this->morphs, $moph);
                 }
         }
-        $this->ego->loadSavePack($savePack['egoSavePack'],$cc); 
+        $this->ego->loadSavePack($savePack['egoSavePack']);
         $this->currentMorphUid = $savePack['currentMorphUid'];
     }
     function __construct() {

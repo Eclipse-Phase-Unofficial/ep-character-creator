@@ -148,8 +148,10 @@ class EPAptitude extends EPAtom{
         $savePack['absoluteMaxValue'] =  $this->absoluteMaxValue;
 
         return $savePack;
-    }	
-    function loadSavePack($savePack,$cc = null){
+    }
+
+    function loadSavePack($savePack)
+    {
         parent::loadSavePack($savePack);
 	    
         $this->abbreviation = $savePack['abbreviation'];

@@ -126,8 +126,10 @@ class EPBonusMalus extends EPAtom{
 	    
 	return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
-	parent::loadSavePack($savePack);
+
+    function loadSavePack($savePack)
+    {
+	    parent::loadSavePack($savePack);
 	    
         $this->bonusMalusType = $savePack['bonusMalusType'];
         $this->forTargetNamed = $savePack['forTargetNamed'];

@@ -156,8 +156,10 @@ class EPGear extends EPAtom{
 
         return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
-	parent::loadSavePack($savePack);    
+
+    function loadSavePack($savePack)
+    {
+	    parent::loadSavePack($savePack);
 	    
         $this->armorEnergy = $savePack['armorEnergy'];
         $this->armorKinetic = $savePack['armorKinetic'];

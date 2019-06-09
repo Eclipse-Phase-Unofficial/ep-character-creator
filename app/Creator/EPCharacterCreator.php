@@ -215,7 +215,8 @@ class EPCharacterCreator implements Savable
 		
     }
 
-    function loadSavePack($savePack,$cc = null){
+    function loadSavePack($savePack)
+    {
         $this->initialCreationPoints = $savePack['initialCreationPoints'];
 		$this->aptitudePoints = $savePack['aptitudePoints'];
 		$this->reputationPoints = $savePack['reputationPoints'];
@@ -235,7 +236,7 @@ class EPCharacterCreator implements Savable
         $this->evoCrePoint = $savePack['evoCrePoint'];
         $this->evoCrePointPurchased = $savePack['evoCrePointPurchased'];
 		
-		$this->character->loadSavePack($savePack['charSavePack'],$this);
+		$this->character->loadSavePack($savePack['charSavePack']);
 		
 		//last details after the load save pack 
 		//set cc on stats

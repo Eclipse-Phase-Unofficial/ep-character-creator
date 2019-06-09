@@ -182,7 +182,8 @@ class EPEgo implements Savable
 	    return $savePack;
     }
 
-    function loadSavePack($savePack,$cc = null){
+    function loadSavePack($savePack)
+    {
 	    $this->name = $savePack['name'];
 	    $this->creditInstant = $savePack['creditInstant'];
 	    $this->credit = $savePack['credit'];
@@ -234,7 +235,7 @@ class EPEgo implements Savable
 
         $this->stats = array();
 	    foreach($savePack['statsSavePacks'] as $m){
-	    	$savedStat = new EPStat('temp','','',$cc);
+	    	$savedStat = new EPStat('temp','','');
 	    	$savedStat->loadSavePack($m);
 	    	array_push($this->stats, $savedStat);
 	    }
@@ -259,14 +260,14 @@ class EPEgo implements Savable
 
 	    foreach($savePack['aiSavePacks'] as $m){
 	    	$savedAi = new EPAi('temp',array(),0);
-	    	$savedAi->loadSavePack($m,$cc);
+	    	$savedAi->loadSavePack($m);
 	    	array_push($this->ais, $savedAi);
 	    }
 
         $this->defaultAis = array();
 	    foreach($savePack['defaultAisSavePacks'] as $m){
 	    	$defSavedAi = new EPAi('temp',array(),0);
-	    	$defSavedAi->loadSavePack($m,$cc);
+	    	$defSavedAi->loadSavePack($m);
 	    	array_push($this->defaultAis, $defSavedAi);
 	    }
 

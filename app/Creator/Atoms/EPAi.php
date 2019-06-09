@@ -46,7 +46,9 @@ class EPAi extends EPAtom{
 
         return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
+
+    function loadSavePack($savePack)
+    {
         parent::loadSavePack($savePack);
 
         foreach($savePack['aptitudesSavePacks'] as $m){

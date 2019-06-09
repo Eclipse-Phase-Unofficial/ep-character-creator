@@ -128,7 +128,9 @@ class EPMorph extends EPAtom {
         $savePack['bmSavePacks'] = $bmSavePacks;
         return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
+
+    function loadSavePack($savePack)
+    {
         parent::loadSavePack($savePack);
 
         $this->morphType = $savePack['morphType'];

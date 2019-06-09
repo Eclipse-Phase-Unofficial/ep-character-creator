@@ -52,7 +52,9 @@ class EPBackground extends EPAtom{
 	    
 	return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
+
+    function loadSavePack($savePack)
+    {
         parent::loadSavePack($savePack);
 	    	    
         $this->backgroundType = $savePack['backgroundType'];

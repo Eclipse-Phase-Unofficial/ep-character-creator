@@ -18,5 +18,5 @@ namespace App\Creator;
 interface Savable
 {
     function getSavePack(): array;
-    function loadSavePack($savePack,$cc = null);
+    function loadSavePack($savePack);
 }

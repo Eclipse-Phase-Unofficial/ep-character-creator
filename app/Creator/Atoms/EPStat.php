@@ -76,8 +76,10 @@ class EPStat extends EPAtom{
         
         return $savePack;
     }
-    function loadSavePack($savePack,$cc = null){
-	parent::loadSavePack($savePack);    
+
+    function loadSavePack($savePack)
+    {
+	    parent::loadSavePack($savePack);
 	    	    
         $this->abbreviation = $savePack['abbreviation'];
         $this->value = $savePack['value'];
