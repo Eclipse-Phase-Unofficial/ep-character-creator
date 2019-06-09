@@ -16,6 +16,20 @@ class HighLevelCreatorControllerTest extends TestCase
         session()->put('cc', new EPCharacterCreator(1000));
     }
 
+    public function saveProvider()
+    {
+        $dir   = __DIR__ . '/HighLevelCreatorController/saves/';
+        $saves = [];
+        $saves['save.json'] = [json_decode(file_get_contents(__DIR__ . '/HighLevelCreatorController/save.json'), true)];
+        foreach (scandir($dir) as $fileName) {
+            $fullName = $dir . $fileName;
+            if (is_file($fullName)) {
+                $saves[$fileName] = [json_decode(file_get_contents($fullName), true)];
+            }
+        }
+        return $saves;
+    }
+
     public function testSave()
     {
         $this->validateJson('/api/creator/save', __DIR__ . '/HighLevelCreatorController/save.json');
@@ -28,12 +42,12 @@ class HighLevelCreatorControllerTest extends TestCase
 
     /**
      * Test loading a character from a save file
-     * TODO:  Maybe more tests to make sure it succeeded (Perhaps a custom save file, and check the values)
+     * TODO:  Maybe more tests to make sure it succeeded (Perhaps check the values)
+     * @dataProvider saveProvider
      */
-    public function testUpdate()
+    public function testUpdate(array $saveJson)
     {
-        $savePack = json_decode(file_get_contents(__DIR__ . '/HighLevelCreatorController/save.json'), true);
-        $response = $this->postJson('/api/creator/load', ['file' => $savePack, 'creationMode' => true]);
+        $response = $this->postJson('/api/creator/load', ['file' => $saveJson, 'creationMode' => true]);
         $response->assertStatus(200);
     }
 
