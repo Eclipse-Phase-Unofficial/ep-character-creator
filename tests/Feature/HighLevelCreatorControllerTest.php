@@ -26,9 +26,15 @@ class HighLevelCreatorControllerTest extends TestCase
         $this->validateJson('/api/creator/', __DIR__ . '/HighLevelCreatorController/get.json');
     }
 
+    /**
+     * Test loading a character from a save file
+     * TODO:  Maybe more tests to make sure it succeeded (Perhaps a custom save file, and check the values)
+     */
     public function testUpdate()
     {
-        $this->markTestSkipped('TODO:  Implement Test Loading a character');
+        $savePack = json_decode(file_get_contents(__DIR__ . '/HighLevelCreatorController/save.json'), true);
+        $response = $this->postJson('/api/creator/load', ['file' => $savePack, 'creationMode' => true]);
+        $response->assertStatus(200);
     }
 
     public function testValidateCharacter()
@@ -36,8 +42,16 @@ class HighLevelCreatorControllerTest extends TestCase
         $this->validateJson('/api/creator/validate', __DIR__ . '/HighLevelCreatorController/validate.json');
     }
 
+    /**
+     * Test creating a new Character via the API
+     * TODO:  Maybe more tests to make sure it succeeded
+     * @throws \Exception
+     */
     public function testStore()
     {
-        $this->markTestSkipped('TODO:  Implement the function');
+        $cp = random_int(700, 1500);
+        $response = $this->postJson('/api/creator/', ['creationPoints' => $cp]);
+        $response->assertStatus(200);
+        $this->assertEquals(session()->get('cc')->initialCreationPoints, $cp);
     }
 }
