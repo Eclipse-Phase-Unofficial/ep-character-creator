@@ -123,9 +123,6 @@ class EPSkill extends EPAtom{
         return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod + 
                 $this->maxValueBackgroundMod + $this->maxValueFactionMod +
                 $this->maxValueSoftgearMod + $this->maxValuePsyMod;
-     }    
-     function getRatioCost(){
-         return $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostFactionMod * $this->ratioCostBackgroundMod * $this->ratioCostPsyMod * $this->ratioCostSoftgearMod;
      }
 
     /**
