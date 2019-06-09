@@ -28,6 +28,8 @@ if (isMobile) {
     backgroundSlides = [{}]
 }
 
+import overlay from 'vegas/src/overlays/08.png';
+
 export const init = () => {
     window.jQuery('body').vegas({
         timer: false,
@@ -35,7 +37,7 @@ export const init = () => {
         delay: 60000,
         // overlay: require('url-loader?emitFile=false!../../../../public/images/vendor/vegas/src/overlays/08.png'),
         // overlay: '<?php //echo createDataURI(public_path("images/vendor/vegas/src/overlays/08.png"),"png"); ?>',
-        overlay: 'images/vendor/vegas/src/overlays/08.png',
+        overlay: overlay,
         slides: backgroundSlides
     });
-}
+};

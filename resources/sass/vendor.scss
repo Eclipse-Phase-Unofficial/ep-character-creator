@@ -9,11 +9,6 @@
 
 //Vegas (Background slideshow)
 @import '~vegas/src/sass/vegas';
-//Override the default image so we only include the one used by the site
-.vegas-overlay {
-  opacity: .5;
-  background: transparent url('~vegas/src/overlays/08.png') center center repeat
-}
 
 //UiKit
 /////////////////////////////////////
