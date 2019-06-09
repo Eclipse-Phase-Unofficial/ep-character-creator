@@ -80,20 +80,25 @@ class EPTrait extends EPAtom
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPTrait
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', '', 0);
+        parent::set_state_helper($object, $an_array);
 
-        $this->canUse        = (string)$savePack['canUse'];
-        $this->traitPosNeg   = (string)$savePack['traitPosNeg'];
-        $this->traitEgoMorph = (string)$savePack['traitEgoMorph'];
-        $this->cpCost        = (int)$savePack['cpCost'];
-        $this->level         = (int)$savePack['level'];
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
-        }	    
+        $object->canUse        = (string)$an_array['canUse'];
+        $object->traitPosNeg   = (string)$an_array['traitPosNeg'];
+        $object->traitEgoMorph = (string)$an_array['traitEgoMorph'];
+        $object->cpCost        = (int)$an_array['cpCost'];
+        $object->level         = (int)$an_array['level'];
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
+        }
+
+        return $object;
     }
 
     /**

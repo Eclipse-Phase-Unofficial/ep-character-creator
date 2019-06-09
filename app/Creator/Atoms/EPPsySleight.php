@@ -104,24 +104,29 @@ class EPPsySleight extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPPsySleight
+     */
+    public static function __set_state(array $an_array)
     {
-	parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', '', '', '', '', '', '');
+        parent::set_state_helper($object, $an_array);
 
-        $this->psyType           = (string)$savePack['psyType'];
-        $this->range             = (string)$savePack['range'];
-        $this->duration          = (string)$savePack['duration'];
-        $this->action            = (string)$savePack['action'];
-        $this->strainMod         = (string)$savePack['strainMod'];
-        $this->isActif           = (bool)$savePack['isActif'];
-        $this->psyLevel          = (string)$savePack['psyLevel'];
-        $this->skillNeeded       = (string)$savePack['skillNeeded'];
-        $this->buyInCreationMode = (string)$savePack['buyInCreationMode'];
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
+        $object->psyType           = (string)$an_array['psyType'];
+        $object->range             = (string)$an_array['range'];
+        $object->duration          = (string)$an_array['duration'];
+        $object->action            = (string)$an_array['action'];
+        $object->strainMod         = (string)$an_array['strainMod'];
+        $object->isActif           = (bool)$an_array['isActif'];
+        $object->psyLevel          = (string)$an_array['psyLevel'];
+        $object->skillNeeded       = (string)$an_array['skillNeeded'];
+        $object->buyInCreationMode = (string)$an_array['buyInCreationMode'];
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
+
+        return $object;
     }
 
     /**

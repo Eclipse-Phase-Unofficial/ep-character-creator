@@ -157,49 +157,54 @@ class EPGear extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPGear
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', '', 0);
+        parent::set_state_helper($object, $an_array);
 
-        $this->armorEnergy                   = (int)$savePack['armorEnergy'];
-        $this->armorKinetic                  = (int)$savePack['armorKinetic'];
-        $this->degat                         = (string)$savePack['degat'];
-        $this->armorPenetration              = (int)$savePack['armorPenetration'];
-        $this->gearType                      = (string)$savePack['gearType'];
-        $this->gearRestriction               = (string)$savePack['gearRestriction'];
-        $this->armorPenetrationMorphMod      = $savePack['armorPenetrationMorphMod'];
-        $this->degatMorphMod                 = $savePack['degatMorphMod'];
-        $this->armorEnergyMorphMod           = $savePack['armorEnergyMorphMod'];
-        $this->armorKineticMorphMod          = $savePack['armorKineticMorphMod'];
-        $this->armorPenetrationTraitMod      = $savePack['armorPenetrationTraitMod'];
-        $this->degatTraitMod                 = $savePack['degatTraitMod'];
-        $this->armorEnergyTraitMod           = $savePack['armorEnergyTraitMod'];
-        $this->armorKineticTraitMod          = $savePack['armorKineticTraitMod'];
-        $this->armorPenetrationBackgroundMod = $savePack['armorPenetrationBackgroundMod'];
-        $this->degatBackgroundMod            = $savePack['degatBackgroundMod'];
-        $this->armorEnergyBackgroundMod      = $savePack['armorEnergyBackgroundMod'];
-        $this->armorKineticBackgroundMod     = $savePack['armorKineticBackgroundMod'];
-        $this->armorPenetrationFactionMod    = $savePack['armorPenetrationFactionMod'];
-        $this->degatFactionMod               = $savePack['degatFactionMod'];
-        $this->armorEnergyFactionMod         = $savePack['armorEnergyFactionMod'];
-        $this->armorKineticFactionMod        = $savePack['armorKineticFactionMod'];
-        $this->armorPenetrationSoftgearMod   = $savePack['armorPenetrationSoftgearMod'];
-        $this->degatSoftgearMod              = $savePack['degatSoftgearMod'];
-        $this->armorEnergySoftgearMod        = $savePack['armorEnergySoftgearMod'];
-        $this->armorKineticSoftgearMod       = $savePack['armorKineticSoftgearMod'];
-        $this->armorPenetrationPsyMod        = $savePack['armorPenetrationPsyMod'];
-        $this->degatPsyMod                   = $savePack['degatPsyMod'];
-        $this->armorEnergyPsyMod             = $savePack['armorEnergyPsyMod'];
-        $this->armorKineticPsyMod            = $savePack['armorKineticPsyMod'];
-        $this->unique                        = (bool)$savePack['unique'];
-        foreach ($savePack['bmSavePacks'] as $m) {
-            $savedBm = new EPBonusMalus('temp', '', 0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
+        $object->armorEnergy                   = (int)$an_array['armorEnergy'];
+        $object->armorKinetic                  = (int)$an_array['armorKinetic'];
+        $object->degat                         = (string)$an_array['degat'];
+        $object->armorPenetration              = (int)$an_array['armorPenetration'];
+        $object->gearType                      = (string)$an_array['gearType'];
+        $object->gearRestriction               = (string)$an_array['gearRestriction'];
+        $object->armorPenetrationMorphMod      = $an_array['armorPenetrationMorphMod'];
+        $object->degatMorphMod                 = $an_array['degatMorphMod'];
+        $object->armorEnergyMorphMod           = $an_array['armorEnergyMorphMod'];
+        $object->armorKineticMorphMod          = $an_array['armorKineticMorphMod'];
+        $object->armorPenetrationTraitMod      = $an_array['armorPenetrationTraitMod'];
+        $object->degatTraitMod                 = $an_array['degatTraitMod'];
+        $object->armorEnergyTraitMod           = $an_array['armorEnergyTraitMod'];
+        $object->armorKineticTraitMod          = $an_array['armorKineticTraitMod'];
+        $object->armorPenetrationBackgroundMod = $an_array['armorPenetrationBackgroundMod'];
+        $object->degatBackgroundMod            = $an_array['degatBackgroundMod'];
+        $object->armorEnergyBackgroundMod      = $an_array['armorEnergyBackgroundMod'];
+        $object->armorKineticBackgroundMod     = $an_array['armorKineticBackgroundMod'];
+        $object->armorPenetrationFactionMod    = $an_array['armorPenetrationFactionMod'];
+        $object->degatFactionMod               = $an_array['degatFactionMod'];
+        $object->armorEnergyFactionMod         = $an_array['armorEnergyFactionMod'];
+        $object->armorKineticFactionMod        = $an_array['armorKineticFactionMod'];
+        $object->armorPenetrationSoftgearMod   = $an_array['armorPenetrationSoftgearMod'];
+        $object->degatSoftgearMod              = $an_array['degatSoftgearMod'];
+        $object->armorEnergySoftgearMod        = $an_array['armorEnergySoftgearMod'];
+        $object->armorKineticSoftgearMod       = $an_array['armorKineticSoftgearMod'];
+        $object->armorPenetrationPsyMod        = $an_array['armorPenetrationPsyMod'];
+        $object->degatPsyMod                   = $an_array['degatPsyMod'];
+        $object->armorEnergyPsyMod             = $an_array['armorEnergyPsyMod'];
+        $object->armorKineticPsyMod            = $an_array['armorKineticPsyMod'];
+        $object->unique                        = (bool)$an_array['unique'];
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
 
         //This is for backwards compatibility with older saves that may not have all the data
-        $this->occurrence = $savePack['occurrence'] ?? $savePack['occurence'] ?? 1;
+        $object->occurrence = $an_array['occurrence'] ?? $an_array['occurence'] ?? 1;
+
+        return $object;
     }
 
     /**

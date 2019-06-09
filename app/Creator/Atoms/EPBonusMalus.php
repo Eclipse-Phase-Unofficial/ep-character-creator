@@ -131,23 +131,28 @@ class EPBonusMalus extends EPAtom{
 	return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPBonusMalus
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', 0);
+        parent::set_state_helper($object, $an_array);
 
-        $this->bonusMalusType  = (string)$savePack['bonusMalusType'];
-        $this->forTargetNamed  = (string)$savePack['forTargetNamed'];
-        $this->value           = (float)$savePack['value'];
-        $this->targetForChoice = (string)$savePack['targetForChoice'];
-        $this->typeTarget      = (string)$savePack['typeTarget'];
-        $this->onCost          = (string)$savePack['onCost'];
-        $this->multi_occurence = (int)$savePack['multi_occurence'];
-        $this->selected        = (bool)$savePack['selected'];
-        foreach ($savePack['bonusMalusTypes'] as $m) {
-            $savedBm = new EPBonusMalus('temp', '', 0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalusTypes, $savedBm);
+        $object->bonusMalusType  = (string)$an_array['bonusMalusType'];
+        $object->forTargetNamed  = (string)$an_array['forTargetNamed'];
+        $object->value           = (float)$an_array['value'];
+        $object->targetForChoice = (string)$an_array['targetForChoice'];
+        $object->typeTarget      = (string)$an_array['typeTarget'];
+        $object->onCost          = (string)$an_array['onCost'];
+        $object->multi_occurence = (int)$an_array['multi_occurence'];
+        $object->selected        = (bool)$an_array['selected'];
+        foreach ($an_array['bonusMalusTypes'] as $m) {
+            array_push($object->bonusMalusTypes, EPBonusMalus::__set_state($m));
         }
+
+        return $object;
     }
 
     /**

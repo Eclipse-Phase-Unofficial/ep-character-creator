@@ -103,11 +103,8 @@ class HighLevelCreatorController extends Controller
         if (empty($saveFile['versionNumber']) || floatval($saveFile['versionNumber']) < config('epcc.versionNumberMin')){
             return response(['Errors' => ["Incompatible file version!"]]);
         }
-        session()->put('cc', new EPCharacterCreator());
-        creator()->back = new EPCharacterCreator();
-
-        creator()->loadSavePack($saveFile);
-        creator()->back->loadSavePack($saveFile);
+        session()->put('cc', EPCharacterCreator::__set_state($saveFile));
+        creator()->back = EPCharacterCreator::__set_state($saveFile);
         //TODO:  These should be set in the creator itself
         creator()->back->setMaxRepValue(config('epcc.EvoMaxRepValue'));
         creator()->setMaxRepValue(config('epcc.EvoMaxRepValue'));

@@ -55,23 +55,30 @@ class EPCharacter implements Savable
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPCharacter
+     */
+    public static function __set_state(array $an_array)
     {
-        $this->playerName = $savePack['playerName'];
-        $this->charName = $savePack['charName'];
-        $this->realAge = $savePack['realAge'];
-        $this->birthGender = $savePack['birthGender'];
-        $this->note = $savePack['note'];
-        $morphSavePack = $savePack['morphSavePacks'];
-        if(!empty($morphSavePack)){
-                foreach($morphSavePack as $m){
-                    $moph = new EPMorph('temp','',0,0,0);
-                    $moph->loadSavePack($m);
-                    array_push($this->morphs, $moph);
-                }
+        $object = new self();
+
+        $object->playerName  = $an_array['playerName'];
+        $object->charName    = $an_array['charName'];
+        $object->realAge     = $an_array['realAge'];
+        $object->birthGender = $an_array['birthGender'];
+        $object->note        = $an_array['note'];
+        $morphSavePack       = $an_array['morphSavePacks'];
+        if (!empty($morphSavePack)) {
+            foreach ($morphSavePack as $m) {
+                array_push($object->morphs, EPMorph::__set_state($m));
+            }
         }
-        $this->ego->loadSavePack($savePack['egoSavePack']);
+        $object->ego = EPEgo::__set_state($an_array['egoSavePack']);
+
+        return $object;
     }
+
     function __construct() {
         $this->ego = new EPEgo();
         $this->morphs = array();

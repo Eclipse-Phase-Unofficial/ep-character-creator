@@ -89,17 +89,26 @@ class EPReputation extends EPAtom{
         
         return $savePack;
     }
-    function loadSavePack($savePack){
-        parent::loadSavePack($savePack);
 
-        $this->value         = (int)$savePack['value'];
-        $this->morphMod      = (int)$savePack['morphMod'];
-        $this->traitMod      = (int)$savePack['traitMod'];
-        $this->backgroundMod = (int)$savePack['backgroundMod'];
-        $this->factionMod    = (int)$savePack['factionMod'];
-        $this->softgearMod   = (int)$savePack['softgearMod'];
-        $this->psyMod        = (int)$savePack['psyMod'];
-        $this->maxValue      = (int)$savePack['maxValue'];
+    /**
+     * @param array $an_array
+     * @return EPReputation
+     */
+    public static function __set_state(array $an_array)
+    {
+        $object = new self((string)$an_array['name'], '');
+        parent::set_state_helper($object, $an_array);
+
+        $object->value         = (int)$an_array['value'];
+        $object->morphMod      = (int)$an_array['morphMod'];
+        $object->traitMod      = (int)$an_array['traitMod'];
+        $object->backgroundMod = (int)$an_array['backgroundMod'];
+        $object->factionMod    = (int)$an_array['factionMod'];
+        $object->softgearMod   = (int)$an_array['softgearMod'];
+        $object->psyMod        = (int)$an_array['psyMod'];
+        $object->maxValue      = (int)$an_array['maxValue'];
+
+        return $object;
     }
 
     /**

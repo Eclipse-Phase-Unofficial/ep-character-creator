@@ -5,6 +5,7 @@ namespace App\Creator\Objects;
 
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPAptitude;
+use App\Creator\Atoms\EPAtom;
 use App\Creator\Atoms\EPBackground;
 use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPPsySleight;
@@ -182,101 +183,68 @@ class EPEgo implements Savable
 	    return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPEgo
+     */
+    public static function __set_state(array $an_array)
     {
-	    $this->name = $savePack['name'];
-	    $this->creditInstant = $savePack['creditInstant'];
-	    $this->credit = $savePack['credit'];
-	    $this->creditMorphMod = $savePack['creditMorphMod'];
-	    $this->creditTraitMod = $savePack['creditTraitMod'];
-	    $this->creditFactionMod = $savePack['creditFactionMod'];
-	    $this->creditBackgroundMod = $savePack['creditBackgroundMod'];
-	    $this->creditSoftGearMod = $savePack['creditSoftGearMod'];
-	    $this->creditPsyMod = $savePack['creditPsyMod'];
+        $object = new self();
 
-	    $this->creditPurchased = $savePack['creditPurchased'];
+        $object->name                = $an_array['name'];
+        $object->creditInstant       = $an_array['creditInstant'];
+        $object->credit              = $an_array['credit'];
+        $object->creditMorphMod      = $an_array['creditMorphMod'];
+        $object->creditTraitMod      = $an_array['creditTraitMod'];
+        $object->creditFactionMod    = $an_array['creditFactionMod'];
+        $object->creditBackgroundMod = $an_array['creditBackgroundMod'];
+        $object->creditSoftGearMod   = $an_array['creditSoftGearMod'];
+        $object->creditPsyMod        = $an_array['creditPsyMod'];
+        $object->creditPurchased     = $an_array['creditPurchased'];
 
-	    if($savePack['factionSavePack'] != null){
-	    	$faction = new EPBackground('temp','');
-	    	$faction->loadSavePack($savePack['factionSavePack']);
-	    	$this->faction = $faction;
-	    }
-	    if($savePack['backgroundSavePack'] != null){
-	    	$faction = new EPBackground('temp','');
-	    	$faction->loadSavePack($savePack['backgroundSavePack']);
-	    	$this->background = $faction;
-	    }
+        if ($an_array['factionSavePack'] != null) {
+            $object->faction = EPBackground::__set_state($an_array['factionSavePack']);
+        }
+        if ($an_array['backgroundSavePack'] != null) {
+            $object->background = EPBackground::__set_state($an_array['backgroundSavePack']);
+        }
+        foreach ($an_array['motivationArray'] as $m) {
+            array_push($object->motivations, $m);
+        }
+        foreach ($an_array['aptitudesSavePacks'] as $m) {
+            array_push($object->aptitudes, EPAptitude::__set_state($m));
+        }
+        foreach ($an_array['skillsSavePacks'] as $m) {
+            array_push($object->skills, EPSkill::__set_state($m));
+        }
+        foreach ($an_array['reputationSavePack'] as $m) {
+            array_push($object->reputations, EPReputation::__set_state($m));
+        }
+        foreach ($an_array['statsSavePacks'] as $m) {
+            array_push($object->stats, EPStat::__set_state($m));
+        }
+        foreach ($an_array['traitSavePacks'] as $m) {
+            array_push($object->traits, EPTrait::__set_state($m));
+        }
+        foreach ($an_array['additionaTraitsSavePacks'] as $m) {
+            array_push($object->additionalTraits, EPTrait::__set_state($m));
+        }
+        foreach ($an_array['softGearSavePacks'] as $m) {
+            array_push($object->softGears, EPGear::__set_state($m));
+        }
+        foreach ($an_array['aiSavePacks'] as $m) {
+            array_push($object->ais, EPAi::__set_state($m));
+        }
+        foreach ($an_array['defaultAisSavePacks'] as $m) {
+            array_push($object->defaultAis, EPAi::__set_state($m));
+        }
+        foreach ($an_array['psySleightSavePacks'] as $m) {
+            array_push($object->psySleights, EPPsySleight::__set_state($m));
+        }
 
-	    foreach($savePack['motivationArray'] as $m){
-	    	array_push($this->motivations, $m);
-	    }
-
-	    //must be done before skills !
-	    $this->aptitudes = array();
-	    foreach($savePack['aptitudesSavePacks'] as $m){
-	    	$savedAptitude = new EPAptitude('temp','');
-	    	$savedAptitude->loadSavePack($m);
-	    	array_push($this->aptitudes, $savedAptitude);
-	    }
-
-        $this->skills = array();
-	    foreach($savePack['skillsSavePacks'] as $m){
-	    	$savedSkill = new EPSkill('temp','','','');
-	    	$savedSkill->loadSavePack($m);
-	    	array_push($this->skills, $savedSkill);
-	    }
-
-	    $this->reputations = array();
-	    foreach($savePack['reputationSavePack'] as $m){
-	    	$savedRep = new EPReputation('temp','');
-	    	$savedRep->loadSavePack($m);
-	    	array_push($this->reputations, $savedRep);
-	    }
-
-        $this->stats = array();
-	    foreach($savePack['statsSavePacks'] as $m){
-	    	$savedStat = new EPStat('temp','','');
-	    	$savedStat->loadSavePack($m);
-	    	array_push($this->stats, $savedStat);
-	    }
-
-	    foreach($savePack['traitSavePacks'] as $m){
-	    	$savedTrait = new EPTrait('temp','','',0);
-	    	$savedTrait->loadSavePack($m);
-	    	array_push($this->traits, $savedTrait);
-	    }
-
-	    foreach($savePack['additionaTraitsSavePacks'] as $m){
-	    	$savedAddTrait = new EPTrait('temp','','',0);
-	    	$savedAddTrait->loadSavePack($m);
-	    	array_push($this->additionalTraits, $savedAddTrait);
-	    }
-
-	    foreach($savePack['softGearSavePacks'] as $m){
-	    	$savedSoftG = new EPGear('temp','','',0);
-	    	$savedSoftG->loadSavePack($m);
-	    	array_push($this->softGears, $savedSoftG);
-	    }
-
-	    foreach($savePack['aiSavePacks'] as $m){
-	    	$savedAi = new EPAi('temp',array(),0);
-	    	$savedAi->loadSavePack($m);
-	    	array_push($this->ais, $savedAi);
-	    }
-
-        $this->defaultAis = array();
-	    foreach($savePack['defaultAisSavePacks'] as $m){
-	    	$defSavedAi = new EPAi('temp',array(),0);
-	    	$defSavedAi->loadSavePack($m);
-	    	array_push($this->defaultAis, $defSavedAi);
-	    }
-
-		foreach($savePack['psySleightSavePacks'] as $m){
-	    	$savedPsyS = new EPPsySleight('temp','','','','','','','');
-	    	$savedPsyS->loadSavePack($m);
-	    	array_push($this->psySleights, $savedPsyS);
-	    }
+        return $object;
     }
+
     function __construct() {
         $this->aptitudes = array();
         $this->skills = array();

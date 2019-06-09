@@ -110,22 +110,37 @@ class EPAtom implements Savable
 	    return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPAtom
+     */
+    public static function __set_state(array $an_array)
     {
-        $this->name                   = (string)$savePack['name'];
-        $this->description            = (string)$savePack['description'];
-        $this->groups                 = (array)$savePack['groups'];
-        $this->cost                   = (int)$savePack['cost'];
-        $this->ratioCostMorphMod      = (float)$savePack['ratioCostMorphMod'];
-        $this->ratioCostTraitMod      = (float)$savePack['ratioCostTraitMod'];
-        $this->ratioCostBackgroundMod = (float)$savePack['ratioCostBackgroundMod'];
-        $this->ratioCostFactionMod    = (float)$savePack['ratioCostFactionMod'];
-        $this->ratioCostSoftgearMod   = (float)$savePack['ratioCostSoftgearMod'];
-        $this->ratioCostPsyMod        = (float)$savePack['ratioCostPsyMod'];
+        //Name is set here purely for the if check in the __construct function
+        $object = new self((string)$an_array['name'], '');
+        self::set_state_helper($object, $an_array);
+        return $object;
+    }
 
-        if (empty($this->name)) {
-            throw new \InvalidArgumentException("Name may never be empty");
-        }
+    /**
+     * This is used for setting the object variables for __set_state and equivalents.
+     *
+     * Done so subclasses don't need to repeat code.
+     * @param object $instance
+     * @param array  $properties
+     */
+    protected static function set_state_helper(object $instance, array $properties)
+    {
+        $instance->name                   = (string)$properties['name'];
+        $instance->description            = (string)$properties['description'];
+        $instance->groups                 = (array)$properties['groups'];
+        $instance->cost                   = (int)$properties['cost'];
+        $instance->ratioCostMorphMod      = (float)$properties['ratioCostMorphMod'];
+        $instance->ratioCostTraitMod      = (float)$properties['ratioCostTraitMod'];
+        $instance->ratioCostBackgroundMod = (float)$properties['ratioCostBackgroundMod'];
+        $instance->ratioCostFactionMod    = (float)$properties['ratioCostFactionMod'];
+        $instance->ratioCostSoftgearMod   = (float)$properties['ratioCostSoftgearMod'];
+        $instance->ratioCostPsyMod        = (float)$properties['ratioCostPsyMod'];
     }
 
     /**

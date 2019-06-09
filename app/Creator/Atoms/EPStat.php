@@ -123,28 +123,35 @@ class EPStat extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPStat
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', '');
+        parent::set_state_helper($object, $an_array);
 
-        $this->abbreviation = (string)$savePack['abbreviation'];
-        $this->value        = (int)$savePack['value'];
+        $object->abbreviation = (string)$an_array['abbreviation'];
+        $object->value        = (int)$an_array['value'];
 
-        $this->morphMod      = (int)$savePack['morphMod'];
-        $this->traitMod      = (int)$savePack['traitMod'];
-        $this->factionMod    = (int)$savePack['factionMod'];
-        $this->backgroundMod = (int)$savePack['backgroundMod'];
-        $this->softgearMod   = (int)$savePack['softgearMod'];
-        $this->gearMod       = (int)$savePack['gearMod'];
-        $this->psyMod        = (int)$savePack['psyMod'];
+        $object->morphMod      = (int)$an_array['morphMod'];
+        $object->traitMod      = (int)$an_array['traitMod'];
+        $object->factionMod    = (int)$an_array['factionMod'];
+        $object->backgroundMod = (int)$an_array['backgroundMod'];
+        $object->softgearMod   = (int)$an_array['softgearMod'];
+        $object->gearMod       = (int)$an_array['gearMod'];
+        $object->psyMod        = (int)$an_array['psyMod'];
 
-        $this->multiMorphMod      = (int)$savePack['multiMorphMod'];
-        $this->multiTraitMod      = (int)$savePack['multiTraitMod'];
-        $this->multiFactionMod    = (int)$savePack['multiFactionMod'];
-        $this->multiBackgroundMod = (int)$savePack['multiBackgroundMod'];
-        $this->multiSoftgearMod   = (int)$savePack['multiSoftgearMod'];
-        $this->multiGearMod       = (int)$savePack['multiGearMod'];
-        $this->multiPsyMod        = (int)$savePack['multiPsyMod'];
+        $object->multiMorphMod      = (int)$an_array['multiMorphMod'];
+        $object->multiTraitMod      = (int)$an_array['multiTraitMod'];
+        $object->multiFactionMod    = (int)$an_array['multiFactionMod'];
+        $object->multiBackgroundMod = (int)$an_array['multiBackgroundMod'];
+        $object->multiSoftgearMod   = (int)$an_array['multiSoftgearMod'];
+        $object->multiGearMod       = (int)$an_array['multiGearMod'];
+        $object->multiPsyMod        = (int)$an_array['multiPsyMod'];
+
+        return $object;
     }
 
     /**

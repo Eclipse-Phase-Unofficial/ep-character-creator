@@ -185,20 +185,27 @@ class EPAptitude extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPAptitude
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '');
+        parent::set_state_helper($object, $an_array);
 
-        $this->abbreviation  = (string)$savePack['abbreviation'];
-        $this->value         = (int)$savePack['value'];
-        $this->maxValue      = (int)$savePack['maxValue'];
-        $this->minValue      = (int)$savePack['minValue'];
-        $this->morphMod      = (int)$savePack['morphMod'];
-        $this->traitMod      = (int)$savePack['traitMod'];
-        $this->backgroundMod = (int)$savePack['backgroundMod'];
-        $this->factionMod    = (int)$savePack['factionMod'];
-        $this->softgearMod   = (int)$savePack['softgearMod'];
-        $this->psyMod        = (int)$savePack['psyMod'];
+        $object->abbreviation  = (string)$an_array['abbreviation'];
+        $object->value         = (int)$an_array['value'];
+        $object->maxValue      = (int)$an_array['maxValue'];
+        $object->minValue      = (int)$an_array['minValue'];
+        $object->morphMod      = (int)$an_array['morphMod'];
+        $object->traitMod      = (int)$an_array['traitMod'];
+        $object->backgroundMod = (int)$an_array['backgroundMod'];
+        $object->factionMod    = (int)$an_array['factionMod'];
+        $object->softgearMod   = (int)$an_array['softgearMod'];
+        $object->psyMod        = (int)$an_array['psyMod'];
+
+        return $object;
     }
 
     /**

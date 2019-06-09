@@ -137,45 +137,42 @@ class EPMorph extends EPAtom {
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPMorph
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', 0, 0, 0);
+        parent::set_state_helper($object, $an_array);
 
-        $this->morphType         = (string)$savePack['morphType'];
-        $this->age               = (string)$savePack['age'];
-        $this->gender            = (string)$savePack['gender'];
-        $this->maxApptitude      = (int)$savePack['maxApptitude'];
-        $this->durability        = (int)$savePack['durability'];
-        $this->nickname          = (string)$savePack['nickname'];
-        $this->location          = (string)$savePack['location'];
-        $this->cpCost            = (int)$savePack['cpCost'];
-        $this->buyInCreationMode = (string)$savePack['buyInCreationMode'];
+        $object->morphType         = (string)$an_array['morphType'];
+        $object->age               = (string)$an_array['age'];
+        $object->gender            = (string)$an_array['gender'];
+        $object->maxApptitude      = (int)$an_array['maxApptitude'];
+        $object->durability        = (int)$an_array['durability'];
+        $object->nickname          = (string)$an_array['nickname'];
+        $object->location          = (string)$an_array['location'];
+        $object->cpCost            = (int)$an_array['cpCost'];
+        $object->buyInCreationMode = (string)$an_array['buyInCreationMode'];
 
-        foreach($savePack['traitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','',0);
-            $savedTrait->loadSavePack($m);
-            array_push($this->traits, $savedTrait);
+        foreach ($an_array['traitsSavePacks'] as $m) {
+            array_push($object->traits, EPTrait::__set_state($m));
         }
-        foreach($savePack['additionalTraitsSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','',0);
-            $savedTrait->loadSavePack($m);
-            array_push($this->additionalTraits, $savedTrait);
+        foreach ($an_array['additionalTraitsSavePacks'] as $m) {
+            array_push($object->additionalTraits, EPTrait::__set_state($m));
         }
-        foreach($savePack['gearSavePacks'] as $m){
-            $savedGear = new EPGear('temp','','',0);
-            $savedGear->loadSavePack($m);
-            array_push($this->gears, $savedGear);
+        foreach ($an_array['gearSavePacks'] as $m) {
+            array_push($object->gears, EPGear::__set_state($m));
         }
-        foreach($savePack['addGearSavePacks'] as $m){
-            $savedGear = new EPGear('temp','','',0);
-            $savedGear->loadSavePack($m);
-            array_push($this->additionalGears, $savedGear);
+        foreach ($an_array['addGearSavePacks'] as $m) {
+            array_push($object->additionalGears, EPGear::__set_state($m));
         }
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
+
+        return $object;
     }
 
     /**

@@ -58,24 +58,27 @@ class EPBackground extends EPAtom{
 	return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPBackground
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
-	    	    
-        $this->backgroundType = (string)$savePack['backgroundType'];
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
+        $object = new self((string)$an_array['name'], '');
+        parent::set_state_helper($object, $an_array);
+
+        $object->backgroundType = (string)$an_array['backgroundType'];
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
-        foreach($savePack['traitSavePacks'] as $m){
-            $savedTrait = new EPTrait('temp','','',0);
-            $savedTrait->loadSavePack($m);
-            array_push($this->traits, $savedTrait);
+        foreach ($an_array['traitSavePacks'] as $m) {
+            array_push($object->traits, EPTrait::__set_state($m));
         }
-        foreach($savePack['limitationsArray'] as $m){
-            array_push($this->limitations, $m);
+        foreach ($an_array['limitationsArray'] as $m) {
+            array_push($object->limitations, $m);
         }
+
+        return $object;
     }
 
     /**

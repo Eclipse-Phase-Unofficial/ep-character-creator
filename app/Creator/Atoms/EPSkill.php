@@ -237,35 +237,42 @@ class EPSkill extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPSkill
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], '', '', '');
+        parent::set_state_helper($object, $an_array);
 
-        $this->skillType      = (string)$savePack['skillType'];
-        $this->prefix         = (string)$savePack['prefix'];
-        $this->baseValue      = (int)$savePack['baseValue'];
-        $this->morphMod       = (int)$savePack['morphMod'];
-        $this->traitMod       = (int)$savePack['traitMod'];
-        $this->backgroundMod  = (int)$savePack['backgroundMod'];
-        $this->factionMod     = (int)$savePack['factionMod'];
-        $this->softgearMod    = (int)$savePack['softgearMod'];
-        $this->psyMod         = (int)$savePack['psyMod'];
-        $this->defaultable    = (string)$savePack['defaultable'];
-        $this->tempSkill      = (bool)$savePack['tempSkill'];
-        $this->specialization = (string)$savePack['specialization'];
-        $this->isNativeTongue = (bool)$savePack['isNativeTongue'];
-        if (isset($savePack['groupsArray'])) {
-            foreach ($savePack['groupsArray'] as $m) {
-                array_push($this->groups, $m);
+        $object->skillType      = (string)$an_array['skillType'];
+        $object->prefix         = (string)$an_array['prefix'];
+        $object->baseValue      = (int)$an_array['baseValue'];
+        $object->morphMod       = (int)$an_array['morphMod'];
+        $object->traitMod       = (int)$an_array['traitMod'];
+        $object->backgroundMod  = (int)$an_array['backgroundMod'];
+        $object->factionMod     = (int)$an_array['factionMod'];
+        $object->softgearMod    = (int)$an_array['softgearMod'];
+        $object->psyMod         = (int)$an_array['psyMod'];
+        $object->defaultable    = (string)$an_array['defaultable'];
+        $object->tempSkill      = (bool)$an_array['tempSkill'];
+        $object->specialization = (string)$an_array['specialization'];
+        $object->isNativeTongue = (bool)$an_array['isNativeTongue'];
+        if (isset($an_array['groupsArray'])) {
+            foreach ($an_array['groupsArray'] as $m) {
+                array_push($object->groups, $m);
             }
         }
-        $this->maxValue              = (int)$savePack['maxValue'];
-        $this->maxValueMorphMod      = (int)$savePack['maxValueMorphMod'];
-        $this->maxValueTraitMod      = (int)$savePack['maxValueTraitMod'];
-        $this->maxValueFactionMod    = (int)$savePack['maxValueFactionMod'];
-        $this->maxValueBackgroundMod = (int)$savePack['maxValueBackgroundMod'];
-        $this->maxValuePsyMod        = (int)$savePack['maxValuePsyMod'];
-        $this->maxValueSoftgearMod   = (int)$savePack['maxValueSoftgearMod'];
+        $object->maxValue              = (int)$an_array['maxValue'];
+        $object->maxValueMorphMod      = (int)$an_array['maxValueMorphMod'];
+        $object->maxValueTraitMod      = (int)$an_array['maxValueTraitMod'];
+        $object->maxValueFactionMod    = (int)$an_array['maxValueFactionMod'];
+        $object->maxValueBackgroundMod = (int)$an_array['maxValueBackgroundMod'];
+        $object->maxValuePsyMod        = (int)$an_array['maxValuePsyMod'];
+        $object->maxValueSoftgearMod   = (int)$an_array['maxValueSoftgearMod'];
+
+        return $object;
     }
 
     /**

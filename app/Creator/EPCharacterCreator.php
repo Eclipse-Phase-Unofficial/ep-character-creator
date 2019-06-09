@@ -215,57 +215,63 @@ class EPCharacterCreator implements Savable
 		
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPCharacterCreator
+     */
+    public static function __set_state(array $an_array)
     {
-        $this->initialCreationPoints = $savePack['initialCreationPoints'];
-		$this->aptitudePoints = $savePack['aptitudePoints'];
-		$this->reputationPoints = $savePack['reputationPoints'];
-		
-		$this->reputationPointsMorphMod = $savePack['reputationPointsMorphMod'];
-		$this->reputationPointsTraitMod = $savePack['reputationPointsTraitMod'];
-		$this->reputationPointsFactionMod = $savePack['reputationPointsFactionMod'];
-		$this->reputationPointsBackgroundMod = $savePack['reputationPointsBackgroundMod'];
-		$this->reputationPointsSoftGearMod = $savePack['reputationPointsSoftGearMod'];
-		$this->reputationPointsPsyMod = $savePack['reputationPointsPsyMod'];
-		
-		$this->nativeLanguageSet = $savePack['nativeLanguageSet'];
-		
-        $this->creationMode = $savePack['creationMode'];
-        $this->evoRezPoint = $savePack['evoRezPoint'];
-        $this->evoRepPoint = $savePack['evoRepPoint'];
-        $this->evoCrePoint = $savePack['evoCrePoint'];
-        $this->evoCrePointPurchased = $savePack['evoCrePointPurchased'];
-		
-		$this->character->loadSavePack($savePack['charSavePack']);
-		
-		//last details after the load save pack 
-		//set cc on stats
-		$statsToComplete = $this->character->ego->stats;
-		foreach($statsToComplete as $m){
-			$m->cc = $this;
-		}
-		
-		//Skills have pointers to their linked aptitudes.
+        $object = new self();
+
+        $object->initialCreationPoints = $an_array['initialCreationPoints'];
+        $object->aptitudePoints        = $an_array['aptitudePoints'];
+        $object->reputationPoints      = $an_array['reputationPoints'];
+
+        $object->reputationPointsMorphMod      = $an_array['reputationPointsMorphMod'];
+        $object->reputationPointsTraitMod      = $an_array['reputationPointsTraitMod'];
+        $object->reputationPointsFactionMod    = $an_array['reputationPointsFactionMod'];
+        $object->reputationPointsBackgroundMod = $an_array['reputationPointsBackgroundMod'];
+        $object->reputationPointsSoftGearMod   = $an_array['reputationPointsSoftGearMod'];
+        $object->reputationPointsPsyMod        = $an_array['reputationPointsPsyMod'];
+
+        $object->nativeLanguageSet = $an_array['nativeLanguageSet'];
+
+        $object->creationMode         = $an_array['creationMode'];
+        $object->evoRezPoint          = $an_array['evoRezPoint'];
+        $object->evoRepPoint          = $an_array['evoRepPoint'];
+        $object->evoCrePoint          = $an_array['evoCrePoint'];
+        $object->evoCrePointPurchased = $an_array['evoCrePointPurchased'];
+
+        $object->character = EPCharacter::__set_state($an_array['charSavePack']);
+
+        /*******last details*******/
+        //set cc on stats
+        $statsToComplete = $object->character->ego->stats;
+        foreach ($statsToComplete as $m) {
+            $m->cc = $object;
+        }
+
+        //Skills have pointers to their linked aptitudes.
         //Except they are not stored as pointers, and are instead stored as separate full objects.
         //This means we need to re-associate each skill with the actual aptitude so modifications automatically take place
         //TODO:  This should be in EPEgo
         //TODO:  Skills should more clearly indicate
-		$skillToComplete = $this->character->ego->skills;
-		foreach($skillToComplete as $m){
-		    //For normal skills, it's as simple as getting the EPEgo from the database
-			$linkedApt = EpDatabase()->getSkillByNamePrefix($m->getName(),$m->prefix)->linkedApt;
-			//For user created skills (which don't exist in the database), link them based on their prefix
-			if($linkedApt == null){
-				$linkedApt = $this->getAptitudeByAbbreviation($this->listProvider->getAptForPrefix($m->prefix));
-			}
-			$m->linkedApt = $linkedApt;
-		}
-		//------------
-		
-		//if(!empty($this->character->morphs)) $this->activateMorph($this->character->morphs[0]);
-		
-				
+        $skillToComplete = $object->character->ego->skills;
+        foreach ($skillToComplete as $m) {
+            //For normal skills, it's as simple as getting the EPEgo from the database
+            $linkedApt = EpDatabase()->getSkillByNamePrefix($m->getName(), $m->prefix)->linkedApt;
+            //For user created skills (which don't exist in the database), link them based on their prefix
+            if ($linkedApt == null) {
+                $linkedApt = $object->getAptitudeByAbbreviation($object->listProvider->getAptForPrefix($m->prefix));
+            }
+            $m->linkedApt = $linkedApt;
+        }
+
+        //if(!empty($object->character->morphs)) $object->activateMorph($object->character->morphs[0]);
+
+        return $object;
     }
+
     function __construct(int $amountCP = -1){
         $this->creationMode = true;
         $this->validation = new EPValidation();

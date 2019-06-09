@@ -18,5 +18,5 @@ namespace App\Creator;
 interface Savable
 {
     function getSavePack(): array;
-    function loadSavePack($savePack);
+    static function __set_state(array $an_array);
 }

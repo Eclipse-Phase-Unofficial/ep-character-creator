@@ -47,25 +47,26 @@ class EPAi extends EPAtom{
         return $savePack;
     }
 
-    function loadSavePack($savePack)
+    /**
+     * @param array $an_array
+     * @return EPAi
+     */
+    public static function __set_state(array $an_array)
     {
-        parent::loadSavePack($savePack);
+        $object = new self((string)$an_array['name'], [], 0);
+        parent::set_state_helper($object, $an_array);
 
-        foreach($savePack['aptitudesSavePacks'] as $m){
-            $savedAptitude = new EPAptitude('temp','');
-            $savedAptitude->loadSavePack($m);
-            array_push($this->aptitudes, $savedAptitude);
-        }	    
-        foreach($savePack['skillsSavePacks'] as $m){
-            $savedSkill = new EPSkill('temp','','','');
-            $savedSkill->loadSavePack($m);
-            array_push($this->skills, $savedSkill);
+        foreach ($an_array['aptitudesSavePacks'] as $m) {
+            array_push($object->aptitudes, EPAptitude::__set_state($m));
         }
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
-            $savedBm->loadSavePack($m);
-            array_push($this->bonusMalus, $savedBm);
-        }    
+        foreach ($an_array['skillsSavePacks'] as $m) {
+            array_push($object->skills, EPSkill::__set_state($m));
+        }
+        foreach ($an_array['bmSavePacks'] as $m) {
+            array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
+        }
+
+        return $object;
     }
 
     /**
