@@ -1022,7 +1022,7 @@ class EPCharacterCreator implements Savable
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
-            $psySleight->buyinCreationMode = false;
+            $psySleight->buyInCreationMode = false;
             array_push($this->character->ego->psySleights,$psySleight);
             $this->evoRezPoint -= config('epcc.PsyCpCost');
             return true;
@@ -1047,7 +1047,7 @@ class EPCharacterCreator implements Savable
             return false;
         }
         $psySleight->removeFromArray($this->character->ego->psySleights);
-        if (!$psySleight->buyinCreationMode){
+        if (!$psySleight->buyInCreationMode){
             $this->evoRezPoint += config('epcc.PsyCpCost');
         }
         return true;

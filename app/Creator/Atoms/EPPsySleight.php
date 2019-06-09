@@ -68,17 +68,13 @@ class EPPsySleight extends EPAtom{
      * Never actually used for anything
      * @var string
      */
-    public $skillNeeded;
+    private $skillNeeded;
     public $buyInCreationMode;
 
     /**
      * @var EPBonusMalus[]
      */
     public  $bonusMalus;
-    /**
-     * @var bool
-     */
-    public $buyinCreationMode;
 
 
     function getSavePack(): array
