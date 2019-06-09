@@ -63,7 +63,7 @@ You will need:
 1. Create a sqlite3 database
     ```bash
     sed 's/\\n/ /g' database.sql > tmp.sql
-    sqlite3 --init tmp.sql database.sqlite3
+    sqlite3 --init tmp.sql database.sqlite
     ```
 3. Copy `standalone.env` to `.env`.
 
