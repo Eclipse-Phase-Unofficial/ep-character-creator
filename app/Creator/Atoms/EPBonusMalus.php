@@ -103,7 +103,12 @@ class EPBonusMalus extends EPAtom{
      * @var int
      */
     public $multi_occurence;
-    public $selected; // same a radio button group .... ( O X X O O X O) 
+    /**
+     * same a radio button group .... ( O X X O O X O)
+     * TODO:  Is this needed with a proper SPA?
+     * @var bool
+     */
+    public $selected;
     
     function getSavePack(): array
     {
@@ -128,18 +133,18 @@ class EPBonusMalus extends EPAtom{
 
     function loadSavePack($savePack)
     {
-	    parent::loadSavePack($savePack);
-	    
-        $this->bonusMalusType = $savePack['bonusMalusType'];
-        $this->forTargetNamed = $savePack['forTargetNamed'];
-        $this->value = $savePack['value'];
-        $this->targetForChoice = $savePack['targetForChoice']; 
-        $this->typeTarget = $savePack['typeTarget']; 
-        $this->onCost = $savePack['onCost'];
-        $this->multi_occurence = $savePack['multi_occurence']; 
-        $this->selected = $savePack['selected'];
-        foreach($savePack['bonusMalusTypes'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
+        parent::loadSavePack($savePack);
+
+        $this->bonusMalusType  = (string)$savePack['bonusMalusType'];
+        $this->forTargetNamed  = (string)$savePack['forTargetNamed'];
+        $this->value           = (float)$savePack['value'];
+        $this->targetForChoice = (string)$savePack['targetForChoice'];
+        $this->typeTarget      = (string)$savePack['typeTarget'];
+        $this->onCost          = (string)$savePack['onCost'];
+        $this->multi_occurence = (int)$savePack['multi_occurence'];
+        $this->selected        = (bool)$savePack['selected'];
+        foreach ($savePack['bonusMalusTypes'] as $m) {
+            $savedBm = new EPBonusMalus('temp', '', 0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalusTypes, $savedBm);
         }

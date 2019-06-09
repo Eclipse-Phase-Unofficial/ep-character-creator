@@ -22,7 +22,11 @@ class EPStat extends EPAtom{
     static $SPEED = 'SPD';
     static $INITIATIVE = 'INI';
     static $DAMAGEBONUS = 'DB';
-    
+
+    /**
+     * An enum of all the static/const values
+     * @var string
+     */
     public $abbreviation;
     /**
      * @var int
@@ -34,21 +38,63 @@ class EPStat extends EPAtom{
      * @var null|\App\Creator\EPCharacterCreator
      */
     public $cc;
-    
+
+    /**
+     * @var int
+     */
     public $morphMod;
+    /**
+     * @var int
+     */
     public $traitMod;
+    /**
+     * @var int
+     */
     public $factionMod;
+    /**
+     * @var int
+     */
     public $backgroundMod;
+    /**
+     * @var int
+     */
     public $softgearMod;
+    /**
+     * @var int
+     */
     public $gearMod;
+    /**
+     * @var int
+     */
     public $psyMod;
-    
+
+    /**
+     * @var int
+     */
     public $multiMorphMod;
+    /**
+     * @var int
+     */
     public $multiTraitMod;
+    /**
+     * @var int
+     */
     public $multiFactionMod;
+    /**
+     * @var int
+     */
     public $multiBackgroundMod;
+    /**
+     * @var int
+     */
     public $multiSoftgearMod;
+    /**
+     * @var int
+     */
     public $multiGearMod;
+    /**
+     * @var int
+     */
     public $multiPsyMod;    
     
     function getSavePack(): array
@@ -79,26 +125,26 @@ class EPStat extends EPAtom{
 
     function loadSavePack($savePack)
     {
-	    parent::loadSavePack($savePack);
-	    	    
-        $this->abbreviation = $savePack['abbreviation'];
-        $this->value = $savePack['value'];
-        
-        $this->morphMod = $savePack['morphMod'];
-        $this->traitMod = $savePack['traitMod'];
-        $this->factionMod = $savePack['factionMod'];
-        $this->backgroundMod = $savePack['backgroundMod'];
-        $this->softgearMod = $savePack['softgearMod'];
-        $this->gearMod = $savePack['gearMod'];
-        $this->psyMod = $savePack['psyMod']; 
-        
-        $this->multiMorphMod = $savePack['multiMorphMod'];
-        $this->multiTraitMod = $savePack['multiTraitMod'];
-        $this->multiFactionMod = $savePack['multiFactionMod'];
-        $this->multiBackgroundMod = $savePack['multiBackgroundMod'];
-        $this->multiSoftgearMod = $savePack['multiSoftgearMod'];
-        $this->multiGearMod = $savePack['multiGearMod'];
-        $this->multiPsyMod = $savePack['multiPsyMod']; 
+        parent::loadSavePack($savePack);
+
+        $this->abbreviation = (string)$savePack['abbreviation'];
+        $this->value        = (int)$savePack['value'];
+
+        $this->morphMod      = (int)$savePack['morphMod'];
+        $this->traitMod      = (int)$savePack['traitMod'];
+        $this->factionMod    = (int)$savePack['factionMod'];
+        $this->backgroundMod = (int)$savePack['backgroundMod'];
+        $this->softgearMod   = (int)$savePack['softgearMod'];
+        $this->gearMod       = (int)$savePack['gearMod'];
+        $this->psyMod        = (int)$savePack['psyMod'];
+
+        $this->multiMorphMod      = (int)$savePack['multiMorphMod'];
+        $this->multiTraitMod      = (int)$savePack['multiTraitMod'];
+        $this->multiFactionMod    = (int)$savePack['multiFactionMod'];
+        $this->multiBackgroundMod = (int)$savePack['multiBackgroundMod'];
+        $this->multiSoftgearMod   = (int)$savePack['multiSoftgearMod'];
+        $this->multiGearMod       = (int)$savePack['multiGearMod'];
+        $this->multiPsyMod        = (int)$savePack['multiPsyMod'];
     }
 
     /**

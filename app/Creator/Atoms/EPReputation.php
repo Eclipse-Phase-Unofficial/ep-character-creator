@@ -16,12 +16,30 @@ class EPReputation extends EPAtom{
      * @var int
      */
     public $value;
-    
+
+    /**
+     * @var int
+     */
     public $morphMod;
+    /**
+     * @var int
+     */
     public $traitMod;
+    /**
+     * @var int
+     */
     public $backgroundMod;
+    /**
+     * @var int
+     */
     public $factionMod;
+    /**
+     * @var int
+     */
     public $softgearMod;
+    /**
+     * @var int
+     */
     public $psyMod;
 
     /**
@@ -72,16 +90,16 @@ class EPReputation extends EPAtom{
         return $savePack;
     }
     function loadSavePack($savePack){
-	parent::loadSavePack($savePack);    
-	    
-        $this->value = $savePack['value'];
-        $this->morphMod = $savePack['morphMod'];
-        $this->traitMod = $savePack['traitMod'];
-        $this->backgroundMod = $savePack['backgroundMod'];
-        $this->factionMod = $savePack['factionMod'];
-        $this->softgearMod = $savePack['softgearMod'];
-        $this->psyMod = $savePack['psyMod'];
-        $this->maxValue = $savePack['maxValue'];   
+        parent::loadSavePack($savePack);
+
+        $this->value         = (int)$savePack['value'];
+        $this->morphMod      = (int)$savePack['morphMod'];
+        $this->traitMod      = (int)$savePack['traitMod'];
+        $this->backgroundMod = (int)$savePack['backgroundMod'];
+        $this->factionMod    = (int)$savePack['factionMod'];
+        $this->softgearMod   = (int)$savePack['softgearMod'];
+        $this->psyMod        = (int)$savePack['psyMod'];
+        $this->maxValue      = (int)$savePack['maxValue'];
     }
 
     /**

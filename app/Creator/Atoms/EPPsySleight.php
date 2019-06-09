@@ -69,6 +69,12 @@ class EPPsySleight extends EPAtom{
      * @var string
      */
     private $skillNeeded;
+    /**
+     * If the Sleight was purchased in creation mode
+     * Used so Sleights can be discarded later on, but without giving rez points
+     * TODO:  Rename to $purchasedInCreationMode
+     * @var bool
+     */
     public $buyInCreationMode;
 
     /**
@@ -101,16 +107,16 @@ class EPPsySleight extends EPAtom{
     function loadSavePack($savePack)
     {
 	parent::loadSavePack($savePack);
-	    
-        $this->psyType = $savePack['psyType'];
-        $this->range = $savePack['range'];
-        $this->duration = $savePack['duration'];
-        $this->action = $savePack['action'];
-        $this->strainMod = $savePack['strainMod'];
-        $this->isActif = $savePack['isActif'];
-        $this->psyLevel = $savePack['psyLevel'];
-        $this->skillNeeded = $savePack['skillNeeded'];
-        $this->buyInCreationMode = $savePack['buyInCreationMode'];
+
+        $this->psyType           = (string)$savePack['psyType'];
+        $this->range             = (string)$savePack['range'];
+        $this->duration          = (string)$savePack['duration'];
+        $this->action            = (string)$savePack['action'];
+        $this->strainMod         = (string)$savePack['strainMod'];
+        $this->isActif           = (bool)$savePack['isActif'];
+        $this->psyLevel          = (string)$savePack['psyLevel'];
+        $this->skillNeeded       = (string)$savePack['skillNeeded'];
+        $this->buyInCreationMode = (string)$savePack['buyInCreationMode'];
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);

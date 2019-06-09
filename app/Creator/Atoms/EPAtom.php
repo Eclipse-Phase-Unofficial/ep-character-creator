@@ -112,19 +112,18 @@ class EPAtom implements Savable
 
     function loadSavePack($savePack)
     {
-	    $this->name = $savePack['name'];
-	    $this->description = $savePack['description'];
-	    $this->groups = $savePack['groups'];
-	    $this->cost = $savePack['cost'];
-	    $this->ratioCostMorphMod = $savePack['ratioCostMorphMod'];
-	    $this->ratioCostTraitMod = $savePack['ratioCostTraitMod'];
-	    $this->ratioCostBackgroundMod = $savePack['ratioCostBackgroundMod'];
-	    $this->ratioCostFactionMod = $savePack['ratioCostFactionMod'];
-	    $this->ratioCostSoftgearMod = $savePack['ratioCostSoftgearMod'];
-	    $this->ratioCostPsyMod = $savePack['ratioCostPsyMod'];
+        $this->name                   = (string)$savePack['name'];
+        $this->description            = (string)$savePack['description'];
+        $this->groups                 = (array)$savePack['groups'];
+        $this->cost                   = (int)$savePack['cost'];
+        $this->ratioCostMorphMod      = (float)$savePack['ratioCostMorphMod'];
+        $this->ratioCostTraitMod      = (float)$savePack['ratioCostTraitMod'];
+        $this->ratioCostBackgroundMod = (float)$savePack['ratioCostBackgroundMod'];
+        $this->ratioCostFactionMod    = (float)$savePack['ratioCostFactionMod'];
+        $this->ratioCostSoftgearMod   = (float)$savePack['ratioCostSoftgearMod'];
+        $this->ratioCostPsyMod        = (float)$savePack['ratioCostPsyMod'];
 
-        if(empty($this->name))
-        {
+        if (empty($this->name)) {
             throw new \InvalidArgumentException("Name may never be empty");
         }
     }

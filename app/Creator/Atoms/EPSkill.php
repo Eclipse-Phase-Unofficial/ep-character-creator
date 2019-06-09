@@ -33,12 +33,30 @@ class EPSkill extends EPAtom{
      * @var int
      */
      public $baseValue;
-     
+
+    /**
+     * @var int
+     */
      public $morphMod;
+    /**
+     * @var int
+     */
      public $traitMod;
+    /**
+     * @var int
+     */
      public $backgroundMod;
+    /**
+     * @var int
+     */
      public $factionMod;
+    /**
+     * @var int
+     */
      public $softgearMod;
+    /**
+     * @var int
+     */
      public $psyMod;
     /**
      * An Enum of [$DEFAULTABLE, $NO_DEFAULTABLE]
@@ -46,8 +64,20 @@ class EPSkill extends EPAtom{
      * @var string
      */
      public $defaultable;
-     public $tempSkill; //for skill not loaded from database
+    /**
+     * If skill was not loaded from database
+     * @var bool
+     */
+     public $tempSkill;
+    /**
+     * @var string
+     */
      public $specialization;
+    /**
+     * If the skill gets the native tongue bonus
+     * (Special handling means cost calculations ignore the normal double points at 60 rule)
+     * @var bool
+     */
      public $isNativeTongue;
 
      public $groups;
@@ -59,14 +89,35 @@ class EPSkill extends EPAtom{
      * @var EPAptitude|null
      */
     public $linkedApt;
-     
-     public $maxValue;
-     public $maxValueMorphMod;
-     public $maxValueTraitMod;
-     public $maxValueFactionMod;
-     public $maxValueBackgroundMod;
-     public $maxValuePsyMod;
-     public $maxValueSoftgearMod;
+
+    /**
+     * @var int
+     */
+    public $maxValue;
+    /**
+     * @var int
+     */
+    public $maxValueMorphMod;
+    /**
+     * @var int
+     */
+    public $maxValueTraitMod;
+    /**
+     * @var int
+     */
+    public $maxValueFactionMod;
+    /**
+     * @var int
+     */
+    public $maxValueBackgroundMod;
+    /**
+     * @var int
+     */
+    public $maxValuePsyMod;
+    /**
+     * @var int
+     */
+    public $maxValueSoftgearMod;
      
      function getMaxValue(){
         return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod + 
@@ -191,33 +242,33 @@ class EPSkill extends EPAtom{
 
     function loadSavePack($savePack)
     {
-	parent::loadSavePack($savePack);
-	    
-        $this->skillType = $savePack['skillType'];
-        $this->prefix = $savePack['prefix'];   
-        $this->baseValue = $savePack['baseValue'];
-        $this->morphMod = $savePack['morphMod'];
-        $this->traitMod = $savePack['traitMod'];
-        $this->backgroundMod = $savePack['backgroundMod'];
-        $this->factionMod = $savePack['factionMod'];
-        $this->softgearMod = $savePack['softgearMod'];
-        $this->psyMod = $savePack['psyMod'];
-        $this->defaultable = $savePack['defaultable'];
-        $this->tempSkill = $savePack['tempSkill']; 
-        $this->specialization = $savePack['specialization'];
-        $this->isNativeTongue = $savePack['isNativeTongue'];
-        if(isset($savePack['groupsArray'])){
-                foreach($savePack['groupsArray'] as $m){
-                    array_push($this->groups, $m);
-                } 
-            }	
-        $this->maxValue = $savePack['maxValue'];     
-        $this->maxValueMorphMod = $savePack['maxValueMorphMod'];
-        $this->maxValueTraitMod = $savePack['maxValueTraitMod'];
-        $this->maxValueFactionMod = $savePack['maxValueFactionMod'];
-        $this->maxValueBackgroundMod = $savePack['maxValueBackgroundMod'];
-        $this->maxValuePsyMod = $savePack['maxValuePsyMod'];
-        $this->maxValueSoftgearMod = $savePack['maxValueSoftgearMod'];	 
+        parent::loadSavePack($savePack);
+
+        $this->skillType      = (string)$savePack['skillType'];
+        $this->prefix         = (string)$savePack['prefix'];
+        $this->baseValue      = (int)$savePack['baseValue'];
+        $this->morphMod       = (int)$savePack['morphMod'];
+        $this->traitMod       = (int)$savePack['traitMod'];
+        $this->backgroundMod  = (int)$savePack['backgroundMod'];
+        $this->factionMod     = (int)$savePack['factionMod'];
+        $this->softgearMod    = (int)$savePack['softgearMod'];
+        $this->psyMod         = (int)$savePack['psyMod'];
+        $this->defaultable    = (string)$savePack['defaultable'];
+        $this->tempSkill      = (bool)$savePack['tempSkill'];
+        $this->specialization = (string)$savePack['specialization'];
+        $this->isNativeTongue = (bool)$savePack['isNativeTongue'];
+        if (isset($savePack['groupsArray'])) {
+            foreach ($savePack['groupsArray'] as $m) {
+                array_push($this->groups, $m);
+            }
+        }
+        $this->maxValue              = (int)$savePack['maxValue'];
+        $this->maxValueMorphMod      = (int)$savePack['maxValueMorphMod'];
+        $this->maxValueTraitMod      = (int)$savePack['maxValueTraitMod'];
+        $this->maxValueFactionMod    = (int)$savePack['maxValueFactionMod'];
+        $this->maxValueBackgroundMod = (int)$savePack['maxValueBackgroundMod'];
+        $this->maxValuePsyMod        = (int)$savePack['maxValuePsyMod'];
+        $this->maxValueSoftgearMod   = (int)$savePack['maxValueSoftgearMod'];
     }
 
     /**

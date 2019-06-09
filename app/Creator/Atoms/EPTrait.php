@@ -27,8 +27,6 @@ class EPTrait extends EPAtom
      * @var string
      */
     public $canUse;
-    public $mandatory;
-    //-----
 
     /*
      * TODO: Convert this to getters for positive, negative, and neutral (which is distinguished by costing 0CP)
@@ -45,7 +43,11 @@ class EPTrait extends EPAtom
      * @var int
      */
     public $cpCost;
-    
+
+    /**
+     * TODO: Convert this to a private variable with a getter
+     * @var int
+     */
     public $level;
 
     /**
@@ -59,7 +61,6 @@ class EPTrait extends EPAtom
         $savePack = parent::getSavePack();
         
         $savePack['canUse'] = $this->canUse;
-        $savePack['mandatory'] = $this->mandatory;
 
         $savePack['traitPosNeg'] =  $this->traitPosNeg;
         $savePack['traitEgoMorph'] =  $this->traitEgoMorph;
@@ -72,6 +73,10 @@ class EPTrait extends EPAtom
             array_push($bmSavePacks	, $m->getSavePack());
         }
         $savePack['bmSavePacks'] = $bmSavePacks;
+
+        //Included for backwards compatibility
+        $savePack['mandatory'] = null;
+
         return $savePack;
     }
 
@@ -79,12 +84,11 @@ class EPTrait extends EPAtom
     {
         parent::loadSavePack($savePack);
 
-        $this->canUse = $savePack['canUse'];
-        $this->mandatory = $savePack['mandatory'];
-        $this->traitPosNeg = $savePack['traitPosNeg'];
-        $this->traitEgoMorph = $savePack['traitEgoMorph'];
-        $this->cpCost = $savePack['cpCost'];	    
-        $this->level = $savePack['level'];
+        $this->canUse        = (string)$savePack['canUse'];
+        $this->traitPosNeg   = (string)$savePack['traitPosNeg'];
+        $this->traitEgoMorph = (string)$savePack['traitEgoMorph'];
+        $this->cpCost        = (int)$savePack['cpCost'];
+        $this->level         = (int)$savePack['level'];
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);

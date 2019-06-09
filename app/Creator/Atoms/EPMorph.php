@@ -27,7 +27,9 @@ class EPMorph extends EPAtom {
      */
     public $morphType;
     /**
-     * @var int
+     * Apparent age of the morph
+     * Only used for display purposes, so don't limit it to just numbers
+     * @var string
      */
     public $age;
     /**
@@ -58,6 +60,12 @@ class EPMorph extends EPAtom {
      * @var int
      */
     public $cpCost;
+    /**
+     * If the morph is being purchased in creation mode or not.
+     * Used to determine if cost is in CP or credits
+     * TODO:  Things related to this should be handled internally.  The math should be done here!
+     * @var bool
+     */
     public $buyInCreationMode;
 
     /**
@@ -133,15 +141,15 @@ class EPMorph extends EPAtom {
     {
         parent::loadSavePack($savePack);
 
-        $this->morphType = $savePack['morphType'];
-        $this->age = $savePack['age'];
-        $this->gender = $savePack['gender'];
-        $this->maxApptitude = $savePack['maxApptitude'];
-        $this->durability = $savePack['durability'];
-        $this->nickname = $savePack['nickname'];
-        $this->location = $savePack['location'];
-        $this->cpCost = $savePack['cpCost'];
-        $this->buyInCreationMode = $savePack['buyInCreationMode'];
+        $this->morphType         = (string)$savePack['morphType'];
+        $this->age               = (string)$savePack['age'];
+        $this->gender            = (string)$savePack['gender'];
+        $this->maxApptitude      = (int)$savePack['maxApptitude'];
+        $this->durability        = (int)$savePack['durability'];
+        $this->nickname          = (string)$savePack['nickname'];
+        $this->location          = (string)$savePack['location'];
+        $this->cpCost            = (int)$savePack['cpCost'];
+        $this->buyInCreationMode = (string)$savePack['buyInCreationMode'];
 
         foreach($savePack['traitsSavePacks'] as $m){
             $savedTrait = new EPTrait('temp','','',0);
@@ -197,7 +205,7 @@ class EPMorph extends EPAtom {
     ) {
         parent::__construct($name, $description);
         $this->morphType = $morphType;
-        $this->age = 0;
+        $this->age = '0';
         $this->gender = self::$GENDER_NONE;
         $this->maxApptitude = $maxAptitude;
         $this->durability = $durability;

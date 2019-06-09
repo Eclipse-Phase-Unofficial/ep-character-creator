@@ -159,46 +159,47 @@ class EPGear extends EPAtom{
 
     function loadSavePack($savePack)
     {
-	    parent::loadSavePack($savePack);
-	    
-        $this->armorEnergy = $savePack['armorEnergy'];
-        $this->armorKinetic = $savePack['armorKinetic'];
-        $this->degat = $savePack['degat'];
-        $this->armorPenetration = $savePack['armorPenetration'];
-        $this->gearType = $savePack['gearType'];
-        $this->gearRestriction = $savePack['gearRestriction'];
-        $this->armorPenetrationMorphMod = $savePack['armorPenetrationMorphMod'];
-        $this->degatMorphMod = $savePack['degatMorphMod'];
-        $this->armorEnergyMorphMod = $savePack['armorEnergyMorphMod'];
-        $this->armorKineticMorphMod = $savePack['armorKineticMorphMod'];
-        $this->armorPenetrationTraitMod = $savePack['armorPenetrationTraitMod'];
-        $this->degatTraitMod = $savePack['degatTraitMod'];
-        $this->armorEnergyTraitMod = $savePack['armorEnergyTraitMod'];
-        $this->armorKineticTraitMod = $savePack['armorKineticTraitMod'];
+        parent::loadSavePack($savePack);
+
+        $this->armorEnergy                   = (int)$savePack['armorEnergy'];
+        $this->armorKinetic                  = (int)$savePack['armorKinetic'];
+        $this->degat                         = (string)$savePack['degat'];
+        $this->armorPenetration              = (int)$savePack['armorPenetration'];
+        $this->gearType                      = (string)$savePack['gearType'];
+        $this->gearRestriction               = (string)$savePack['gearRestriction'];
+        $this->armorPenetrationMorphMod      = $savePack['armorPenetrationMorphMod'];
+        $this->degatMorphMod                 = $savePack['degatMorphMod'];
+        $this->armorEnergyMorphMod           = $savePack['armorEnergyMorphMod'];
+        $this->armorKineticMorphMod          = $savePack['armorKineticMorphMod'];
+        $this->armorPenetrationTraitMod      = $savePack['armorPenetrationTraitMod'];
+        $this->degatTraitMod                 = $savePack['degatTraitMod'];
+        $this->armorEnergyTraitMod           = $savePack['armorEnergyTraitMod'];
+        $this->armorKineticTraitMod          = $savePack['armorKineticTraitMod'];
         $this->armorPenetrationBackgroundMod = $savePack['armorPenetrationBackgroundMod'];
-        $this->degatBackgroundMod = $savePack['degatBackgroundMod'];
-        $this->armorEnergyBackgroundMod = $savePack['armorEnergyBackgroundMod'];
-        $this->armorKineticBackgroundMod = $savePack['armorKineticBackgroundMod'];
-        $this->armorPenetrationFactionMod = $savePack['armorPenetrationFactionMod'];
-        $this->degatFactionMod = $savePack['degatFactionMod'];
-        $this->armorEnergyFactionMod = $savePack['armorEnergyFactionMod'];
-        $this->armorKineticFactionMod = $savePack['armorKineticFactionMod'];   
-        $this->armorPenetrationSoftgearMod = $savePack['armorPenetrationSoftgearMod'];
-        $this->degatSoftgearMod = $savePack['degatSoftgearMod'];
-        $this->armorEnergySoftgearMod = $savePack['armorEnergySoftgearMod'];
-        $this->armorKineticSoftgearMod = $savePack['armorKineticSoftgearMod'];
-        $this->armorPenetrationPsyMod = $savePack['armorPenetrationPsyMod'];
-        $this->degatPsyMod = $savePack['degatPsyMod'];
-        $this->armorEnergyPsyMod = $savePack['armorEnergyPsyMod'];
-        $this->armorKineticPsyMod = $savePack['armorKineticPsyMod'];
-        $this->unique = $savePack['unique'];
-        //This is for backwards compatibility with older saves
-        $this->occurrence = $savePack['occurrence'] ?? $savePack['occurence'] ?? 1;
-        foreach($savePack['bmSavePacks'] as $m){
-            $savedBm = new EPBonusMalus('temp','',0);
+        $this->degatBackgroundMod            = $savePack['degatBackgroundMod'];
+        $this->armorEnergyBackgroundMod      = $savePack['armorEnergyBackgroundMod'];
+        $this->armorKineticBackgroundMod     = $savePack['armorKineticBackgroundMod'];
+        $this->armorPenetrationFactionMod    = $savePack['armorPenetrationFactionMod'];
+        $this->degatFactionMod               = $savePack['degatFactionMod'];
+        $this->armorEnergyFactionMod         = $savePack['armorEnergyFactionMod'];
+        $this->armorKineticFactionMod        = $savePack['armorKineticFactionMod'];
+        $this->armorPenetrationSoftgearMod   = $savePack['armorPenetrationSoftgearMod'];
+        $this->degatSoftgearMod              = $savePack['degatSoftgearMod'];
+        $this->armorEnergySoftgearMod        = $savePack['armorEnergySoftgearMod'];
+        $this->armorKineticSoftgearMod       = $savePack['armorKineticSoftgearMod'];
+        $this->armorPenetrationPsyMod        = $savePack['armorPenetrationPsyMod'];
+        $this->degatPsyMod                   = $savePack['degatPsyMod'];
+        $this->armorEnergyPsyMod             = $savePack['armorEnergyPsyMod'];
+        $this->armorKineticPsyMod            = $savePack['armorKineticPsyMod'];
+        $this->unique                        = (bool)$savePack['unique'];
+        foreach ($savePack['bmSavePacks'] as $m) {
+            $savedBm = new EPBonusMalus('temp', '', 0);
             $savedBm->loadSavePack($m);
             array_push($this->bonusMalus, $savedBm);
         }
+
+        //This is for backwards compatibility with older saves that may not have all the data
+        $this->occurrence = $savePack['occurrence'] ?? $savePack['occurence'] ?? 1;
     }
 
     /**

@@ -12,7 +12,12 @@ class EPBackground extends EPAtom{
 
     static $ORIGIN = 'ORI';
     static $FACTION = 'FAC';
-    
+
+    /**
+     * An Enum of [$ORIGIN, $FACTION]
+     * TODO:  Change this to a bool (including in the database)
+     * @var string
+     */
     public $backgroundType;
 
     //TODO:  Be more specific with these types
@@ -57,7 +62,7 @@ class EPBackground extends EPAtom{
     {
         parent::loadSavePack($savePack);
 	    	    
-        $this->backgroundType = $savePack['backgroundType'];
+        $this->backgroundType = (string)$savePack['backgroundType'];
         foreach($savePack['bmSavePacks'] as $m){
             $savedBm = new EPBonusMalus('temp','',0);
             $savedBm->loadSavePack($m);

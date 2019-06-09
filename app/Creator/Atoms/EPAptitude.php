@@ -19,8 +19,15 @@ class EPAptitude extends EPAtom{
     static $SAVVY = 'SAV';
     static $SOMATICS = 'SOM';
     static $WILLPOWER  = 'WIL';
-    
+
+    /**
+     * Enum of [$COGNITION, $COORDINATION, $INTUITION, $REFLEXS, $SAVVY, $SOMATICS, $WILLPOWER]
+     * @var string
+     */
     public $abbreviation;
+    /**
+     * @var int
+     */
     public $value;
     
     public $maxEgoValue;
@@ -57,14 +64,34 @@ class EPAptitude extends EPAtom{
         
     //Special for feeble negative trait
     public $feebleMax;
-    
+
+    /**
+     * @var int
+     */
     public $absoluteMaxValue;
-            
+    /**
+     * @var int
+     */
     public $morphMod;
+    /**
+     * @var int
+     */
     public $traitMod;
+    /**
+     * @var int
+     */
     public $backgroundMod;
+    /**
+     * @var int
+     */
     public $factionMod;
+    /**
+     * @var int
+     */
     public $softgearMod;
+    /**
+     * @var int
+     */
     public $psyMod;
 
     /**
@@ -72,7 +99,13 @@ class EPAptitude extends EPAtom{
      * @var EPMorph|null
      */
     public $activMorph;
+    /**
+     * @var int
+     */
     public $maxValue;
+    /**
+     * @var int
+     */
     public $minValue;
 
     function getMaxEgoValue(){
@@ -144,7 +177,9 @@ class EPAptitude extends EPAtom{
         $savePack['factionMod'] =  $this->factionMod;
         $savePack['softgearMod'] =  $this->softgearMod;
         $savePack['psyMod'] =  $this->psyMod;
-        $savePack['activMorph'] =  $this->activMorph;
+
+        //Only stored for backwards compatibility
+        $savePack['activMorph'] =  null;
         $savePack['absoluteMaxValue'] =  $this->absoluteMaxValue;
 
         return $savePack;
@@ -153,25 +188,23 @@ class EPAptitude extends EPAtom{
     function loadSavePack($savePack)
     {
         parent::loadSavePack($savePack);
-	    
-        $this->abbreviation = $savePack['abbreviation'];
-        $this->value = $savePack['value'];
-        $this->maxValue = $savePack['maxValue'];
-        $this->minValue = $savePack['minValue'];
-        $this->morphMod = $savePack['morphMod'];
-        $this->traitMod = $savePack['traitMod'];
-        $this->backgroundMod = $savePack['backgroundMod'];
-        $this->factionMod = $savePack['factionMod'];
-        $this->softgearMod = $savePack['softgearMod'];
-        $this->psyMod = $savePack['psyMod'];
-        $this->activMorph = $savePack['activMorph'];
-        $this->absoluteMaxValue = $savePack['absoluteMaxValue'];
+
+        $this->abbreviation  = (string)$savePack['abbreviation'];
+        $this->value         = (int)$savePack['value'];
+        $this->maxValue      = (int)$savePack['maxValue'];
+        $this->minValue      = (int)$savePack['minValue'];
+        $this->morphMod      = (int)$savePack['morphMod'];
+        $this->traitMod      = (int)$savePack['traitMod'];
+        $this->backgroundMod = (int)$savePack['backgroundMod'];
+        $this->factionMod    = (int)$savePack['factionMod'];
+        $this->softgearMod   = (int)$savePack['softgearMod'];
+        $this->psyMod        = (int)$savePack['psyMod'];
     }
 
     /**
      * EPAptitude constructor.
      * @param string   $name
-     * @param string   $abbreviation One of [$COGNITION, $COORDINATION, $INTUITION, $REFLEXS, $SAVVY, $SOMATICS, $WILLPOWER]
+     * @param string   $abbreviation
      * @param string   $description
      * @param string[] $groups
      */
