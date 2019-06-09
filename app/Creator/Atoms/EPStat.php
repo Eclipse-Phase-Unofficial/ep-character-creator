@@ -140,6 +140,7 @@ class EPStat extends EPAtom{
         if (!isset($this->cc)){
             return 0;
         }
+        $morph = $this->cc->getCurrentMorph();
         $multi = $this->multiMorphMod * $this->multiTraitMod * $this->multiFactionMod * $this->multiBackgroundMod * $this->multiSoftgearMod * $this->multiGearMod * $this->multiPsyMod;
         switch ($this->abbreviation) {
             case EPStat::$MOXIE:
@@ -149,13 +150,14 @@ class EPStat extends EPAtom{
                 return round(($this->cc->getAptitudeByAbbreviation(EPAptitude::$WILLPOWER)->getValue() * 2  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$TRAUMATHRESHOLD:
-                return round((round($this->cc->getStatByAbbreviation(EPStat::$LUCIDITY)->getValue() / 5)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
+                $stat = $this->cc->getStatByAbbreviation(EPStat::$LUCIDITY)->getValue();
+                return round((round($stat / 5)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$INSANITYRATING:
-                return round(($this->cc->getStatByAbbreviation(EPStat::$LUCIDITY)->getValue() * 2  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
+                $stat = $this->cc->getStatByAbbreviation(EPStat::$LUCIDITY)->getValue();
+                return round(($stat * 2  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$DURABILITY:
-                $morph = $this->cc->getCurrentMorph();
                 if (isset($morph)){
                     $res =  $morph->durability;
                 }else{
@@ -164,12 +166,12 @@ class EPStat extends EPAtom{
                 return round(($res  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$DEATHRATING:
-                $morph = $this->cc->getCurrentMorph();
+                $stat = $this->cc->getStatByAbbreviation(EPStat::$DURABILITY)->getValue();
                 if (isset($morph)){
                     if ($morph->morphType != EPMorph::$SYNTHMORPH){
-                        $res = round($this->cc->getStatByAbbreviation(EPStat::$DURABILITY)->getValue() * 1.5);
+                        $res = round($stat * 1.5);
                     }else{
-                        $res = round($this->cc->getStatByAbbreviation(EPStat::$DURABILITY)->getValue() * 2);
+                        $res = round($stat * 2);
                     }
                 }else{
                     return 0;
@@ -177,19 +179,20 @@ class EPStat extends EPAtom{
                 return round(($res  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$WOUNDTHRESHOLD:
-                return round((round($this->cc->getStatByAbbreviation(EPStat::$DURABILITY)->getValue() / 5) + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
+                $stat = $this->cc->getStatByAbbreviation(EPStat::$DURABILITY)->getValue();
+                return round((round($stat / 5) + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$INITIATIVE:
-                return round((round(($this->cc->getAptitudeByAbbreviation(EPAptitude::$INTUITION)->getValue() + $this->cc->getAptitudeByAbbreviation(EPAptitude::$REFLEXS)->getValue()) / 5)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod)* $multi);
+                $stat = $this->cc->getAptitudeByAbbreviation(EPAptitude::$INTUITION)->getValue();
+                return round((round(($stat + $this->cc->getAptitudeByAbbreviation(EPAptitude::$REFLEXS)->getValue()) / 5)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod)* $multi);
                 break;
             case EPStat::$DAMAGEBONUS:
-                return round((round($this->cc->getAptitudeByAbbreviation(EPAptitude::$SOMATICS)->getValue() / 10)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
+                $stat = $this->cc->getAptitudeByAbbreviation(EPAptitude::$SOMATICS)->getValue();
+                return round((round($stat / 10)  + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi);
                 break;
             case EPStat::$SPEED:
                 $res = $this->value + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod;
-                if (!empty($this->cc)){
-                    $res = min($res, config('epcc.SpeedMaxValue'));
-                }
+                $res = min($res, config('epcc.SpeedMaxValue'));
                 return round($res * $multi);
                 break;
             default:
