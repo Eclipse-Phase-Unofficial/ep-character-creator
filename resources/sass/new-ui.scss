@@ -35,3 +35,27 @@
     --margin-right: 5em;
   }
 }
+
+.loading-indicator {
+  @include game();
+
+  /* centered */
+  position: fixed;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%,-50%);
+
+  z-index: 9000; /* This should be on top of everything else */
+  background-color: #ffffff;
+  border-radius: 10px;
+
+  background-image: url('../assets/img/ajax-loader.gif');
+  --image-width: 128px; //Based off the size of the gif
+  --image-height: 15px; //Based off the size of the gif
+  background-size: var(--image-width);
+  background-position: center;
+  background-repeat: no-repeat;
+
+  width: calc(var(--image-width) + 16px * 2);
+  height: calc(var(--image-height) + 16px * 2);
+}

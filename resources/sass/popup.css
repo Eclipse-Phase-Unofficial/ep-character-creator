@@ -25,34 +25,6 @@
 
 /*===============POPUPS=====================*/
 
-#loading_popup {
-    /* centered */
-    position: fixed;
-    right: 50%;
-    top: 50%;
-    transform: translate(50%,-50%);
-
-    display: inline-block;
-    opacity: 1;
-    padding: 15px;
-    text-align: justify;
-    z-index: 9000; /* This should be on top of everything else */
-
-    width: 25%;
-    height: 3%;
-
-    color: hsl(200,10%,40%);
-    background-color: rgba(242, 242, 242, .8);
-    border-top: 1px solid rgba(245, 245, 245, .8);
-    border-bottom: 1px solid rgba(148,155,153,.8);
-
-    border-radius: 10px;
-
-    box-shadow: 0 1px 1px 2px rgba(0, 0, 0, 0.4) inset;
-
-    transition: opacity .5s;
-}
-
 /*Validation*/
 .valideIcone{
 	color: #48ffaa;

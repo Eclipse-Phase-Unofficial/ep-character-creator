@@ -2,12 +2,15 @@
 declare(strict_types=1);
 
     error_reporting(0);
-    function createDataURI($image,$image_type){
-        $fileContents = file_get_contents($image);
+    function createDataURI(string $file, string $mimeType = null){
+        $fileContents = file_get_contents($file);
         if (!$fileContents) {
-            throw new \InvalidArgumentException("File does not exist: $image");
+            throw new \InvalidArgumentException("File does not exist: $file");
         }
-        return "data:image/".$image_type.";base64,".base64_encode($fileContents);
+        if(!$mimeType) {
+            $mimeType = mime_content_type($file);
+        }
+        return "data:".$mimeType.";base64,".base64_encode($fileContents);
     }
 ?>
 <!DOCTYPE html>
@@ -22,26 +25,25 @@ declare(strict_types=1);
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-    </head>
-    <body>
 
-        <!-- POPUP  -- DYNAMIC CONTENT -->
-        <div id="loading_popup"><center><img src="<?php echo createDataURI(public_path("img/ajax-loader.gif"),"gif"); ?>"></center></div>
-
-        <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
-        <section id="messages"></section>
-        <div id="container">
-            <router-view></router-view>
-        </div>
-
-{{--        <link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
-{{--        <link rel="stylesheet" href="{{mix('css/app.css')}}">--}}
+        {{--        <link rel="stylesheet" href="{{mix('css/vendor.css')}}">--}}
+        {{--        <link rel="stylesheet" href="{{mix('css/app.css')}}">--}}
         <style>
             <?php
             include public_path('css/vendor.css');
             include public_path('css/app.css');
             ?>
         </style>
+    </head>
+    <body>
+
+        <!-- POPUP  -- DYNAMIC CONTENT -->
+        <div id="loading_popup" class="loading-indicator"></div>
+        <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
+        <section id="messages"></section>
+        <div id="container">
+            <router-view></router-view>
+        </div>
 
         {{--<script src="{{mix('js/manifest.js')}}" type="text/javascript"></script>--}}
         {{--<script src="{{mix('js/vendor.js')}}" type="text/javascript"></script>--}}
