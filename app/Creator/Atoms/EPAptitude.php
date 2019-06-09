@@ -236,4 +236,18 @@ class EPAptitude extends EPAtom{
         $this->feebleMax = false;
         $this->absoluteMaxValue = config('epcc.AbsoluteAptitudesMaxValue');
     }
+
+    /**
+     * See if two Aptitudes are the same, regardless if their uids differ
+     *
+     * @param EPAptitude $atom
+     * @return bool
+     */
+    function match($atom): bool
+    {
+        if (strcmp($atom->abbreviation, $this->abbreviation) == 0) {
+            return true;
+        }
+        return false;
+    }
 }

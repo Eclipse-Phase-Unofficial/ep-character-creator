@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Creator;
 
+use App\Creator\Atoms\EPAptitude;
 use App\Creator\Atoms\EPAtom;
 use App\Creator\Atoms\EPSkill;
 
@@ -318,5 +319,16 @@ class Database
     {
         $morph = $this->getMorphByName($morphName);
         return $morph->getGear();
+    }
+
+    /**
+     * TODO:  This should be replaced by getting entire prefix objects!
+     * @param string $skillPrefix
+     * @return EPAptitude
+     */
+    function getAptitudeForPrefix(string $skillPrefix) {
+        $provider = new EPListProvider();
+        $provider->connect();
+        return $provider->getAptForPrefix($skillPrefix);
     }
 }

@@ -242,6 +242,23 @@ class EPEgo implements Savable
             array_push($object->psySleights, EPPsySleight::__set_state($m));
         }
 
+        /*******last details*******/
+        //Skills have pointers to their linked aptitudes.
+        //Except they are not stored in the save pack
+        //This means we need to re-associate each skill with the actual aptitude so modifications automatically take place
+        foreach($object->skills as $m){
+            //For normal skills, it's as simple as getting the Skill from the database
+            $dbSkill = EpDatabase()->getSkillByNamePrefix($m->getName(),$m->prefix);
+            if($dbSkill != null){
+                $linkedApt = $dbSkill->linkedApt;
+            } else {
+                //For user created skills (which don't exist in the database), link them based on their prefix
+                $linkedApt = EpDatabase()->getAptitudeForPrefix($m->prefix);
+            }
+            //Link skills to the aptitude imported, not the one in the database
+            $m->linkedApt = EPAtom::getAtomLike($object->aptitudes, $linkedApt);
+        }
+
         return $object;
     }
 

@@ -251,22 +251,6 @@ class EPCharacterCreator implements Savable
             $m->cc = $object;
         }
 
-        //Skills have pointers to their linked aptitudes.
-        //Except they are not stored as pointers, and are instead stored as separate full objects.
-        //This means we need to re-associate each skill with the actual aptitude so modifications automatically take place
-        //TODO:  This should be in EPEgo
-        //TODO:  Skills should more clearly indicate
-        $skillToComplete = $object->character->ego->skills;
-        foreach ($skillToComplete as $m) {
-            //For normal skills, it's as simple as getting the EPEgo from the database
-            $linkedApt = EpDatabase()->getSkillByNamePrefix($m->getName(), $m->prefix)->linkedApt;
-            //For user created skills (which don't exist in the database), link them based on their prefix
-            if ($linkedApt == null) {
-                $linkedApt = $object->getAptitudeByAbbreviation($object->listProvider->getAptForPrefix($m->prefix));
-            }
-            $m->linkedApt = $linkedApt;
-        }
-
         //if(!empty($object->character->morphs)) $object->activateMorph($object->character->morphs[0]);
 
         return $object;

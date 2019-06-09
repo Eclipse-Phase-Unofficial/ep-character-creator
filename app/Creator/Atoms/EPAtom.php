@@ -400,6 +400,29 @@ class EPAtom implements Savable
     }
 
     /**
+     * Get an atom that is like the current atom
+     *
+     * Useful when the database copy differs from the creator copy.
+     * Which should happen all the time, but we currently cheat and store the entire database in the session.
+     *
+     * @param EPAtom[] $atoms
+     * @param EPAtom   $atom
+     * @return EPAtom|null
+     */
+    public static function getAtomLike(array $atoms, EPAtom $atom)
+    {
+        if (empty($atoms)) {
+            return null;
+        }
+        foreach ($atoms as $anAtom) {
+            if ($atom->match($anAtom)) {
+                return $anAtom;
+            }
+        }
+        return null;
+    }
+
+    /**
      * TODO:  Make this non static
      *
      * @param EPAtom          $atom
