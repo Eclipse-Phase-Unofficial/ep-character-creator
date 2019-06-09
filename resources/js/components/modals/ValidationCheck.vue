@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import urls from "../urls";
+    import urls from "../../urls";
 
     export default {
         name: "ValidationCheck",

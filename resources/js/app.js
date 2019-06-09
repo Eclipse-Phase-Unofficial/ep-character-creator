@@ -22,10 +22,10 @@ Vue.use(Vuex);
 Vue.use(VueRouter);
 
 //Modals
-Vue.component('about', require('./components/About').default);
-Vue.component('validation', require('./components/ValidationCheck').default);
-Vue.component('load-dialog', require('./components/LoadDialog').default);
-Vue.component('new-character-modal', require('./components/Modals/NewCharacterModal').default);
+Vue.component('about', require('./components/modals/About').default);
+Vue.component('validation', require('./components/modals/ValidationCheck').default);
+Vue.component('load-dialog', require('./components/modals/LoadDialog').default);
+Vue.component('new-character-modal', require('./components/modals/NewCharacterModal').default);
 
 
 Vue.component('points-tracker', require('./components/PointsTracker').default);
