@@ -112,7 +112,6 @@ class EPAtom implements Savable
 
     function loadSavePack($savePack)
     {
-        $this->atomUid = $savePack['atomUid'];
 	    $this->name = $savePack['name'];
 	    $this->description = $savePack['description'];
 	    $this->groups = $savePack['groups'];
