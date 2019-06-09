@@ -92,10 +92,10 @@ class HighLevelCreatorController extends Controller
     {
         $this->validate($request, [
             'file' => 'required|array',
-            'creationMode' => 'required',
-            'rezPoints' => 'required_if:creationMode,==,false',
-            'reputationPoints' => 'required_if:creationMode,==,false',
-            'creditsEarned' => 'required_if:creationMode,==,false',
+            'creationMode' => 'required|bool',
+            'rezPoints' => 'required_unless:creationMode,true|integer',
+            'reputationPoints' => 'required_unless:creationMode,true|integer',
+            'creditsEarned' => 'required_unless:creationMode,true|integer',
         ]);
 
         $saveFile = $request->get('file');
