@@ -31,18 +31,27 @@ mix.setPublicPath('public/')
             require('postcss-import-url')({
                 modernBrowser: true
             }),
-            // This lets us inline most CSS images
-            require('postcss-url')({
-                url: 'inline',
-                maxSize: 10,
-            }),
-            //And this handles almost all the rest
-            require('postcss-url')({
-                url: 'inline',
-                maxSize: 10,
-                ignoreFragmentWarning: true,
-                basePath: process.cwd() + '/' + mix.config.publicPath,
-            }),
+            require('postcss-url')([
+                //Preprocessing so we accurately grab url('~packageName/...')
+                {
+                    filter: (asset) => asset.url.startsWith('~'),
+                    url: (asset) => process.cwd() + '/node_modules/' + asset.url.substring(1),
+                    multi: true,
+                },
+                // This lets us inline most CSS images
+                {
+                    url: 'inline',
+                    maxSize: 10,
+                },
+                //Handle everything pointing to the public folder
+                {
+                    filter: (asset) => !asset.url.startsWith('~'),
+                    url: 'inline',
+                    maxSize: 10,
+                    ignoreFragmentWarning: true,
+                    basePath: process.cwd() + '/' + mix.config.publicPath,
+                }
+            ]),
         ]
     });
 
