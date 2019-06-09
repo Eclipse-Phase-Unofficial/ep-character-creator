@@ -27,7 +27,7 @@ function creator(): ?EPCharacterCreator
  */
 function EpDatabase(): Database
 {
-    if(empty($_SESSION['db']))
+    if(empty(session('db')))
     {
         session()->put('db', new Database());
     }
