@@ -8,7 +8,7 @@ use Carbon\Carbon as Carbon;
 return [
     'versionName' => "Gate Jump",
     'releaseDate' => Carbon::parse("December 2018"),
-    'versionNumber' => 1.51,
+    'versionNumber' => 1.52,
     'versionNumberMin' => 0.91,
     'googleAnalyticsId' => env('MIX_GOOGLE_ANALYTICS_ID', 'UA-463340-1'),
     //RulesValues
