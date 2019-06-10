@@ -1,7 +1,7 @@
 <template>
     <div id="mainMenu">
         <a href="/api/creator/save">
-            <button class="popupButton">
+            <button @click="$ga.event('character', 'save')" class="popupButton">
                 Save
             </button>
         </a>
@@ -20,8 +20,16 @@
             </button>
             <div class='dropdown-content'>
                 <ul>
-                    <li><a id="exportPdfButton" href="/export/pdf" target="_blank">PDF</a></li>
-                    <li><a id="exportTxtButton" href="/export/txt" target="_blank">TXT</a></li>
+                    <li>
+                        <a @click="$ga.event('character', 'export', 'pdf')" href="/export/pdf" target="_blank">
+                            PDF
+                        </a>
+                    </li>
+                    <li>
+                        <a @click="$ga.event('character', 'export', 'txt')" href="/export/txt" target="_blank">
+                            TXT
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

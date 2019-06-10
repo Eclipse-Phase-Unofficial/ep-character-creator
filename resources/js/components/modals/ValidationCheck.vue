@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
+    <div :id="id" class="uk-flex-top" v-on:toggle="toggled" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-text-center">
@@ -45,19 +45,21 @@
             }
         }},
         methods: {
-            // This happens whenever the Modal is shown (via UiKit)
-            shown: function (event) {
-                ga('set', 'page', '/validate');
-                ga('send', 'pageview');
-                axios.get(urls.validate)
-                    .then(response => {
-                        this.isValid = response.data.isValid;
-                        this.validators = response.data.validators;
-                    })
-                    .catch(error => {
-                        console.log('Error Validating data');
-                        console.log(error)
-                    });
+            // This happens whenever the Modal is shown/hidden (via UiKit)
+            toggled: function (event) {
+                //This is run before uk-open is applied, so the absence means shown
+                if(!this.$el.classList.contains('uk-open')) {
+                    this.$ga.page('/validate');
+                    axios.get(urls.validate)
+                        .then(response => {
+                            this.isValid = response.data.isValid;
+                            this.validators = response.data.validators;
+                        })
+                        .catch(error => {
+                            console.log('Error Validating data');
+                            console.log(error)
+                        });
+                }
             }
         }
     }

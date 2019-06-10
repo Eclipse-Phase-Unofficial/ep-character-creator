@@ -7,9 +7,6 @@ require('jquery-ui/ui/widgets/tooltip');
 //UiKit
 require('uikit');
 
-//Google Analytics
-require('./googleAnalytics').init();
-
 //Background slide show
 require('./background').init();
 
@@ -17,6 +14,7 @@ require('./background').init();
 const Vue = require('vue');
 const Vuex = require('vuex');
 const VueRouter = require('vue-router').default;
+import VueAnalytics from 'vue-analytics';
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -63,6 +61,15 @@ const router = new VueRouter({
     ],
 });
 
+Vue.use(VueAnalytics, {
+    //If the variable isn't set dynamically, try the compiled in version.  If that fails, then fall back to a safe default.
+    id: window.env.MIX_GOOGLE_ANALYTICS_ID || process.env.MIX_GOOGLE_ANALYTICS_ID || 'UA-463340-1',
+    // debug: {
+    //     enabled: true,
+    //     sendHitTask: false,
+    // },
+    router,
+});
 
 //Do an initial check on the creator during the first page load
 //This must be done here, so we can wait for the asynchronous call to complete before finishing routing

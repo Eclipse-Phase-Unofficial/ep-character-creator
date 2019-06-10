@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
+    <div :id="id" class="uk-flex-top" v-on:toggle="toggled" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <a href="https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
@@ -59,10 +59,12 @@
             }
         },
         methods: {
-            // This happens whenever the Modal is shown (via UiKit)
-            shown: function (event) {
-                ga('set', 'page', '/about');
-                ga('send', 'pageview');
+            // This happens whenever the Modal is shown/hidden (via UiKit)
+            toggled: function (event) {
+                //This is run before uk-open is applied, so the absence means shown
+                if(!this.$el.classList.contains('uk-open')) {
+                    this.$ga.page('/about');
+                }
                 //Only do this once per run
                 //TODO:  This could be done in VueX and used everywhere
                 if (!this.version) {

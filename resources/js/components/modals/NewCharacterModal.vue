@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
+    <div :id="id" class="uk-flex-top" v-on:toggle="toggled" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-text-center">
@@ -38,10 +38,12 @@
             'creationPoints': 1000,
         }},
         methods: {
-            // This happens whenever the Modal is shown (via UiKit)
-            shown: function (event) {
-                ga('set', 'page', '/new');
-                ga('send', 'pageview');
+            // This happens whenever the Modal is shown/hidden (via UiKit)
+            toggled: function (event) {
+                //This is run before uk-open is applied, so the absence means shown
+                if(!this.$el.classList.contains('uk-open')) {
+                    this.$ga.page('/new');
+                }
             },
             newCharacter: function (event) {
                 startLoading();
@@ -50,11 +52,13 @@
                 })
                     .then(response => {
                         endLoading();
+                        this.$ga.event('character', 'new', 'success');
                         //TODO:  Don't reload, just close everything and update as appropriate on load finishing
                         location.reload();
                     })
                     .catch(error => {
                         endLoading();
+                        this.$ga.event('character', 'new', 'failure');
                         console.log('Error Creating Character');
                         console.log(error);
                         if (error.response){

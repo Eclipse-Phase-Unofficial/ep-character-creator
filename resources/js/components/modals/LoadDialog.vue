@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" class="uk-flex-top" v-on:toggle="shown" uk-modal>
+    <div :id="id" class="uk-flex-top" v-on:toggle="toggled" uk-modal>
         <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical game-style" style="min-width: 80ch">
             <button class="uk-modal-close-default" type="button" uk-close></button>
             <div class="uk-text-center">
@@ -48,7 +48,7 @@
     import urls from "../../urls";
 
     export default {
-        name: "SaveDialog",
+        name: "LoadDialog",
         props: {
             id: String
         },
@@ -62,10 +62,12 @@
             }
         },
         methods: {
-            // This happens whenever the Modal is shown (via UiKit)
-            shown: function (event) {
-                ga('set', 'page', '/load');
-                ga('send', 'pageview');
+            // This happens whenever the Modal is shown/hidden (via UiKit)
+            toggled: function (event) {
+                //This is run before uk-open is applied, so the absence means shown
+                if(!this.$el.classList.contains('uk-open')) {
+                    this.$ga.page('/load');
+                }
             },
             loadCharacter: function (event) {
                 // Max size of 8MB.  If we're hitting this limit there's a problem.
@@ -87,11 +89,13 @@
                         })
                             .then(response => {
                                 endLoading();
+                                this.$ga.event('character', 'load', 'success');
                                 //TODO:  Don't reload, just close everything and update as appropriate on load finishing
                                 location.reload();
                             })
                             .catch(error => {
                                 endLoading();
+                                this.$ga.event('character', 'load', 'failure');
                                 console.log('Error Loading Character');
                                 console.log(error);
                                 if (error.response){
@@ -100,6 +104,7 @@
                             });
                     }).catch(error => {
                         endLoading();
+                    this.$ga.event('character', 'load', 'badFile');
                         alert(error.message);
                 });
             }

@@ -19,6 +19,7 @@ mix.setPublicPath('public/')
         'vue',
         'vue-router',
         'vuex',
+        'vue-analytics',
         'uikit'
         // 'vegas', //Causes Errors if here!
     ])
