@@ -183,20 +183,21 @@ class EPSkill extends EPAtom{
         //Since the skill is over 60, and the new limit is positive, this works
         $underLimitCost = $newLimit * config('epcc.SkillPointUnderCost');
         $overLimitCost = $baseValue - $newLimit * config('epcc.SkillPointUpperCost');
-        return $underLimitCost + $overLimitCost;
+        return (int) $underLimitCost + $overLimitCost;
     }
 
     /**
      * How many skill points are from extra bonuses (specifically for calculating the cost of the skill)
      * @return int
      */
-    function getBonusForCost(){
+    function getBonusForCost(): int
+    {
          if (isset($this->linkedApt)){
              $lnk = $this->linkedApt->getValueForCpCost();
          }else{
              $lnk = 0;
          }
-         return $lnk + $this->backgroundMod + $this->factionMod;       
+         return (int) $lnk + $this->backgroundMod + $this->factionMod;
      }
      
     function getSavePack(): array
