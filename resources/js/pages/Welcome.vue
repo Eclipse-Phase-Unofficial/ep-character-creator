@@ -50,8 +50,13 @@
 </template>
 
 <script>
+    import About from "../components/modals/About";
+    import LoadDialog from "../components/modals/LoadDialog";
+    import NewCharacterModal from "../components/modals/NewCharacterModal";
+
     export default {
-        name: "Welcome"
+        name: "Welcome",
+        components: {About, LoadDialog, NewCharacterModal},
     }
 </script>
 

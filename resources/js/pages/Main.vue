@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- Ego/Morph MENU - STATIC CONTENT-->
+        <!-- Ego/Morph MENU -->
         <section id="primary" class="panel">
             <nav id="main-nav">
                 <panel-one></panel-one>
@@ -12,15 +12,18 @@
         <section id="tertiary" class="panel"></section>
         <section id="quaternary" class="panel"></section>
 
-        <!-- REMAINAING POINTS - DYNAMIC CONTENT-->
         <points-tracker></points-tracker>
         <main-menu></main-menu>
     </div>
 </template>
 
 <script>
+    import MainMenu from "../components/MainMenu";
+    import PointsTracker from "../components/PointsTracker";
+    import PanelOne from "../components/PanelOne";
     export default {
-        name: "Main"
+        name: "Main",
+        components: {PanelOne, PointsTracker, MainMenu}
     }
 </script>
 

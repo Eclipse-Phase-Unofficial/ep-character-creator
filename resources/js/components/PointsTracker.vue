@@ -21,8 +21,9 @@
 
     export default {
         name: "PointsTracker",
-        data: function () {return {
-            'description': `
+        data() {
+            return {
+                'description': `
                 Values used for the creation of your character.<br>
                 CP = Creation Points<br>
                 AP = Aptitude Points<br>
@@ -31,8 +32,9 @@
                 ASR = Minimum Active Skill Points Remaining<br>
                 KSR = Minimum Knowledge Skill Points Remaining<br>
                 RZ = Rez Points
-                `.replace(/(\r\n|\n|\r)/gm,'')
-        }},
+                `.replace(/(\r\n|\n|\r)/gm, '')
+            };
+        },
         computed: mapState('highLevel', [
             'rezPointsRemaining',
             'creationPointsRemaining',

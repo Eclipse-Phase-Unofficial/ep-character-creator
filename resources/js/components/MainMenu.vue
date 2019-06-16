@@ -12,7 +12,7 @@
         <button class="popupButton" href="#validation-modal" uk-toggle>
             Check
         </button>
-        <validation id="validation-modal"></validation>
+        <validation-check id="validation-modal"></validation-check>
         <div class='dropdown'>
             <button class="popupButton" id="exportButton">
                 Export
@@ -45,8 +45,13 @@
 </template>
 
 <script>
+    import About from "./modals/About";
+    import NewCharacterModal from "./modals/NewCharacterModal";
+    import ValidationCheck from "./modals/ValidationCheck";
+    import LoadDialog from "./modals/LoadDialog";
     export default {
-        name: "MainMenu"
+        name: "MainMenu",
+        components: {LoadDialog, ValidationCheck, NewCharacterModal, About}
     }
 </script>
 

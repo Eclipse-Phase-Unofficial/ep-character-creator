@@ -50,7 +50,7 @@ export default {
                             reputationPointsRemaining: data.reputation_remain,
                         });
                         context.commit('setCredits', data.credits);
-                        resolve(context)
+                        resolve(context);
                     })
                     .catch(error => {
                         if(error.response.status === 401) {
@@ -64,14 +64,14 @@ export default {
                         }
                         console.log('Error Getting Creator');
                         console.log(error);
-                        reject(error)
+                        reject(error);
                     });
             });
         }
     },
     getters: {
         creatorExists: state => {
-            return !(state.rezPointsRemaining === 'N/A' && state.creationPointsRemaining === 'N/A')
+            return !(state.rezPointsRemaining === 'N/A' && state.creationPointsRemaining === 'N/A');
         }
     },
 }

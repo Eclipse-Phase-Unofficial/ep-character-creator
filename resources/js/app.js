@@ -11,24 +11,13 @@ require('uikit');
 require('./background').init();
 
 //Vue and associated pieces
-const Vue = require('vue');
-const Vuex = require('vuex');
-const VueRouter = require('vue-router').default;
+import Vue from 'vue';
+import Vuex from'vuex';
+import VueRouter from 'vue-router';
 import VueAnalytics from 'vue-analytics';
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
-
-//Modals
-Vue.component('about', require('./components/modals/About').default);
-Vue.component('validation', require('./components/modals/ValidationCheck').default);
-Vue.component('load-dialog', require('./components/modals/LoadDialog').default);
-Vue.component('new-character-modal', require('./components/modals/NewCharacterModal').default);
-
-
-Vue.component('points-tracker', require('./components/PointsTracker').default);
-Vue.component('panel-one', require('./components/PanelOne').default);
-Vue.component('main-menu', require('./components/MainMenu').default);
 
 const store = new Vuex.Store({
     modules: {
@@ -78,9 +67,9 @@ router.beforeEach((to, from, next) => {
         store.commit('markFirstTime');
         store.dispatch('highLevel/getHighLevelCreatorInfo')
             .then(() => {
-                next()
-            }).catch(() => {next()});
-        return
+                next();
+            }).catch(() => {next();});
+        return;
     }
     next();
 });
