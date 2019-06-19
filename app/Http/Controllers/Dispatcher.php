@@ -17,6 +17,14 @@ use Illuminate\Http\Request;
 class Dispatcher extends Controller
 {
     /**
+     * Only allow access if a creator already exists
+     */
+    public function __construct()
+    {
+        $this->middleware('creator');
+    }
+
+    /**
      * Properly format error messages for UI
      * @param string|EPCreatorErrors $creatorError
      * @return array

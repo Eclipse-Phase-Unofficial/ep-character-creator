@@ -11,13 +11,17 @@
 |
 */
 
+use App\Creator\Exporters\pdfExporterV2_fpdf;
+
 Route::get('/', function () {
     return view('main');
 });
 
+Route::middleware('creator')->group(function (){
+
 Route::prefix('export')->group(function () {
     Route::get('/pdf', function() {
-        $exporter = new \App\Creator\Exporters\pdfExporterV2_fpdf();
+        $exporter = new pdfExporterV2_fpdf();
         if(!$exporter->export()){
             return response("Bad news, something went wrong, we can not print your character, verify your character and try again.", 500);
         }
@@ -285,6 +289,7 @@ Route::prefix('dispatch')->group(function () {
         Route::delete('freeGears/{gear}', function () {
         });
     });
+});
 });
 
 //Never 404, always let the SPA handle it
