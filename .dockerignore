@@ -1,45 +1,37 @@
 #Everything here will be ignored when building the Docker container.
 #Because of this, most automated build systems won't re-build a container when any of these change.
 
-# Ignore all documentation
-Documentation/
-Authors.md
-CHANGELOG.md
-LICENSE.md
-README.md
+#Actually go for the aproach of ignoring everything, and only pulling in what's needed
+*
 
-#Ignore git related files
-.git
-.gitattributes
-.gitignore
-.mailmap
-
-#Other random files we don't want in the final build
-docker-compose.yml
-
+!.docker/
+!app/
+!bootstrap/
+!config/
+!database/
+!public/
+!resources/
+!routes/
+!storage/
+!tests/
+!artisan
+!composer.json
+!composer.lock
+!package.json
+!package-lock.json
+!phpunit.xml
+!server.php
+!standalone.env
+!testing.env
+!webpack.mix.js
 
 # Ignore generated files, caches, basically everything in the .gitignore
-*.kdev4
-vendor/
-/node_modules
-/public/hot
 /public/storage
 /storage/*.key
-/vendor
-/.idea
-/.vscode
-/.vagrant
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-.env
 public/css
 public/js
 public/images/vendor
 public/mix-manifest.json
-.phpstorm.meta.php
-_ide_helper.php
 
 #These are still in the gitignore, but need special handling to work in dockerignore
 **/*~
