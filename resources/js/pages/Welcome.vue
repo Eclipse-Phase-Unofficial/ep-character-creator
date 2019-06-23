@@ -36,9 +36,8 @@
         <p>Please submit all suggestions and bug reports to the GitHub <a href="https://github.com/Eclipse-Phase-Unofficial/ep-character-creator/issues" target="_blank">Issues</a> page.</p>
         <p>If your session has expired and you were still working on your character feel free to open an issue.  I have ideas on how to fix it, but have prioritized fixing major bugs and modernizing the code.</p>
 
-        <h3>Mandatory EU Notice:</h3>
+        <h3>Privacy Policy:</h3>
         <p class="disclaimer">
-            This site uses JavaScript and cookies to function.  By continuing to use this site, you consent to the following privacy policy.
             In addition, automated bug reporting and Google Analytics are used to create a better site experience, and to reassure myself that all my work was not wasted.
             The creators of this site do not sell your data to anyone.
             This policy may be updated at any time.

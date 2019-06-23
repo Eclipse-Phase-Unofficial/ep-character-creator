@@ -14,6 +14,7 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import store from './store';
 import router from './router';
+import VueCookieAcceptDelcine from 'vue-cookie-accept-decline/src/vue-cookie-accept-decline';
 import App from './App';
 
 Vue.use(VueAnalytics, {
@@ -25,6 +26,8 @@ Vue.use(VueAnalytics, {
     // },
     router,
 });
+
+Vue.component('vue-cookie-accept-decline', VueCookieAcceptDelcine);
 
 window.app = new Vue({
     el: '#container',
