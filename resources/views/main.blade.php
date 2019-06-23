@@ -42,7 +42,6 @@ declare(strict_types=1);
         <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         <section id="messages"></section>
         <div id="container">
-            <router-view></router-view>
         </div>
 
         {{--<script src="{{mix('js/manifest.js')}}" type="text/javascript"></script>--}}

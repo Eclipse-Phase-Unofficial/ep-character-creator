@@ -14,6 +14,7 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import store from './store';
 import router from './router';
+import App from './App';
 
 Vue.use(VueAnalytics, {
     //If the variable isn't set dynamically, try the compiled in version.  If that fails, then fall back to a safe default.
@@ -29,4 +30,5 @@ window.app = new Vue({
     el: '#container',
     store,
     router,
+    render: h => h(App)
 });
