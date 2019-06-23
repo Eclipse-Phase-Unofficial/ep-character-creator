@@ -46,6 +46,7 @@
 
 <script>
     import urls from "../../urls";
+    import {readJsonFile} from "../../util";
 
     export default {
         name: "LoadDialog",

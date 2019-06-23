@@ -6,7 +6,7 @@
  * @param {File} file
  * @returns {Promise}
  */
-window.readJsonFile = function (file) {
+export const readJsonFile = function (file) {
     return new Promise((resolve, reject) => {
         let reader = new FileReader();
         reader.onload = function (event) {

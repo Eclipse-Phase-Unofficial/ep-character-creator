@@ -1,5 +1,4 @@
 import './bootstrap';
-import './helpers';
 
 //jQuery-ui
 require('jquery-ui/ui/widgets/tooltip');
