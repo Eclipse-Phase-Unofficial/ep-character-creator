@@ -169,3 +169,22 @@ function filterGeneralOnly(array $gears): array
     }
     return $result;
 }
+
+/**
+ * Convert any file into a data URI.
+ *
+ * @param string      $fileName The name (and path) of the file to convert.
+ * @param string|null $mimeType Optional.  The type of file being converted.
+ * @return string
+ */
+function createDataURI(string $fileName, string $mimeType = null)
+{
+    $fileContents = file_get_contents($fileName);
+    if (!$fileContents) {
+        throw new InvalidArgumentException("File does not exist: $fileName");
+    }
+    if (!$mimeType) {
+        $mimeType = mime_content_type($fileName);
+    }
+    return "data:" . $mimeType . ";base64," . base64_encode($fileContents);
+}

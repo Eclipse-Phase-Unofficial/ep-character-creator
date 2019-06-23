@@ -1,23 +1,5 @@
-<?php
-declare(strict_types=1);
-
-    error_reporting(0);
-    function createDataURI(string $file, string $mimeType = null){
-        $fileContents = file_get_contents($file);
-        if (!$fileContents) {
-            throw new \InvalidArgumentException("File does not exist: $file");
-        }
-        if(!$mimeType) {
-            $mimeType = mime_content_type($file);
-        }
-        return "data:".$mimeType.";base64,".base64_encode($fileContents);
-    }
-?>
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
