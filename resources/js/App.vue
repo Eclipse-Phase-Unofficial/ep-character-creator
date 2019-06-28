@@ -15,9 +15,11 @@
 
 <script>
     import inEU from '@segment/in-eu';
+    import VueCookieAcceptDelcine from 'vue-cookie-accept-decline/src/vue-cookie-accept-decline';
 
     export default {
         name: "App.vue",
+        components: {'vue-cookie-accept-decline': VueCookieAcceptDelcine},
         methods: {
             inEU: () => inEU(),
         }
