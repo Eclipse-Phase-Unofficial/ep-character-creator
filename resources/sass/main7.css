@@ -1,29 +1,4 @@
 /* ==========================================================================
-   HTML5 Boilerplate styles - h5bp.com (generated via initializr.com)
-   ========================================================================== */
-
-html,
-input,
-select,
-textarea {
-    height: 100%;
-    color: hsl(200,10%,40%);
-}
-
-body {
-    font-size: 1em;
-    line-height: 1.4;
-}
-
-img {
-    vertical-align: middle;
-}
-
-textarea {
-    resize: vertical;
-}
-
-/* ==========================================================================
    Author's custom styles
    ========================================================================== */
 html, body{
