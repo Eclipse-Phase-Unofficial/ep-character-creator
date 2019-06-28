@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100%; width: 100%;">
+    <div id="app">
         <vue-cookie-accept-decline
                 v-if="inEU()"
                 :elementId="'gaPanel'"
@@ -27,5 +27,9 @@
 </script>
 
 <style scoped>
-
+    #app{
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
 </style>

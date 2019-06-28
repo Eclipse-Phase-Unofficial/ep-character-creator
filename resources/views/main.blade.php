@@ -23,8 +23,7 @@
         <div id="loading_popup" class="loading-indicator"></div>
         <!-- MESSAGES FOR THE USER - DYNAMIC CONTENT-->
         <section id="messages"></section>
-        <div id="container">
-        </div>
+        <div id="app"></div>
 
         {{--<script src="{{mix('js/manifest.js')}}" type="text/javascript"></script>--}}
         {{--<script src="{{mix('js/vendor.js')}}" type="text/javascript"></script>--}}

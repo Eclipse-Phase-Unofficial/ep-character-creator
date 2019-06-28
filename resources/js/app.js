@@ -27,7 +27,7 @@ Vue.use(VueAnalytics, {
 });
 
 window.app = new Vue({
-    el: '#container',
+    el: '#app',
     store,
     router,
     render: h => h(App)
