@@ -11,28 +11,28 @@
   },
   "devDependencies": {
     "ajv": ">5.5.0",
-    "axios": "^0.19.0",
+    "axios": "^0.19",
     "cross-env": "^5.1",
     "jquery": "^3.2",
-    "jquery-ui": "^1.12.1",
-    "laravel-mix": "^4.0.16",
-    "normalize.css": "^8.0.0",
-    "postcss-import-url": "^3.0.4",
-    "postcss-url": "^7.3.2",
-    "resolve-url-loader": "^2.3.1",
-    "sass": "^1.21.0",
-    "sass-loader": "^7.1.0",
-    "vegas": "^2.4.4",
-    "vue-template-compiler": "^2.6.10"
+    "jquery-ui": "^1.12",
+    "laravel-mix": "^4.0",
+    "normalize.css": "^8.0",
+    "postcss-import-url": "^3.0",
+    "postcss-url": "^7.3",
+    "resolve-url-loader": "^2.3",
+    "sass": "^1.21",
+    "sass-loader": "^7.1",
+    "vegas": "^2.4",
+    "vue-template-compiler": "^2.6"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.9.0",
-    "@segment/in-eu": "^0.2.1",
-    "uikit": "^3.1.5",
-    "vue": "^2.6.10",
-    "vue-analytics": "^5.17.0",
-    "vue-cookie-accept-decline": "^5.2.3",
-    "vue-router": "^3.0.6",
-    "vuex": "^3.1.1"
+    "@fortawesome/fontawesome-free": "^5.9",
+    "@segment/in-eu": "^0.2",
+    "uikit": "^3.1",
+    "vue": "^2.6",
+    "vue-analytics": "^5.17",
+    "vue-cookie-accept-decline": "^5.2",
+    "vue-router": "^3.0",
+    "vuex": "^3.1"
   }
 }
