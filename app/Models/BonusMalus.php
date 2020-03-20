@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $value
  * @property string $targetForChoice
  * @property string $typeTarget
- * @property string $onCost
+ * @property bool $isCostModifier
  * @property string $multiOccur
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BonusMalus whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BonusMalus whereId($value)
@@ -32,4 +32,13 @@ use Illuminate\Database\Eloquent\Model;
 class BonusMalus extends Model
 {
     protected $table = 'bonusMalus';
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * @param $value
+     * @return bool
+     */
+    public function getIsCostModifierAttribute($value){
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 }

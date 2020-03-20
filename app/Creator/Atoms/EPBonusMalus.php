@@ -9,12 +9,12 @@ namespace App\Creator\Atoms;
  * @author reinhardt
  */
 class EPBonusMalus extends EPAtom{
-    
+
     static $ON_APTITUDE = 'OA';
     static $ON_APTITUDE_MORPH_MAX = 'AMM';
     static $ON_APTITUDE_EGO_MAX = 'AEM';
     static $ON_APTITUDE_MORPH_MIN = 'AMI';
-    static $ON_APTITUDE_EGO_MIN = 'AEI';  
+    static $ON_APTITUDE_EGO_MIN = 'AEI';
     static $ON_SKILL = 'OS';
     static $ON_SKILL_MAX = 'OSM';
     static $ON_SKILL_PREFIX = 'OSP'; //on all skill with the prefix
@@ -37,19 +37,19 @@ class EPBonusMalus extends EPAtom{
     static $MULTIPLE = 'MUL';
     static $DESCRIPTIVE_ONLY = 'DO';
     static $ON_IMPLANT = 'OI';
-    
+
     // Special case for Feeble negative trait
     static $ON_SPECIAL_01 = 'S01';
     // Special case for implant rejection level II trait
     static $ON_SPECIAL_02 = 'S02';
-    
+
     //This constant are use by the GUI on the $targetForChoice for choice skill
     static $ON_SKILL_WITH_PREFIX = 'SWP';
     static $ON_SKILL_ACTIVE = 'SAC';
     static $ON_SKILL_KNOWLEDGE = 'SKN';
     static $ON_SKILL_ACTIVE_AND_KNOWLEDGE = 'SAK';
     //---------
-       
+
     static $FROM_MORPH = 'MORPH';
     static $FROM_TRAIT = 'TRAIT';
     static $FROM_FACTION = 'FACTION';
@@ -87,11 +87,10 @@ class EPBonusMalus extends EPAtom{
      */
     public $typeTarget;
     /**
-     * true if this is a cost modifier
-     * TODO:  This is really a bool, and needs to be changed in the database/code to reflect that
-     * @var string
+     * If this modifies the target's cost instead of it's attribute.
+     * @var bool
      */
-    public $onCost;
+    public $isCostModifier;
 
     /**
      * Recursive structure holding an array of EPBonusMalus
@@ -109,25 +108,25 @@ class EPBonusMalus extends EPAtom{
      * @var bool
      */
     public $selected;
-    
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-	    
-        $savePack['bonusMalusType'] =  $this->bonusMalusType;
-        $savePack['forTargetNamed'] =  $this->forTargetNamed;
-        $savePack['value'] =  $this->value;
-        $savePack['targetForChoice'] =  $this->targetForChoice; 
-        $savePack['typeTarget'] =  $this->typeTarget; 
-        $savePack['onCost'] =  $this->onCost;
-        $savePack['multi_occurence'] =  $this->multi_occurence; 
-        $savePack['selected'] =  $this->selected;
+
+        $savePack['bonusMalusType']  =  $this->bonusMalusType;
+        $savePack['forTargetNamed']  =  $this->forTargetNamed;
+        $savePack['value']           =  $this->value;
+        $savePack['targetForChoice'] =  $this->targetForChoice;
+        $savePack['typeTarget']      =  $this->typeTarget;
+        $savePack['isCostModifier']  =  $this->isCostModifier;
+        $savePack['multi_occurence'] =  $this->multi_occurence;
+        $savePack['selected']        =  $this->selected;
         $bmSavePacks = array();
         foreach($this->bonusMalusTypes as $m){
             array_push($bmSavePacks	, $m->getSavePack());
         }
         $savePack['bonusMalusTypes'] = $bmSavePacks;
-	    
+
 	return $savePack;
     }
 
@@ -145,12 +144,20 @@ class EPBonusMalus extends EPAtom{
         $object->value           = (float)$an_array['value'];
         $object->targetForChoice = (string)$an_array['targetForChoice'];
         $object->typeTarget      = (string)$an_array['typeTarget'];
-        $object->onCost          = (string)$an_array['onCost'];
         $object->multi_occurence = (int)$an_array['multi_occurence'];
         $object->selected        = (bool)$an_array['selected'];
         foreach ($an_array['bonusMalusTypes'] as $m) {
             array_push($object->bonusMalusTypes, EPBonusMalus::__set_state($m));
         }
+
+        //Backwards compatibility with older (pre 1.53) save files
+        if(isset($an_array['onCost'])) {
+            if((string)$an_array['onCost'] === 'true') {
+                $object->isCostModifier = true;
+            }
+            return $object;
+        }
+        $object->isCostModifier = (bool)$an_array['isCostModifier'];
 
         return $object;
     }
@@ -159,11 +166,11 @@ class EPBonusMalus extends EPAtom{
      * EPBonusMalus constructor.
      * @param string         $name
      * @param string         $type
-     * @param int          $value
+     * @param int            $value
      * @param string         $targetName
      * @param string         $description
      * @param string[]       $groups
-     * @param string         $onCost
+     * @param bool           $isCostModifier
      * @param string         $targetForChoice
      * @param string         $typeTarget
      * @param EPBonusMalus[] $bonusMalusTypes
@@ -176,7 +183,7 @@ class EPBonusMalus extends EPAtom{
         string $targetName = "",
         string $description = "",
         array $groups = array(),
-        string $onCost = 'false',
+        bool $isCostModifier = false,
         string $targetForChoice = "",
         string $typeTarget = "",
         array $bonusMalusTypes = array(),
@@ -187,7 +194,7 @@ class EPBonusMalus extends EPAtom{
         $this->forTargetNamed = $targetName;
         $this->value = $value;
         $this->groups = $groups ;
-        $this->onCost = $onCost;
+        $this->isCostModifier = $isCostModifier;
         $this->targetForChoice = $targetForChoice;
         $this->typeTarget = $typeTarget;
         $this->bonusMalusTypes = $bonusMalusTypes; //array() bonus malus

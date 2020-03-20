@@ -2618,7 +2618,7 @@ CREATE TABLE IF NOT EXISTS "bonusMalus"
   value integer NOT NULL,
   targetForChoice varchar(20) NOT NULL,
   typeTarget varchar(20) NOT NULL,
-  onCost varchar(20) NOT NULL,
+  isCostModifier boolean NOT NULL,
   multiOccur varchar(20) NOT NULL
 );
 INSERT INTO bonusMalus VALUES(1,'+5 Reflex','get a +5 bonus to Reflex','OA','Reflex',5.0,'','','false','0');
@@ -2956,7 +2956,7 @@ INSERT INTO bonusMalus VALUES(332,'MRDR effect','Users receives +10 SOM, +1 Spee
 INSERT INTO bonusMalus VALUES(333,'Multi-Tasking','Get 2 Complex Actions on every Action Phase for mental or online actions.','DO','',0.0,'','','false','0');
 INSERT INTO bonusMalus VALUES(334,'Nanophages','Immunity against nanodrugs and nanotoxins.','DO','',0.0,'','','false','0');
 INSERT INTO bonusMalus VALUES(335,'No cortical stack','Your morph don''t have a Cortical Stack.','DO','',0.0,'','','false','0');
-INSERT INTO bonusMalus VALUES(336,'no implant','This morph not support any implants','S02','',0.0,'','','','');
+INSERT INTO bonusMalus VALUES(336,'no implant','This morph not support any implants','S02','',0.0,'','','false','');
 INSERT INTO bonusMalus VALUES(337,'No off-hand modifier','You do not suffer the off-hand modifier.','DO','',0.0,'','','false','0');
 INSERT INTO bonusMalus VALUES(338,'No physical form','You can not interact directly with the physical world.','DO','',0.0,'','','false','0');
 INSERT INTO bonusMalus VALUES(339,'No sense of Smell','You don have the sense of smell.','DO','',0.0,'','','false','0');

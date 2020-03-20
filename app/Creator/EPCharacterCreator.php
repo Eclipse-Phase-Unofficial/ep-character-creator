@@ -2739,42 +2739,42 @@ class EPCharacterCreator implements Savable
                 foreach ($group_members as $s){
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostMorphMod($bm->value);
                             }else{
                                 $s->morphMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostTraitMod($bm->value);
                             }else{
                                 $s->traitMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostFactionMod($bm->value);
                             }else{
                                 $s->factionMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostBackgroundMod($bm->value);
                             }else{
                                 $s->backgroundMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostSoftgearMod($bm->value);
                             }else{
                                 $s->softgearMod += $bm->value;
                             }
                         break;
                         case EPBonusMalus::$FROM_PSY:
-                            if ($bm->onCost == 'true'){
+                            if ($bm->isCostModifier){
                                 $s->multiplyRatioCostPsyMod($bm->value);
                             }else{
                                 $s->psyMod += $bm->value;
@@ -2888,7 +2888,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->armorEnergyMorphMod += $bm->value;
@@ -2900,7 +2900,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->armorEnergyTraitMod += $bm->value;
@@ -2912,7 +2912,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->armorEnergyBackgroundMod += $bm->value;
@@ -2924,7 +2924,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->armorEnergyFactionMod += $bm->value;
@@ -2936,7 +2936,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->armorEnergySoftgearMod += $bm->value;
@@ -2948,7 +2948,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
@@ -2967,7 +2967,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->armorEnergyMorphMod += $bm->value;
@@ -2978,7 +2978,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->armorEnergyTraitMod += $bm->value;
@@ -2989,7 +2989,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->armorEnergyBackgroundMod += $bm->value;
@@ -3000,7 +3000,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->armorEnergyFactionMod += $bm->value;
@@ -3011,7 +3011,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->ratioSoftgearPsyMod *= $bm->value;
                                     }else{
                                         $g->armorEnergySoftgearMod += $bm->value;
@@ -3022,7 +3022,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
@@ -3040,7 +3040,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->armorKineticMorphMod += $bm->value;
@@ -3051,7 +3051,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->armorKineticTraitMod += $bm->value;
@@ -3062,7 +3062,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->armorKineticBackgroundMod += $bm->value;
@@ -3073,7 +3073,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->armorKineticFactionMod += $bm->value;
@@ -3084,7 +3084,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->armorKineticSoftgearMod += $bm->value;
@@ -3095,7 +3095,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$ARMOR_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorKineticPsyMod += $bm->value;
@@ -3113,7 +3113,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->degatMorphMod += $bm->value;
@@ -3124,7 +3124,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->degatTraitMod += $bm->value;
@@ -3135,7 +3135,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
@@ -3146,7 +3146,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->degatFactionMod += $bm->value;
@@ -3157,7 +3157,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
@@ -3168,7 +3168,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_ENERGY_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
@@ -3186,7 +3186,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->degatMorphMod += $bm->value;
@@ -3197,7 +3197,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->degatTraitMod += $bm->value;
@@ -3208,7 +3208,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
@@ -3219,7 +3219,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->degatFactionMod += $bm->value;
@@ -3230,7 +3230,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
@@ -3241,7 +3241,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_MELEE_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
@@ -3259,7 +3259,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->degatMorphMod += $bm->value;
@@ -3270,7 +3270,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->degatTraitMod += $bm->value;
@@ -3281,7 +3281,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostBackgroundMod($bm->value);
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
@@ -3292,7 +3292,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->degatFactionMod += $bm->value;
@@ -3303,7 +3303,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
@@ -3314,7 +3314,7 @@ class EPCharacterCreator implements Savable
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
                                 if (strcmp($g->gearType,EPGear::$WEAPON_KINETIC_GEAR) == 0){
-                                    if ($bm->onCost == 'true'){
+                                    if ($bm->isCostModifier){
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->degatPsyMod += $bm->value;
@@ -3473,32 +3473,32 @@ class EPCharacterCreator implements Savable
                 }
             break;
             case EPBonusMalus::$ON_MORPH:
-                // Sur le oncost (facteur qui change)
-                if ($bm->onCost){
-                    if (is_array($this->character->morphs)){
-                        foreach ($this->character->morphs as $m){
-                            switch ($source) {
-                                case EPBonusMalus::$FROM_MORPH:
-                                    $m->multiplyRatioCostMorphMod($bm->value);
-                                break;
-                                case EPBonusMalus::$FROM_TRAIT:
-                                    $m->multiplyRatioCostTraitMod($bm->value);
-                                break;  
-                                case EPBonusMalus::$FROM_FACTION:
-                                    $m->multiplyRatioCostFactionMod($bm->value);
-                                break;    
-                                case EPBonusMalus::$FROM_BACKGROUND:
-                                    $m->multiplyRatioCostBackgroundMod($bm->value);
-                                break;                        
-                                case EPBonusMalus::$FROM_SOFTGEAR:
-                                    $m->multiplyRatioCostSoftgearMod($bm->value);
-                                break; 
-                                case EPBonusMalus::$FROM_PSY:
-                                    $m->multiplyRatioCostPsyMod($bm->value);
-                                break;                        
-                            }                            
+                if (!$bm->isCostModifier){
+                    break;
+                }
+                if (is_array($this->character->morphs)){  //TODO:  Consider if this check is needed
+                    foreach ($this->character->morphs as $m){
+                        switch ($source) {
+                            case EPBonusMalus::$FROM_MORPH:
+                                $m->multiplyRatioCostMorphMod($bm->value);
+                            break;
+                            case EPBonusMalus::$FROM_TRAIT:
+                                $m->multiplyRatioCostTraitMod($bm->value);
+                            break;
+                            case EPBonusMalus::$FROM_FACTION:
+                                $m->multiplyRatioCostFactionMod($bm->value);
+                            break;
+                            case EPBonusMalus::$FROM_BACKGROUND:
+                                $m->multiplyRatioCostBackgroundMod($bm->value);
+                            break;
+                            case EPBonusMalus::$FROM_SOFTGEAR:
+                                $m->multiplyRatioCostSoftgearMod($bm->value);
+                            break;
+                            case EPBonusMalus::$FROM_PSY:
+                                $m->multiplyRatioCostPsyMod($bm->value);
+                            break;
                         }
-                    }                                                     
+                    }
                 }
             break;
             case EPBonusMalus::$ON_REPUTATION_POINTS:
@@ -3622,7 +3622,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_MORPH:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostMorphMod($bm->value);
                                         }
                                     }                        
@@ -3631,7 +3631,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_TRAIT:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostTraitMod($bm->value);
                                         }                               
                                     }                        
@@ -3640,7 +3640,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_FACTION:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostFactionMod($bm->value);
                                         }                               
                                     }                        
@@ -3649,7 +3649,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostBackgroundMod($bm->value);
                                         }                             
                                     }                        
@@ -3658,7 +3658,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostSoftgearMod($bm->value);
                                         }                               
                                     }                        
@@ -3667,7 +3667,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_PSY:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
-                                        if ($bm->onCost == 'true'){
+                                        if ($bm->isCostModifier){
                                             $g->multiplyRatioCostPsyMod($bm->value);
                                         }                                
                                     }                        
