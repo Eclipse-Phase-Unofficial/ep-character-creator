@@ -43,22 +43,22 @@ class EPListProvider {
         $this->errors = array();
         $this->connect();
     }
-    
+
     function addError($error){
         array_push($this->errors, $error);
     }
-    
+
     function getLastError(){
         return array_pop($this->errors);
     }
-    
+
     //Helper functions
     function adjustForSQL($string){
         //$candidat = "";
         $candidat = str_replace("'", "''", $string);
         return $candidat;
     }
-    
+
     //==== BONUS MALUS =========
 
     function getBonusMalusByName(string $name): EPBonusMalus
@@ -83,16 +83,16 @@ class EPListProvider {
         }
         return $bmTypeArray;
     }
-    
+
     // ===== INFOS ======
-    function getInfosById($id){   
+    function getInfosById($id){
         $res = self::$database->query("SELECT `id`, `data` FROM `infos` WHERE `id` = '".$this->adjustForSQL($id)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $info = $row['data'];
         return $info;
     }
-    
+
     // ===== TRAIT ======
 
     /**
@@ -153,7 +153,7 @@ class EPListProvider {
             $traitRow['desc'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
         return $trait;
     }
-    
+
     // ==== APTITUDE ======
 
     /**
@@ -193,7 +193,7 @@ class EPListProvider {
         $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
         return $epAppt;
     }
-    
+
     //=== STATS ====
     //TODO:  Some do and some don't take EPCharacterCreator. None of them should take it, but that's ongoing.
 
@@ -220,9 +220,9 @@ class EPListProvider {
         }
         return $stats;
     }
-    
+
     //=== PREFIX ===
-    
+
     function getListPrefix(){
         $prefixes = array();
         $res = self::$database->query("SELECT `prefix` FROM `skillPrefixes`");
@@ -233,8 +233,8 @@ class EPListProvider {
         }
         return $prefixes;
     }
-    
-    
+
+
     function getAptForPrefix($prefixName){
         $res = self::$database->query("SELECT `linkedApt` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -242,14 +242,14 @@ class EPListProvider {
 
         return $row['linkedApt'];
     }
-    
+
     function getTypeForPrefix($prefixName){
         $res = self::$database->query("SELECT `skillType` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         return $row['skillType'];
     }
-    
+
     function getPrefixDescription($prefixName){
         $res = self::$database->query("SELECT `desc` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -257,7 +257,7 @@ class EPListProvider {
 
         return $row['desc'];
     }
-    
+
     // ===== Services ====
     function getAptByAbreviation($listApts,$abr){
         foreach ($listApts as $ap){
@@ -267,7 +267,7 @@ class EPListProvider {
         }
         return null;
     }
-    
+
     // ===== SKILLS ===========
 
     /**
@@ -306,9 +306,9 @@ class EPListProvider {
             $this->getAptByAbreviation($listApt, $row['linkedApt']), $row['prefix'], $groups);
         return $epSkills;
     }
-    
+
     // ==== GROUPE =====
-    
+
     function getListGroups($targetName = ""){
         $groupsList = array();
         if(!empty($targetName)){
@@ -341,7 +341,7 @@ class EPListProvider {
         }
         return $groupsList;
     }
-    
+
     //==== REPUTATION ====
 
     /**
@@ -361,7 +361,7 @@ class EPListProvider {
         }
         return $reputations;
     }
-    
+
     //==== BACKGROUND =====
 
     /**
@@ -418,7 +418,7 @@ class EPListProvider {
         }
         return $backgroundList;
     }
-    
+
     // ==== AI =====
 
     /**
@@ -470,8 +470,8 @@ class EPListProvider {
         }
         return $aiList;
     }
-    
-    
+
+
     //==== GEAR ====
 
     /**
@@ -541,7 +541,7 @@ class EPListProvider {
             intval($gearRow['armorPene']), $bonusMalusGearList, $gearRow['JustFor'], $gearRow['unique'] !== "N");
         return $gear;
     }
-    
+
     //==== MORPH =====
 
     /**
@@ -606,8 +606,8 @@ class EPListProvider {
         }
         return $morphList;
     }
-    
-    
+
+
     //PSY SLEIGHT
 
     /**
@@ -644,7 +644,7 @@ class EPListProvider {
         return $psyList;
     }
 
-    //BOOK 
+    //BOOK
     function getBookForName(string $name): ?string
     {
         $res = self::$database->query("SELECT `book` FROM `AtomBook` WHERE `name` = '".$this->adjustForSQL($name)."';");
@@ -654,7 +654,7 @@ class EPListProvider {
         $book = $row['book'];
         return $book;
     }
-    
+
     //PAGE
     function getPageForName(string $name): ?string
     {
@@ -665,4 +665,4 @@ class EPListProvider {
         $page = $row['page'];
         return $page;
     }
-}  
+}
