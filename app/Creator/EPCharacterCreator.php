@@ -47,14 +47,14 @@ class EPCharacterCreator implements Savable
      * @var EPValidation
      */
     public  $validation;
-    
+
     public $nativeLanguageSet;
     public $creationMode;
-    
+
     public $evoRezPoint;
     public $evoRepPoint;
     public $evoCrePoint;
-    
+
     public $evoCrePointPurchased;
 
     /**
@@ -186,33 +186,33 @@ class EPCharacterCreator implements Savable
     function getSavePack(): array
     {
 		$savePack = array();
-		
+
         $savePack['versionName'] = config('epcc.versionName');
         $savePack['versionNumber'] = config('epcc.versionNumber');
-                
+
         $savePack['initialCreationPoints'] = $this->initialCreationPoints;
 		$savePack['aptitudePoints'] = $this->aptitudePoints;
 		$savePack['reputationPoints'] = $this->reputationPoints;
-		
+
 		$savePack['reputationPointsMorphMod'] = $this->reputationPointsMorphMod;
 		$savePack['reputationPointsTraitMod'] = $this->reputationPointsTraitMod;
 		$savePack['reputationPointsFactionMod'] = $this->reputationPointsFactionMod;
 		$savePack['reputationPointsBackgroundMod'] = $this->reputationPointsBackgroundMod;
 		$savePack['reputationPointsSoftGearMod'] = $this->reputationPointsSoftGearMod;
 		$savePack['reputationPointsPsyMod'] = $this->reputationPointsPsyMod;
-		
+
 		$savePack['nativeLanguageSet'] = $this->nativeLanguageSet;
-                
+
         $savePack['creationMode'] = $this->creationMode;
         $savePack['evoRezPoint'] = $this->evoRezPoint;
         $savePack['evoRepPoint'] = $this->evoRepPoint;
         $savePack['evoCrePoint'] = $this->evoCrePoint;
         $savePack['evoCrePointPurchased'] = $this->evoCrePointPurchased;
-                		
+
 		$savePack['charSavePack'] = $this->character->getSavePack();
-		
+
 		return $savePack;
-		
+
     }
 
     /**
@@ -261,7 +261,7 @@ class EPCharacterCreator implements Savable
         $this->validation = new EPValidation();
         $this->evoRezPoint = 0;
         $this->evoRepPoint = 0;
-        $this->evoCrePoint = 0;  
+        $this->evoCrePoint = 0;
         $this->evoCrePointPurchased = 0;
 
         $this->listProvider = new EPListProvider();
@@ -319,9 +319,9 @@ class EPCharacterCreator implements Savable
                     $this->adjustAll();
                     return true;
                 }
-            }            
+            }
         }
-        
+
         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Morph not exist in character morph list !)', EPCreatorErrors::$SYSTEM_ERROR));
         return false;
     }
@@ -330,22 +330,22 @@ class EPCharacterCreator implements Savable
         if ($this->creationMode){
             if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
-            }        
+            }
             if ($ai->addToArray($this->character->ego->ais)){
                 $this->adjustAll();
-                return true;            
+                return true;
             }
-            return false;            
+            return false;
         }else{
             if ($ai->isInArray($this->character->ego->defaultAis)){
                 return true;
-            }        
+            }
             if ($ai->addToArray($this->character->ego->ais)){
                 $this->adjustAll();
                 $this->evoCrePoint -= $ai->getCost();
-                return true;            
+                return true;
             }
-            return false;            
+            return false;
         }
     }
     function checkValidation(): bool
@@ -360,7 +360,7 @@ class EPCharacterCreator implements Savable
         $this->validation->items[EPValidation::$ACTIVE_SKILLS_MIN] = $this->getActiveRestNeed() == 0;
         $this->validation->items[EPValidation::$KNOWLEDGE_SKILLS_MIN] = $this->getKnowledgeRestNeed() == 0;
         $this->validation->items[EPValidation::$CREDIT_AMOUNT_ENOUGH] = $this->getCredit() >= 0;
-  
+
         return  $this->validation->items[EPValidation::$APTITUDE_POINT_USE] &&
                 $this->validation->items[EPValidation::$REPUTATION_POINT_USE] &&
                 $this->validation->items[EPValidation::$BACKGROUND_CHOICE] &&
@@ -2517,23 +2517,23 @@ class EPCharacterCreator implements Savable
                         $a->maxValue = min(4,$a->maxValue);
                         $a->minValue = min(0,$a->minValue);
                     }
-                }                 
+                }
             break;
             case EPBonusMalus::$ON_SPECIAL_02: // Special for implant reject level II trait
                 foreach ($this->character->morphs as $m) {
                     if ($this->morphHaveBonusMalus($bm, $m)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
-                                $m->implantReject = true;  
+                                $m->implantReject = true;
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         $this->removeGear($g, $m);
                                     }
                                 }
-                            break;                   
-                        }                        
-                    }                    
-                }                
+                            break;
+                        }
+                    }
+                }
             break;
             case EPBonusMalus::$ON_APTITUDE:
                 foreach ($this->character->ego->aptitudes as $a){
@@ -2589,27 +2589,27 @@ class EPCharacterCreator implements Savable
             break;
             case EPBonusMalus::$ON_APTITUDE_MORPH_MAX:
                 switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:                        
+                    case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueMorphMod += $bm->value;
                             }
-                        }                                               
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueTraitMod += $bm->value;
                             }
-                        } 
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValueBackgroundMod += $bm->value;
                             }
                         }
-                    break;               
+                    break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
@@ -2623,39 +2623,39 @@ class EPCharacterCreator implements Savable
                                 $a->maxMorphValueSoftgearMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->maxMorphValuePsyMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                 }
             break;
             case EPBonusMalus::$ON_APTITUDE_MORPH_MIN:
                 switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:                        
+                    case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueMorphMod += $bm->value;
                             }
-                        }                                               
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueTraitMod += $bm->value;
                             }
-                        } 
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValueBackgroundMod += $bm->value;
                             }
                         }
-                    break;               
+                    break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
@@ -2669,39 +2669,39 @@ class EPCharacterCreator implements Savable
                                 $a->minMorphValueSoftgearMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minMorphValuePsyMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                 }
             break;
             case EPBonusMalus::$ON_APTITUDE_EGO_MIN:
                 switch ($source) {
-                    case EPBonusMalus::$FROM_MORPH:                        
+                    case EPBonusMalus::$FROM_MORPH:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueMorphMod += $bm->value;
                             }
-                        }                                               
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueTraitMod += $bm->value;
                             }
-                        } 
-                    break;               
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValueBackgroundMod += $bm->value;
                             }
                         }
-                    break;               
+                    break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
@@ -2715,14 +2715,14 @@ class EPCharacterCreator implements Savable
                                 $a->minEgoValueSoftgearMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->aptitudes as $a){
                             if (strcmp($bm->forTargetNamed,$a->getName()) == 0 || EPAtom::isInGroups($a,$bm->groups)){
                                 $a->minEgoValuePsyMod += $bm->value;
                             }
                         }
-                    break;  
+                    break;
                 }
             break;
             case EPBonusMalus::$ON_SKILL:
@@ -2823,33 +2823,33 @@ class EPCharacterCreator implements Savable
                     case EPBonusMalus::$FROM_MORPH:
                         foreach ($ls as $s){
                             $s->morphMod += $bm->value;
-                        } 
+                        }
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($ls as $s){
                             $s->traitMod += $bm->value;
-                        } 
+                        }
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($ls as $s){
                             $s->factionMod += $bm->value;
-                        } 
-                    break;   
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($ls as $s){
                             $s->backgroundMod += $bm->value;
-                        } 
-                    break;                    
+                        }
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($ls as $s){
                             $s->softgearMod += $bm->value;
-                        } 
-                    break; 
+                        }
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($ls as $s){
                             $s->psyMod += $bm->value;
-                        } 
-                    break;                     
+                        }
+                    break;
                 }
             break;
             case EPBonusMalus::$ON_SKILL_TYPE:
@@ -2864,26 +2864,26 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 $s->traitMod += $bm->value;
-                            break;  
+                            break;
                             case EPBonusMalus::$FROM_FACTION:
                                 $s->factionMod += $bm->value;
-                            break;    
+                            break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 $s->backgroundMod += $bm->value;
-                            break;                        
+                            break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 $s->softgearMod += $bm->value;
-                            break; 
+                            break;
                             case EPBonusMalus::$FROM_PSY:
                                 $s->psyMod += $bm->value;
-                            break;                        
-                        } 
-                    }                        
+                            break;
+                        }
+                    }
                 }
             break;
             case EPBonusMalus::$ON_ARMOR:
-                $m = $this->getCurrentMorph(); 
-                if (isset($m)){ 
+                $m = $this->getCurrentMorph();
+                if (isset($m)){
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
@@ -2892,9 +2892,9 @@ class EPCharacterCreator implements Savable
                                         $g->multiplyRatioCostMorphMod($bm->value);
                                     }else{
                                         $g->armorEnergyMorphMod += $bm->value;
-                                        $g->armorKineticMorphMod += $bm->value;                                        
+                                        $g->armorKineticMorphMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
@@ -2904,9 +2904,9 @@ class EPCharacterCreator implements Savable
                                         $g->multiplyRatioCostTraitMod($bm->value);
                                     }else{
                                         $g->armorEnergyTraitMod += $bm->value;
-                                        $g->armorKineticTraitMod += $bm->value;                                        
+                                        $g->armorKineticTraitMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
@@ -2918,7 +2918,7 @@ class EPCharacterCreator implements Savable
                                         $g->armorEnergyBackgroundMod += $bm->value;
                                         $g->armorKineticBackgroundMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
@@ -2928,9 +2928,9 @@ class EPCharacterCreator implements Savable
                                         $g->multiplyRatioCostFactionMod($bm->value);
                                     }else{
                                         $g->armorEnergyFactionMod += $bm->value;
-                                        $g->armorKineticFactionMod += $bm->value;                                        
+                                        $g->armorKineticFactionMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
@@ -2940,9 +2940,9 @@ class EPCharacterCreator implements Savable
                                         $g->multiplyRatioCostSoftgearMod($bm->value);
                                     }else{
                                         $g->armorEnergySoftgearMod += $bm->value;
-                                        $g->armorKineticSoftgearMod += $bm->value;                                        
+                                        $g->armorKineticSoftgearMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_PSY:
@@ -2952,17 +2952,17 @@ class EPCharacterCreator implements Savable
                                         $g->multiplyRatioCostPsyMod($bm->value);
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
-                                        $g->armorKineticPsyMod += $bm->value;                                        
+                                        $g->armorKineticPsyMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
-                        break;                        
+                        break;
                     }
-                }                  
+                }
             break;
             case EPBonusMalus::$ON_ENERGY_ARMOR:
-                $m = $this->getCurrentMorph(); 
-                if (isset($m)){  
+                $m = $this->getCurrentMorph();
+                if (isset($m)){
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
@@ -2972,7 +2972,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergyMorphMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
@@ -2983,7 +2983,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergyTraitMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
@@ -2994,7 +2994,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergyBackgroundMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
@@ -3005,7 +3005,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergyFactionMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
@@ -3016,7 +3016,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergySoftgearMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_PSY:
@@ -3027,15 +3027,15 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorEnergyPsyMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
-                        break;                        
+                        break;
                     }
-                }                  
+                }
             break;
             case EPBonusMalus::$ON_KINETIC_ARMOR:
-                $m = $this->getCurrentMorph(); 
-                if (isset($m)){  
+                $m = $this->getCurrentMorph();
+                if (isset($m)){
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
@@ -3045,7 +3045,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticMorphMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
@@ -3056,7 +3056,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticTraitMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
@@ -3067,7 +3067,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticBackgroundMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
@@ -3078,7 +3078,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticFactionMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
@@ -3089,7 +3089,7 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticSoftgearMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
                         break;
                         case EPBonusMalus::$FROM_PSY:
@@ -3100,11 +3100,11 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->armorKineticPsyMod += $bm->value;
                                     }
-                                } 
+                                }
                             }
-                        break;                        
+                        break;
                     }
-                }         
+                }
             break;
             case EPBonusMalus::$ON_ENERGY_WEAPON_DAMAGE:
                 $m = $this->getCurrentMorph();
@@ -3118,8 +3118,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatMorphMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
@@ -3129,8 +3129,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatTraitMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
@@ -3140,8 +3140,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
@@ -3151,8 +3151,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatFactionMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
@@ -3162,8 +3162,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
@@ -3173,9 +3173,9 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
-                                } 
-                            }                            
-                        break;                        
+                                }
+                            }
+                        break;
                     }
                 }
             break;
@@ -3191,8 +3191,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatMorphMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
@@ -3202,8 +3202,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatTraitMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
@@ -3213,8 +3213,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
@@ -3224,8 +3224,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatFactionMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
@@ -3235,8 +3235,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
@@ -3246,9 +3246,9 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
-                                } 
-                            }                            
-                        break;                        
+                                }
+                            }
+                        break;
                     }
                 }
             break;
@@ -3264,8 +3264,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatMorphMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
@@ -3275,8 +3275,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatTraitMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
@@ -3286,8 +3286,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatBackgroundMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
@@ -3297,8 +3297,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatFactionMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
@@ -3308,8 +3308,8 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatSoftgearMod += $bm->value;
                                     }
-                                } 
-                            }                            
+                                }
+                            }
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
@@ -3319,9 +3319,9 @@ class EPCharacterCreator implements Savable
                                     }else{
                                         $g->degatPsyMod += $bm->value;
                                     }
-                                } 
-                            }                            
-                        break;                        
+                                }
+                            }
+                        break;
                     }
                 }
             break;
@@ -3332,45 +3332,45 @@ class EPCharacterCreator implements Savable
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->morphMod += $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->traitMod += $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->factionMod += $bm->value;
                             }
-                        }                        
-                    break; 
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->backgroundMod += $bm->value;
                             }
-                        }                        
-                    break;                
+                        }
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->softgearMod += $bm->value;
                             }
-                        }                        
-                    break;     
+                        }
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->psyMod += $bm->value;
                             }
-                        }                        
-                    break;                     
-                }                 
-            break; 
+                        }
+                    break;
+                }
+            break;
             case EPBonusMalus::$ON_GROUP:
                 // On passe en revue les skills et si le skill appartient au group on lui applique le bm
                 foreach ($this->character->ego->skills as $s){
@@ -3381,21 +3381,21 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 $s->traitMod += $bm->value;
-                            break;  
+                            break;
                             case EPBonusMalus::$FROM_FACTION:
                                 $s->factionMod += $bm->value;
-                            break;    
+                            break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 $s->backgroundMod += $bm->value;
-                            break;                        
+                            break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 $s->softgearMod += $bm->value;
-                            break; 
+                            break;
                             case EPBonusMalus::$FROM_PSY:
                                 $s->psyMod += $bm->value;
-                            break;                        
-                        } 
-                    }                        
+                            break;
+                        }
+                    }
                 }
             break;
             case EPBonusMalus::$ON_STAT:
@@ -3407,21 +3407,21 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 $st->traitMod += $bm->value;
-                            break;  
+                            break;
                             case EPBonusMalus::$FROM_FACTION:
                                 $st->factionMod += $bm->value;
-                            break;    
+                            break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 $st->backgroundMod += $bm->value;
-                            break;                        
+                            break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 $st->softgearMod += $bm->value;
-                            break; 
+                            break;
                             case EPBonusMalus::$FROM_PSY:
                                 $st->psyMod += $bm->value;
-                            break;                        
-                        } 
-                    }                    
+                            break;
+                        }
+                    }
                 }
             break;
             case EPBonusMalus::$ON_STAT_MULTIPLI:
@@ -3433,43 +3433,43 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 $st->multiTraitMod *= $bm->value;
-                            break;  
+                            break;
                             case EPBonusMalus::$FROM_FACTION:
                                 $st->multiFactionMod *= $bm->value;
-                            break;    
+                            break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 $st->multiBackgroundMod *= $bm->value;
-                            break;                        
+                            break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 $st->multiSoftgearMod *= $bm->value;
-                            break; 
+                            break;
                             case EPBonusMalus::$FROM_PSY:
                                 $st->multiPsyMod *= $bm->value;
-                            break;                        
-                        } 
-                    }                    
+                            break;
+                        }
+                    }
                 }
             break;
-            case EPBonusMalus::$ON_CREDIT:  
+            case EPBonusMalus::$ON_CREDIT:
                 switch ($source) {
                     case EPBonusMalus::$FROM_MORPH:
                         $this->character->ego->creditMorphMod += $bm->value;
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         $this->character->ego->creditTraitMod += $bm->value;
-                    break;  
+                    break;
                     case EPBonusMalus::$FROM_FACTION:
                         $this->character->ego->creditFactionMod += $bm->value;
-                    break;    
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         $this->character->ego->creditBackgroundMod += $bm->value;
-                    break;                        
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         $this->character->ego->creditSoftGearMod += $bm->value;
-                    break; 
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         $this->character->ego->creditPsyMod += $bm->value;
-                    break;                        
+                    break;
                 }
             break;
             case EPBonusMalus::$ON_MORPH:
@@ -3508,20 +3508,20 @@ class EPCharacterCreator implements Savable
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         $this->reputationPointsTraitMod += $bm->value;
-                    break;  
+                    break;
                     case EPBonusMalus::$FROM_FACTION:
                         $this->reputationPointsFactionMod += $bm->value;
-                    break;    
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         $this->reputationPointsBackgroundMod += $bm->value;
-                    break;                        
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         $this->reputationPointsSoftGearMod += $bm->value;
-                    break; 
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         $this->reputationPointsPsyMod += $bm->value;
-                    break;                        
-                }                                   
+                    break;
+                }
             break;
             case EPBonusMalus::$ON_REPUTATION_MAX:
                 switch ($source) {
@@ -3530,44 +3530,44 @@ class EPCharacterCreator implements Savable
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueMorphMod += $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueTraitMod += $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueFactionMod += $bm->value;
                             }
-                        }                        
-                    break; 
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueBackgroundMod += $bm->value;
                             }
-                        }                        
-                    break;                
+                        }
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValueSoftgearMod += $bm->value;
                             }
-                        }                        
-                    break;     
+                        }
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->maxValuePsyMod += $bm->value;
                             }
-                        }                        
-                    break;                     
-                }                 
+                        }
+                    break;
+                }
             break;
             case EPBonusMalus::$ON_REPUTATION_ABSOLUTE:
                 switch ($source) {
@@ -3576,48 +3576,48 @@ class EPCharacterCreator implements Savable
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueMorphMod = $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_TRAIT:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueTraitMod = $bm->value;
                             }
-                        }                        
+                        }
                     break;
                     case EPBonusMalus::$FROM_FACTION:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueFactionMod = $bm->value;
                             }
-                        }                        
-                    break; 
+                        }
+                    break;
                     case EPBonusMalus::$FROM_BACKGROUND:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueBackgroundMod = $bm->value;
                             }
-                        }                        
-                    break;                
+                        }
+                    break;
                     case EPBonusMalus::$FROM_SOFTGEAR:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValueSoftgearMod = $bm->value;
                             }
-                        }                        
-                    break;     
+                        }
+                    break;
                     case EPBonusMalus::$FROM_PSY:
                         foreach ($this->character->ego->reputations as $r){
                             if (strcmp($r->getName(),$bm->forTargetNamed) == 0 || EPAtom::isInGroups($r,$bm->groups)){
                                 $r->absoluteValuePsyMod = $bm->value;
                             }
-                        }                        
-                    break;                     
-                }                 
+                        }
+                    break;
+                }
             break;
             case EPBonusMalus::$ON_IMPLANT:
                 foreach ($this->character->morphs as $m) {
-                    if ($this->morphHaveBonusMalus($bm,$m)){ 
+                    if ($this->morphHaveBonusMalus($bm,$m)){
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 foreach ($m->additionalGears as $g) {
@@ -3625,58 +3625,58 @@ class EPCharacterCreator implements Savable
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostMorphMod($bm->value);
                                         }
-                                    }                        
-                                }                        
-                            break;                           
+                                    }
+                                }
+                            break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostTraitMod($bm->value);
-                                        }                               
-                                    }                        
-                                }                            
+                                        }
+                                    }
+                                }
                             break;
                             case EPBonusMalus::$FROM_FACTION:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostFactionMod($bm->value);
-                                        }                               
-                                    }                        
-                                }                            
-                            break;    
+                                        }
+                                    }
+                                }
+                            break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostBackgroundMod($bm->value);
-                                        }                             
-                                    }                        
-                                }                            
+                                        }
+                                    }
+                                }
                             break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostSoftgearMod($bm->value);
-                                        }                               
-                                    }                        
-                                }                            
+                                        }
+                                    }
+                                }
                             break;
                             case EPBonusMalus::$FROM_PSY:
                                 foreach ($m->additionalGears as $g) {
                                     if ($g->isImplant()){
                                         if ($bm->isCostModifier){
                                             $g->multiplyRatioCostPsyMod($bm->value);
-                                        }                                
-                                    }                        
-                                }                            
-                            break;                    
-                        }                          
-                    }                    
+                                        }
+                                    }
+                                }
+                            break;
+                        }
+                    }
                 }
-            break;            
+            break;
             case EPBonusMalus::$MULTIPLE:
                 if (is_array($bm->bonusMalusTypes)){
                     foreach ($bm->bonusMalusTypes as $b){
@@ -3686,21 +3686,21 @@ class EPCharacterCreator implements Savable
                     }
                 }
             break;
-        } 
+        }
     }
     function morphHaveBonusMalus(EPBonusMalus $bonusMalus,EPMorph $mmorph){
         foreach ($mmorph->traits as $t) {
             foreach ($t->bonusMalus as $b) {
                 if (strcmp($b->getName(),$bonusMalus->getName()) == 0){
                     return true;
-                }                
+                }
             }
         }
         foreach ($mmorph->additionalTraits as $t) {
             foreach ($t->bonusMalus as $b) {
                 if (strcmp($b->getName(),$bonusMalus->getName()) == 0){
                     return true;
-                }                
+                }
             }
         }
         return false;
@@ -3717,7 +3717,7 @@ class EPCharacterCreator implements Savable
         //Finds the last space followed by non space characters
         return preg_replace('/\s[^\s]*$/','', $name);
 	}
-	
+
 	function getMorphGrantedBMApptitudesNameList(EPMorph $morph){
 		$aptNameList = array();
 		foreach($morph->bonusMalus as $bm){
