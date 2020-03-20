@@ -63,14 +63,13 @@ class EPListProvider {
 
     function getBonusMalusByName(string $name): EPBonusMalus
     {
-//        TODO:  Rename 'traget'ForCh to 'target'ForChoice
-        $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `tragetForCh`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';");
+        $res = self::$database->query("SELECT `name`, `desc`, `type`, `target`, `value`, `targetForChoice`, `typeTarget`, `onCost`, `multiOccur` FROM `bonusMalus` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
         $bmTypes = $this->getBonusMalusTypes($row['name']);
         $epBonMal = new EPBonusMalus($row['name'], $row['type'], intval($row['value']), $row['target'], $row['desc'],
-            $groups, $row['onCost'], $row['tragetForCh'], $row['typeTarget'], $bmTypes, intval($row['multiOccur']));
+            $groups, $row['onCost'], $row['targetForChoice'], $row['typeTarget'], $bmTypes, intval($row['multiOccur']));
         return $epBonMal;
     }
 

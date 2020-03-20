@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property string $target
  * @property float $value
- * @property string $tragetForCh
+ * @property string $targetForChoice
  * @property string $typeTarget
  * @property string $onCost
  * @property string $multiOccur

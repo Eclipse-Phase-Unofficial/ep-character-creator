@@ -2616,7 +2616,7 @@ CREATE TABLE IF NOT EXISTS "bonusMalus"
   type varchar(3) NOT NULL,
   target varchar(60) NOT NULL,
   value integer NOT NULL,
-  tragetForCh varchar(20) NOT NULL,
+  targetForChoice varchar(20) NOT NULL,
   typeTarget varchar(20) NOT NULL,
   onCost varchar(20) NOT NULL,
   multiOccur varchar(20) NOT NULL
