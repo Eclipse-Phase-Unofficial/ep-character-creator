@@ -30,6 +30,9 @@ use Illuminate\Database\Eloquent\Model;
 class Morph extends Model
 {
     protected $casts = [
-        'creditCost' => 'integer',
+        'maxApptitude' => 'integer',
+        'durability'   => 'integer',
+        'cpCost'       => 'integer',
+        'creditCost'   => 'integer',
     ];
 }
