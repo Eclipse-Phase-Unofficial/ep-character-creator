@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $action
  * @property string $level
  * @property string $strainMod
- * @property string $skillNeeded
+ * @property string|null $skillNeeded
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PsySleight whereAction($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PsySleight whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\PsySleight whereDuration($value)

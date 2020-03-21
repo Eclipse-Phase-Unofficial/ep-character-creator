@@ -9,23 +9,23 @@ namespace App\Creator\Atoms;
  * @author jigé
  */
 class EPPsySleight extends EPAtom{
-    
+
     static $ACTIVE_PSY = 'ACT';
     static $PASSIVE_PSY = 'PAS';
-    
+
     static $LEVEL_CHI_PSY = 'CHI';
     static $LEVEL_GAMMA_PSY = 'GAM';
-    
+
     static $RANGE_SELF = 'SELF';
     static $RANGE_TOUCH = 'TOUCH';
     static $RANGE_CLOSE = 'CLOSE';
     static $RANGE_PSY = 'PSY';
-    
+
     static $DURATION_CONSTANT = 'constant';
     static $DURATION_INSTANT = 'instant';
     static $DURATION_TEMPORARY = 'temporary';
     static $DURATION_SUSTAINED = 'sustained';
-    
+
     static $ACTION_AUTOMATIC = 'automatic' ;
     static $ACTION_QUICK = 'quick' ;
     static $ACTION_TASK = 'task' ;
@@ -66,7 +66,7 @@ class EPPsySleight extends EPAtom{
     public $psyLevel;
     /**
      * Never actually used for anything
-     * @var string
+     * @var string|null
      */
     private $skillNeeded;
     /**
@@ -86,7 +86,7 @@ class EPPsySleight extends EPAtom{
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-	    	    
+
         $savePack['psyType'] = $this->psyType;
         $savePack['range'] = $this->range;
         $savePack['duration'] = $this->duration;
@@ -152,7 +152,7 @@ class EPPsySleight extends EPAtom{
         string $strainMod,
         string $psyLevel,
         array $bonusMalusArray = array(),
-        string $skillNeeded = "none"
+        ?string $skillNeeded = null
     ) {
         parent::__construct($name, $description);
         $this->psyType = $psyType;
@@ -164,7 +164,7 @@ class EPPsySleight extends EPAtom{
         $this->isActif = false;
         $this->psyLevel = $psyLevel;
         $this->skillNeeded = $skillNeeded;
-        $this->buyInCreationMode = true;        
+        $this->buyInCreationMode = true;
     }
 
     /**
