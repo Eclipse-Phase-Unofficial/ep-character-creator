@@ -480,7 +480,7 @@ class EPListProvider {
     function getListGears(): array
     {
         $gearList = array();
-        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `gear`");
+        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPene`,`JustFor`, `unique` FROM `gear`");
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($gearRow = $gearRes->fetch()) {
             $bonusMalusGearList = array();
@@ -499,7 +499,7 @@ class EPListProvider {
                 }
             }
             $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
-                intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['degat'], intval($gearRow['armorPene']),
+                intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'], intval($gearRow['armorPene']),
                 $bonusMalusGearList, $gearRow['JustFor'], $gearRow['unique'] !== "N");
             //$gearList[$gearRow['name']] = $gear;
             array_push($gearList, $gear);
@@ -517,7 +517,7 @@ class EPListProvider {
     {
         $bonusMalusGearList = array();
 
-        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `degat`, `armorPene`,`JustFor`, `unique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
+        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPene`,`JustFor`, `unique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $gRes->setFetchMode(\PDO::FETCH_ASSOC);
         $gearRow = $gRes->fetch();
 
@@ -537,7 +537,7 @@ class EPListProvider {
         }
 
         $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
-            intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['degat'],
+            intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'],
             intval($gearRow['armorPene']), $bonusMalusGearList, $gearRow['JustFor'], $gearRow['unique'] !== "N");
         return $gear;
     }

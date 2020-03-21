@@ -146,12 +146,13 @@ class Panel{
             $output .= "<span class='bmGranted'>Energy <b>".$gear->armorEnergy."</b></span>";
             $output .= "</li>";
         }
-        if($gear->degat != 0 || $gear->armorPenetration != 0){
+        if($gear->damage || $gear->armorPenetration != 0){
+            $damage = $gear->damage?? "0";
             $output .= "<li class='listSection'>";
             $output .= "Offensive capacity";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Damage: <b>".$gear->degat."</b></span>";
+            $output .= "<span class='bmGranted'>Damage: <b>". $damage ."</b></span>";
             $output .= "</li>";
             $output .= "<li>";
             $output .= "<span class='bmGranted'>Armor penetration: <b>".$gear->armorPenetration."</b></span>";

@@ -14,7 +14,7 @@ namespace App\Creator\Atoms;
  * @author reinhardt
  */
 class EPGear extends EPAtom{
-            
+
     static $SOFT_GEAR = "SOF";
     static $STANDARD_GEAR = "STD";
     static $WEAPON_MELEE_GEAR = "WMG";
@@ -33,10 +33,10 @@ class EPGear extends EPAtom{
     static $PET_GEAR = "PEG";
     static $VEHICLES_GEAR = "VEG";
     static $ROBOT_GEAR = "ROG";
-    
+
     //not used on the database
     static $FREE_GEAR = "FRE";
-    
+
     //GUI use for filtering the listes
     static $CAN_USE_EVERYBODY = 'EVERY';
     static $CAN_USE_BIO = 'BIO';
@@ -45,16 +45,18 @@ class EPGear extends EPAtom{
     static $CAN_USE_SYNTH = 'SYNTH';
     static $CAN_USE_POD = 'POD';
     static $CAN_USE_CREATE_ONLY = 'CREATION';//useful for hiding gear
-    
+
     public $armorEnergy;
     public $armorKinetic;
 
     /**
      * The amount of damage a weapon/ammo does
-     * TODO:  Rename this
-     * @var string
+     * Note: Used to be referred to as "degat".  French for damage.
+     * TODO:  Use a getter so null is automatically replaced with '0'
+     *        That getter should also log a warning any time the replacement functionality is triggered.
+     * @var string|null
      */
-    public $degat;
+    public $damage;
     public $armorPenetration;
 
     /**
@@ -68,32 +70,32 @@ class EPGear extends EPAtom{
      * @var string
      */
     public $gearRestriction;
-        
+
     public $armorPenetrationMorphMod;
     public $degatMorphMod;
     public $armorEnergyMorphMod;
     public $armorKineticMorphMod;
-    
+
     public $armorPenetrationTraitMod;
     public $degatTraitMod;
     public $armorEnergyTraitMod;
     public $armorKineticTraitMod;
-    
+
     public $armorPenetrationBackgroundMod;
     public $degatBackgroundMod;
     public $armorEnergyBackgroundMod;
     public $armorKineticBackgroundMod;
-    
+
     public $armorPenetrationFactionMod;
     public $degatFactionMod;
     public $armorEnergyFactionMod;
-    public $armorKineticFactionMod;   
-    
+    public $armorKineticFactionMod;
+
     public $armorPenetrationSoftgearMod;
     public $degatSoftgearMod;
     public $armorEnergySoftgearMod;
     public $armorKineticSoftgearMod;
-    
+
     public $armorPenetrationPsyMod;
     public $degatPsyMod;
     public $armorEnergyPsyMod;
@@ -111,14 +113,14 @@ class EPGear extends EPAtom{
 
     //array
     public $bonusMalus;
-    
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-		
+
         $savePack['armorEnergy'] =  $this->armorEnergy;
         $savePack['armorKinetic'] =  $this->armorKinetic;
-        $savePack['degat'] =  $this->degat;
+        $savePack['degat'] =  $this->damage;
         $savePack['armorPenetration'] =  $this->armorPenetration;
         $savePack['gearType'] =  $this->gearType;
         $savePack['gearRestriction'] =  $this->gearRestriction;
@@ -137,7 +139,7 @@ class EPGear extends EPAtom{
         $savePack['armorPenetrationFactionMod'] =  $this->armorPenetrationFactionMod;
         $savePack['degatFactionMod'] =  $this->degatFactionMod;
         $savePack['armorEnergyFactionMod'] =  $this->armorEnergyFactionMod;
-        $savePack['armorKineticFactionMod'] =  $this->armorKineticFactionMod;   
+        $savePack['armorKineticFactionMod'] =  $this->armorKineticFactionMod;
         $savePack['armorPenetrationSoftgearMod'] =  $this->armorPenetrationSoftgearMod;
         $savePack['degatSoftgearMod'] =  $this->degatSoftgearMod;
         $savePack['armorEnergySoftgearMod'] =  $this->armorEnergySoftgearMod;
@@ -168,7 +170,7 @@ class EPGear extends EPAtom{
 
         $object->armorEnergy                   = (int)$an_array['armorEnergy'];
         $object->armorKinetic                  = (int)$an_array['armorKinetic'];
-        $object->degat                         = (string)$an_array['degat'];
+        $object->damage                        = $an_array['degat'];
         $object->armorPenetration              = (int)$an_array['armorPenetration'];
         $object->gearType                      = (string)$an_array['gearType'];
         $object->gearRestriction               = (string)$an_array['gearRestriction'];
@@ -215,7 +217,7 @@ class EPGear extends EPAtom{
      * @param int            $cost
      * @param int            $armorKinetic
      * @param int            $armorEnergy
-     * @param string         $degat
+     * @param string|null    $damage
      * @param int            $armorPenetration
      * @param EPBonusMalus[] $bonusmalus
      * @param string         $gearRestriction
@@ -228,7 +230,7 @@ class EPGear extends EPAtom{
         int $cost,
         int $armorKinetic = 0,
         int $armorEnergy = 0,
-        string $degat = '0',
+        ?string $damage = null,
         int $armorPenetration = 0,
         array $bonusmalus = array(),
         string $gearRestriction = 'EVERY',
@@ -238,7 +240,7 @@ class EPGear extends EPAtom{
         $this->gearType = $gearType;
         $this->armorKinetic = $armorKinetic;
         $this->armorEnergy = $armorEnergy;
-        $this->degat = $degat;
+        $this->damage = $damage;
         $this->armorPenetration = $armorPenetration;
         $this->cost = $cost;
         $this->bonusMalus = $bonusmalus;
@@ -263,7 +265,7 @@ class EPGear extends EPAtom{
         $this->armorPenetrationSoftgearMod = 0;
         $this->degatSoftgearMod = 0;
         $this->armorEnergySoftgearMod = 0;
-        $this->armorKineticSoftgearMod = 0;  
+        $this->armorKineticSoftgearMod = 0;
         $this->armorPenetrationPsyMod = 0;
         $this->degatPsyMod = 0;
         $this->armorEnergyPsyMod = 0;
@@ -308,16 +310,19 @@ class EPGear extends EPAtom{
     }
 
     function getArmorEnergy(){
-        return $this->armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod; 
+        return $this->armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod;
     }
     function getArmorKinetic(){
-        return $this->armorKinetic + $this->armorKineticMorphMod + $this->armorKineticTraitMod + $this->armorKineticBackgroundMod + $this->armorKineticFactionMod + $this->armorKineticSoftgearMod + $this->armorKineticPsyMod; 
+        return $this->armorKinetic + $this->armorKineticMorphMod + $this->armorKineticTraitMod + $this->armorKineticBackgroundMod + $this->armorKineticFactionMod + $this->armorKineticSoftgearMod + $this->armorKineticPsyMod;
     }
+    /*
+     * TODO:  Remove this.  It's almost certainly not used.
+     */
     function getDegat(){
-        return $this->degat + $this->degatMorphMod + $this->degatTraitMod + $this->degatBackgroundMod + $this->degatFactionMod + $this->degatSoftgearMod + $this->degatPsyMod; 
+        return $this->damage + $this->degatMorphMod + $this->degatTraitMod + $this->degatBackgroundMod + $this->degatFactionMod + $this->degatSoftgearMod + $this->degatPsyMod;
     }
     function getArmorPenetration(){
-        return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod; 
+        return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
     }
 
     /**

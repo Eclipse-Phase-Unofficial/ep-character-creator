@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $cost
  * @property int $armorKinetic
  * @property int $armorEnergy
- * @property string $degat
+ * @property string|null $damage
  * @property int $armorPene
  * @property string $JustFor
  * @property string $unique

@@ -412,7 +412,8 @@ if(null !== creator()) {
             if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
             else $occ = "";
 
-            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ".$w->degat."  "."AP : ".$w->armorPenetration)//Weapon type
+            $damage = $w->damage?? "0";
+            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $damage ."  "."AP : ".$w->armorPenetration)//Weapon type
             ."<tab>"
             .setBookLink($w->getName())
             ."<br>");
