@@ -2612,7 +2612,7 @@ CREATE TABLE IF NOT EXISTS "bonusMalus"
 (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   name varchar(100) NOT NULL UNIQUE,
-  desc text NOT NULL,
+  description text NOT NULL,
   type varchar(3) NOT NULL,
   target varchar(60) NOT NULL,
   value integer NOT NULL,

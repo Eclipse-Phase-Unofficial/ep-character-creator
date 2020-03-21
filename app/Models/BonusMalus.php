@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property string $desc
+ * @property string $description
  * @property string $type
  * @property string $target
  * @property float $value
