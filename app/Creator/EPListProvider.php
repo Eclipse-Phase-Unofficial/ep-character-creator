@@ -615,7 +615,7 @@ class EPListProvider {
     function getListPsySleights(): array
      {
         $psyList = array();
-        $psyRes = self::$database->query("SELECT `name`, `desc`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleights`");
+        $psyRes = self::$database->query("SELECT `name`, `description`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleights`");
         $psyRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($psyRow = $psyRes->fetch())
         {
@@ -637,7 +637,7 @@ class EPListProvider {
                     }
                 }
             }
-            $psy = new EPPsySleight($psyRow['name'],$psyRow['desc'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skillNeeded']);
+            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skillNeeded']);
             array_push($psyList, $psy);
             }
         return $psyList;

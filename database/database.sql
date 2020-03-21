@@ -5626,7 +5626,7 @@ CREATE TABLE IF NOT EXISTS "psySleights"
 (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   name varchar(100) NOT NULL UNIQUE,
-  desc text NOT NULL,
+  description text NOT NULL,
   type varchar(50) NOT NULL,
   range varchar(50) NOT NULL,
   duration varchar(50) NOT NULL,
