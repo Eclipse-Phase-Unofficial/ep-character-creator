@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use InvalidArgumentException;
+
 /**
  * All the plus and minuses, buffs and debuffs applied to many different things.
  *
@@ -94,17 +96,17 @@ class EPBonusMalus extends EPAtom{
 
     /**
      * Recursive structure holding an array of EPBonusMalus
+     * These are all the possible selections, including the ones the user has selected.
      * @var EPBonusMalus[]
      */
     public $bonusMalusTypes;
     /**
-     * How many $bonusMalusTypes the user is to select
+     * How many $bonusMalusTypes the user must select
      * @var int
      */
-    public $multi_occurence;
+    public $requiredSelections;
     /**
-     * same a radio button group .... ( O X X O O X O)
-     * TODO:  Is this needed with a proper SPA?
+     * If this is part of a $bonusMalusTypes collection, this determines if the user has selected this one or not.
      * @var bool
      */
     public $selected;
@@ -119,7 +121,7 @@ class EPBonusMalus extends EPAtom{
         $savePack['targetForChoice'] =  $this->targetForChoice;
         $savePack['typeTarget']      =  $this->typeTarget;
         $savePack['isCostModifier']  =  $this->isCostModifier;
-        $savePack['multi_occurence'] =  $this->multi_occurence;
+        $savePack['multi_occurence'] =  $this->requiredSelections;
         $savePack['selected']        =  $this->selected;
         $bmSavePacks = array();
         foreach($this->bonusMalusTypes as $m){
@@ -139,25 +141,28 @@ class EPBonusMalus extends EPAtom{
         $object = new self((string)$an_array['name'], '', 0);
         parent::set_state_helper($object, $an_array);
 
-        $object->bonusMalusType  = (string)$an_array['bonusMalusType'];
-        $object->forTargetNamed  = (string)$an_array['forTargetNamed'];
-        $object->value           = (float)$an_array['value'];
-        $object->targetForChoice = (string)$an_array['targetForChoice'];
-        $object->typeTarget      = (string)$an_array['typeTarget'];
-        $object->multi_occurence = (int)$an_array['multi_occurence'];
-        $object->selected        = (bool)$an_array['selected'];
+        $object->bonusMalusType     = (string)$an_array['bonusMalusType'];
+        $object->forTargetNamed     = (string)$an_array['forTargetNamed'];
+        $object->value              = (float)$an_array['value'];
+        $object->targetForChoice    = (string)$an_array['targetForChoice'];
+        $object->typeTarget         = (string)$an_array['typeTarget'];
+        $object->requiredSelections = (int)$an_array['multi_occurence'];
+        $object->selected           = (bool)$an_array['selected'];
         foreach ($an_array['bonusMalusTypes'] as $m) {
             array_push($object->bonusMalusTypes, EPBonusMalus::__set_state($m));
         }
 
         //Backwards compatibility with older (pre 1.53) save files
         if(isset($an_array['onCost'])) {
-            if((string)$an_array['onCost'] === 'true') {
-                $object->isCostModifier = true;
-            }
-            return $object;
+            $object->isCostModifier = filter_var($an_array['onCost'], FILTER_VALIDATE_BOOLEAN);
+        } else {
+            $object->isCostModifier = (bool)$an_array['isCostModifier'];
         }
-        $object->isCostModifier = (bool)$an_array['isCostModifier'];
+
+        //Sanity Checks
+        if ($object->targetForChoice == EPBonusMalus::$MULTIPLE && $object->requiredSelections <= 0) {
+            throw new InvalidArgumentException("Object Should not ask for user choice when there are no selections allowed!");
+        }
 
         return $object;
     }
@@ -174,7 +179,7 @@ class EPBonusMalus extends EPAtom{
      * @param string         $targetForChoice
      * @param string         $typeTarget
      * @param EPBonusMalus[] $bonusMalusTypes
-     * @param int            $multiOccur
+     * @param int            $requiredSelections
      */
     function __construct(
         string $name,
@@ -187,7 +192,7 @@ class EPBonusMalus extends EPAtom{
         string $targetForChoice = "",
         string $typeTarget = "",
         array $bonusMalusTypes = array(),
-        int $multiOccur = 0
+        int $requiredSelections = 0
     ) {
         parent::__construct($name, $description);
         $this->bonusMalusType = $type;
@@ -198,8 +203,12 @@ class EPBonusMalus extends EPAtom{
         $this->targetForChoice = $targetForChoice;
         $this->typeTarget = $typeTarget;
         $this->bonusMalusTypes = $bonusMalusTypes; //array() bonus malus
-        $this->multi_occurence = $multiOccur; // 1 sur 3 ,...
+        $this->requiredSelections = $requiredSelections;
         $this->selected = false;
+
+        if ($this->targetForChoice == EPBonusMalus::$MULTIPLE && $this->requiredSelections <= 0) {
+            throw new InvalidArgumentException("Object Should not ask for user choice when there are no selections allowed!");
+        }
     }
 
     /**

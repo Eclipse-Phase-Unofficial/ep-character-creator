@@ -278,10 +278,10 @@ class Helpers
         foreach ($bonusMalusArray as $bm) {
             if ($bm->isMultipleChoice()) {
                 $output .= "<li class='listSection'>";
-                $output .= "Choose <span class='betweenPlusMinus'>" . static::getSelectedOnMulti($bm) . " / " . $bm->multi_occurence . "</span>";
+                $output .= "Choose <span class='betweenPlusMinus'>" . static::getSelectedOnMulti($bm) . " / " . $bm->requiredSelections . "</span>";
                 $output .= "</li>";
                 // If all the selections are made, only print out the selected BMs
-                if (static::getSelectedOnMulti($bm) == $bm->multi_occurence) {
+                if (static::getSelectedOnMulti($bm) >= $bm->requiredSelections) {
                     foreach ($bm->bonusMalusTypes as $bmMulti) {
                         if ($bmMulti->selected) {
                             $output .= "<li><label class='bmChoiceInput'>";

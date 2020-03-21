@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $targetForChoice
  * @property string $typeTarget
  * @property bool $isCostModifier
- * @property string $multiOccur
+ * @property int $requiredSelections
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BonusMalus whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BonusMalus whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BonusMalus whereMultiOccur($value)
@@ -33,8 +33,14 @@ class BonusMalus extends Model
 {
     protected $table = 'bonusMalus';
 
+    protected $casts = [
+//        'isCostModifier' => 'boolean',  //Disabled since this does not work with "false"
+        'requiredSelections' => 'integer',
+    ];
+
     /**
      * Fix for SQLite note supporting booleans properly.
+     * WARNING:  This does not affect json_encode!
      * @param $value
      * @return bool
      */
