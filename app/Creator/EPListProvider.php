@@ -236,11 +236,11 @@ class EPListProvider {
 
 
     function getAptForPrefix($prefixName){
-        $res = self::$database->query("SELECT `linkedApt` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `linkedAptitude` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
-        return $row['linkedApt'];
+        return $row['linkedAptitude'];
     }
 
     function getTypeForPrefix($prefixName){
@@ -251,11 +251,11 @@ class EPListProvider {
     }
 
     function getPrefixDescription($prefixName){
-        $res = self::$database->query("SELECT `desc` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `description` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
-        return $row['desc'];
+        return $row['description'];
     }
 
     // ===== Services ====

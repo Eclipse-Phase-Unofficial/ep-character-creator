@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $prefix
- * @property string $linkedApt
+ * @property string $linkedAptitude
  * @property string $skillType
- * @property string $desc
+ * @property string $description
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SkillPrefix whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SkillPrefix whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SkillPrefix whereLinkedApt($value)
