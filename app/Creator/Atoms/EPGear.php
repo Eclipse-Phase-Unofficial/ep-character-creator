@@ -111,7 +111,8 @@ class EPGear extends EPAtom{
     public $armorKineticPsyMod;
 
     /**
-     * @var bool If the player can own more than one (NOTE:  Even if they can, it's just incrementing the "occurrence" variable)
+     * If the player can own more than one (NOTE:  Even if they can, it's just incrementing the "occurrence" variable)
+     * @var bool
      */
     private $unique;
 
