@@ -50,13 +50,22 @@ class EPGear extends EPAtom{
     public $armorKinetic;
 
     /**
-     * The amount of damage a weapon/ammo does
+     * The amount of damage a weapon/ammo does.
+     * Non weapons, and things which don't deal damage have this set to null!
      * Note: Used to be referred to as "degat".  French for damage.
      * TODO:  Use a getter so null is automatically replaced with '0'
      *        That getter should also log a warning any time the replacement functionality is triggered.
      * @var string|null
      */
     public $damage;
+    /**
+     * How much armor the weapon/ammo can go through.
+     * May be negative.
+     * If $damage is null, then this should always be null!  Otherwise it should be an int.
+     * TODO:  Use a getter so null is automatically replaced with '0'
+     *        That getter should also log a warning any time the replacement functionality is triggered.
+     * @var int|null
+     */
     public $armorPenetration;
 
     /**

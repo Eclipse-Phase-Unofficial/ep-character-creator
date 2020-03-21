@@ -413,7 +413,8 @@ if(null !== creator()) {
             else $occ = "";
 
             $damage = $w->damage?? "0";
-            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $damage ."  "."AP : ".$w->armorPenetration)//Weapon type
+            $ap = $w->armorPenetration?? "0";
+            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $damage ."  "."AP : ". $ap)//Weapon type
             ."<tab>"
             .setBookLink($w->getName())
             ."<br>");

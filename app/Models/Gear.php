@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $armorKinetic
  * @property int $armorEnergy
  * @property string|null $damage
- * @property int $armorPene
+ * @property int|null $armorPenetration
  * @property string $JustFor
  * @property string $unique
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Gear whereArmorEnergy($value)
@@ -34,4 +34,8 @@ use Illuminate\Database\Eloquent\Model;
 class Gear extends Model
 {
     protected $table = 'gear';
+
+    protected $casts = [
+        'armorPenetration' => 'integer',
+    ];
 }

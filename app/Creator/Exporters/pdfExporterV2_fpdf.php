@@ -355,8 +355,9 @@ class pdfExporterV2_fpdf {
                 $pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
                 $pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
                 $damage = $w->damage?? "0";
+                $ap = $w->armorPenetration?? "0";
                 $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $damage));//Weapon damage
-                $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->armorPenetration));//Weapon Armor penetration
+                $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $ap));//Weapon Armor penetration
 
                 $pdf->SetFont('Lato-LigIta', '', 6);
                 $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
