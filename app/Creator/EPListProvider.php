@@ -545,13 +545,12 @@ class EPListProvider {
     //==== MORPH =====
 
     /**
-     * TODO:  Remove Gender and age from the database.  They are no longer used. Also change DB Types to ints where appropriate
      * @return EPMorph[]
      */
     function getListMorph(): array
     {
         $morphList = array();
-        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `gender`, `age`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morphs`");
+        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morphs`");
         $morphRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($morphRow = $morphRes->fetch()) {
             //Bonus Malus

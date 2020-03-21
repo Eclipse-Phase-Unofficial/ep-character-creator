@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $description
  * @property string $type
- * @property string $gender
- * @property int $age
  * @property int $maxApptitude
  * @property int $durablility
  * @property int $cpCost
