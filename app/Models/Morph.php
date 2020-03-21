@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $maxApptitude
  * @property int $durablility
  * @property int $cpCost
- * @property string $creditCost
+ * @property int $creditCost
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Morph whereAge($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Morph whereCpCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Morph whereCreditCost($value)
@@ -31,5 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Morph extends Model
 {
-    //
+    protected $casts = [
+        'creditCost' => 'integer',
+    ];
 }
