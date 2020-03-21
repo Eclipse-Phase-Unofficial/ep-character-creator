@@ -480,7 +480,7 @@ class EPListProvider {
     function getListGears(): array
     {
         $gearList = array();
-        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`JustFor`, `isUnique` FROM `gear`");
+        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`allowedMorphType`, `isUnique` FROM `gear`");
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($gearRow = $gearRes->fetch()) {
             $bonusMalusGearList = array();
@@ -500,7 +500,7 @@ class EPListProvider {
             }
             $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
                 intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'], intval($gearRow['armorPenetration']),
-                $bonusMalusGearList, $gearRow['JustFor'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
+                $bonusMalusGearList, $gearRow['allowedMorphType'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
             //$gearList[$gearRow['name']] = $gear;
             array_push($gearList, $gear);
         }
@@ -517,7 +517,7 @@ class EPListProvider {
     {
         $bonusMalusGearList = array();
 
-        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`JustFor`, `isUnique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
+        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`allowedMorphType`, `isUnique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
         $gRes->setFetchMode(\PDO::FETCH_ASSOC);
         $gearRow = $gRes->fetch();
 
@@ -538,7 +538,7 @@ class EPListProvider {
 
         $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
             intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'],
-            intval($gearRow['armorPenetration']), $bonusMalusGearList, $gearRow['JustFor'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
+            intval($gearRow['armorPenetration']), $bonusMalusGearList, $gearRow['allowedMorphType'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
         return $gear;
     }
 

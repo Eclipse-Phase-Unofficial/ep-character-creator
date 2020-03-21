@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int         $armorEnergy
  * @property string|null $damage
  * @property int|null    $armorPenetration
- * @property string      $JustFor
+ * @property string      $allowedMorphType
  * @property bool        $isUnique
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Gear whereArmorEnergy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Gear whereArmorKinetic($value)

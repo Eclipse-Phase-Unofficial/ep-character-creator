@@ -3105,10 +3105,11 @@ CREATE TABLE IF NOT EXISTS "gear"
   armorEnergy smallint(6) NOT NULL,
   damage varchar(30),
   armorPenetration smallint(6),
-  JustFor varchar(100) NOT NULL,
+  allowedMorphType varchar(100) NOT NULL,
   isUnique boolean NOT NULL
 );
 -- Not everything that causes damage has armor penetration, but everything that has armor penetration causes damage
+-- TODO: Set armorKinetic & armorEnergy to NULL where they are not used
 INSERT INTO gear VALUES(1,'"Blue Box" PGCU','"blue box" portable gate control unit <br><br>\nNamed for the distinct cobalt blue color they were originally manufactured in, blue boxes are portable gate control units (see The Gate Interface, GC p. 142). These are specifically designed for interfacing with extrasolar gates and are the most common gate interface found on extrasolar colonies. They are rarely allowed on first-in missions or any missions where signs of sapient life have been detected, in order to keep these devices out of the hands of aliens. Because these devices only allow a pared-down version of the full gate interface, they are more challenging to use than complete stationary models; <b>apply a -10 modifier to all gate operation actions conducted via blue box Like standard interfaces, blue boxes come as open source or proprietary models.</b><br><br>\nBlue boxes must be physically attached to a gate in order to control it. <b>This process is time-consuming and difficult; it requires a Hardware: Electronics Test as a Task Action with a -10 modifier and a timeframe of 1 hour. </b>','STD',20000,0,0,NULL,NULL,'EVERY','false');
 INSERT INTO gear VALUES(2,'360 degree vision','The shell''s or morph visual sensors are situated for a 360-degree field of vision. ','IMG',250,0,0,NULL,NULL,'SYNTH','true');
 INSERT INTO gear VALUES(3,'Ablative Patches','These thin and light slap-on patches of stick to armor and are designed to absorb heat and energy from beams and explosions, safely vaporizing and blowing hot gas away.<br><br><b> Each hit reduces both the energy and kinetic value of the ablative armor by 1. </b>','ARM',50,0,0,NULL,NULL,'EVERY','false');
