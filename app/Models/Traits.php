@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property string $description
- * @property string|null $side
+ * @property bool $isNegative
  * @property string|null $onwhat
  * @property int|null $cpCost
  * @property int $level
@@ -29,5 +29,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Traits extends Model
 {
-    //
+    protected $casts = [
+//        'isNegative' => 'boolean', //Disabled since this does not work with "false"
+    ];
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * WARNING:  This does not affect json_encode!
+     * @param $value
+     * @return bool
+     */
+    public function getIsNegativeAttribute($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 }

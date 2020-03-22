@@ -11,12 +11,9 @@ class EPTrait extends EPAtom
     CONST PSY_CHI_TRAIT_NAME   = "Psi I";
     CONST PSY_GAMMA_TRAIT_NAME = "Psi II";
 
-    static $POSITIVE_TRAIT = 'POS';
-    static $NEGATIVE_TRAIT = 'NEG';
-    
     static $EGO_TRAIT = 'EGO';
     static $MORPH_TRAIT = 'MOR';
-    
+
     //GUI use for filtering the lists
     static $CAN_USE_EVERYBODY = 'EVERY';
     static $CAN_USE_BIO = 'BIO';
@@ -29,10 +26,10 @@ class EPTrait extends EPAtom
     public $canUse;
 
     /*
-     * TODO: Convert this to getters for positive, negative, and neutral (which is distinguished by costing 0CP)
+     * TODO: Add a neutral getter (which is distinguished by costing 0CP)
      * @var string
      */
-    public $traitPosNeg;
+    private $isNegative;
     /*
      * TODO:  Convert this to a private bool with a getter
      * @var string
@@ -54,20 +51,20 @@ class EPTrait extends EPAtom
      * @var EPBonusMalus[]
      */
     public $bonusMalus;
-    
-    
+
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-        
+
         $savePack['canUse'] = $this->canUse;
 
-        $savePack['traitPosNeg'] =  $this->traitPosNeg;
+        $savePack['traitPosNeg'] =  $this->isNegative;
         $savePack['traitEgoMorph'] =  $this->traitEgoMorph;
         $savePack['cpCost'] =  $this->cpCost;
 
         $savePack['level'] =  $this->level;
-        
+
         $bmSavePacks = array();
         foreach($this->bonusMalus as $m){
             array_push($bmSavePacks	, $m->getSavePack());
@@ -86,11 +83,17 @@ class EPTrait extends EPAtom
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '', '', 0);
+        //Backwards compatibility with older (pre 1.53) save files
+        if(isset($an_array['traitPosNeg'])) {
+            $isNegative = filter_var($an_array['traitPosNeg'], FILTER_VALIDATE_BOOLEAN);
+        } else {
+            $isNegative = (bool)$an_array['isNegative'];
+        }
+
+        $object = new self((string)$an_array['name'], $isNegative, '', 0);
         parent::set_state_helper($object, $an_array);
 
         $object->canUse        = (string)$an_array['canUse'];
-        $object->traitPosNeg   = (string)$an_array['traitPosNeg'];
         $object->traitEgoMorph = (string)$an_array['traitEgoMorph'];
         $object->cpCost        = (int)$an_array['cpCost'];
         $object->level         = (int)$an_array['level'];
@@ -105,7 +108,7 @@ class EPTrait extends EPAtom
      * EPTrait constructor.
      * @param string         $name
      * @param string         $description
-     * @param string         $traitPosNeg     Traits can be positive, negative, or neutral.  However, neutral traits are distinguished by costing 0CP
+     * @param bool           $isNegative     Traits can be positive, negative, or neutral.  However, neutral traits are distinguished by costing 0CP
      * @param string         $traitEgoMorph
      * @param int            $cpCost
      * @param EPBonusMalus[] $bonusMalusArray
@@ -114,7 +117,7 @@ class EPTrait extends EPAtom
      */
     function __construct(
         string $name,
-        string $traitPosNeg,
+        bool $isNegative,
         string $traitEgoMorph,
         int $cpCost,
         string $description = '',
@@ -123,7 +126,7 @@ class EPTrait extends EPAtom
         string $canUse = 'EVERY'
     ) {
         parent::__construct($name, $description);
-        $this->traitPosNeg = $traitPosNeg;
+        $this->isNegative    = $isNegative;
         $this->traitEgoMorph = $traitEgoMorph;
         $this->cpCost = $cpCost;
         $this->bonusMalus = $bonusMalusArray;
@@ -142,7 +145,7 @@ class EPTrait extends EPAtom
     public function match($trait): bool
     {
         if (strcasecmp($trait->getName(),$this->getName()) == 0 &&
-            $trait->traitPosNeg===$this->traitPosNeg &&
+            $trait->isNegative===$this->isNegative &&
             $trait->traitEgoMorph===$this->traitEgoMorph &&
             $trait->cpCost===$this->cpCost &&
             $trait->level===$this->level &&
@@ -153,21 +156,21 @@ class EPTrait extends EPAtom
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * The trait costs CP, and is "Good"
      * @return bool
      */
     function isPositive(): bool
     {
-        return $this->traitPosNeg == EPTrait::$POSITIVE_TRAIT;
+        return !$this->isNegative;
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * The trait gives CP, and is "Bad"
      * @return bool
      */
     function isNegative(): bool
     {
-        return $this->traitPosNeg == EPTrait::$NEGATIVE_TRAIT;
+        return $this->isNegative;
     }
 
     /**
