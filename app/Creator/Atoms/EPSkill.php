@@ -23,6 +23,7 @@ class EPSkill extends EPAtom{
 
     /**
      * TODO:  Make this private with a getter (no setter)
+     * TODO:  Make this nullable!
      * @var string
      */
      public $prefix;
