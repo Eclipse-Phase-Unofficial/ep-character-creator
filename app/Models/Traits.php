@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $description
  * @property bool $isNegative
- * @property string|null $onwhat
+ * @property bool|null $isForMorph
  * @property int|null $cpCost
  * @property int $level
  * @property string $JustFor
@@ -41,6 +41,21 @@ class Traits extends Model
      */
     public function getIsNegativeAttribute($value)
     {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * Also handles fact this may be null!
+     * WARNING:  This does not affect json_encode!
+     * @param $value
+     * @return bool
+     */
+    public function getIsForMorphAttribute($value)
+    {
+        if (is_null($value)) {
+            return null;
+        }
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 }

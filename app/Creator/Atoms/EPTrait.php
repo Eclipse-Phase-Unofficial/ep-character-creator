@@ -11,9 +11,6 @@ class EPTrait extends EPAtom
     CONST PSY_CHI_TRAIT_NAME   = "Psi I";
     CONST PSY_GAMMA_TRAIT_NAME = "Psi II";
 
-    static $EGO_TRAIT = 'EGO';
-    static $MORPH_TRAIT = 'MOR';
-
     //GUI use for filtering the lists
     static $CAN_USE_EVERYBODY = 'EVERY';
     static $CAN_USE_BIO = 'BIO';
@@ -31,10 +28,11 @@ class EPTrait extends EPAtom
      */
     private $isNegative;
     /*
-     * TODO:  Convert this to a private bool with a getter
-     * @var string
+     * Determines if this is for an Ego, Morph or both.
+     * Traits for both are null!
+     * @var bool|null
      */
-    public $traitEgoMorph;
+    private $isForMorph;
     /*
      * TODO: Convert this to a private variable with a getter
      * @var int
@@ -60,7 +58,7 @@ class EPTrait extends EPAtom
         $savePack['canUse'] = $this->canUse;
 
         $savePack['traitPosNeg'] =  $this->isNegative;
-        $savePack['traitEgoMorph'] =  $this->traitEgoMorph;
+        $savePack['isForMorph'] =  $this->isForMorph;
         $savePack['cpCost'] =  $this->cpCost;
 
         $savePack['level'] =  $this->level;
@@ -90,13 +88,19 @@ class EPTrait extends EPAtom
             $isNegative = (bool)$an_array['isNegative'];
         }
 
-        $object = new self((string)$an_array['name'], $isNegative, '', 0);
+        //Backwards compatibility with older (pre 1.53) save files
+        if(isset($an_array['traitEgoMorph'])) {
+            $isForMorph = ($an_array['traitEgoMorph'] == 'MOR');
+        } else {
+            $isForMorph = $an_array['isForMorph'];
+        }
+
+        $object = new self((string)$an_array['name'], $isNegative, $isForMorph, 0);
         parent::set_state_helper($object, $an_array);
 
-        $object->canUse        = (string)$an_array['canUse'];
-        $object->traitEgoMorph = (string)$an_array['traitEgoMorph'];
-        $object->cpCost        = (int)$an_array['cpCost'];
-        $object->level         = (int)$an_array['level'];
+        $object->canUse = (string)$an_array['canUse'];
+        $object->cpCost = (int)$an_array['cpCost'];
+        $object->level  = (int)$an_array['level'];
         foreach ($an_array['bmSavePacks'] as $m) {
             array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
@@ -109,7 +113,7 @@ class EPTrait extends EPAtom
      * @param string         $name
      * @param string         $description
      * @param bool           $isNegative     Traits can be positive, negative, or neutral.  However, neutral traits are distinguished by costing 0CP
-     * @param string         $traitEgoMorph
+     * @param bool|null      $isForMorph     Traits can be for Egos, Morphs, or both.  Both is represented by null.
      * @param int            $cpCost
      * @param EPBonusMalus[] $bonusMalusArray
      * @param int            $level
@@ -118,7 +122,7 @@ class EPTrait extends EPAtom
     function __construct(
         string $name,
         bool $isNegative,
-        string $traitEgoMorph,
+        ?bool $isForMorph,
         int $cpCost,
         string $description = '',
         array $bonusMalusArray = array(),
@@ -126,9 +130,9 @@ class EPTrait extends EPAtom
         string $canUse = 'EVERY'
     ) {
         parent::__construct($name, $description);
-        $this->isNegative    = $isNegative;
-        $this->traitEgoMorph = $traitEgoMorph;
-        $this->cpCost = $cpCost;
+        $this->isNegative = $isNegative;
+        $this->isForMorph = $isForMorph;
+        $this->cpCost     = $cpCost;
         $this->bonusMalus = $bonusMalusArray;
         $this->level = $level;
         $this->canUse = $canUse;
@@ -146,7 +150,7 @@ class EPTrait extends EPAtom
     {
         if (strcasecmp($trait->getName(),$this->getName()) == 0 &&
             $trait->isNegative===$this->isNegative &&
-            $trait->traitEgoMorph===$this->traitEgoMorph &&
+            $trait->isForMorph===$this->isForMorph &&
             $trait->cpCost===$this->cpCost &&
             $trait->level===$this->level &&
             $trait->canUse===$this->canUse){
@@ -174,21 +178,27 @@ class EPTrait extends EPAtom
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * If this can be applied to an Ego
      * @return bool
      */
     function isEgo(): bool
     {
-        return $this->traitEgoMorph == EPTrait::$EGO_TRAIT;
+        if (is_null($this->isForMorph)) {
+            return true;
+        }
+        return !$this->isForMorph;
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * If this can be applied to a Morph
      * @return bool
      */
     function isMorph(): bool
     {
-        return $this->traitEgoMorph == EPTrait::$MORPH_TRAIT;
+        if (is_null($this->isForMorph)) {
+            return true;
+        }
+        return (bool)$this->isForMorph;
     }
 
     /**
