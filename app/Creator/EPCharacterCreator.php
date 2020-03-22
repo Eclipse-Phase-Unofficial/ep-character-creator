@@ -1372,14 +1372,14 @@ class EPCharacterCreator implements Savable
 
         if ($diff > 0){
             foreach ($this->character->ego->skills as $sk) {
-                if (strcmp($sk->linkedApt->abbreviation,$apt->abbreviation) == 0){
+                if (strcmp($sk->linkedAptitude->abbreviation,$apt->abbreviation) == 0){
                     $up = ($sk->baseValue + $sk->getBonusForCost()) - config('epcc.SkillLimitForImprove');
                     $this->evoRezPoint -= max(0,min($up,$diff));
                 }
             }
         }else{
             foreach ($this->character->ego->skills as $sk) {
-                if (strcmp($sk->linkedApt->abbreviation,$apt->abbreviation) == 0){
+                if (strcmp($sk->linkedAptitude->abbreviation,$apt->abbreviation) == 0){
                     $t = max(0,config('epcc.SkillLimitForImprove') - ($sk->baseValue + $sk->getBonusForCost()));
                     $t = max(0,-$diff - $t);
                     $this->evoRezPoint += $t;

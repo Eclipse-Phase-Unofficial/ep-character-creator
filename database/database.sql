@@ -5739,8 +5739,8 @@ INSERT INTO skillPrefixes VALUES(11,'Profession','COG','KST','<h2>What it is</h2
 CREATE TABLE `skills` (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   name varchar(60) NOT NULL,
-  desc text,
-  linkedApt varchar(3) NOT NULL,
+  description text NOT NULL,
+  linkedAptitude varchar(3) NOT NULL,
   prefix varchar(60) DEFAULT '' NOT NULL,
   skillType varchar(3) NOT NULL,
   defaultable varchar(1) NOT NULL

@@ -136,7 +136,7 @@ if(null !== creator()) {
 
         output(formatResult($skillType." ".$skillCompleteName)
         ."<tab>"
-        .$skill->linkedApt->abbreviation
+        .$skill->linkedAptitude->abbreviation
         ."<tab><tab>");
 
         if(!empty($skill->specialization)){
@@ -379,7 +379,7 @@ if(null !== creator()) {
 
             output(formatResult($skillType." ".$skillCompleteName)
             ."<tab>"
-            .$skill->linkedApt->abbreviation
+            .$skill->linkedAptitude->abbreviation
             ."<tab>"
             .$skill->getEgoValue()
             ."<tab>");

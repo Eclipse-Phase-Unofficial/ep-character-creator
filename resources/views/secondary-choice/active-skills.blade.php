@@ -14,7 +14,7 @@ use App\Creator\Atoms\EPSkill;
 		<select id="actprefix">
 		<?php
 				 $provider = new EPListProvider();
-				 $prefixList =  $provider->getListPrefix(); 
+				 $prefixList =  $provider->getListPrefix();
 		         foreach($prefixList as $m){
 		         	if($provider->getTypeForPrefix($m) == EPSkill::$ACTIVE_SKILL_TYPE){
 			        	echo "<option value='".$m."'>".$m."</option>";
@@ -27,17 +27,17 @@ use App\Creator\Atoms\EPSkill;
 	</li>
 </ul>
 <div id="actSklDiv">
-	<table class="skills" id="actSkills">			    
+	<table class="skills" id="actSkills">
 			<thead>
 				<tr>
-					<th></th> 
-					<th>sp</th>	
-					<th align="center">base</th>	
-					<th align="center"><span class="iconeSkill" data-icon="&#x21;"></span></th>	
+					<th></th>
+					<th>sp</th>
+					<th align="center">base</th>
+					<th align="center"><span class="iconeSkill" data-icon="&#x21;"></span></th>
 <!-- 					<th align="center"><span class="iconeSkill" data-icon="&#x32;"></span></th>	 -->
 <!-- 					<th align="center"><span class="iconeSkill" data-icon="&#x33;"></span></th>	 -->
-					<th align="center">t</th>	
-					<th align="center"></th>	
+					<th align="center">t</th>
+					<th align="center"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,7 +62,7 @@ use App\Creator\Atoms\EPSkill;
 		        	}
 
 					echo "		<td><input class='actskillbase' type='number' atomic='".$m->getUid()."' min=0 step=5 value='".$m->baseValue."'/></td>\n";
-		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
+		        	echo "		<td>".$m->linkedAptitude->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
 		        	echo "		<td class='skillTotal'>".$m->getValue()."</td>\n";

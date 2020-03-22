@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property string|null $desc
- * @property string $linkedApt
+ * @property string $description
+ * @property string $linkedAptitude
  * @property string $prefix
  * @property string $skillType
  * @property string $defaultable

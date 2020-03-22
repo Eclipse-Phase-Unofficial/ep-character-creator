@@ -9,10 +9,10 @@ namespace App\Creator\Atoms;
  * @author reinhardt
  */
 class EPSkill extends EPAtom{
-    
+
      static $ACTIVE_SKILL_TYPE = "AST";
      static $KNOWLEDGE_SKILL_TYPE = "KST";
-     
+
      static $NO_DEFAULTABLE = 'N';
      static $DEFAULTABLE = 'Y';
 
@@ -84,11 +84,10 @@ class EPSkill extends EPAtom{
 
     /**
      * Linked Aptitude
-     * TODO: Rename this to be more clear
-     * TODO: Use a getter, and handle the null case better
+     * TODO: Use a getter/setter, and handle the null case better
      * @var EPAptitude|null
      */
-    public $linkedApt;
+    public $linkedAptitude;
 
     /**
      * @var int
@@ -118,9 +117,9 @@ class EPSkill extends EPAtom{
      * @var int
      */
     public $maxValueSoftgearMod;
-     
+
      function getMaxValue(){
-        return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod + 
+        return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod +
                 $this->maxValueBackgroundMod + $this->maxValueFactionMod +
                 $this->maxValueSoftgearMod + $this->maxValuePsyMod;
      }
@@ -130,7 +129,7 @@ class EPSkill extends EPAtom{
      * @return int
      */
     function getEgoValue(){
-        $lnk = isset($this->linkedApt)? $this->linkedApt->getEgoValue(): 0;
+        $lnk = isset($this->linkedAptitude)? $this->linkedAptitude->getEgoValue(): 0;
         $nativeTongueBonus = $this->isNativeTongue ? config('epcc.NativeTongueBaseValue') : 0;
         return $lnk + $this->baseValue + $nativeTongueBonus + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
     }
@@ -192,20 +191,20 @@ class EPSkill extends EPAtom{
      */
     function getBonusForCost(): int
     {
-         if (isset($this->linkedApt)){
-             $lnk = $this->linkedApt->getValueForCpCost();
+         if (isset($this->linkedAptitude)){
+             $lnk = $this->linkedAptitude->getValueForCpCost();
          }else{
              $lnk = 0;
          }
          return (int) $lnk + $this->backgroundMod + $this->factionMod;
      }
-     
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-	    
+
         $savePack['skillType'] =  $this->skillType;
-        $savePack['prefix'] =  $this->prefix;   
+        $savePack['prefix'] =  $this->prefix;
         $savePack['baseValue'] =  $this->baseValue;
         $savePack['morphMod'] =  $this->morphMod;
         $savePack['traitMod'] =  $this->traitMod;
@@ -214,23 +213,23 @@ class EPSkill extends EPAtom{
         $savePack['softgearMod'] =  $this->softgearMod;
         $savePack['psyMod'] =  $this->psyMod;
         $savePack['defaultable'] =  $this->defaultable;
-        $savePack['tempSkill'] =  $this->tempSkill; 
+        $savePack['tempSkill'] =  $this->tempSkill;
         $savePack['specialization'] =  $this->specialization;
         $savePack['isNativeTongue'] =  $this->isNativeTongue;
         $groupsArray = array();
         if(!empty($this->groups)){
                 foreach($this->groups as $m){
                     array_push($groupsArray, $m);
-                } 
+                }
         }
-        $savePack['groupsArray'] = $groupsArray;  
+        $savePack['groupsArray'] = $groupsArray;
         $savePack['maxValue'] =  $this->maxValue;
         $savePack['maxValueMorphMod'] =  $this->maxValueMorphMod;
         $savePack['maxValueTraitMod'] =  $this->maxValueTraitMod;
         $savePack['maxValueFactionMod'] =  $this->maxValueFactionMod;
         $savePack['maxValueBackgroundMod'] =  $this->maxValueBackgroundMod;
         $savePack['maxValuePsyMod'] =  $this->maxValuePsyMod;
-        $savePack['maxValueSoftgearMod'] =  $this->maxValueSoftgearMod;	       
+        $savePack['maxValueSoftgearMod'] =  $this->maxValueSoftgearMod;
 
         //For backwards compatibility
         $savePack['nativeTongueBonus'] =  $this->isNativeTongue ? config('epcc.NativeTongueBaseValue') : 0;
@@ -299,14 +298,14 @@ class EPSkill extends EPAtom{
     ) {
         //The `trim`s are because this could be user created.
          parent::__construct(trim($name), trim($description));
-         $this->linkedApt = $linkedAptitude;
-         $this->skillType = $skillType;
+         $this->linkedAptitude = $linkedAptitude;
+         $this->skillType      = $skillType;
          $this->prefix = trim($prefix);
          $this->baseValue = 0;
          $this->defaultable = $defaultable;
          $this->groups = $groups;
          $this->morphMod = 0;
-         $this->traitMod = 0;             
+         $this->traitMod = 0;
          $this->backgroundMod = 0;
          $this->factionMod = 0;
          $this->softgearMod = 0;

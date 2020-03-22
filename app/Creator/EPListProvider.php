@@ -277,13 +277,13 @@ class EPListProvider {
     function getListSkills($listApt): array
     {
         $skills = array();
-        $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills");
+        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `defaultable`  FROM skills");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epSkills = new EPSkill($row['name'], $row['desc'], $row['skillType'], $row['defaultable'],
-                $this->getAptByAbreviation($listApt, $row['linkedApt']), $row['prefix'], $groups);
+            $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], $row['defaultable'],
+                $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
             array_push($skills, $epSkills);
         }
         return $skills;
@@ -297,13 +297,13 @@ class EPListProvider {
      */
     function getSkillByNamePrefix(string $name, string $prefix, $listApt): EPSkill
     {
-        $res = self::$database->query("SELECT `name`, `desc`, `linkedApt`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
+        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
         $groups = $this->getListGroups($row['name']);
-        $epSkills = new EPSkill($row['name'], $row['desc'], $row['skillType'], $row['defaultable'],
-            $this->getAptByAbreviation($listApt, $row['linkedApt']), $row['prefix'], $groups);
+        $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], $row['defaultable'],
+            $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
         return $epSkills;
     }
 
