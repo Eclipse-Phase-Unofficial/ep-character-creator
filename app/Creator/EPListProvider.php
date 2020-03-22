@@ -101,7 +101,7 @@ class EPListProvider {
     function getListTraits(): array
     {
         $traitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost` , `level` , `JustFor` FROM `traits`");
+        $traitRes = self::$database->query("SELECT `name`, `description`, `side`, `onwhat`, `cpCost` , `level` , `JustFor` FROM `traits`");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($traitRow = $traitRes->fetch()) {
             $bonusMalusTraitList = array();
@@ -121,7 +121,7 @@ class EPListProvider {
                 }
             }
             $trait = new EPTrait($traitRow['name'], $traitRow['side'], $traitRow['onwhat'], intval($traitRow['cpCost']),
-                $traitRow['desc'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
+                $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
             array_push($traitList, $trait);
         }
         return $traitList;
@@ -130,7 +130,7 @@ class EPListProvider {
     function getTraitByName(string $traitName): EPTrait
     {
         $bonusMalusTraitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `desc`, `side`, `onwhat`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
+        $traitRes = self::$database->query("SELECT `name`, `description`, `side`, `onwhat`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         $traitRow = $traitRes->fetch();
 
@@ -150,7 +150,7 @@ class EPListProvider {
             }
         }
         $trait = new EPTrait($traitRow['name'], $traitRow['side'], $traitRow['onwhat'], intval($traitRow['cpCost']),
-            $traitRow['desc'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
+            $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
         return $trait;
     }
 

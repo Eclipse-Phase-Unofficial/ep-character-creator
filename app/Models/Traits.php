@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property string $desc
+ * @property string $description
  * @property string|null $side
  * @property string|null $onwhat
  * @property int|null $cpCost

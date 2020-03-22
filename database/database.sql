@@ -6033,7 +6033,7 @@ CREATE TABLE IF NOT EXISTS "traits"
 (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   name varchar(60) NOT NULL UNIQUE,
-  desc text NOT NULL,
+  description text NOT NULL,
   side varchar(3) DEFAULT NULL,
   onwhat varchar(3) DEFAULT NULL,
   cpCost smallint(6) DEFAULT NULL,
