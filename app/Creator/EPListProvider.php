@@ -277,12 +277,12 @@ class EPListProvider {
     function getListSkills($listApt): array
     {
         $skills = array();
-        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `defaultable`  FROM skills");
+        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `isDefaultable`  FROM skills");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
-            $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], $row['defaultable'],
+            $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], filter_var($row['isDefaultable'], FILTER_VALIDATE_BOOLEAN),
                 $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
             array_push($skills, $epSkills);
         }
@@ -297,12 +297,12 @@ class EPListProvider {
      */
     function getSkillByNamePrefix(string $name, string $prefix, $listApt): EPSkill
     {
-        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `defaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
+        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `skillType`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
         $groups = $this->getListGroups($row['name']);
-        $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], $row['defaultable'],
+        $epSkills = new EPSkill($row['name'], $row['description'], $row['skillType'], filter_var($row['isDefaultable'], FILTER_VALIDATE_BOOLEAN),
             $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
         return $epSkills;
     }

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $linkedAptitude
  * @property string $prefix
  * @property string $skillType
- * @property string $defaultable
+ * @property bool $isDefaultable
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Skill whereDefaultable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Skill whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Skill whereId($value)
@@ -25,5 +25,18 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Skill extends Model
 {
-    //
+    protected $casts = [
+//        'isDefaultable' => 'boolean', //Disabled since this does not work with "false"
+    ];
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * WARNING:  This does not affect json_encode!
+     * @param $value
+     * @return bool
+     */
+    public function getIsDefaultableAttribute($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 }

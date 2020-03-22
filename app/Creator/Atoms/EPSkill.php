@@ -13,9 +13,6 @@ class EPSkill extends EPAtom{
      static $ACTIVE_SKILL_TYPE = "AST";
      static $KNOWLEDGE_SKILL_TYPE = "KST";
 
-     static $NO_DEFAULTABLE = 'N';
-     static $DEFAULTABLE = 'Y';
-
     /**
      * An enum of [$ACTIVE_SKILL_TYPE, $KNOWLEDGE_SKILL_TYPE]
      * Used to determine if the skill is an active or Knowledge skill
@@ -59,11 +56,10 @@ class EPSkill extends EPAtom{
      */
      public $psyMod;
     /**
-     * An Enum of [$DEFAULTABLE, $NO_DEFAULTABLE]
-     * TODO:  Convert this to an 'isDefaultable' bool
-     * @var string
+     * If the skill can be used without explicitly putting any points into it.
+     * @var bool
      */
-     public $defaultable;
+     public $isDefaultable;
     /**
      * If skill was not loaded from database
      * @var bool
@@ -139,7 +135,7 @@ class EPSkill extends EPAtom{
      */
     function getValue(){
         // Only defaultable skills and skills that the user has put at least a point into are usable
-        if (strcmp($this->defaultable,  EPSkill::$DEFAULTABLE) == 0 || $this->baseValue > 0){
+        if ($this->isDefaultable || $this->baseValue > 0){
             return $this->morphMod + $this->getEgoValue();
         }
         return 0;
@@ -212,7 +208,7 @@ class EPSkill extends EPAtom{
         $savePack['factionMod'] =  $this->factionMod;
         $savePack['softgearMod'] =  $this->softgearMod;
         $savePack['psyMod'] =  $this->psyMod;
-        $savePack['defaultable'] =  $this->defaultable;
+        $savePack['isDefaultable'] =  $this->isDefaultable;
         $savePack['tempSkill'] =  $this->tempSkill;
         $savePack['specialization'] =  $this->specialization;
         $savePack['isNativeTongue'] =  $this->isNativeTongue;
@@ -243,7 +239,14 @@ class EPSkill extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '', '', '');
+        //Backwards compatibility with older (pre 1.53) save files
+        if(isset($an_array['defaultable'])) {
+            $isDefaultable = ($an_array['defaultable'] == 'Y');
+        } else {
+            $isDefaultable = (bool)$an_array['isDefaultable'];
+        }
+
+        $object = new self((string)$an_array['name'], '', '', $isDefaultable);
         parent::set_state_helper($object, $an_array);
 
         $object->skillType      = (string)$an_array['skillType'];
@@ -255,7 +258,6 @@ class EPSkill extends EPAtom{
         $object->factionMod     = (int)$an_array['factionMod'];
         $object->softgearMod    = (int)$an_array['softgearMod'];
         $object->psyMod         = (int)$an_array['psyMod'];
-        $object->defaultable    = (string)$an_array['defaultable'];
         $object->tempSkill      = (bool)$an_array['tempSkill'];
         $object->specialization = (string)$an_array['specialization'];
         $object->isNativeTongue = (bool)$an_array['isNativeTongue'];
@@ -280,7 +282,7 @@ class EPSkill extends EPAtom{
      * @param string          $name
      * @param string          $description
      * @param string          $skillType
-     * @param string          $defaultable
+     * @param bool            $isDefaultable
      * @param EPAptitude|null $linkedAptitude
      * @param string          $prefix
      * @param array           $groups
@@ -290,7 +292,7 @@ class EPSkill extends EPAtom{
         string $name,
         string $description,
         string $skillType,
-        string $defaultable,
+        bool $isDefaultable,
         EPAptitude $linkedAptitude = null,
         string $prefix = "",
         array $groups = array(),
@@ -302,7 +304,7 @@ class EPSkill extends EPAtom{
          $this->skillType      = $skillType;
          $this->prefix = trim($prefix);
          $this->baseValue = 0;
-         $this->defaultable = $defaultable;
+         $this->isDefaultable = $isDefaultable;
          $this->groups = $groups;
          $this->morphMod = 0;
          $this->traitMod = 0;
@@ -342,7 +344,7 @@ class EPSkill extends EPAtom{
             $nameStr .= $this->prefix . " : ";
         }
         $nameStr .= $this->getName();
-        if ($this->defaultable == EPSkill::$NO_DEFAULTABLE) {
+        if (!$this->isDefaultable) {
             $nameStr .= " *";
         }
         return $nameStr;

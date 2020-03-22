@@ -1049,7 +1049,7 @@ class EPCharacterCreator implements Savable
      * @param string   $name
      * @param string   $linkedApt
      * @param string   $skillType
-     * @param string   $defaultable
+     * @param bool     $isDefaultable
      * @param string   $prefix
      * @param string[] $groups
      * @param bool     $nativeLanguage
@@ -1059,7 +1059,7 @@ class EPCharacterCreator implements Savable
         string $name,
         string $linkedApt,
         string $skillType,
-        string $defaultable,
+        bool $isDefaultable,
         string $prefix = '',
         $groups = [],
         bool $nativeLanguage = false
@@ -1071,7 +1071,7 @@ class EPCharacterCreator implements Savable
         $ns = new EPSkill($name,
                           '',
                           $skillType,
-                          $defaultable,
+                          $isDefaultable,
                           $this->getAptitudeByAbbreviation($linkedApt),
                           $prefix,
                           $groups,

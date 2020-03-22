@@ -317,7 +317,7 @@ if( isset($_POST['newTmpActSkill']) && !empty($_POST['newTmpActSkill']) ){
 	if(!creator()->addSkill($_POST['newTmpActSkill'],
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$ACTIVE_SKILL_TYPE,
-									  EPSkill::$NO_DEFAULTABLE,
+									  false,
 									  $_POST['newTmpSkillPrefix'])){
 										  return static::treatCreatorErrors(creator()->getLastError());
 									  }
@@ -329,7 +329,7 @@ if( isset($_POST['newTmpKnoSkill']) && !empty($_POST['newTmpKnoSkill']) ){
 	if(!creator()->addSkill($_POST['newTmpKnoSkill']." ",
 									  $provider->getAptForPrefix($_POST['newTmpSkillPrefix']),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE,
-									  EPSkill::$NO_DEFAULTABLE,
+									  false,
 									  $_POST['newTmpSkillPrefix'])){
 										  return static::treatCreatorErrors(creator()->getLastError());
 									  }
@@ -340,7 +340,7 @@ if( isset($_POST['newNatLanguageSkill']) && !empty($_POST['newNatLanguageSkill']
 	if(!creator()->addSkill($_POST['newNatLanguageSkill'],
 									  $provider->getAptForPrefix('Language'),
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE,
-									  EPSkill::$DEFAULTABLE,
+									  true,
 									  "Language",
 									  null,
 									  true)){
