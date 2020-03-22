@@ -779,13 +779,13 @@ class EPCharacterCreator implements Savable
             //More error checking
             if ($trait->isPositive()){
                 $totPosTrait = $this->getSumPosTraits();
-                if ($totPosTrait + $trait->cpCost > config('epcc.MaxPointPositiveTrait')){
+                if ($totPosTrait + $trait->getCpCost() > config('epcc.MaxPointPositiveTrait')){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Positive Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
             }else{
                 $totNegTrait = $this->getSumNegTraits();
-                if ($totNegTrait + $trait->cpCost > config('epcc.MaxPointNegativeTrait')){
+                if ($totNegTrait + $trait->getCpCost() > config('epcc.MaxPointNegativeTrait')){
                     array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP outdated !)', EPCreatorErrors::$RULE_ERROR));
                     return false;
                 }
@@ -793,7 +793,7 @@ class EPCharacterCreator implements Savable
             if (isset($morph)){
                 if ($trait->isNegative()){
                     $totNegTrait = $this->getSumNegMorphTraits();
-                    if ($totNegTrait + $trait->cpCost > config('epcc.MaxPointNegativeTraitOnMorph')){
+                    if ($totNegTrait + $trait->getCpCost() > config('epcc.MaxPointNegativeTraitOnMorph')){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Max Negative Trait CP for morphs outdated !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
@@ -850,7 +850,7 @@ class EPCharacterCreator implements Savable
 
             if (!$trait->isNegative()){
                 if (!$haveOld){
-                    $this->evoRezPoint -= $trait->cpCost;
+                    $this->evoRezPoint -= $trait->getCpCost();
                 }
             }
 
@@ -903,7 +903,7 @@ class EPCharacterCreator implements Savable
             }
             if (!$trait->isNegative()){
                 if (!$haveOld){
-                    $this->evoRezPoint += $trait->cpCost;
+                    $this->evoRezPoint += $trait->getCpCost();
                 }
             }
         }
@@ -1685,17 +1685,17 @@ class EPCharacterCreator implements Savable
         $ret = 0;
         foreach ($this->character->ego->additionalTraits as $t) {
             if ($t->isPositive()){
-                $ret -= $t->cpCost;
+                $ret -= $t->getCpCost();
             }else{
-                $ret += $t->cpCost;
+                $ret += $t->getCpCost();
             }
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->additionalTraits as $t) {
                 if ($t->isPositive()){
-                    $ret -= $t->cpCost;
+                    $ret -= $t->getCpCost();
                 }else{
-                    $ret += $t->cpCost;
+                    $ret += $t->getCpCost();
                 }
             }
         }
@@ -2428,13 +2428,13 @@ class EPCharacterCreator implements Savable
         $tot = 0;
         foreach ($this->character->ego->additionalTraits as $t) {
             if ($t->isPositive()){
-                $tot += $t->cpCost;
+                $tot += $t->getCpCost();
             }
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->additionalTraits as $t) {
                 if ($t->isPositive()){
-                    $tot += $t->cpCost;
+                    $tot += $t->getCpCost();
                 }
             }
         }
@@ -2445,7 +2445,7 @@ class EPCharacterCreator implements Savable
         $tot = 0;
         foreach ($this->character->ego->additionalTraits as $t) {
             if ($t->isNegative()){
-                $tot += $t->cpCost;
+                $tot += $t->getCpCost();
             }
         }
         $tot += $this->getSumNegMorphTraits();
@@ -2456,7 +2456,7 @@ class EPCharacterCreator implements Savable
         foreach ($this->character->morphs as $morph) {
             foreach ($morph->additionalTraits as $t) {
                 if ($t->isNegative()){
-                    $tot += $t->cpCost;
+                    $tot += $t->getCpCost();
                 }
             }
         }

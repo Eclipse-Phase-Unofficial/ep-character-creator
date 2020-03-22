@@ -12,10 +12,7 @@ $currentMorph = creator()->getCurrentMorphsByName((string) session('currentMorph
         $currentTraits = creator()->getCurrentMorphTraits((string) session('currentMorph'));
         $defaultTraits = creator()->getCurrentDefaultMorphTraits($currentMorph);
         foreach(EpDatabase()->getTraits() as $m){
-            if($m->isPositive() &&
-               $m->isMorph()  &&
-                Helpers::isTraitLegal($currentMorph,$m) &&
-               $m->cpCost > 0){
+            if($m->isPositive() && $m->isMorph() && Helpers::isTraitLegal($currentMorph,$m)) {
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'morphPosTrait','addSelMorphPosTraitIcon');
             }
          }

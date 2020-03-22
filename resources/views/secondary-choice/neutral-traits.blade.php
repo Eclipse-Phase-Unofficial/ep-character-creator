@@ -9,7 +9,7 @@ use App\Creator\DisplayHelpers\Helpers;
         $currentTraits = creator()->getCurrentTraits();
         $defaultTraits = creator()->getCurrentDefaultEgoTraits();
          foreach(EpDatabase()->getTraits() as $m){
-            if($m->isEgo() && $m->cpCost == 0){
+            if($m->isNeutral() && $m->isEgo()) {
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'neuTrait','addSelNeuTrait');
             }
          }

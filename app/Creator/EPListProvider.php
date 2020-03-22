@@ -101,7 +101,7 @@ class EPListProvider {
     function getListTraits(): array
     {
         $traitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `description`, `isNegative`, `isForMorph`, `cpCost` , `level` , `JustFor` FROM `traits`");
+        $traitRes = self::$database->query("SELECT `name`, `description`, `isForMorph`, `cpCost` , `level` , `JustFor` FROM `traits`");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($traitRow = $traitRes->fetch()) {
             $bonusMalusTraitList = array();
@@ -124,7 +124,7 @@ class EPListProvider {
             if (!is_null($traitRow['isForMorph'])) {
                 $isForMorph = filter_var($traitRow['isForMorph'], FILTER_VALIDATE_BOOLEAN);
             }
-            $trait = new EPTrait($traitRow['name'], filter_var($traitRow['isNegative'], FILTER_VALIDATE_BOOLEAN), $isForMorph, intval($traitRow['cpCost']),
+            $trait = new EPTrait($traitRow['name'], $isForMorph, intval($traitRow['cpCost']),
                 $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
             array_push($traitList, $trait);
         }
@@ -134,7 +134,7 @@ class EPListProvider {
     function getTraitByName(string $traitName): EPTrait
     {
         $bonusMalusTraitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `description`, `isNegative`, `isForMorph`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
+        $traitRes = self::$database->query("SELECT `name`, `description`, `isForMorph`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         $traitRow = $traitRes->fetch();
 
@@ -157,7 +157,7 @@ class EPListProvider {
         if (!is_null($traitRow['isForMorph'])) {
             $isForMorph = filter_var($traitRow['isForMorph'], FILTER_VALIDATE_BOOLEAN);
         }
-        $trait = new EPTrait($traitRow['name'], filter_var($traitRow['isNegative'], FILTER_VALIDATE_BOOLEAN), $isForMorph, intval($traitRow['cpCost']),
+        $trait = new EPTrait($traitRow['name'], $isForMorph, intval($traitRow['cpCost']),
             $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
         return $trait;
     }

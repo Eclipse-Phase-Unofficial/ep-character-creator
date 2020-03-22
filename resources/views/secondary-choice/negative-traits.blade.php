@@ -8,8 +8,7 @@ use App\Creator\DisplayHelpers\Helpers;
         $currentTraits = creator()->getCurrentTraits();
         $defaultTraits = creator()->getCurrentDefaultEgoTraits();
          foreach(EpDatabase()->getTraits() as $m){
-            if($m->isNegative() &&
-               $m->isEgo() && $m->cpCost > 0){
+            if($m->isNegative() && $m->isEgo()) {
                 echo Helpers::getDynamicTraitLi($m,$currentTraits,$defaultTraits,'negTrait','addSelNegTraitIcon');
             }
          }

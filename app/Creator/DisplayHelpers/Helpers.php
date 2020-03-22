@@ -183,7 +183,7 @@ class Helpers
         }
 
         $li = new Li($trait->getName(), $traitClass);
-        $li->addCost($trait->cpCost, $trait->isInArray($defaultTraits));
+        $li->addCost($trait->getCpCost(), $trait->isInArray($defaultTraits));
         $li->addBookIcon($trait->getName());
         $li->addPlusChecked($iconClass, $trait->isInArray($currentTraits));
         return $li->getHtml();

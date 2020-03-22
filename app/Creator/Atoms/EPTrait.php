@@ -4,6 +4,12 @@ declare(strict_types=1);
 namespace App\Creator\Atoms;
 
 /**
+ * Traits are a primary way that players customize their characters.
+ * They can provide both numeric and non-numeric advantages.
+ * Not all traits are good.  Players can take negative traits either at the GM's requirement or to gain additional CP.
+ * In addition, there are Neutral, 0 Cost traits.
+ * Within this system, BonusMaluses are used to describe all effects.  So, traits are BonusMalus containers.
+ *
  * @author reinhardt
  */
 class EPTrait extends EPAtom
@@ -23,21 +29,17 @@ class EPTrait extends EPAtom
     public $canUse;
 
     /*
-     * TODO: Add a neutral getter (which is distinguished by costing 0CP)
-     * @var string
-     */
-    private $isNegative;
-    /*
      * Determines if this is for an Ego, Morph or both.
      * Traits for both are null!
      * @var bool|null
      */
     private $isForMorph;
     /*
-     * TODO: Convert this to a private variable with a getter
+     * How much the trait is worth.
+     * Also stores negative traits as negative, and neutral traits as 0 internally.
      * @var int
      */
-    public $cpCost;
+    private $cpCost;
 
     /**
      * TODO: Convert this to a private variable with a getter
@@ -57,7 +59,6 @@ class EPTrait extends EPAtom
 
         $savePack['canUse'] = $this->canUse;
 
-        $savePack['traitPosNeg'] =  $this->isNegative;
         $savePack['isForMorph'] =  $this->isForMorph;
         $savePack['cpCost'] =  $this->cpCost;
 
@@ -82,20 +83,13 @@ class EPTrait extends EPAtom
     public static function __set_state(array $an_array)
     {
         //Backwards compatibility with older (pre 1.53) save files
-        if(isset($an_array['traitPosNeg'])) {
-            $isNegative = filter_var($an_array['traitPosNeg'], FILTER_VALIDATE_BOOLEAN);
-        } else {
-            $isNegative = (bool)$an_array['isNegative'];
-        }
-
-        //Backwards compatibility with older (pre 1.53) save files
         if(isset($an_array['traitEgoMorph'])) {
             $isForMorph = ($an_array['traitEgoMorph'] == 'MOR');
         } else {
             $isForMorph = $an_array['isForMorph'];
         }
 
-        $object = new self((string)$an_array['name'], $isNegative, $isForMorph, 0);
+        $object = new self((string)$an_array['name'], $isForMorph, 0);
         parent::set_state_helper($object, $an_array);
 
         $object->canUse = (string)$an_array['canUse'];
@@ -105,6 +99,14 @@ class EPTrait extends EPAtom
             array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
         }
 
+        //Backwards compatibility with older (pre 1.53) save files
+        if (isset($an_array['traitPosNeg'])) {
+            $isNegative = filter_var($an_array['traitPosNeg'], FILTER_VALIDATE_BOOLEAN);
+            if ($isNegative) {
+                $object->cpCost = -$object->cpCost;
+            }
+        }
+
         return $object;
     }
 
@@ -112,7 +114,6 @@ class EPTrait extends EPAtom
      * EPTrait constructor.
      * @param string         $name
      * @param string         $description
-     * @param bool           $isNegative     Traits can be positive, negative, or neutral.  However, neutral traits are distinguished by costing 0CP
      * @param bool|null      $isForMorph     Traits can be for Egos, Morphs, or both.  Both is represented by null.
      * @param int            $cpCost
      * @param EPBonusMalus[] $bonusMalusArray
@@ -121,7 +122,6 @@ class EPTrait extends EPAtom
      */
     function __construct(
         string $name,
-        bool $isNegative,
         ?bool $isForMorph,
         int $cpCost,
         string $description = '',
@@ -130,7 +130,6 @@ class EPTrait extends EPAtom
         string $canUse = 'EVERY'
     ) {
         parent::__construct($name, $description);
-        $this->isNegative = $isNegative;
         $this->isForMorph = $isForMorph;
         $this->cpCost     = $cpCost;
         $this->bonusMalus = $bonusMalusArray;
@@ -149,7 +148,6 @@ class EPTrait extends EPAtom
     public function match($trait): bool
     {
         if (strcasecmp($trait->getName(),$this->getName()) == 0 &&
-            $trait->isNegative===$this->isNegative &&
             $trait->isForMorph===$this->isForMorph &&
             $trait->cpCost===$this->cpCost &&
             $trait->level===$this->level &&
@@ -165,7 +163,7 @@ class EPTrait extends EPAtom
      */
     function isPositive(): bool
     {
-        return !$this->isNegative;
+        return $this->cpCost > 0;
     }
 
     /**
@@ -174,7 +172,16 @@ class EPTrait extends EPAtom
      */
     function isNegative(): bool
     {
-        return $this->isNegative;
+        return $this->cpCost < 0;
+    }
+
+    /**
+     * The trait does not give or cost CP and is "Neutral"
+     * @return bool
+     */
+    function isNeutral(): bool
+    {
+        return $this->cpCost == 0;
     }
 
     /**
@@ -223,6 +230,18 @@ class EPTrait extends EPAtom
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get how much the trait costs or adds.  This is always a positive number!
+     * @return int
+     */
+    public function getCpCost(): int
+    {
+        if ($this->isNegative()) {
+            return -$this->cpCost;
+        }
+        return $this->cpCost;
     }
 
     /**
