@@ -9,9 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
- * @property string $desc
+ * @property string $description
  * @property int $cost
- * @property string $unique
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Muse whereCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Muse whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Muse whereId($value)

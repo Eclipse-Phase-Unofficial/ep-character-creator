@@ -3,19 +3,18 @@ CREATE TABLE IF NOT EXISTS "muses"
 (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   name varchar(100) NOT NULL UNIQUE,
-  desc text NOT NULL,
-  cost smallint(6) NOT NULL,
-  "unique" varchar(1) DEFAULT 'N' NOT NULL
+  description text NOT NULL,
+  cost smallint(6) NOT NULL
 );
-INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000,'N');
-INSERT INTO muses VALUES(2,'Bot/Vehicle AI','These AIs are designed to be capable of piloting the robot/vehicle without transhuman assistance. ',5000,'N');
-INSERT INTO muses VALUES(3,'Device AI','These AIs are designed to operate a particular device without transhuman assistance.<br><br><b> you have to add Interests: [Device] Specs 80 after </b>',1000,'N');
-INSERT INTO muses VALUES(4,'Kaos AI','Kaos AIs are used by hackers and covert ops teams to create distractions and sabotage systems. ',20000,'N');
-INSERT INTO muses VALUES(5,'Monitor Ai','These AIs are designed to surveil their subject and keep them from engaging in any proscribed activities.',5000,'N');
-INSERT INTO muses VALUES(6,'Security AI','Security AIs provide overwatch for electronic systems.',5000,'N');
-INSERT INTO muses VALUES(7,'Sensor AI','Sensor AIs are equipped in most off-the-shelf sensor systems. ',1000,'N');
-INSERT INTO muses VALUES(8,'Standard Muse','Muses are digital entities that have been designed as personal assistants and lifelong companions for transhumans.<br><br><b>you have to add three other Knowledge skills at 40 after. </b> ',5000,'N');
-INSERT INTO muses VALUES(9,'Technician AI','Technician AIs are used on habitats and aboard ships to direct the work of repair drones.',1000,'N');
+INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000);
+INSERT INTO muses VALUES(2,'Bot/Vehicle AI','These AIs are designed to be capable of piloting the robot/vehicle without transhuman assistance. ',5000);
+INSERT INTO muses VALUES(3,'Device AI','These AIs are designed to operate a particular device without transhuman assistance.<br><br><b> you have to add Interests: [Device] Specs 80 after </b>',1000);
+INSERT INTO muses VALUES(4,'Kaos AI','Kaos AIs are used by hackers and covert ops teams to create distractions and sabotage systems. ',20000);
+INSERT INTO muses VALUES(5,'Monitor Ai','These AIs are designed to surveil their subject and keep them from engaging in any proscribed activities.',5000);
+INSERT INTO muses VALUES(6,'Security AI','Security AIs provide overwatch for electronic systems.',5000);
+INSERT INTO muses VALUES(7,'Sensor AI','Sensor AIs are equipped in most off-the-shelf sensor systems. ',1000);
+INSERT INTO muses VALUES(8,'Standard Muse','Muses are digital entities that have been designed as personal assistants and lifelong companions for transhumans.<br><br><b>you have to add three other Knowledge skills at 40 after. </b> ',5000);
+INSERT INTO muses VALUES(9,'Technician AI','Technician AIs are used on habitats and aboard ships to direct the work of repair drones.',1000);
 CREATE TABLE IF NOT EXISTS "aptitudes"
 (
 

@@ -435,7 +435,7 @@ class EPListProvider {
     function getListAi(): array
     {
         $aiList = array();
-        $aiRes = self::$database->query("SELECT `name`, `desc`, `cost` FROM `muses`");
+        $aiRes = self::$database->query("SELECT `name`, `description`, `cost` FROM `muses`");
         $aiRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($aiRow = $aiRes->fetch()) {
             //aptitudes
@@ -472,7 +472,7 @@ class EPListProvider {
                 }
             }
 
-            $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $aiRow['desc']);
+            $ai = new EPAi($aiRow['name'], $aptitudeList, intval($aiRow['cost']), $skillList, $aiRow['description']);
             //$aiList[$aiRow['name']] = $ai;
             array_push($aiList, $ai);
         }
