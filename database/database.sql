@@ -5720,7 +5720,7 @@ INSERT INTO reputations VALUES(6,'I-Rep','<b>The Eye</b><br>\n<b>Networking fiel
 INSERT INTO reputations VALUES(7,'R-Rep','<b>Research Network Associates</b><br>\n<b>Networking field :</b> Scientists<br>\n<b>Factions : </b>Argonauts (also technologists, researchers, and scientists)');
 CREATE TABLE `skillPrefixes` (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  prefix varchar(100) NOT NULL UNIQUE,
+  name varchar(100) NOT NULL UNIQUE,
   linkedAptitude varchar(3) NOT NULL,
   isActive boolean NOT NULL,
   description text NOT NULL

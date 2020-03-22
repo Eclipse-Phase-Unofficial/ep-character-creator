@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Models\SkillPrefix
  *
  * @property int $id
- * @property string $prefix
+ * @property string $name
  * @property string $linkedAptitude
  * @property bool $isActive
  * @property string $description

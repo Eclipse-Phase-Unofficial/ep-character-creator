@@ -225,18 +225,18 @@ class EPListProvider {
 
     function getListPrefix(){
         $prefixes = array();
-        $res = self::$database->query("SELECT `prefix` FROM `skillPrefixes`");
+        $res = self::$database->query("SELECT `name` FROM `skillPrefixes`");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
 
         while ($row = $res->fetch()) {
-            array_push($prefixes, $row['prefix']);
+            array_push($prefixes, $row['name']);
         }
         return $prefixes;
     }
 
 
     function getAptForPrefix($prefixName){
-        $res = self::$database->query("SELECT `linkedAptitude` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `linkedAptitude` FROM `skillPrefixes` WHERE `name` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
@@ -244,14 +244,14 @@ class EPListProvider {
     }
 
     function isPrefixActive(string $prefixName){
-        $res = self::$database->query("SELECT `isActive` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `isActive` FROM `skillPrefixes` WHERE `name` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
         return filter_var($row['isActive'], FILTER_VALIDATE_BOOLEAN);
     }
 
     function getPrefixDescription($prefixName){
-        $res = self::$database->query("SELECT `description` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `description` FROM `skillPrefixes` WHERE `name` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
