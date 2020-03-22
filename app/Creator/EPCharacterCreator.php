@@ -1048,7 +1048,7 @@ class EPCharacterCreator implements Savable
      *
      * @param string   $name
      * @param string   $linkedApt
-     * @param string   $skillType
+     * @param bool     $isActive
      * @param bool     $isDefaultable
      * @param string   $prefix
      * @param string[] $groups
@@ -1058,7 +1058,7 @@ class EPCharacterCreator implements Savable
     function addSkill(
         string $name,
         string $linkedApt,
-        string $skillType,
+        bool $isActive,
         bool $isDefaultable,
         string $prefix = '',
         $groups = [],
@@ -1070,7 +1070,7 @@ class EPCharacterCreator implements Savable
         }
         $ns = new EPSkill($name,
                           '',
-                          $skillType,
+                          $isActive,
                           $isDefaultable,
                           $this->getAptitudeByAbbreviation($linkedApt),
                           $prefix,

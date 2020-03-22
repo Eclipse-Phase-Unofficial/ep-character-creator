@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property string $linkedAptitude
  * @property string $prefix
- * @property string $skillType
+ * @property bool $isActive
  * @property bool $isDefaultable
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Skill whereDefaultable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Skill whereDesc($value)
@@ -26,8 +26,20 @@ use Illuminate\Database\Eloquent\Model;
 class Skill extends Model
 {
     protected $casts = [
+//        'isActive' => 'boolean', //Disabled since this does not work with "false"
 //        'isDefaultable' => 'boolean', //Disabled since this does not work with "false"
     ];
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * WARNING:  This does not affect json_encode!
+     * @param $value
+     * @return bool
+     */
+    public function getIsActiveAttribute($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 
     /**
      * Fix for SQLite note supporting booleans properly.

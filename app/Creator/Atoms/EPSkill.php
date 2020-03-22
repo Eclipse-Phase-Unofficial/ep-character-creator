@@ -14,12 +14,10 @@ class EPSkill extends EPAtom{
      static $KNOWLEDGE_SKILL_TYPE = "KST";
 
     /**
-     * An enum of [$ACTIVE_SKILL_TYPE, $KNOWLEDGE_SKILL_TYPE]
      * Used to determine if the skill is an active or Knowledge skill
-     * TODO:  Convert this to an 'isActiveSkill' bool
-     * @var string
+     * @var bool
      */
-     private $skillType;
+     private $isActiveSkill;
 
     /**
      * TODO:  Make this private with a getter (no setter)
@@ -200,7 +198,7 @@ class EPSkill extends EPAtom{
     {
         $savePack = parent::getSavePack();
 
-        $savePack['skillType'] =  $this->skillType;
+        $savePack['isActiveSkill'] =  $this->isActiveSkill;
         $savePack['prefix'] =  $this->prefix;
         $savePack['baseValue'] =  $this->baseValue;
         $savePack['morphMod'] =  $this->morphMod;
@@ -246,11 +244,15 @@ class EPSkill extends EPAtom{
         } else {
             $isDefaultable = (bool)$an_array['isDefaultable'];
         }
+        if(isset($an_array['skillType'])) {
+            $isActive = ($an_array['skillType'] == 'AST');
+        } else {
+            $isActive = (bool)$an_array['isActiveSkill'];
+        }
 
-        $object = new self((string)$an_array['name'], '', '', $isDefaultable);
+        $object = new self((string)$an_array['name'], '', $isActive, $isDefaultable);
         parent::set_state_helper($object, $an_array);
 
-        $object->skillType      = (string)$an_array['skillType'];
         $object->prefix         = (string)$an_array['prefix'];
         $object->baseValue      = (int)$an_array['baseValue'];
         $object->morphMod       = (int)$an_array['morphMod'];
@@ -282,7 +284,7 @@ class EPSkill extends EPAtom{
      * EPSkill constructor.
      * @param string          $name
      * @param string          $description
-     * @param string          $skillType
+     * @param bool            $isActive
      * @param bool            $isDefaultable
      * @param EPAptitude|null $linkedAptitude
      * @param string          $prefix
@@ -292,7 +294,7 @@ class EPSkill extends EPAtom{
     function __construct(
         string $name,
         string $description,
-        string $skillType,
+        bool $isActive,
         bool $isDefaultable,
         EPAptitude $linkedAptitude = null,
         string $prefix = "",
@@ -302,8 +304,8 @@ class EPSkill extends EPAtom{
         //The `trim`s are because this could be user created.
          parent::__construct(trim($name), trim($description));
          $this->linkedAptitude = $linkedAptitude;
-         $this->skillType      = $skillType;
-         $this->prefix = trim($prefix);
+         $this->isActiveSkill  = $isActive;
+         $this->prefix         = trim($prefix);
          $this->baseValue = 0;
          $this->isDefaultable = $isDefaultable;
          $this->groups = $groups;
@@ -352,21 +354,21 @@ class EPSkill extends EPAtom{
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * If the skill is a Knowledge Skill
      * @return bool
      */
     public function isKnowledge(): bool
     {
-        return $this->skillType == EPSkill::$KNOWLEDGE_SKILL_TYPE;
+        return !$this->isActiveSkill;
     }
 
     /**
-     * Standard getter to save some comparison operators
+     * If the skill is an Active Skill
      * @return bool
      */
     public function isActive(): bool
     {
-        return $this->skillType == EPSkill::$ACTIVE_SKILL_TYPE;
+        return $this->isActiveSkill;
     }
 
     /**
