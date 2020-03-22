@@ -16,7 +16,7 @@ use App\Creator\Atoms\EPSkill;
 				 $provider = new EPListProvider();
 				 $prefixList =  $provider->getListPrefix();
 		         foreach($prefixList as $m){
-		         	if($provider->getTypeForPrefix($m) == EPSkill::$ACTIVE_SKILL_TYPE){
+		         	if($provider->isPrefixActive($m)){
 			        	echo "<option value='".$m."'>".$m."</option>";
 			        }
 		         }

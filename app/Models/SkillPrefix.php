@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $prefix
  * @property string $linkedAptitude
- * @property string $skillType
+ * @property bool $isActive
  * @property string $description
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SkillPrefix whereDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\SkillPrefix whereId($value)
@@ -22,4 +22,19 @@ use Illuminate\Database\Eloquent\Model;
 class SkillPrefix extends Model
 {
     protected $table = 'skillPrefixes';
+
+    protected $casts = [
+//        'isActive' => 'boolean', //Disabled since this does not work with "false"
+    ];
+
+    /**
+     * Fix for SQLite note supporting booleans properly.
+     * WARNING:  This does not affect json_encode!
+     * @param $value
+     * @return bool
+     */
+    public function getIsActiveAttribute($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 }

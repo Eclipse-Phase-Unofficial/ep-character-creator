@@ -243,11 +243,11 @@ class EPListProvider {
         return $row['linkedAptitude'];
     }
 
-    function getTypeForPrefix($prefixName){
-        $res = self::$database->query("SELECT `skillType` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
+    function isPrefixActive(string $prefixName){
+        $res = self::$database->query("SELECT `isActive` FROM `skillPrefixes` WHERE `prefix` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
-        return $row['skillType'];
+        return filter_var($row['isActive'], FILTER_VALIDATE_BOOLEAN);
     }
 
     function getPrefixDescription($prefixName){
