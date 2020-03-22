@@ -342,7 +342,7 @@ if( isset($_POST['newNatLanguageSkill']) && !empty($_POST['newNatLanguageSkill']
 									  false,
 									  true,
 									  "Language",
-									  null,
+									  [],
 									  true)){
 										  return static::treatCreatorErrors(creator()->getLastError());
 									  }
