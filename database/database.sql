@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
 -- TODO:  Check if addictions work properly
     bmNameMain varchar(60) NOT NULL,
     bmChoices  varchar(60) NOT NULL,
---     PRIMARY KEY (bmNameMain, bmChoices),
+    PRIMARY KEY (bmNameMain, bmChoices),
 --     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
     FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
 );
@@ -3282,7 +3282,6 @@ INSERT INTO BonusMalusTypes VALUES('Choose an Addiction','Moderate Addiction');
 INSERT INTO BonusMalusTypes VALUES('Enlarged Size','+10 Durability');
 INSERT INTO BonusMalusTypes VALUES('Enlarged Size','+5 Durability');
 INSERT INTO BonusMalusTypes VALUES('Botched Merge','Max 4/10 on [Aptitude]');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Networking Skill','+10 Networking: [Field] skill ');
 INSERT INTO BonusMalusTypes VALUES('+10 2 Networking Skill','+10 Networking: [Field] skill ');
 INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Beam Weapons skill');
 INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Blades skill');
