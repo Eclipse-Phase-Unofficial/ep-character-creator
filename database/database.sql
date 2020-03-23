@@ -1,12 +1,262 @@
 PRAGMA foreign_keys = ON;
 BEGIN TRANSACTION;
+
 CREATE TABLE IF NOT EXISTS "muses"
 (
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  cost smallint(6) NOT NULL
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(100)                      NOT NULL UNIQUE,
+    description text                              NOT NULL,
+    cost        smallint(6)                       NOT NULL
 );
+CREATE TABLE IF NOT EXISTS "aptitudes"
+(
+-- TODO:  Remove program requirements that make "name" Unique
+    id           integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name         varchar(100)                      NOT NULL UNIQUE,
+    description  text                              NOT NULL,
+    abbreviation varchar(3)                        NOT NULL UNIQUE
+);
+CREATE TABLE IF NOT EXISTS "AtomBook"
+(
+    name varchar(100) NOT NULL,
+    book varchar(100) NOT NULL,
+    PRIMARY KEY (name)
+);
+CREATE TABLE IF NOT EXISTS "AtomPage"
+(
+    name varchar(100) NOT NULL,
+    page varchar(100) NOT NULL,
+    PRIMARY KEY (name)
+);
+CREATE TABLE IF NOT EXISTS "backgrounds"
+(
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(100)                      NOT NULL UNIQUE,
+    description text                              NOT NULL,
+    type        varchar(3)                        NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "bonusMalus"
+(
+    id                 integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name               varchar(100)                      NOT NULL UNIQUE,
+    description        text                              NOT NULL,
+    type               varchar(3)                        NOT NULL,
+    target             varchar(60)                       NOT NULL,
+    value              integer                           NOT NULL,
+    targetForChoice    varchar(20)                       NOT NULL,
+    typeTarget         varchar(20)                       NOT NULL,
+    isCostModifier     boolean                           NOT NULL,
+    requiredSelections int                               NOT NULL default 0
+);
+CREATE TABLE IF NOT EXISTS "gear"
+(
+-- Not everything that causes damage has armor penetration, but everything that has armor penetration causes damage
+-- TODO: Set armorKinetic & armorEnergy to NULL where they are not used
+    id               integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name             varchar(100)                      NOT NULL UNIQUE,
+    description      text                              NOT NULL,
+    type             varchar(3)                        NOT NULL,
+    cost             smallint(6)                       NOT NULL,
+    armorKinetic     smallint(6)                       NOT NULL,
+    armorEnergy      smallint(6)                       NOT NULL,
+    damage           varchar(30),
+    armorPenetration smallint(6),
+    allowedMorphType varchar(100)                      NOT NULL,
+    isUnique         boolean                           NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "infos"
+(
+-- TODO: Rename data to description
+    id   varchar(100) NOT NULL,
+    data text         NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS "morphs"
+(
+    id           integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name         varchar(100)                      NOT NULL UNIQUE,
+    description  text                              NOT NULL,
+    type         varchar(20)                       NOT NULL,
+    maxApptitude smallint(6)                       NOT NULL,
+    durablility  smallint(6)                       NOT NULL,
+    cpCost       smallint(6)                       NOT NULL,
+    creditCost   smallint(6)                       NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "psySleights"
+(
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(100)                      NOT NULL UNIQUE,
+    description text                              NOT NULL,
+    type        varchar(50)                       NOT NULL,
+    range       varchar(50)                       NOT NULL,
+    duration    varchar(50)                       NOT NULL,
+    action      varchar(50)                       NOT NULL,
+    level       varchar(3)                        NOT NULL,
+    strainMod   varchar(100)                      NOT NULL,
+    skillNeeded varchar(60)
+--   FOREIGN KEY (skillNeeded) REFERENCES skills(name)
+);
+CREATE TABLE IF NOT EXISTS "reputations"
+(
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(100)                      NOT NULL UNIQUE,
+    description text                              NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "skillPrefixes"
+(
+    id             integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name           varchar(100)                      NOT NULL UNIQUE,
+    linkedAptitude varchar(3)                        NOT NULL,
+    isActive       boolean                           NOT NULL,
+    description    text                              NOT NULL,
+    FOREIGN KEY (linkedAptitude) REFERENCES aptitudes (abbreviation)
+);
+CREATE TABLE IF NOT EXISTS "skills"
+(
+    id             integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name           varchar(60)                       NOT NULL UNIQUE,
+    description    text                              NOT NULL,
+    linkedAptitude varchar(3)                        NOT NULL,
+    prefix         varchar(100),
+    isActive       boolean                           NOT NULL,
+    isDefaultable  boolean                           NOT NULL,
+    FOREIGN KEY (linkedAptitude) REFERENCES aptitudes (abbreviation),
+    FOREIGN KEY (prefix) REFERENCES skillPrefixes (name)
+);
+CREATE TABLE IF NOT EXISTS "stats"
+(
+    id           integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name         varchar(100)                      NOT NULL UNIQUE,
+    description  text                              NOT NULL,
+    abbreviation varchar(3)                        NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "traits"
+(
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(60)                       NOT NULL UNIQUE,
+    description text                              NOT NULL,
+    isForMorph  boolean,
+    cpCost      smallint(6) DEFAULT NULL,
+    level       smallint(6)                       NOT NULL,
+    JustFor     varchar(30) DEFAULT 'EVERY' NOT NULL
+);
+
+-- Pivot Tables
+CREATE TABLE IF NOT EXISTS "background_bonusMalus"
+(
+    background varchar(100) NOT NULL,
+    bonusMalus varchar(100) NOT NULL,
+    occurrence smallint(6)  NOT NULL,
+    PRIMARY KEY (background, bonusMalus),
+    FOREIGN KEY (background) REFERENCES backgrounds (name)
+--   FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
+);
+CREATE TABLE IF NOT EXISTS "BackgroundLimitations"
+(
+-- TODO:  Figure out if this is the proper reference for limitationGroup
+    background      varchar(100) NOT NULL,
+    limitationGroup varchar(100) NOT NULL,
+    PRIMARY KEY (background, limitationGroup),
+    FOREIGN KEY (background) REFERENCES backgrounds (name)
+--   FOREIGN KEY (limitationGroup) REFERENCES groups(name)
+);
+CREATE TABLE IF NOT EXISTS "background_trait"
+(
+    background varchar(100) NOT NULL,
+    trait      varchar(100) NOT NULL,
+    PRIMARY KEY (background, trait),
+    FOREIGN KEY (background) REFERENCES backgrounds (name)
+--   FOREIGN KEY (trait) REFERENCES trait(name)
+);
+CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
+(
+-- TODO:  Check if addictions work properly
+    bmNameMain varchar(60) NOT NULL,
+    bmChoices  varchar(60) NOT NULL,
+--     PRIMARY KEY (bmNameMain, bmChoices),
+--     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
+    FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
+);
+CREATE TABLE IF NOT EXISTS "bonusMalus_gear"
+(
+    gear       varchar(100) NOT NULL,
+    bonusMalus varchar(100) NOT NULL,
+    occur      smallint(6)  NOT NULL,
+    PRIMARY KEY (gear, bonusMalus),
+    FOREIGN KEY (gear) REFERENCES gear (name),
+    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
+);
+CREATE TABLE IF NOT EXISTS "GroupNames"
+(
+    groupName  varchar(100) NOT NULL,
+    targetName varchar(100) NOT NULL,
+    PRIMARY KEY (groupName, targetName)
+);
+CREATE TABLE IF NOT EXISTS "bonusMalus_morph"
+(
+    morph      varchar(100) NOT NULL,
+    bonusMalus varchar(100) NOT NULL,
+    occur      smallint(6)  NOT NULL,
+    PRIMARY KEY (morph, bonusMalus),
+    FOREIGN KEY (morph) REFERENCES morphs (name),
+    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
+);
+CREATE TABLE IF NOT EXISTS "gear_morph"
+(
+    morph varchar(100) NOT NULL,
+    gear  varchar(100) NOT NULL,
+    occur smallint(6)  NOT NULL,
+    PRIMARY KEY (morph, gear),
+    FOREIGN KEY (morph) REFERENCES morphs (name),
+    FOREIGN KEY (gear) REFERENCES gear (name)
+);
+CREATE TABLE IF NOT EXISTS "morph_trait"
+(
+    morph varchar(100) NOT NULL,
+    trait varchar(100) NOT NULL,
+    PRIMARY KEY (morph, trait),
+    FOREIGN KEY (morph) REFERENCES morphs (name)
+--   FOREIGN KEY (trait) REFERENCES trait(name)
+);
+CREATE TABLE IF NOT EXISTS "bonusMalus_psySleight"
+(
+    psy        varchar(100) NOT NULL,
+    bonusmalus varchar(100) NOT NULL,
+    occur      smallint(6)  NOT NULL,
+    PRIMARY KEY (psy, bonusmalus),
+    FOREIGN KEY (psy) REFERENCES psySleights (name),
+    FOREIGN KEY (bonusmalus) REFERENCES bonusMalus (name)
+);
+CREATE TABLE IF NOT EXISTS "bonusMalus_trait"
+(
+    traitName      varchar(60)  NOT NULL,
+    bonusMalusName varchar(100) NOT NULL,
+    occur          smallint(6)  NOT NULL,
+    PRIMARY KEY (traitName, bonusMalusName)
+--   FOREIGN KEY (traitName) REFERENCES traits(name),
+--   FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus(name)
+);
+CREATE TABLE IF NOT EXISTS "aptitude_muse"
+(
+    aptitude varchar(100) NOT NULL,
+    muse     varchar(100) NOT NULL,
+    value    smallint(6)  NOT NULL,
+    PRIMARY KEY (muse, aptitude),
+    FOREIGN KEY (aptitude) REFERENCES aptitudes (name),
+    FOREIGN KEY (muse) REFERENCES muses (name)
+);
+CREATE TABLE IF NOT EXISTS "muse_skill"
+(
+-- TODO: Null unused prefixes
+    muse        varchar(100) NOT NULL,
+    skillName   varchar(100) NOT NULL,
+    skillPrefix varchar(100) NOT NULL DEFAULT '',
+    value       smallint(6)  NOT NULL,
+    PRIMARY KEY (muse, skillName, skillPrefix),
+    FOREIGN KEY (muse) REFERENCES muses (name)
+--     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills(name, prefix)
+);
+
 INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000);
 INSERT INTO muses VALUES(2,'Bot/Vehicle AI','These AIs are designed to be capable of piloting the robot/vehicle without transhuman assistance. ',5000);
 INSERT INTO muses VALUES(3,'Device AI','These AIs are designed to operate a particular device without transhuman assistance.<br><br><b> you have to add Interests: [Device] Specs 80 after </b>',1000);
@@ -16,15 +266,7 @@ INSERT INTO muses VALUES(6,'Security AI','Security AIs provide overwatch for ele
 INSERT INTO muses VALUES(7,'Sensor AI','Sensor AIs are equipped in most off-the-shelf sensor systems. ',1000);
 INSERT INTO muses VALUES(8,'Standard Muse','Muses are digital entities that have been designed as personal assistants and lifelong companions for transhumans.<br><br><b>you have to add three other Knowledge skills at 40 after. </b> ',5000);
 INSERT INTO muses VALUES(9,'Technician AI','Technician AIs are used on habitats and aboard ships to direct the work of repair drones.',1000);
-CREATE TABLE IF NOT EXISTS "aptitudes"
-(
 
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  abbreviation varchar(3) NOT NULL UNIQUE
-);
--- TODO:  Remove program requirements that make "name" Unique
 INSERT INTO aptitudes VALUES(1,'Cognition','Cognition (COG) is your aptitude for problem solving, logical analysis, and understanding. It also includes memory and recall.','COG');
 INSERT INTO aptitudes VALUES(2,'Coordination','Coordination (COO) is your skill at integrating the actions of different parts of your morph to produce smooth, successful movements. It includes manual dexterity, fine motor control, nimbleness, and balance.','COO');
 INSERT INTO aptitudes VALUES(3,'Intuition','Intuition (INT) is your skill at following your gut instincts and evaluating on the fly. It includes physical awareness, cleverness, and cunning.','INT');
@@ -32,11 +274,7 @@ INSERT INTO aptitudes VALUES(4,'Reflex','Reflexes (REF) is your skill at acting 
 INSERT INTO aptitudes VALUES(5,'Savvy','Savvy (SAV) is your mental adaptability, social intuition, and proficiency for interacting with others. It includes social awareness and manipulation.','SAV');
 INSERT INTO aptitudes VALUES(6,'Somatic','Somatics (SOM) is your skill at pushing your morph to the best of its physical ability, including the fundamental utilization of the morph strength, endurance, and sustained positioning and motion.','SOM');
 INSERT INTO aptitudes VALUES(7,'Willpower','Willpower (WIL) is your skill for self-control, your ability to command your own destiny.','WIL');
-CREATE TABLE `AtomBook` (
-  `name` varchar(100) NOT NULL,
-  `book` varchar(100) NOT NULL,
-  PRIMARY KEY  (`name`)
-);
+
 INSERT INTO AtomBook VALUES('"Blue Box" PGCU','Gatecrashing');
 INSERT INTO AtomBook VALUES('360 degree vision','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Ablative Patches','Eclipse Phase');
@@ -1152,11 +1390,7 @@ INSERT INTO AtomBook VALUES('Xeno-Empathy','Transhuman');
 INSERT INTO AtomBook VALUES('Eco-Empathy','Transhuman');
 INSERT INTO AtomBook VALUES('Aphasic Touch','Transhuman');
 INSERT INTO AtomBook VALUES('Zoosemiotics','Eclipse Phase');
-CREATE TABLE `AtomPage` (
-  `name` varchar(100) NOT NULL,
-  `page` varchar(100) NOT NULL,
-  PRIMARY KEY  (`name`)
-);
+
 INSERT INTO AtomPage VALUES('"Blue Box" PGCU','155');
 INSERT INTO AtomPage VALUES('360 degree vision','311');
 INSERT INTO AtomPage VALUES('Ablative Patches','313');
@@ -2272,13 +2506,7 @@ INSERT INTO AtomPage VALUES('Xeno-Empathy','154');
 INSERT INTO AtomPage VALUES('Eco-Empathy','154');
 INSERT INTO AtomPage VALUES('Aphasic Touch','154');
 INSERT INTO AtomPage VALUES('Zoosemiotics','148');
-CREATE TABLE IF NOT EXISTS "backgrounds"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  type varchar(3) NOT NULL
-);
+
 INSERT INTO backgrounds VALUES(1,'Anarchist','You are opposed to hierarchy, favoring flat forms of social organization and directly democratic decision- making. You believe power is always corrupting and everyone should have a say in the decisions that affect their lives. According to the primitive and restrictive policies of the inner system and Jovian Junta, this makes you an irresponsible hoodlum at best and a ter- rorist at worst. In your opinion, that''s comedy coming from governments that keep their populations in line with economic oppression and threats of violence.<br><br>\n<b>Common Morphs:</b> All','FAC');
 INSERT INTO backgrounds VALUES(2,'Ape Uplift','Neo-gorillas and neo-orangutans have integrated well with transhumanity, but they still haven''t shaken their reputation for aggressiveness. Your drive to be in control of your social group and environment-- a remnant of your species'' social competitiveness and group hierarchies--chafes at the prejudice and restrictions you find in most habitats. Due to your perceived "anti-social tendencies," it can be difficult to find a place in society outside of military, police, or criminal organisations.\n<br><br>\n<b>Common Morphs:</b> Neo-Hominid, Neo-Hominid\n(Gorillas) (p. 143, Panopticon)','ORI');
 INSERT INTO backgrounds VALUES(3,'Argonaut','You are part of a scientific technoprogressive movement that seeks to solve transhumanity''s injustices and inequalities with technology. You support universal access to technology and healthcare, open-source models of production, morphological freedom, and democratization. You try to avoid factionalism and divisive politics, seeing transhumanity splintering as a hindrance to its perpetuation.<br><br>\n<b>Common Morphs:</b> All','FAC');
@@ -2338,14 +2566,7 @@ INSERT INTO backgrounds VALUES(56,'Titanian Hulder','You were an original coloni
 INSERT INTO backgrounds VALUES(57,'Ultimate','Your faction sees the potential in transhumanity''s future and looks back upon the rest of transhumanity as weak and hedonistic. Transhumanity is set to take the next evolutionary step and it''s time for transhu- mans to be redesigned to the best of our capabilities.<br><br>\n<b> Common Morphs:</b> Exalts, Remades','FAC');
 INSERT INTO backgrounds VALUES(58,'Uplift','You are not even human. You were born as an uplifted animal: chimpanzee, gorilla, orangutan, parrot, raven, crow, or octopus.<br><br>\n <b>Common Morphs:</b> Neo-Avian, Neo-Hominid,\nOctomorph','ORI');
 INSERT INTO backgrounds VALUES(59,'Venusian','You are a supporter of the Morningstar Confederation of Venusian aerostats, resentful of the growing influence of the Planetary Consortium and other entrenched and conservative inner system powers. You see your faction''s ascension as a chance to reform the old guard ways of inner system politics. <br>br>\n<b>Common Morphs:</b> Cases, Exalts, Mentons, Splicers,\nSylphs, Synths','FAC');
-CREATE TABLE IF NOT EXISTS "background_bonusMalus" (
-  `background` varchar(100) NOT NULL,
-  `bonusMalus` varchar(100) NOT NULL,
-  `occurrence` smallint(6) NOT NULL,
-  PRIMARY KEY  (`background`,`bonusMalus`),
-  FOREIGN KEY (background) REFERENCES backgrounds(name)
---   FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
-);
+
 INSERT INTO background_bonusMalus VALUES('Anarchist','+10 [Skill]',1);
 INSERT INTO background_bonusMalus VALUES('Anarchist','+30 Networking: Autonomists skill',1);
 INSERT INTO background_bonusMalus VALUES('Ape Uplift','+10 Fray skill',1);
@@ -2553,23 +2774,10 @@ INSERT INTO background_bonusMalus VALUES('Uplift','Uplift Morph mandatory',1);
 INSERT INTO background_bonusMalus VALUES('Venusian','+10 Pilot: Aircraft skill',1);
 INSERT INTO background_bonusMalus VALUES('Venusian','+10 [Skill]',1);
 INSERT INTO background_bonusMalus VALUES('Venusian','+20 Networking: Hypercorps skill',1);
-CREATE TABLE `BackgroundLimitations` (
-  `background` varchar(100) NOT NULL,
-  `limitationGroup` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`limitationGroup`),
-  FOREIGN KEY (background) REFERENCES backgrounds(name)
---   FOREIGN KEY (limitationGroup) REFERENCES groups(name)
-);
---TODO:  Figure out if thiss is the proper reference for limitationGroup
+
 INSERT INTO BackgroundLimitations VALUES('Hyperelite','Hyperelite morph limitation');
 INSERT INTO BackgroundLimitations VALUES('Infolife','Psi trait prohibited');
-CREATE TABLE IF NOT EXISTS "background_trait" (
-  `background` varchar(100) NOT NULL,
-  `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`trait`),
-  FOREIGN KEY (background) REFERENCES backgrounds(name)
---   FOREIGN KEY (trait) REFERENCES trait(name)
-);
+
 INSERT INTO background_trait VALUES('Ape Uplift','Brave');
 INSERT INTO background_trait VALUES('Ape Uplift','Social stigma ego');
 INSERT INTO background_trait VALUES('Bonobo Uplift','Minor Addiction Ego');
@@ -2616,19 +2824,7 @@ INSERT INTO background_trait VALUES('Re-Instantiated','Edited Memories');
 INSERT INTO background_trait VALUES('Research Infolife','Real World Naivete');
 INSERT INTO background_trait VALUES('Research Infolife','Social stigma ego');
 INSERT INTO background_trait VALUES('Singularity Seeker','Social stigma ego');
-CREATE TABLE IF NOT EXISTS "bonusMalus"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  type varchar(3) NOT NULL,
-  target varchar(60) NOT NULL,
-  value integer NOT NULL,
-  targetForChoice varchar(20) NOT NULL,
-  typeTarget varchar(20) NOT NULL,
-  isCostModifier boolean NOT NULL,
-  requiredSelections int NOT NULL default 0
-);
+
 INSERT INTO bonusMalus VALUES(1,'+5 Reflex','get a +5 bonus to Reflex','OA','Reflex',5.0,'','','false',0);
 INSERT INTO bonusMalus VALUES(2,'+1 Moxie','get +1 on your Moxie stat','OSA','Moxie',1.0,'','','false',0);
 INSERT INTO bonusMalus VALUES(3,'+1 Speed','give +1 to speed stat','OSA','Speed',1.0,'','','false',0);
@@ -3051,13 +3247,7 @@ INSERT INTO bonusMalus VALUES(419,'x2 Protocol skill cost','x2 on the cost of Pr
 INSERT INTO bonusMalus VALUES(420,'You are that guy','Receives a one-time session +20 bonus to any social skill or Networking Test.','DO','',0.0,'','','false',0);
 INSERT INTO bonusMalus VALUES(421,'Zero-g Nausea','Suffers a -10 modifier in any microgravity climate.','DO','',0.0,'','','false',0);
 INSERT INTO bonusMalus VALUES(422,'Zoosemiotics','You do not suffer a modifier when using psi sleights on non- sapient or partly sapient animal species.','DO','',0.0,'','','false',0);
-CREATE TABLE `BonusMalusTypes` (
-  `bmNameMain` varchar(60) NOT NULL,
-  `bmChoices` varchar(60) NOT NULL,
---  FOREIGN KEY (bmNameMain) REFERENCES bonusMalus(name),
-  FOREIGN KEY (bmChoices) REFERENCES bonusMalus(name)
-);
--- TODO:  Check if addictions work properly
+
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10  Academics [Field]');
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Infosec skill');
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 on Interfacing skill');
@@ -3105,22 +3295,7 @@ INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Throwing Weapons 
 INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Unarmed Combat');
 INSERT INTO BonusMalusTypes VALUES('+20 on one Exotic Skill','+20 Exotic Melee [Field]');
 INSERT INTO BonusMalusTypes VALUES('+20 on one Exotic Skill','+20 Exotic Ranged [Field]');
-CREATE TABLE IF NOT EXISTS "gear"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  type varchar(3) NOT NULL,
-  cost smallint(6) NOT NULL,
-  armorKinetic smallint(6) NOT NULL,
-  armorEnergy smallint(6) NOT NULL,
-  damage varchar(30),
-  armorPenetration smallint(6),
-  allowedMorphType varchar(100) NOT NULL,
-  isUnique boolean NOT NULL
-);
--- Not everything that causes damage has armor penetration, but everything that has armor penetration causes damage
--- TODO: Set armorKinetic & armorEnergy to NULL where they are not used
+
 INSERT INTO gear VALUES(1,'"Blue Box" PGCU','"blue box" portable gate control unit <br><br>\nNamed for the distinct cobalt blue color they were originally manufactured in, blue boxes are portable gate control units (see The Gate Interface, GC p. 142). These are specifically designed for interfacing with extrasolar gates and are the most common gate interface found on extrasolar colonies. They are rarely allowed on first-in missions or any missions where signs of sapient life have been detected, in order to keep these devices out of the hands of aliens. Because these devices only allow a pared-down version of the full gate interface, they are more challenging to use than complete stationary models; <b>apply a -10 modifier to all gate operation actions conducted via blue box Like standard interfaces, blue boxes come as open source or proprietary models.</b><br><br>\nBlue boxes must be physically attached to a gate in order to control it. <b>This process is time-consuming and difficult; it requires a Hardware: Electronics Test as a Task Action with a -10 modifier and a timeframe of 1 hour. </b>','STD',20000,0,0,NULL,NULL,'EVERY','false');
 INSERT INTO gear VALUES(2,'360 degree vision','The shell''s or morph visual sensors are situated for a 360-degree field of vision. ','IMG',250,0,0,NULL,NULL,'SYNTH','true');
 INSERT INTO gear VALUES(3,'Ablative Patches','These thin and light slap-on patches of stick to armor and are designed to absorb heat and energy from beams and explosions, safely vaporizing and blowing hot gas away.<br><br><b> Each hit reduces both the energy and kinetic value of the ablative armor by 1. </b>','ARM',50,0,0,NULL,NULL,'EVERY','false');
@@ -3792,14 +3967,7 @@ INSERT INTO gear VALUES(668,'X-Ray Emitter','This device is designed to be used 
 INSERT INTO gear VALUES(669,'Zap Ammo','Zap rounds are rubber or gel bullets that create an electric charge upon firing in a piezoelectric like manner to stun the target effectively with both the bullet and the electric shock. ','WAM',50,0,0,'Half + shock',-2,'EVERY','false');
 INSERT INTO gear VALUES(670,'Zephyr','Zephyrs are medium-sized, long-range, high-altitude winged flyers, capable of reconnoitering over long distances quickly. They are essentially small planes and may be launched by throwing them into the air. ','ROG',250,0,0,NULL,NULL,'EVERY','false');
 INSERT INTO gear VALUES(671,'Zero Ammo','Similar to homing smart rounds, zero bullets identify the target when fired via smartlink. Whether the round hits or misses, however, it sends telemetry data back to the next zero bullet, allowing it to course-correct and "zero in" to hit the target (or hit more accurately). <b>Apply a +10 modifier to each shot (or burst) fired after the first against the same target in the same Action Turn.</b>','WAM',250,0,0,NULL,NULL,'EVERY','false');
-CREATE TABLE IF NOT EXISTS "bonusMalus_gear" (
-  `gear` varchar(100) NOT NULL,
-  `bonusMalus` varchar(100) NOT NULL,
-  `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`gear`,`bonusMalus`),
-  FOREIGN KEY (gear) REFERENCES gear(name),
-  FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
-);
+
 INSERT INTO bonusMalus_gear VALUES('Ablative Patches','+2 on kinetic',1);
 INSERT INTO bonusMalus_gear VALUES('Ablative Patches','+4 energy armor',1);
 INSERT INTO bonusMalus_gear VALUES('Accushot Ammo','Accushot',1);
@@ -3908,11 +4076,7 @@ INSERT INTO bonusMalus_gear VALUES('Utilitool','McGyver',1);
 INSERT INTO bonusMalus_gear VALUES('Viewers','Viewers',1);
 INSERT INTO bonusMalus_gear VALUES('Wrist-Mounted Tools','Good Tools',1);
 INSERT INTO bonusMalus_gear VALUES('Zero Ammo','Homing',1);
-CREATE TABLE `GroupNames` (
-  `groupName` varchar(100) NOT NULL,
-  `targetName` varchar(100) NOT NULL,
-  PRIMARY KEY  (`groupName`,`targetName`)
-);
+
 INSERT INTO GroupNames VALUES('','Accounting');
 INSERT INTO GroupNames VALUES('','Aircraft');
 INSERT INTO GroupNames VALUES('','Bot/Vehicle Specs');
@@ -3985,27 +4149,13 @@ INSERT INTO GroupNames VALUES('Technical','Psychosurgery');
 INSERT INTO GroupNames VALUES('Technical','Research');
 INSERT INTO GroupNames VALUES('Technical','Security System');
 INSERT INTO GroupNames VALUES('Technical','Spacecraft');
-CREATE TABLE `infos` (
-  `id` varchar(100) NOT NULL,
-  `data` text NOT NULL,
-  PRIMARY KEY  (`id`)
-);
+
 INSERT INTO infos VALUES('gear','<p>Gear is all of the equipment your character owns and keeps on their person, from weapons and armor to clothing and electronics.</p>');
 INSERT INTO infos VALUES('implants','<p>Implants include cybernetic, bionic, genetech, and nanoware enhancements to your characters morph (or mechanical enhancements in the case of a synthetic shell). </p>\n<p>These implants may give your character special abilities or modify their stats, skills, or traits. </p>\n<p>Some morphs come pre-equipped with implants</p>');
 INSERT INTO infos VALUES('negTrait','<p>Traits include a range of inherent qualities and features that help define your character.</p>\n<p> Some traits are positive, in that they give your character a bonus to certain stats, skills, or tests, or otherwise give them an edge in certain situations.</p>\n<p> Others are negative, in that they impair your abilities or occasionally create a glitch in your plans.</p>\n<p> Some traits apply to a characters ego, staying with them from body to body, while others only apply to a character?s morph.</p>');
 INSERT INTO infos VALUES('neuTrait','<p>Some traits are a mixed bag, providing neither a positive benefit nor negative penalty-or applying both. Characters may take these at a Cost/Bonus of 0 CP. Others are traits that define an inherent characteristic of the morph design, these only apply to morphs of a certain type as noted.</p>');
 INSERT INTO infos VALUES('posTrait','<p>Traits include a range of inherent qualities and features that help define your character.</p>\n<p> Some traits are positive, in that they give your character a bonus to certain stats, skills, or tests, or otherwise give them an edge in certain situations.</p>\n<p> Others are negative, in that they impair your abilities or occasionally create a glitch in your plans.</p>\n<p> Some traits apply to a characters ego, staying with them from body to body, while others only apply to a character?s morph.</p>');
-CREATE TABLE IF NOT EXISTS "morphs"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  type varchar(20) NOT NULL,
-  maxApptitude smallint(6) NOT NULL,
-  durablility smallint(6) NOT NULL,
-  cpCost smallint(6) NOT NULL,
-  creditCost smallint(6) NOT NULL
-);
+
 INSERT INTO morphs VALUES(1,'Agent','While some infomorphs who work in network security and penetration testing use this eidolon, it is most popular with hackers and criminals. Many users also purchase the digital veil plug-in.','infomorph',40,0,35,40000);
 INSERT INTO morphs VALUES(2,'Aquanaut','Aquanauts are environmentally adapted for underwater activities. They have seen a revival on exoplanets with habitable seas and oceans. Their heart rate slows while underwater, their skin includes a layer of blubber that retains heat, they store oxygen in their muscle tissue, and they do not suffer negative health effects from pressure changes. Additionally, their eyes have nictitating membranes and their corneas adjust to counter under-water refraction. Their hands and feet are webbed and they possess a transgenic swim bladder for controlling buoyancy. They can safely descend to about 200 meters depth (roughly 6 atmospheres of pressure) without suffering narcotic effects or other diving problems.','biomorph',30,40,50,20000);
 INSERT INTO morphs VALUES(3,'Arachnoids','Arachnoid robotic shells are 1-meter in length, seg- mented into two parts, with a smaller head like a spider or termite. They feature four pairs of 1.5-meter- long retractable arms/legs, capable of rotating around the axis of the body, with built-in pneumatic systems for propelling the bot with small leaps. The manipula- tor claws on each arm/leg can be switched out with extendable mini-wheels for high-speed skating movement. A smaller pair of manipulator arms near the head allows for closer handling and tool use. In zero-g environments, arachnoids can retract their arms/legs and maneuver with vectored air thrusters.','synthmorph',30,40,45,40000);
@@ -4121,14 +4271,7 @@ INSERT INTO morphs VALUES(112,'Whiplash','Designed by autonomist xenobotanists a
 INSERT INTO morphs VALUES(113,'Wirehead','Regardless of whether an infomorph controls fightercraft, tiny surveillance drones, or attack robots, this high-end eidolon is one that almost all people in those professions wish they had access to.','infomorph',40,0,60,40000);
 INSERT INTO morphs VALUES(114,'Worker Pods','Part exalt human, part machine, these basic pods are virtually indistinguishable from humans. Worker pods are often used in menial labor jobs where interaction with humans is necessary.','podmorph',30,35,20,5000);
 INSERT INTO morphs VALUES(115,'Xu Fu','Named after a historical Chinese explorer, many gatecrashers consider xu fus the ideal exoplanet exploration synthmorph. Its main body sits atop 6 legs (up to 2 meters long, though retractable) that end in multidirectional smart wheels for quick travel, capable of rolling in any direction and over rough terrain. For exceptionally difficult terrain, the wheels can be retracted and the xu fu can maneuver as a walker. In addition to two standard arms, it features a third 2-meter long sensor-equipped limb for reaching far distances, overseeing obstacles, etc. Xu fus have an impressive sensor package and are ideal for surface-based scouting as well as investigating tunnels, collecting samples, and so on.','synthmorph',30,40,60,40000);
-CREATE TABLE IF NOT EXISTS "bonusMalus_morph" (
-  `morph` varchar(100) NOT NULL,
-  `bonusMalus` varchar(100) NOT NULL,
-  `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`bonusMalus`),
-  FOREIGN KEY (morph) REFERENCES morphs(name),
-  FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
-);
+
 INSERT INTO bonusMalus_morph VALUES('Agent','+2 Speed',1);
 INSERT INTO bonusMalus_morph VALUES('Agent','+5 Cognition',1);
 INSERT INTO bonusMalus_morph VALUES('Agent','+5 [Aptitude]',1);
@@ -4514,14 +4657,7 @@ INSERT INTO bonusMalus_morph VALUES('Worker Pods','+10 Somatic',1);
 INSERT INTO bonusMalus_morph VALUES('Worker Pods','+5 [Aptitude]',1);
 INSERT INTO bonusMalus_morph VALUES('Xu Fu','+5 Coordination',1);
 INSERT INTO bonusMalus_morph VALUES('Xu Fu','+5 Somatic',1);
-CREATE TABLE IF NOT EXISTS "gear_morph" (
-  `morph` varchar(100) NOT NULL,
-  `gear` varchar(100) NOT NULL,
-  `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`gear`),
-  FOREIGN KEY (morph) REFERENCES morphs(name),
-  FOREIGN KEY (gear) REFERENCES gear(name)
-);
+
 INSERT INTO gear_morph VALUES('Agent','Eidetic Memory',1);
 INSERT INTO gear_morph VALUES('Agent','Hacking Alert',1);
 INSERT INTO gear_morph VALUES('Agent','Mental Speed',1);
@@ -5558,13 +5694,7 @@ INSERT INTO gear_morph VALUES('Xu Fu','T-Ray Emitter',1);
 INSERT INTO gear_morph VALUES('Guard Deluxe','T-Ray Emitter',1);
 INSERT INTO gear_morph VALUES('Guard Deluxe','Synthetic Mask',1);
 INSERT INTO gear_morph VALUES('Guard Deluxe','Puppet Sock',1);
-CREATE TABLE IF NOT EXISTS "morph_trait" (
-  `morph` varchar(100) NOT NULL,
-  `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`morph`,`trait`),
-  FOREIGN KEY (morph) REFERENCES morphs(name)
---   FOREIGN KEY (trait) REFERENCES trait(name)
-);
+
 INSERT INTO morph_trait VALUES('Ariel','Non-Mammalian Biochemistry');
 INSERT INTO morph_trait VALUES('Ariel','Temperature Intolerance (Warm)');
 INSERT INTO morph_trait VALUES('Ayah','Social stigma morph');
@@ -5641,20 +5771,7 @@ INSERT INTO morph_trait VALUES('Venusian Glider','Limber I');
 INSERT INTO morph_trait VALUES('Whiplash','Alien Biochemistry');
 INSERT INTO morph_trait VALUES('Whiplash','Social stigma morph');
 INSERT INTO morph_trait VALUES('Worker Pods','Social stigma morph');
-CREATE TABLE IF NOT EXISTS "psySleights"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  type varchar(50) NOT NULL,
-  range varchar(50) NOT NULL,
-  duration varchar(50) NOT NULL,
-  action varchar(50) NOT NULL,
-  level varchar(3) NOT NULL,
-  strainMod varchar(100) NOT NULL,
-  skillNeeded varchar(60)
---   FOREIGN KEY (skillNeeded) REFERENCES skills(name)
-);
+
 INSERT INTO psySleights VALUES(1,'Alienation','Alienation is an offensive sleight that create a sense of disconnection between an ego and its morph--similar to that experienced when resleeved into a new body. The ego finds their body cumbersome, strange, and alien, almost like they are a prisoner within it. <b>If the async beats the target in an Opposed Test, treat the result as a failed Integration Test for the target.</b> This effect lasts for the sleight''s duration.','ACT','TOUCH','temporary','complex','GAM','0','Psi Assault');
 INSERT INTO psySleights VALUES(2,'Ambience Sense','This sleight provides the async with an instinctive sense about an area and any potential threats nearby. The async receives a +10 modifier to all Investigation, Perception, Scrounging, and Surprise Tests.','PAS','SELF','constant','automatic','CHI','0',NULL);
 INSERT INTO psySleights VALUES(3,'Aphasic Touch','With a touch attack, the async temporarily blocks or scrambles the language-processing centers in the target''s brain. <b>For the duration of the effect, the target cannot speak, initiate mesh actions, or otherwise communicate or read.</b>','ACT','TOUCH','temporary','complex','GAM','0','Control');
@@ -5699,14 +5816,7 @@ INSERT INTO psySleights VALUES(41,'Thought Browse','Thought Browse is a less-int
 INSERT INTO psySleights VALUES(42,'Time sense','An async with this ability can slow down their perception of time, making everything appear to move in slow motion or at reduced speed. In game terms, this sleight grants the async a Speed of +1. This extra Action Phase, however, can only be spent on mental and mesh actions.','ACT','SELF','temporary','automatic','CHI','-1',NULL);
 INSERT INTO psySleights VALUES(43,'Unconscious Lead','This sleight allows the async to override their consciousness and let their unconscious mind take point. While in this state, the async''s conscious mind is only dimly aware of what is transgressing, and any memories of this period will be hazy at best. The advantage is that the unconscious mind acts more quickly, and so the async''s Speed is boosted by +1. The character remains aware and active, but is incapable of complex communication or other mental actions and is motivated by instinct and primitive urges more than conscious thought. Though it is recommended that the player retain control of their character while using Unconscious Lead, the gamemaster should feel free to direct the character''s actions as they see fit.','ACT','SELF','temporary','automatic','CHI','0',NULL);
 INSERT INTO psySleights VALUES(44,'Xeno-Empathy','An async with this sleight can attempt to gain an intuitive understanding of any non-human, non-terrestrial organism. <b>If the character succeeds in an INT x 2 Test, they gain insight into the target''s motivations, needs, and mental/emotional state (if sapient) or the target’s ecological niche, instinctual drives, and likely behavioral responses (if non-sapient). Apply a +20 modifier to any Animal Handling, Deception, Intimidation, Kinesics, or Persuasion Tests made by the character against that organism.</b> This sleight does not work on animals or smart animals of terrestrial origin.','ACT','SELF','instant','complex','CHI','-1',NULL);
-CREATE TABLE IF NOT EXISTS "bonusMalus_psySleight" (
-  `psy` varchar(100) NOT NULL,
-  `bonusmalus` varchar(100) NOT NULL,
-  `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`psy`,`bonusmalus`),
-  FOREIGN KEY (psy) REFERENCES psySleights(name),
-  FOREIGN KEY (bonusmalus) REFERENCES bonusMalus(name)
-);
+
 INSERT INTO bonusMalus_psySleight VALUES('Ambience Sense','Ambience Sense',1);
 INSERT INTO bonusMalus_psySleight VALUES('Charisma','Psi Charisma',1);
 INSERT INTO bonusMalus_psySleight VALUES('Cognitive Boost','Cognitive Boost',1);
@@ -5727,12 +5837,7 @@ INSERT INTO bonusMalus_psySleight VALUES('Sensory boost ','Sensory boost',1);
 INSERT INTO bonusMalus_psySleight VALUES('Superior Kinesics','+10 Kinesics Skill',1);
 INSERT INTO bonusMalus_psySleight VALUES('Time sense','Time sense',1);
 INSERT INTO bonusMalus_psySleight VALUES('Unconscious Lead','Unconscious Lead',1);
-CREATE TABLE IF NOT EXISTS "reputations"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL
-);
+
 INSERT INTO reputations VALUES(1,'@-Rep','<b>The Circle-A List</b><br>\n<b>Networking field :</b> Autonomists<br>\n<b>Factions : </b> Anarchists, Barsoomians, Extropians, Titanian, and Scum');
 INSERT INTO reputations VALUES(2,'C-Rep','<b>CivicNet</b><br>\n<b>Networking field :</b> Hypercorps<br>\n<b>Factions : </b> Hypercorps, Jovians, Lunars, Martians, Venusians');
 INSERT INTO reputations VALUES(3,'E-Rep','<b>EcoWave</b><br>\n<b>Networking field :</b> Ecologists<br>\n<b>Factions : </b>Nano-ecologists, Preservationists, and Reclaimers');
@@ -5740,14 +5845,7 @@ INSERT INTO reputations VALUES(4,'F-Rep','<b>Fame</b><br>\n<b>Networking field :
 INSERT INTO reputations VALUES(5,'G-Rep','<b>Guanxi</b><br>\n<b>Networking field :</b> Criminals<br>\n<b>Factions : </b> Criminals');
 INSERT INTO reputations VALUES(6,'I-Rep','<b>The Eye</b><br>\n<b>Networking field :</b> Firewall<br>\n<b>Factions : </b> Firewall');
 INSERT INTO reputations VALUES(7,'R-Rep','<b>Research Network Associates</b><br>\n<b>Networking field :</b> Scientists<br>\n<b>Factions : </b>Argonauts (also technologists, researchers, and scientists)');
-CREATE TABLE `skillPrefixes` (
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  linkedAptitude varchar(3) NOT NULL,
-  isActive boolean NOT NULL,
-  description text NOT NULL,
-  FOREIGN KEY (linkedAptitude) REFERENCES aptitudes(abbreviation)
-);
+
 INSERT INTO skillPrefixes VALUES(1,'Academics','COG','false','<h2>What it is:</h2>\n<p> Academics covers any sort of specialized non-applied knowledge you can only get through intensive education. Most theoretical and applied sciences, social sciences, transhumanities, etc. are covered by this skill. Most of the other skills listed in this chapter could also be taken as an Academics field, reflecting a working theoretical knowledge of the skill,for example, Academics: Armorer or Academics: Interrogation.</p>\n<h2> When you use it</h2>\n<p> Academics is used when a character wishes to call upon a specific body of knowledge. For example, Academics: Chemistry could be used to identify a particular substance, understand an unusual chemical reaction, or deter- mine what elements are needed to nanofabricate something that requires exotic materials. At the gamemaster discretion, some Academics-related tests might not be defaultable, given that only someone who has been educated in that subject is likely to be able to tackle it.\nSample Fields: Archeology, Astrobiology, Astronomy, Astrophysics, Astrosociology, Biochemistry, Biology, Botany, Computer Science,Cryptography, Economics, Engineering, Genetics, Geology, Linguistics, Mathematics, Memetics, Nanotechnology, Old Earth History, Physics, Polit- ical Science, Psychology, Sociology, Xeno-archeology, Xenolinguistics, Zoology</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 INSERT INTO skillPrefixes VALUES(2,'Art','INT','false','<h2>What it is</h2>\n<p> Art confers the ability to create and evaluate artistic endeavors. This is a particularly useful skill in Eclipse Phase, especially in the post-scarcity economies where creativity and vision can be a key component to a characters reputation.</p>\n<h2>When you use it</h2>\n<p>The Art skill can be used to either create a new work of art or to duplicate an existing piece of art in the hopes of passing it off as your own. The skill can also determine the approximate value of a piece of art either on the open market, for monetary exchange systems, or in terms of reputation for the artist.\nSample Fields: Architecture, Criticism, Dance, Drama, Drawing, Painting, Performance, Sculpture, Simulspace Design, Singing, Speech, Writing</p>\n<h2>Specializations</h2>\n<p>As appropriate to the field</p>');
 INSERT INTO skillPrefixes VALUES(3,'Exotic Melee','SOM','true','<h2>What it is</h2>\n<p>The Exotic Melee Weapon skill covers the use and maintenance of all melee weapons not covered by the Clubs or Blades skills.<p>\n<h2>When you use it</h2>\n<p>Use the Exotic Melee Weapon skill when attacking someone with an exotic melee weapon in melee combat.</p>\n<h2>Sample Fields</h2> <p>Morning Star, Spear, Whip </p>\n<h2>Specializations</h2>\n<p> N/A </p>');
@@ -5759,17 +5857,7 @@ INSERT INTO skillPrefixes VALUES(8,'Medicine','COG','true','<h2>What it is</h2>\
 INSERT INTO skillPrefixes VALUES(9,'Networking','SAV','true','<h2>What it is</h2>\n<p>Networking is your skill at working your contacts, trading favors, and keeping your finger on the pulse of a particular faction or cultural grouping.</p>\n<h2>When you use it</h2>\n<p> Use Networking to gather infor- mation or call on services using your Reputation (see Reputation and Social Networks, p. 285).</p>\n<h2>Sample Fields</h2>\n<p> Autonomists (@-rep), Criminals (g-rep), Ecologists (e-rep), Firewall (i-rep), Hypercorps (c-rep), Media (f-rep), Scientists (r-rep). At the gamemaster discretion, this list can be expanded to other (sub)- cultural groupings.</p2>\n<h2>Specializations</h2>\n<p> As appropriate to each field</p>');
 INSERT INTO skillPrefixes VALUES(10,'Pilot','REF','true','<h2>What it is</h2>\n<p> Pilot is your skill at driving/flying a vehicle of a particular type.\nWhen you use it: You use Pilot skill whenever you need to maneuver, control, or avoid crashing a vehicle, whether you are in the pilot seat, remote controlling a robot, or directly jamming a vehicle with VR. Each vehicle has a Handling modifier that applies to this test, along with other situational modifiers (see Bots, Synthmorphs, and Vehicles, p. 195).</p>\n<h2>Sample Fields</h2>\n<p> Aircraft, Anthroform (walkers), Exotic\nVehicle, Groundcraft (wheeled or tracked), Spacecraft, Watercraft</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 INSERT INTO skillPrefixes VALUES(11,'Profession','COG','false','<h2>What it is</h2>\n<p> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indi- cate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.</p>\n<h2>When you use it</h2>\n<p> Use Profession to perform work- related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to refer- ence specialized knowledge that someone trained in that profession might have.</p>\n<h2>Sample Fields</h2>\n<p> Accounting, Appraisal, Asteroid Pros- pecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
-CREATE TABLE `skills` (
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(60) NOT NULL UNIQUE,
-  description text NOT NULL,
-  linkedAptitude varchar(3) NOT NULL,
-  prefix varchar(100),
-  isActive boolean NOT NULL,
-  isDefaultable boolean NOT NULL,
-  FOREIGN KEY (linkedAptitude) REFERENCES aptitudes(abbreviation),
-  FOREIGN KEY(prefix) REFERENCES skillPrefixes(name)
-);
+
 CREATE UNIQUE INDEX skills_full_name ON skills (name, prefix);
 INSERT INTO skills VALUES(1,'Accounting','<h2>What it is</h2>\n<p> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indi- cate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.</p>\n<h2>When you use it</h2>\n<p> Use Profession to perform work- related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to refer- ence specialized knowledge that someone trained in that profession might have.</p>\n<h2>Sample Fields</h2>\n<p> Accounting, Appraisal, Asteroid Pros- pecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>','COG','Profession','false','true');
 INSERT INTO skills VALUES(2,'Aircraft','<h2>What it is</h2>\n<p> Pilot is your skill at driving/flying a vehicle of a particular type.\nWhen you use it: You use Pilot skill whenever you need to maneuver, control, or avoid crashing a vehicle, whether you are in the pilot seat, remote controlling a robot, or directly jamming a vehicle with VR. Each vehicle has a Handling modifier that applies to this test, along with other situational modifiers (see Bots, Synthmorphs, and Vehicles, p. 195).</p>\n<h2>Sample Fields</h2>\n<p> Aircraft, Anthroform (walkers), Exotic\nVehicle, Groundcraft (wheeled or tracked), Spacecraft, Watercraft</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>','REF','Pilot','true','false');
@@ -5831,12 +5919,7 @@ INSERT INTO skills VALUES(57,'Throwing Weapons','<h2>What it is</h2>\n<p>Throwin
 INSERT INTO skills VALUES(58,'TITANs','','COG','Interest','false','true');
 INSERT INTO skills VALUES(59,'Unarmed Combat','<h2>What it is</h2>\n<p>Unarmed Combat is your ability to attack and defend without using weapons.</p>\n<h2>When you use it</h2>\n<p>Use Unarmed Combat whenever you want to attack someone with your fists, feet, elbows, knees, or other body parts in melee combat.</p>\n<h2> Specializations</h2>\n<p> Implant Weaponry, Kick, Punch, Subdual</p>','SOM',NULL,'true','false');
 INSERT INTO skills VALUES(60,'Watercraft','','REF','Pilot','true','false');
-CREATE TABLE `stats` (
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(100) NOT NULL UNIQUE,
-  description text NOT NULL,
-  abbreviation varchar(3) NOT NULL
-);
+
 INSERT INTO stats VALUES(1,'Damage bonus','<b>DAMAGE BONUS</b><br>\nThe Damage Bonus stat quantifies how much extra oomph your character is able to give their melee and thrown weapons attacks.<br><br> Damage Bonus is determined by dividing your Somatics aptitude (see below) by 10 and rounding down.','DB');
 INSERT INTO stats VALUES(2,'Death rating','<b>DEATH RATING (DR)</b><br>\nDeath Rating is the total amount of damage your morph can take before it is killed or destroyed beyond repair.<br><br> Death Rating is equal to DUR x 1.5 for bio- morphs and DUR x 2 for synthmorphs.','DR');
 INSERT INTO stats VALUES(3,'Durability','<b>DURABILITY (DUR)</b><br>\n\nDurability is your morph physical health (or structural integrity in the case of synthetic shells, or system integrity in the case of infomorphs). It determines the amount of damage your morph can take before you are incapacitated or killed.\nDurability is unlimited, though the range for baseline (unmodified) humans tends to fall between 20 and 60.<br><br> Your Durability stat is determined by your morph.','DUR');
@@ -5847,14 +5930,7 @@ INSERT INTO stats VALUES(7,'Moxie','<b>MOXIE</b><br>\nMoxie represents your char
 INSERT INTO stats VALUES(8,'Speed','<b>SPEED (SPD)</b><br>\nThe Speed stat determines how often your character gets to act in an Action Turn. <br><br>All characters start with a Speed stat of 1, meaning they act once per turn. Certain implants and other\nadvantages may boost this up to a maximum of 4.','SPD');
 INSERT INTO stats VALUES(9,'Trauma threshold','<b>TRAUMA THRESHOLD (TT)</b><br>\nThe Trauma Threshold determines if you suffer a trauma (mental wound) each time you take stress. A higher Trauma Threshold means that your mental state is more resilient against experiences that might inflict psychiatric disorders or other serious mental instabilities.<br><br>\nTrauma Threshold is calculated by dividing Lucidity by 5 (rounding up).','TT');
 INSERT INTO stats VALUES(10,'Wound threshold','<b>WOUND THRESHOLD (WT)</b><br>\nA Wound Threshold is used to determine if you receive a wound each time you take physical damage. The higher the Wound Threshold, the more resistant to serious injury you are.<br><br>\nWound Threshold is calculated by dividing Durability by 5 (rounding up).','WT');
-CREATE TABLE IF NOT EXISTS "bonusMalus_trait" (
-  `traitName` varchar(60) NOT NULL,
-  `bonusMalusName` varchar(100) NOT NULL,
-  `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`traitName`,`bonusMalusName`)
---   FOREIGN KEY (traitName) REFERENCES traits(name),
---   FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus(name)
-);
+
 INSERT INTO bonusMalus_trait VALUES('Adaptability I','+10 Integration / Alienation',1);
 INSERT INTO bonusMalus_trait VALUES('Adaptability II','+20 Integration / Alienation',1);
 INSERT INTO bonusMalus_trait VALUES('Aged','-10 on physical action',1);
@@ -6056,16 +6132,7 @@ INSERT INTO bonusMalus_trait VALUES('Weak Immune System II','Very Weak',1);
 INSERT INTO bonusMalus_trait VALUES('You are that guy !','You are that guy',1);
 INSERT INTO bonusMalus_trait VALUES('Zero-g Nausea','Zero-g Nausea',1);
 INSERT INTO bonusMalus_trait VALUES('Zoosemiotics','Zoosemiotics',1);
-CREATE TABLE IF NOT EXISTS "traits"
-(
-  id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(60) NOT NULL UNIQUE,
-  description text NOT NULL,
-  isForMorph boolean,
-  cpCost smallint(6) DEFAULT NULL,
-  level smallint(6) NOT NULL,
-  JustFor varchar(30) DEFAULT 'EVERY' NOT NULL
-);
+
 INSERT INTO traits VALUES(1,'Adaptability I','Resleeving is a breeze for this character. They adjust\nto new morphs much more quickly than most other people. <b>Apply a +10 modifier for Integration Tests  and Alienation Tests</b>.','false',10,1,'EVERY');
 INSERT INTO traits VALUES(2,'Adaptability II','Resleeving is a breeze for this character. They adjust\nto new morphs much more quickly than most other people. <b>Apply a +20 modifier per level for Integration Tests and Alienation Tests</b>.','false',20,2,'EVERY');
 INSERT INTO traits VALUES(3,'Aged','The morph is physically aged and has not been rejuvenated. Old morphs are increasingly uncommon, though some people adopt them hoping to gain an air of seniority and respectability. Reduce the character''s aptitude maximums by 5, and apply a -10 modifier on all physical actions.\n<b>This trait may only be applied to flat and splicer morphs.</b>','true',-10,1,'BIO');
@@ -6294,28 +6361,12 @@ INSERT INTO traits VALUES(225,'Whole Body Apoptosis','This morph has been geneti
 INSERT INTO traits VALUES(226,'You are that guy !','Sometime in the past, this character got their 5 minutes of mesh fame in a funny viral meme that swept the solar system. To this day, strangers who access the character''s social profile are likely to connect them to that meme. Though tedious for the character, there is a positive side effect, as these strangers remember the meme fondly and are more likely to help the character out. Once per game session, the gamemaster may decide that a stranger with whom the character is interacting and who has access to the character\s online public profile recognizes the char- acter. The character receives a one-time +20 bonus to any social skill or Networking Test with that stranger.','false',10,1,'EVERY');
 INSERT INTO traits VALUES(227,'Zero-g Nausea','This morph suffers from space sickness and does not fair well in zero gravity. The character suffers a -10 modifier in any microgravity climate. Additionally, whenever the character is first getting acclimated or anytime they must endure excessive movement in microgravity, they must make a WIL Test or spend 1\nhour incapacitated by nausea per 10 points of MoF.','true',-10,1,'EVERY');
 INSERT INTO traits VALUES(228,'Zoosemiotics','A character with this trait and the Psi trait does not suffer a modifier when using psi sleights on non- sapient or partly sapient animal species.','false',5,1,'EVERY');
-CREATE TABLE IF NOT EXISTS "aptitude_muse" (
-	`aptitude`	varchar(100) NOT NULL,
-	`muse`	varchar(100) NOT NULL,
-	`value`	smallint(6) NOT NULL,
-	PRIMARY KEY(`muse`,`aptitude`),
-    FOREIGN KEY (aptitude) REFERENCES aptitudes(name),
-    FOREIGN KEY (muse) REFERENCES muses(name)
-);
+
 INSERT INTO aptitude_muse VALUES('Coordination','Animal Keeper Ai',20);
 INSERT INTO aptitude_muse VALUES('Reflex','Bot/Vehicle AI',20);
 INSERT INTO aptitude_muse VALUES('Reflex','Kaos AI',20);
 INSERT INTO aptitude_muse VALUES('Intuition','Standard Muse',20);
-CREATE TABLE IF NOT EXISTS "muse_skill" (
-	`muse`	varchar(100) NOT NULL,
-	`skillName`	varchar(100) NOT NULL,
-	`skillPrefix`	varchar(100) NOT NULL DEFAULT '',
-	`value`	smallint(6) NOT NULL,
-	PRIMARY KEY(`muse`,`skillName`,`skillPrefix`),
-    FOREIGN KEY (muse) REFERENCES muses(name)
---     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills(name, prefix)
-);
--- TODO: Null unused prefixes
+
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Animal Handling','',40);
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Interfacing','',20);
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Perception','',30);
