@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS "psySleights"
     action      varchar(50)                       NOT NULL,
     level       varchar(3)                        NOT NULL,
     strainMod   varchar(100)                      NOT NULL,
-    skillNeeded varchar(60)
---     FOREIGN KEY (skillNeeded) REFERENCES skills (name)
+    skillNeeded varchar(60),
+    FOREIGN KEY (skillNeeded) REFERENCES skills (name)
 );
 CREATE TABLE IF NOT EXISTS "reputations"
 (
@@ -174,9 +174,9 @@ CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
 -- TODO:  Check if addictions work properly
     bmNameMain varchar(60) NOT NULL,
     bmChoices  varchar(60) NOT NULL,
-    PRIMARY KEY (bmNameMain, bmChoices)
+    PRIMARY KEY (bmNameMain, bmChoices),
 --     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
---     FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
+    FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_gear"
 (
@@ -233,9 +233,9 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_trait"
     traitName      varchar(60)  NOT NULL,
     bonusMalusName varchar(100) NOT NULL,
     occur          smallint(6)  NOT NULL,
-    PRIMARY KEY (traitName, bonusMalusName)
---     FOREIGN KEY (traitName) REFERENCES traits (name)
---     FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus (name)
+    PRIMARY KEY (traitName, bonusMalusName),
+    FOREIGN KEY (traitName) REFERENCES traits (name),
+    FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "aptitude_muse"
 (
@@ -736,8 +736,8 @@ INSERT INTO AtomBook VALUES('Implant rejection I','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Implant rejection II','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Implant Skill','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Implanted Nanotoxins','Eclipse Phase');
-INSERT INTO AtomBook VALUES('Improved Imm. Sys. Morph I','Eclipse Phase');
-INSERT INTO AtomBook VALUES('Improved Imm. Sys. Morph II','Eclipse Phase');
+INSERT INTO AtomBook VALUES('Improved Immune System Morph I','Eclipse Phase');
+INSERT INTO AtomBook VALUES('Improved Immune System Morph II','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Incompetent','Eclipse Phase');
 INSERT INTO AtomBook VALUES('Increased Speed','Transhuman');
 INSERT INTO AtomBook VALUES('Indenture','Transhuman');
@@ -1852,8 +1852,8 @@ INSERT INTO AtomPage VALUES('Implant rejection I','150');
 INSERT INTO AtomPage VALUES('Implant rejection II','150');
 INSERT INTO AtomPage VALUES('Implant Skill','227');
 INSERT INTO AtomPage VALUES('Implanted Nanotoxins','308');
-INSERT INTO AtomPage VALUES('Improved Imm. Sys. Morph I','146');
-INSERT INTO AtomPage VALUES('Improved Imm. Sys. Morph II','146');
+INSERT INTO AtomPage VALUES('Improved Immune System Morph I','146');
+INSERT INTO AtomPage VALUES('Improved Immune System Morph II','146');
 INSERT INTO AtomPage VALUES('Incompetent','150');
 INSERT INTO AtomPage VALUES('Increased Speed','141');
 INSERT INTO AtomPage VALUES('Indenture','79');
@@ -5798,7 +5798,7 @@ INSERT INTO psySleights VALUES(23,'Mindlink','Mindlink allows two-way mental com
 INSERT INTO psySleights VALUES(24,'Multitasking','The async can handle vast amounts of information without overload and can perform more than one mental task at once. The character receives an extra Complex Action each Action Phase that may only be used for mental or mesh actions.','PAS','SELF','constant','automatic','CHI','0',NULL);
 INSERT INTO psySleights VALUES(25,'Omni Awareness','An async with Omni Awareness is hypersensitive to other biological life that is observing them. During this sleight''s duration, the async makes a Sense Test that is opposed by any life that has focused their attention on them within the sleight''s range; if successful, the async knows they are being watched, but not by whom or what. It does, however, apply a +30 Perception bonus to spot the observer. This sleight does not register partial or fleeting attention, it only notices targets who are actively observing (even if they are concealing their observation). This sleight is effective in spotting a tail, as well as finding potential mates in a bar.','ACT','CLOSE','temporary','quick','GAM','-1','Sense');
 INSERT INTO psySleights VALUES(26,'Pattern Recognition','The character is adept at spotting patterns and cor- relating the non-random elements of a jumble--related items jump out at them. This is useful for translating languages, breaking codes, or finding clues hidden among massive amounts of data. The character must have a sufficiently large sample and time enough to study, as determined by the gamemaster. This might range from a few hours of listening to a spoken transhuman language to a few days of investigating inscriptions left by long-dead aliens or a week or more of researching a lengthy cipher. Languages may be comprehended by reading or listening to them spoken. Apply a +20 modifier to any appropriate Language, Investigation, Research, or codebreaking Tests (note that this does not apply to Infosec Tests made by soft- ware to decrypt a code). The async may also use this ability to more easily learn new languages, reducing the training time by half.','PAS','SELF','constant','automatic','CHI','0',NULL);
-INSERT INTO psySleights VALUES(27,'Penetration','Penetration is a sleight that works in conjunction with any offensive sleight that involves the Psi Assault skill. It allows the async to penetrate the Psi Shield of an opponent by concentrating their psi attack. <b>Every point of Armor Penetration applied to a psi attack inflicts 1 point of strain. </b>The maximum AP that may be applied equals the async''s Psi Assault skill divided by 10 (round down).','ACT','TOUCH','instant','quick','GAM','1 per AP','Psi Asault');
+INSERT INTO psySleights VALUES(27,'Penetration','Penetration is a sleight that works in conjunction with any offensive sleight that involves the Psi Assault skill. It allows the async to penetrate the Psi Shield of an opponent by concentrating their psi attack. <b>Every point of Armor Penetration applied to a psi attack inflicts 1 point of strain. </b>The maximum AP that may be applied equals the async''s Psi Assault skill divided by 10 (round down).','ACT','TOUCH','instant','quick','GAM','1 per AP','Psi Assault');
 INSERT INTO psySleights VALUES(28,'Predictive Boost','The Bayesian probability machine features of the async''s brain are boosted by this sleight, enhancing their ability to estimate and predict outcomes of events around them as they unfold in real-time and update those predictions as information changes. In effect, the character has a more intuitive sense for which outcomes are most likely. This grants the character a +10 bonus on any skill tests that involve predicting the outcome of events. It also bolsters the async''s decision-making in combat situations by making the best course of action more clear and so provides a +1 bonus to Initiative and +10 to Fray Tests.','PAS','SELF','constant','automatic','CHI','0',NULL);
 INSERT INTO psySleights VALUES(29,'Psi Shield','Psi Shield bolsters the async''s mind to psi attack and manipulation. If the async is hit by a psi attack, <b>they receive WIL Ã· 5 (round up) points of armor,</b> reducing the amount of damage inflicted. They also receive a +10 modifier when resisting any other sleights.','PAS','SELF','constant','automatic','GAM','0',NULL);
 INSERT INTO psySleights VALUES(30,'Psychic Stab','Psychic Stab is an offensive sleight that seeks to inflict physical damage on the target''s brain and nervous system. Each successful attack inflicts 1d10 + (WIL Ã· 10, round up) damage. Increase the damage by +5 if an Excellent Success (MoS of 30+) is scored.','ACT','TOUCH','instant','complex','GAM','0','Psi Assault');
@@ -6051,7 +6051,7 @@ INSERT INTO bonusMalus_trait VALUES('Oblivious','Inattentive',1);
 INSERT INTO bonusMalus_trait VALUES('On the run','Wanted',1);
 INSERT INTO bonusMalus_trait VALUES('Pain Tolerance ego I','Ignore 1 wound modifier',1);
 INSERT INTO bonusMalus_trait VALUES('Pain Tolerance ego II','Ignore 2 wound modifier',1);
-INSERT INTO bonusMalus_trait VALUES('Pain Tolerance morph','Ignore 1 wound modifier',1);
+INSERT INTO bonusMalus_trait VALUES('Pain Tolerance morph I','Ignore 1 wound modifier',1);
 INSERT INTO bonusMalus_trait VALUES('Pain Tolerance morph II','Ignore 2 wound modifier',1);
 INSERT INTO bonusMalus_trait VALUES('Patron','Allies',1);
 INSERT INTO bonusMalus_trait VALUES('Phoenix I','Phoenix I',1);
@@ -6225,8 +6225,8 @@ INSERT INTO traits VALUES(89,'Impaired Linguistics','<b>This trait is only avail
 INSERT INTO traits VALUES(90,'Impaired Proprioception','<b>This trait is only available to octomorphs and flying squid morphs.</b><br><br>\n Baseline cephalopods lack a sense of proprioception in their arms and tentacles, meaning they only know where their limbs are by looking at them. Though a standard proprioceptive sense was added to most octomorph and flying squid models, a number of germlines lack the proper neural structure.\nA morph with this trait suffers a -10 modifier on Fray Tests to avoid attacks or get out of the way and gains no benefits from the Ambidextrous trait.','true',-10,1,'EVERY');
 INSERT INTO traits VALUES(91,'Implant rejection I','This morph does not accept implants well. ','true',-5,1,'BIO');
 INSERT INTO traits VALUES(92,'Implant rejection II','This morph does not accept implants well. <b>The morph cannot accept implants of any kind.</b>','true',-15,2,'BIO');
-INSERT INTO traits VALUES(93,'Improved Imm. Sys. Morph I','The morph''s immune system is robust and more resistant to diseases, drugs, and toxins--even more than basic biomods. Apply a +10 modifier whenever making a test to resist infection or the effects of a toxin or drug.','true',10,1,'BIO');
-INSERT INTO traits VALUES(94,'Improved Imm. Sys. Morph II','The morph''s immune system is robust and more resistant to diseases, drugs, and toxins--even more than basic biomods. Apply a +20 modifier whenever making a test to resist infection or the effects of a toxin or drug.','true',20,2,'BIO');
+INSERT INTO traits VALUES(93,'Improved Immune System Morph I','The morph''s immune system is robust and more resistant to diseases, drugs, and toxins--even more than basic biomods. Apply a +10 modifier whenever making a test to resist infection or the effects of a toxin or drug.','true',10,1,'BIO');
+INSERT INTO traits VALUES(94,'Improved Immune System Morph II','The morph''s immune system is robust and more resistant to diseases, drugs, and toxins--even more than basic biomods. Apply a +20 modifier whenever making a test to resist infection or the effects of a toxin or drug.','true',20,2,'BIO');
 INSERT INTO traits VALUES(95,'Incompetent','The character is completely incapable of performing a particular chosen active skill, no matter any training they may receive.<br> <b>They may not buy this skill during character creation or later advancement, and the modifier for defaulting to the linked aptitude of this particular skill is -10. </b>This may not be used for exotic weapon skills, and should be used for a skill that could be of use to the character.','false',-10,1,'EVERY');
 INSERT INTO traits VALUES(96,'Indenture Holder','The character currently owns the indenture contract of another ego. The person subject to indenture could be anyone from a Fall infugee to a criminal working off the damages of an assault charge. The indenture itself could have been voluntarily arranged with the character, awarded by a court, or the character could have bought it through IndEX (TH, p. 162). The terms and conditions that will end the indenture should be clearly determined as a set credit amount, levels of favors expended, or provision of specific services. It is recommended that the contractual services are reasonably likely to be completed within 6 months. Players and gamemasters should collaborate to establish the relationship the character has with the indenture and the exact skills and reputations of the NPC. Gamemasters should be very careful that this trait is not abused, and remember that, as the indenture holder, the character also has some responsibilities to the NPC. Physical harm, mental trauma, and illegal activities could negate the terms of indenture and may have serious repercussions for the character. Should the character treat their indenture well, they could become a trusted ally, but ill treatment could make them into an enemy (p. 149, EP).','false',30,1,'EVERY');
 INSERT INTO traits VALUES(97,'Information Control','This character has a knack for diligence and caution in their daily living, online, and social networking interactions, reducing the amount of extraneous or sensitive information about themselves that leaks out in the public eye. <b>Apply a âˆ’10 modifier to any Research Tests to gather information on the character or track them online (see Scanning, Tracking, and Monitoring, p. 251, EP) and any Networking Tests to ascertain the character''s networking interactions (see Keeping It Quiet, p. 288, EP).</b>','false',10,1,'EVERY');
