@@ -298,7 +298,7 @@ if(isset($_POST['skill'])){
 	//error_log("Getting skill id: " . $_POST['skill']. " -> " . $skill->getPrintableName());
 	$return['title'] = $skill->getPrintableName();
 	if($skill->getDescription() == ""){
-		$prefix = $skill->prefix;
+		$prefix = $skill->getPrefixName();
 		if($prefix != null || $prefix != ""){
 			$return['desc'] = $provider->getPrefixDescription($prefix);
 		}
@@ -812,7 +812,7 @@ if(isset($_POST['addTargetTo'])){
             if(!isset($skill)){
 				return static::treatCreatorErrors(new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
 			}
-			$candidat->typeTarget = $skill->prefix;
+			$candidat->typeTarget = $skill->getPrefixName();
 		}
 		$candidat->forTargetNamed = $_POST['targetVal'];
 		$candidat->selected = true;
@@ -834,7 +834,7 @@ if(isset($_POST['addTargetTo'])){
             if(!isset($skill)){
                 return static::treatCreatorErrors(new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
             }
-            $candidat->typeTarget = $skill->prefix;
+            $candidat->typeTarget = $skill->getPrefixName();
         }
     }
     creator()->adjustAll();

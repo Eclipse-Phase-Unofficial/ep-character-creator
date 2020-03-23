@@ -252,21 +252,6 @@ class Database
     }
 
     /**
-     * @param string $prefix
-     * @return Atoms\EPSkill[]
-     */
-    function getSkillsByPrefix(string $prefix): array
-    {
-        $output = array();
-        foreach ($this->skills as $skill) {
-            if (strcmp($skill->prefix, $prefix) == 0) {
-                array_push($output, $skill);
-            }
-        }
-        return $output;
-    }
-
-    /**
      * @param string $name
      * @param string $prefix
      * @return EPSkill|null
@@ -275,7 +260,7 @@ class Database
     {
         $prefix = $prefix ?? '';
         foreach ($this->skills as $skill) {
-            if (strcmp($skill->prefix, $prefix) == 0 && strcmp($skill->getName(), $name) == 0) {
+            if (strcmp($skill->getPrefixName(), $prefix) == 0 && strcmp($skill->getName(), $name) == 0) {
                 return $skill;
             }
         }

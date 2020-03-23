@@ -248,12 +248,12 @@ class EPEgo implements Savable
         //This means we need to re-associate each skill with the actual aptitude so modifications automatically take place
         foreach($object->skills as $m){
             //For normal skills, it's as simple as getting the Skill from the database
-            $dbSkill = EpDatabase()->getSkillByNamePrefix($m->getName(),$m->prefix);
+            $dbSkill = EpDatabase()->getSkillByNamePrefix($m->getName(),$m->getPrefixName());
             if($dbSkill != null){
                 $linkedApt = $dbSkill->linkedAptitude;
             } else {
                 //For user created skills (which don't exist in the database), link them based on their prefix
-                $linkedApt = EpDatabase()->getAptitudeForPrefix($m->prefix);
+                $linkedApt = EpDatabase()->getAptitudeForPrefix($m->getPrefixName());
             }
             //Link skills to the aptitude imported, not the one in the database
             $m->linkedAptitude = EPAtom::getAtomLike($object->aptitudes, $linkedApt);

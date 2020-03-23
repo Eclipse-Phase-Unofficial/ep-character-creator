@@ -52,7 +52,7 @@ use App\Creator\Atoms\EPSkill;
 			<tbody>
 			<?php
 		         foreach(creator()->character->ego->getKnowledgeSkills() as $m){
-		        	$prefix = $m->prefix;
+		        	$prefix = $m->getPrefixName();
 		        	$spe = $m->specialization;
 					$name = $m->getPrintableName();
 

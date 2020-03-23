@@ -121,11 +121,7 @@ if(null !== creator()) {
 
     foreach($skillList as $skill){
 
-        $skillCompleteName = "";
-        $prefix = $skill->prefix;
-        if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-        $skillCompleteName .= $skill->getName();
-        if(!$skill->isDefaultable) $skillCompleteName .= " *";
+        $skillCompleteName = $skill->getPrintableName();
         $skillType = "A";
         if($skill->isKnowledge()) {
             $skillType = "K";
@@ -224,11 +220,7 @@ if(null !== creator()) {
             $skillAptNonformated .= $aiApt->value."]   <br>";
         }
         foreach($ai->skills as $aiSkill){
-            $skillCompleteName = "";
-            $prefix = $aiSkill->prefix;
-            if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-            $skillCompleteName .= $aiSkill->getName();
-            $skillAptNonformated .= $skillCompleteName."(";
+            $skillAptNonformated .= $aiSkill->getPrintableName() . "(";
             $skillAptNonformated .= $aiSkill->baseValue.")  <br>";
         }
 
@@ -362,11 +354,7 @@ if(null !== creator()) {
 
         foreach($skillList as $skill){
 
-            $skillCompleteName = "";
-            $prefix = $skill->prefix;
-            if(!empty($prefix)) $skillCompleteName = $prefix." : ";
-            $skillCompleteName .= $skill->getName();
-            if(!$skill->isDefaultable) $skillCompleteName .= " *";
+            $skillCompleteName = $skill->getPrintableName();
             $skillType = "A";
 
             # ignore knowledge skills with an empty value as the player didn't pick the skill

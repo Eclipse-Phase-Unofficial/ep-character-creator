@@ -20,11 +20,9 @@ class EPSkill extends EPAtom{
      private $isActiveSkill;
 
     /**
-     * TODO:  Make this private with a getter (no setter)
-     * TODO:  Make this nullable!
-     * @var string
+     * @var string|null
      */
-     public $prefix;
+     private $prefix;
     /**
      * @var int
      */
@@ -277,6 +275,11 @@ class EPSkill extends EPAtom{
         $object->maxValuePsyMod        = (int)$an_array['maxValuePsyMod'];
         $object->maxValueSoftgearMod   = (int)$an_array['maxValueSoftgearMod'];
 
+        //Backwards compatibility with older (pre 1.53) save files
+        if(empty($object->prefix)) {
+            $object->prefix = null;
+        }
+
         return $object;
     }
 
@@ -287,7 +290,7 @@ class EPSkill extends EPAtom{
      * @param bool            $isActive
      * @param bool            $isDefaultable
      * @param EPAptitude|null $linkedAptitude
-     * @param string          $prefix
+     * @param string|null     $prefix
      * @param array           $groups
      * @param bool            $isTempSkill
      */
@@ -297,7 +300,7 @@ class EPSkill extends EPAtom{
         bool $isActive,
         bool $isDefaultable,
         EPAptitude $linkedAptitude = null,
-        string $prefix = "",
+        ?string $prefix = null,
         array $groups = array(),
         bool $isTempSkill = false
     ) {
@@ -306,6 +309,9 @@ class EPSkill extends EPAtom{
          $this->linkedAptitude = $linkedAptitude;
          $this->isActiveSkill  = $isActive;
          $this->prefix         = trim($prefix);
+         if(empty($prefix)) {
+             $this->prefix = null;
+         }
          $this->baseValue = 0;
          $this->isDefaultable = $isDefaultable;
          $this->groups = $groups;
@@ -330,7 +336,7 @@ class EPSkill extends EPAtom{
      * @return bool
      */
     public function match($skill): bool{
-        if (strcasecmp($skill->getName(),$this->getName()) == 0 && strcasecmp($skill->prefix,$this->prefix) == 0){
+        if (strcasecmp($skill->getName(),$this->getName()) == 0 && $skill->prefix === $this->prefix){
             return true;
         }
         return false;
@@ -372,6 +378,23 @@ class EPSkill extends EPAtom{
     }
 
     /**
+     * If the Skill has a prefix, and everything that comes along with that
+     * @return bool
+     */
+    public function hasPrefix(): bool
+    {
+        return !is_null($this->prefix);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefixName(): string
+    {
+        return $this->prefix?? "";
+    }
+
+    /**
      * Find a skill in an array.
      *
      * Skills are unique by name AND prefix, so both are important.
@@ -383,7 +406,7 @@ class EPSkill extends EPAtom{
     public static function getSkill(array $skills, string $name, string $prefix = '')
     {
         foreach ($skills as $aSkill) {
-            if (strcasecmp($aSkill->getName(), $name) == 0 && strcasecmp($aSkill->prefix, $prefix) == 0) {
+            if (strcasecmp($aSkill->getName(), $name) == 0 && strcasecmp($aSkill->getPrefixName(), $prefix) == 0) {
                 return $aSkill;
             }
         }

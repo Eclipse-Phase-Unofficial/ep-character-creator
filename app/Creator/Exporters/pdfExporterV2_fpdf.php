@@ -195,12 +195,7 @@ class pdfExporterV2_fpdf {
 
             //construct a skill string for each skill
             foreach($ai->skills as $aiSkill) {
-                $skillCompleteName = "";
-                if(!empty($aiSkill->prefix))
-                    $skillCompleteName = $aiSkill->prefix . " : ";
-
-                $skillCompleteName .= $aiSkill->getName();
-                $skillAptNonformated .= $skillCompleteName . "(";
+                $skillAptNonformated .= $aiSkill->getPrintableName() . "(";
                 $skillAptNonformated .= $aiSkill->baseValue . ")\n";
             }
 

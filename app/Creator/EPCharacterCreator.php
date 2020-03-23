@@ -148,7 +148,7 @@ class EPCharacterCreator implements Savable
     {
         $res = array();
         foreach ($this->character->ego->skills as $sk){
-            if (strcmp($sk->prefix,$prefix) == 0){
+            if (strcmp($sk->getPrefixName(),$prefix) == 0){
                 array_push($res, $sk);
             }
         }

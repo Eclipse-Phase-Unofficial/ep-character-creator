@@ -525,7 +525,7 @@ class Helpers
     {
         $outArray = array();
         foreach ($skillArray as $skill) {
-            if ($skill->prefix == $prefix) {
+            if ($skill->getPrefixName() == $prefix) {
                 array_push($outArray, $skill);
             }
         }
