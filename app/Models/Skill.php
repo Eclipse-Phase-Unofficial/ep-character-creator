@@ -47,8 +47,13 @@ class Skill extends Model
      * @param $value
      * @return bool
      */
-    public function getIsDefaultableAttribute($value)
+    public function getIsDefaultableAttribute($value): bool
     {
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    public function aptitude()
+    {
+        return $this->belongsTo(Aptitude::class, 'linkedAptitude', 'abbreviation');
     }
 }

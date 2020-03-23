@@ -308,7 +308,7 @@ class EPSkill extends EPAtom{
          parent::__construct(trim($name), trim($description));
          $this->linkedAptitude = $linkedAptitude;
          $this->isActiveSkill  = $isActive;
-         $this->prefix         = trim($prefix);
+         $this->prefix         = trim($prefix?? "");
          if(empty($prefix)) {
              $this->prefix = null;
          }

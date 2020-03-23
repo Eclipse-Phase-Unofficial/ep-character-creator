@@ -267,9 +267,12 @@ class EPListProvider {
     }
 
     // ===== Services ====
-    function getAptByAbreviation($listApts,$abr){
+    function getAptByAbreviation($listApts, ?string $abbreviation){
+        if (empty($abbreviation)) {
+            return null;
+        }
         foreach ($listApts as $ap){
-            if (strcmp($ap->abbreviation,$abr) == 0){
+            if (strcmp($ap->abbreviation, $abbreviation) == 0){
                 return $ap;
             }
         }
@@ -306,6 +309,9 @@ class EPListProvider {
     function getSkillByNamePrefix(string $name, string $prefix, $listApt): EPSkill
     {
         $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
+        if (empty($prefix)) {
+            $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` IS NULL;");
+        }
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
