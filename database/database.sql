@@ -1,5 +1,6 @@
 PRAGMA foreign_keys = ON;
 BEGIN TRANSACTION;
+PRAGMA defer_foreign_keys = ON; -- This automatically changes to off after the COMMIT
 
 CREATE TABLE IF NOT EXISTS "muses"
 (
@@ -94,7 +95,7 @@ CREATE TABLE IF NOT EXISTS "psySleights"
     level       varchar(3)                        NOT NULL,
     strainMod   varchar(100)                      NOT NULL,
     skillNeeded varchar(60)
---   FOREIGN KEY (skillNeeded) REFERENCES skills(name)
+--     FOREIGN KEY (skillNeeded) REFERENCES skills (name)
 );
 CREATE TABLE IF NOT EXISTS "reputations"
 (
@@ -148,8 +149,8 @@ CREATE TABLE IF NOT EXISTS "background_bonusMalus"
     bonusMalus varchar(100) NOT NULL,
     occurrence smallint(6)  NOT NULL,
     PRIMARY KEY (background, bonusMalus),
-    FOREIGN KEY (background) REFERENCES backgrounds (name)
---   FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
+    FOREIGN KEY (background) REFERENCES backgrounds (name),
+    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "BackgroundLimitations"
 (
@@ -165,17 +166,17 @@ CREATE TABLE IF NOT EXISTS "background_trait"
     background varchar(100) NOT NULL,
     trait      varchar(100) NOT NULL,
     PRIMARY KEY (background, trait),
-    FOREIGN KEY (background) REFERENCES backgrounds (name)
---   FOREIGN KEY (trait) REFERENCES trait(name)
+    FOREIGN KEY (background) REFERENCES backgrounds (name),
+    FOREIGN KEY (trait) REFERENCES traits (name)
 );
 CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
 (
 -- TODO:  Check if addictions work properly
     bmNameMain varchar(60) NOT NULL,
     bmChoices  varchar(60) NOT NULL,
-    PRIMARY KEY (bmNameMain, bmChoices),
+    PRIMARY KEY (bmNameMain, bmChoices)
 --     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
-    FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
+--     FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_gear"
 (
@@ -215,8 +216,8 @@ CREATE TABLE IF NOT EXISTS "morph_trait"
     morph varchar(100) NOT NULL,
     trait varchar(100) NOT NULL,
     PRIMARY KEY (morph, trait),
-    FOREIGN KEY (morph) REFERENCES morphs (name)
---   FOREIGN KEY (trait) REFERENCES trait(name)
+    FOREIGN KEY (morph) REFERENCES morphs (name),
+    FOREIGN KEY (trait) REFERENCES traits (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_psySleight"
 (
@@ -233,8 +234,8 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_trait"
     bonusMalusName varchar(100) NOT NULL,
     occur          smallint(6)  NOT NULL,
     PRIMARY KEY (traitName, bonusMalusName)
---   FOREIGN KEY (traitName) REFERENCES traits(name),
---   FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus(name)
+--     FOREIGN KEY (traitName) REFERENCES traits (name)
+--     FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "aptitude_muse"
 (
@@ -254,7 +255,7 @@ CREATE TABLE IF NOT EXISTS "muse_skill"
     value       smallint(6)  NOT NULL,
     PRIMARY KEY (muse, skillName, skillPrefix),
     FOREIGN KEY (muse) REFERENCES muses (name)
---     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills(name, prefix)
+--     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills (name, prefix)
 );
 
 INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000);
