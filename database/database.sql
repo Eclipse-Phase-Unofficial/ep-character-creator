@@ -2342,7 +2342,9 @@ CREATE TABLE IF NOT EXISTS "background_bonusMalus" (
   `background` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occurrence` smallint(6) NOT NULL,
-  PRIMARY KEY  (`background`,`bonusMalus`)
+  PRIMARY KEY  (`background`,`bonusMalus`),
+  FOREIGN KEY (background) REFERENCES backgrounds(name)
+--   FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
 );
 INSERT INTO background_bonusMalus VALUES('Anarchist','+10 [Skill]',1);
 INSERT INTO background_bonusMalus VALUES('Anarchist','+30 Networking: Autonomists skill',1);
@@ -2554,14 +2556,19 @@ INSERT INTO background_bonusMalus VALUES('Venusian','+20 Networking: Hypercorps 
 CREATE TABLE `BackgroundLimitations` (
   `background` varchar(100) NOT NULL,
   `limitationGroup` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`limitationGroup`)
+  PRIMARY KEY  (`background`,`limitationGroup`),
+  FOREIGN KEY (background) REFERENCES backgrounds(name)
+--   FOREIGN KEY (limitationGroup) REFERENCES groups(name)
 );
+--TODO:  Figure out if thiss is the proper reference for limitationGroup
 INSERT INTO BackgroundLimitations VALUES('Hyperelite','Hyperelite morph limitation');
 INSERT INTO BackgroundLimitations VALUES('Infolife','Psi trait prohibited');
 CREATE TABLE IF NOT EXISTS "background_trait" (
   `background` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`background`,`trait`)
+  PRIMARY KEY  (`background`,`trait`),
+  FOREIGN KEY (background) REFERENCES backgrounds(name)
+--   FOREIGN KEY (trait) REFERENCES trait(name)
 );
 INSERT INTO background_trait VALUES('Ape Uplift','Brave');
 INSERT INTO background_trait VALUES('Ape Uplift','Social stigma ego');
@@ -3046,8 +3053,11 @@ INSERT INTO bonusMalus VALUES(421,'Zero-g Nausea','Suffers a -10 modifier in any
 INSERT INTO bonusMalus VALUES(422,'Zoosemiotics','You do not suffer a modifier when using psi sleights on non- sapient or partly sapient animal species.','DO','',0.0,'','','false',0);
 CREATE TABLE `BonusMalusTypes` (
   `bmNameMain` varchar(60) NOT NULL,
-  `bmChoices` varchar(60) NOT NULL
+  `bmChoices` varchar(60) NOT NULL,
+--  FOREIGN KEY (bmNameMain) REFERENCES bonusMalus(name),
+  FOREIGN KEY (bmChoices) REFERENCES bonusMalus(name)
 );
+-- TODO:  Check if addictions work properly
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10  Academics [Field]');
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Infosec skill');
 INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 on Interfacing skill');
@@ -3786,7 +3796,9 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_gear" (
   `gear` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`gear`,`bonusMalus`)
+  PRIMARY KEY  (`gear`,`bonusMalus`),
+  FOREIGN KEY (gear) REFERENCES gear(name),
+  FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
 );
 INSERT INTO bonusMalus_gear VALUES('Ablative Patches','+2 on kinetic',1);
 INSERT INTO bonusMalus_gear VALUES('Ablative Patches','+4 energy armor',1);
@@ -4113,7 +4125,9 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_morph" (
   `morph` varchar(100) NOT NULL,
   `bonusMalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`bonusMalus`)
+  PRIMARY KEY  (`morph`,`bonusMalus`),
+  FOREIGN KEY (morph) REFERENCES morphs(name),
+  FOREIGN KEY (bonusMalus) REFERENCES bonusMalus(name)
 );
 INSERT INTO bonusMalus_morph VALUES('Agent','+2 Speed',1);
 INSERT INTO bonusMalus_morph VALUES('Agent','+5 Cognition',1);
@@ -4504,7 +4518,9 @@ CREATE TABLE IF NOT EXISTS "gear_morph" (
   `morph` varchar(100) NOT NULL,
   `gear` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`morph`,`gear`)
+  PRIMARY KEY  (`morph`,`gear`),
+  FOREIGN KEY (morph) REFERENCES morphs(name),
+  FOREIGN KEY (gear) REFERENCES gear(name)
 );
 INSERT INTO gear_morph VALUES('Agent','Eidetic Memory',1);
 INSERT INTO gear_morph VALUES('Agent','Hacking Alert',1);
@@ -5545,7 +5561,9 @@ INSERT INTO gear_morph VALUES('Guard Deluxe','Puppet Sock',1);
 CREATE TABLE IF NOT EXISTS "morph_trait" (
   `morph` varchar(100) NOT NULL,
   `trait` varchar(100) NOT NULL,
-  PRIMARY KEY  (`morph`,`trait`)
+  PRIMARY KEY  (`morph`,`trait`),
+  FOREIGN KEY (morph) REFERENCES morphs(name)
+--   FOREIGN KEY (trait) REFERENCES trait(name)
 );
 INSERT INTO morph_trait VALUES('Ariel','Non-Mammalian Biochemistry');
 INSERT INTO morph_trait VALUES('Ariel','Temperature Intolerance (Warm)');
@@ -5634,7 +5652,8 @@ CREATE TABLE IF NOT EXISTS "psySleights"
   action varchar(50) NOT NULL,
   level varchar(3) NOT NULL,
   strainMod varchar(100) NOT NULL,
-  skillNeeded varchar(100)
+  skillNeeded varchar(60)
+--   FOREIGN KEY (skillNeeded) REFERENCES skills(name)
 );
 INSERT INTO psySleights VALUES(1,'Alienation','Alienation is an offensive sleight that create a sense of disconnection between an ego and its morph--similar to that experienced when resleeved into a new body. The ego finds their body cumbersome, strange, and alien, almost like they are a prisoner within it. <b>If the async beats the target in an Opposed Test, treat the result as a failed Integration Test for the target.</b> This effect lasts for the sleight''s duration.','ACT','TOUCH','temporary','complex','GAM','0','Psi Assault');
 INSERT INTO psySleights VALUES(2,'Ambience Sense','This sleight provides the async with an instinctive sense about an area and any potential threats nearby. The async receives a +10 modifier to all Investigation, Perception, Scrounging, and Surprise Tests.','PAS','SELF','constant','automatic','CHI','0',NULL);
@@ -5684,7 +5703,9 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_psySleight" (
   `psy` varchar(100) NOT NULL,
   `bonusmalus` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
-  PRIMARY KEY  (`psy`,`bonusmalus`)
+  PRIMARY KEY  (`psy`,`bonusmalus`),
+  FOREIGN KEY (psy) REFERENCES psySleights(name),
+  FOREIGN KEY (bonusmalus) REFERENCES bonusMalus(name)
 );
 INSERT INTO bonusMalus_psySleight VALUES('Ambience Sense','Ambience Sense',1);
 INSERT INTO bonusMalus_psySleight VALUES('Charisma','Psi Charisma',1);
@@ -5724,7 +5745,8 @@ CREATE TABLE `skillPrefixes` (
   name varchar(100) NOT NULL UNIQUE,
   linkedAptitude varchar(3) NOT NULL,
   isActive boolean NOT NULL,
-  description text NOT NULL
+  description text NOT NULL,
+  FOREIGN KEY (linkedAptitude) REFERENCES aptitudes(abbreviation)
 );
 INSERT INTO skillPrefixes VALUES(1,'Academics','COG','false','<h2>What it is:</h2>\n<p> Academics covers any sort of specialized non-applied knowledge you can only get through intensive education. Most theoretical and applied sciences, social sciences, transhumanities, etc. are covered by this skill. Most of the other skills listed in this chapter could also be taken as an Academics field, reflecting a working theoretical knowledge of the skill,for example, Academics: Armorer or Academics: Interrogation.</p>\n<h2> When you use it</h2>\n<p> Academics is used when a character wishes to call upon a specific body of knowledge. For example, Academics: Chemistry could be used to identify a particular substance, understand an unusual chemical reaction, or deter- mine what elements are needed to nanofabricate something that requires exotic materials. At the gamemaster discretion, some Academics-related tests might not be defaultable, given that only someone who has been educated in that subject is likely to be able to tackle it.\nSample Fields: Archeology, Astrobiology, Astronomy, Astrophysics, Astrosociology, Biochemistry, Biology, Botany, Computer Science,Cryptography, Economics, Engineering, Genetics, Geology, Linguistics, Mathematics, Memetics, Nanotechnology, Old Earth History, Physics, Polit- ical Science, Psychology, Sociology, Xeno-archeology, Xenolinguistics, Zoology</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 INSERT INTO skillPrefixes VALUES(2,'Art','INT','false','<h2>What it is</h2>\n<p> Art confers the ability to create and evaluate artistic endeavors. This is a particularly useful skill in Eclipse Phase, especially in the post-scarcity economies where creativity and vision can be a key component to a characters reputation.</p>\n<h2>When you use it</h2>\n<p>The Art skill can be used to either create a new work of art or to duplicate an existing piece of art in the hopes of passing it off as your own. The skill can also determine the approximate value of a piece of art either on the open market, for monetary exchange systems, or in terms of reputation for the artist.\nSample Fields: Architecture, Criticism, Dance, Drama, Drawing, Painting, Performance, Sculpture, Simulspace Design, Singing, Speech, Writing</p>\n<h2>Specializations</h2>\n<p>As appropriate to the field</p>');
@@ -5739,7 +5761,7 @@ INSERT INTO skillPrefixes VALUES(10,'Pilot','REF','true','<h2>What it is</h2>\n<
 INSERT INTO skillPrefixes VALUES(11,'Profession','COG','false','<h2>What it is</h2>\n<p> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indi- cate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.</p>\n<h2>When you use it</h2>\n<p> Use Profession to perform work- related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to refer- ence specialized knowledge that someone trained in that profession might have.</p>\n<h2>Sample Fields</h2>\n<p> Accounting, Appraisal, Asteroid Pros- pecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 CREATE TABLE `skills` (
   id integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-  name varchar(60) NOT NULL,
+  name varchar(60) NOT NULL UNIQUE,
   description text NOT NULL,
   linkedAptitude varchar(3) NOT NULL,
   prefix varchar(100),
@@ -5830,6 +5852,8 @@ CREATE TABLE IF NOT EXISTS "bonusMalus_trait" (
   `bonusMalusName` varchar(100) NOT NULL,
   `occur` smallint(6) NOT NULL,
   PRIMARY KEY  (`traitName`,`bonusMalusName`)
+--   FOREIGN KEY (traitName) REFERENCES traits(name),
+--   FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus(name)
 );
 INSERT INTO bonusMalus_trait VALUES('Adaptability I','+10 Integration / Alienation',1);
 INSERT INTO bonusMalus_trait VALUES('Adaptability II','+20 Integration / Alienation',1);
@@ -6274,7 +6298,9 @@ CREATE TABLE IF NOT EXISTS "aptitude_muse" (
 	`aptitude`	varchar(100) NOT NULL,
 	`muse`	varchar(100) NOT NULL,
 	`value`	smallint(6) NOT NULL,
-	PRIMARY KEY(`muse`,`aptitude`)
+	PRIMARY KEY(`muse`,`aptitude`),
+    FOREIGN KEY (aptitude) REFERENCES aptitudes(name),
+    FOREIGN KEY (muse) REFERENCES muses(name)
 );
 INSERT INTO aptitude_muse VALUES('Coordination','Animal Keeper Ai',20);
 INSERT INTO aptitude_muse VALUES('Reflex','Bot/Vehicle AI',20);
@@ -6285,8 +6311,11 @@ CREATE TABLE IF NOT EXISTS "muse_skill" (
 	`skillName`	varchar(100) NOT NULL,
 	`skillPrefix`	varchar(100) NOT NULL DEFAULT '',
 	`value`	smallint(6) NOT NULL,
-	PRIMARY KEY(`muse`,`skillName`,`skillPrefix`)
+	PRIMARY KEY(`muse`,`skillName`,`skillPrefix`),
+    FOREIGN KEY (muse) REFERENCES muses(name)
+--     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills(name, prefix)
 );
+-- TODO: Null unused prefixes
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Animal Handling','',40);
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Interfacing','',20);
 INSERT INTO muse_skill VALUES('Animal Keeper Ai','Perception','',30);
