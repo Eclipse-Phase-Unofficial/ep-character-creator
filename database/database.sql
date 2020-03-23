@@ -248,14 +248,13 @@ CREATE TABLE IF NOT EXISTS "aptitude_muse"
 );
 CREATE TABLE IF NOT EXISTS "muse_skill"
 (
--- TODO: Null unused prefixes
     muse        varchar(100) NOT NULL,
     skillName   varchar(100) NOT NULL,
-    skillPrefix varchar(100) NOT NULL DEFAULT '',
+    skillPrefix varchar(100),
     value       smallint(6)  NOT NULL,
     PRIMARY KEY (muse, skillName, skillPrefix),
-    FOREIGN KEY (muse) REFERENCES muses (name)
---     FOREIGN KEY (skillName, skillPrefix) REFERENCES skills (name, prefix)
+    FOREIGN KEY (muse) REFERENCES muses (name),
+    FOREIGN KEY (skillName, skillPrefix) REFERENCES skills (name, prefix)
 );
 
 INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000);
@@ -6367,72 +6366,72 @@ INSERT INTO aptitude_muse VALUES('Reflex','Bot/Vehicle AI',20);
 INSERT INTO aptitude_muse VALUES('Reflex','Kaos AI',20);
 INSERT INTO aptitude_muse VALUES('Intuition','Standard Muse',20);
 
-INSERT INTO muse_skill VALUES('Animal Keeper Ai','Animal Handling','',40);
-INSERT INTO muse_skill VALUES('Animal Keeper Ai','Interfacing','',20);
-INSERT INTO muse_skill VALUES('Animal Keeper Ai','Perception','',30);
-INSERT INTO muse_skill VALUES('Animal Keeper Ai','Research','',20);
+INSERT INTO muse_skill VALUES('Animal Keeper Ai','Animal Handling',NULL,40);
+INSERT INTO muse_skill VALUES('Animal Keeper Ai','Interfacing',NULL,20);
+INSERT INTO muse_skill VALUES('Animal Keeper Ai','Perception',NULL,30);
+INSERT INTO muse_skill VALUES('Animal Keeper Ai','Research',NULL,20);
 INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Aircraft','Pilot',40);
 INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Bot/Vehicle Specs','Interest',80);
 INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Electronics','Hardware',20);
 INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Groundcraft','Pilot',40);
-INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Infosec','',20);
-INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Interfacing','',40);
-INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Perception','',40);
-INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Research','',20);
+INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Infosec',NULL,20);
+INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Interfacing',NULL,40);
+INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Perception',NULL,40);
+INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Research',NULL,20);
 INSERT INTO muse_skill VALUES('Bot/Vehicle AI','Spacecraft','Pilot',40);
-INSERT INTO muse_skill VALUES('Device AI','Infosec','',20);
-INSERT INTO muse_skill VALUES('Device AI','Interfacing','',30);
-INSERT INTO muse_skill VALUES('Device AI','Perception','',20);
-INSERT INTO muse_skill VALUES('Device AI','Programming','',20);
-INSERT INTO muse_skill VALUES('Device AI','Research','',20);
-INSERT INTO muse_skill VALUES('Kaos AI','Beam Weapons','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Blades','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Clubs','',40);
+INSERT INTO muse_skill VALUES('Device AI','Infosec',NULL,20);
+INSERT INTO muse_skill VALUES('Device AI','Interfacing',NULL,30);
+INSERT INTO muse_skill VALUES('Device AI','Perception',NULL,20);
+INSERT INTO muse_skill VALUES('Device AI','Programming',NULL,20);
+INSERT INTO muse_skill VALUES('Device AI','Research',NULL,20);
+INSERT INTO muse_skill VALUES('Kaos AI','Beam Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Blades',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Clubs',NULL,40);
 INSERT INTO muse_skill VALUES('Kaos AI','Electronics','Hardware',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Infosec','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Interfacing','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Kinetic Weapons','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Perception','',30);
-INSERT INTO muse_skill VALUES('Kaos AI','Programming','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Research','',20);
+INSERT INTO muse_skill VALUES('Kaos AI','Infosec',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Interfacing',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Kinetic Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Perception',NULL,30);
+INSERT INTO muse_skill VALUES('Kaos AI','Programming',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Research',NULL,20);
 INSERT INTO muse_skill VALUES('Kaos AI','Security System','Profession',80);
-INSERT INTO muse_skill VALUES('Kaos AI','Seeker Weapons','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Spray Weapons','',40);
-INSERT INTO muse_skill VALUES('Kaos AI','Throwing Weapons','',40);
-INSERT INTO muse_skill VALUES('Monitor Ai','Infosec','',40);
-INSERT INTO muse_skill VALUES('Monitor Ai','Interfacing','',30);
-INSERT INTO muse_skill VALUES('Monitor Ai','Perception','',30);
+INSERT INTO muse_skill VALUES('Kaos AI','Seeker Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Spray Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Kaos AI','Throwing Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Monitor Ai','Infosec',NULL,40);
+INSERT INTO muse_skill VALUES('Monitor Ai','Interfacing',NULL,30);
+INSERT INTO muse_skill VALUES('Monitor Ai','Perception',NULL,30);
 INSERT INTO muse_skill VALUES('Monitor Ai','Psychology','Academics',60);
-INSERT INTO muse_skill VALUES('Monitor Ai','Research','',30);
-INSERT INTO muse_skill VALUES('Security AI','Beam Weapons','',40);
-INSERT INTO muse_skill VALUES('Security AI','Blades','',40);
+INSERT INTO muse_skill VALUES('Monitor Ai','Research',NULL,30);
+INSERT INTO muse_skill VALUES('Security AI','Beam Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Blades',NULL,40);
 INSERT INTO muse_skill VALUES('Security AI','Electronics','Hardware',30);
-INSERT INTO muse_skill VALUES('Security AI','Infosec','',40);
-INSERT INTO muse_skill VALUES('Security AI','Kinetic Weapons','',40);
-INSERT INTO muse_skill VALUES('Security AI','Perception','',30);
-INSERT INTO muse_skill VALUES('Security AI','Programming','',40);
-INSERT INTO muse_skill VALUES('Security AI','Research','',20);
+INSERT INTO muse_skill VALUES('Security AI','Infosec',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Kinetic Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Perception',NULL,30);
+INSERT INTO muse_skill VALUES('Security AI','Programming',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Research',NULL,20);
 INSERT INTO muse_skill VALUES('Security AI','Security System','Profession',80);
-INSERT INTO muse_skill VALUES('Security AI','Seeker Weapons','',40);
-INSERT INTO muse_skill VALUES('Security AI','Spray Weapons','',40);
-INSERT INTO muse_skill VALUES('Security AI','Throwing Weapons','',40);
+INSERT INTO muse_skill VALUES('Security AI','Seeker Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Spray Weapons',NULL,40);
+INSERT INTO muse_skill VALUES('Security AI','Throwing Weapons',NULL,40);
 INSERT INTO muse_skill VALUES('Sensor AI','Electronics','Hardware',30);
-INSERT INTO muse_skill VALUES('Sensor AI','Infosec','',20);
-INSERT INTO muse_skill VALUES('Sensor AI','Interfacing','',40);
-INSERT INTO muse_skill VALUES('Sensor AI','Perception','',40);
-INSERT INTO muse_skill VALUES('Sensor AI','Programming','',20);
-INSERT INTO muse_skill VALUES('Sensor AI','Research','',20);
+INSERT INTO muse_skill VALUES('Sensor AI','Infosec',NULL,20);
+INSERT INTO muse_skill VALUES('Sensor AI','Interfacing',NULL,40);
+INSERT INTO muse_skill VALUES('Sensor AI','Perception',NULL,40);
+INSERT INTO muse_skill VALUES('Sensor AI','Programming',NULL,20);
+INSERT INTO muse_skill VALUES('Sensor AI','Research',NULL,20);
 INSERT INTO muse_skill VALUES('Standard Muse','Accounting','Profession',60);
 INSERT INTO muse_skill VALUES('Standard Muse','Electronics','Hardware',30);
-INSERT INTO muse_skill VALUES('Standard Muse','Infosec','',30);
-INSERT INTO muse_skill VALUES('Standard Muse','Interfacing','',40);
-INSERT INTO muse_skill VALUES('Standard Muse','Perception','',30);
-INSERT INTO muse_skill VALUES('Standard Muse','Programming','',20);
+INSERT INTO muse_skill VALUES('Standard Muse','Infosec',NULL,30);
+INSERT INTO muse_skill VALUES('Standard Muse','Interfacing',NULL,40);
+INSERT INTO muse_skill VALUES('Standard Muse','Perception',NULL,30);
+INSERT INTO muse_skill VALUES('Standard Muse','Programming',NULL,20);
 INSERT INTO muse_skill VALUES('Standard Muse','Psychology','Academics',60);
-INSERT INTO muse_skill VALUES('Standard Muse','Research','',30);
+INSERT INTO muse_skill VALUES('Standard Muse','Research',NULL,30);
 INSERT INTO muse_skill VALUES('Technician AI','Electronics','Hardware',40);
-INSERT INTO muse_skill VALUES('Technician AI','Infosec','',20);
-INSERT INTO muse_skill VALUES('Technician AI','Interfacing','',40);
-INSERT INTO muse_skill VALUES('Technician AI','Perception','',20);
-INSERT INTO muse_skill VALUES('Technician AI','Research','',20);
+INSERT INTO muse_skill VALUES('Technician AI','Infosec',NULL,20);
+INSERT INTO muse_skill VALUES('Technician AI','Interfacing',NULL,40);
+INSERT INTO muse_skill VALUES('Technician AI','Perception',NULL,20);
+INSERT INTO muse_skill VALUES('Technician AI','Research',NULL,20);
 COMMIT;

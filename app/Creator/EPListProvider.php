@@ -466,7 +466,7 @@ class EPListProvider {
             $skillRes = self::$database->query("SELECT `muse`, `skillName`, `skillPrefix`, `value` FROM `muse_skill` WHERE `muse` = '".$this->adjustForSQL($aiRow['name'])."';");
             $skillRes->setFetchMode(\PDO::FETCH_ASSOC);
             while ($skillRow = $skillRes->fetch()) {
-                $epSkill = $this->getSkillByNamePrefix($skillRow['skillName'],$skillRow['skillPrefix'],$aptitudeList);
+                $epSkill = $this->getSkillByNamePrefix($skillRow['skillName'],$skillRow['skillPrefix']?? "",$aptitudeList);
                 $epSkill->baseValue = $skillRow['value'];
                 if($epSkill == null){
                     $this->addError("Get Ai getSkillByNamePrefix function call failed: (" . $skillRow['skillName'].", ".$skillRow['skillPrefix'].", ".$aptitudeList . ")");
@@ -651,7 +651,7 @@ class EPListProvider {
                     }
                 }
             }
-            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skillNeeded']);
+            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skillNeeded']?? "");
             array_push($psyList, $psy);
             }
         return $psyList;
