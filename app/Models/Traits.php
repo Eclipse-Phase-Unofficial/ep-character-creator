@@ -2,47 +2,43 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Traits
  *
  * Note:  This isn't singular since 'Trait' is a PHP reserved keyword
  *
- * @property int $id
- * @property string $name
- * @property string $description
- * @property bool $isNegative
- * @property bool|null $isForMorph
- * @property int|null $cpCost
- * @property int $level
- * @property string $JustFor
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereCpCost($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereDesc($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereJustFor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereOnwhat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Traits whereSide($value)
+ * @property int                          $id
+ * @property string                       $name
+ * @property string                       $description
+ * @property bool                         $isForMorph
+ * @property int|null                     $cpCost      null cpCost means the player can not add it.
+ * @property int                          $level
+ * @property string                       $JustFor     Some traits have Morph restrictions, those are set here.
+ * @property-read Collection|BonusMalus[] $bonusMalus
+ * @method static Builder|Traits newModelQuery()
+ * @method static Builder|Traits newQuery()
+ * @method static Builder|Traits query()
+ * @method static Builder|Traits whereCpCost($value)
+ * @method static Builder|Traits whereDescription($value)
+ * @method static Builder|Traits whereId($value)
+ * @method static Builder|Traits whereIsForMorph($value)
+ * @method static Builder|Traits whereJustFor($value)
+ * @method static Builder|Traits whereLevel($value)
+ * @method static Builder|Traits whereName($value)
  * @mixin \Eloquent
  */
 class Traits extends Model
 {
     protected $casts = [
-//        'isNegative' => 'boolean', //Disabled since this does not work with "false"
+//        'isForMorph' => 'boolean', //Disabled since this does not work with "false"
+//        'cpCost' => 'integer', //This can also be null
+        'level' => 'integer',
     ];
-
-    /**
-     * Fix for SQLite note supporting booleans properly.
-     * WARNING:  This does not affect json_encode!
-     * @param $value
-     * @return bool
-     */
-    public function getIsNegativeAttribute($value)
-    {
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
-    }
 
     /**
      * Fix for SQLite note supporting booleans properly.
@@ -57,5 +53,21 @@ class Traits extends Model
             return null;
         }
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * WARNING: Make sure to look at the "pivot" property
+     *          It's possible to have duplicate's and that's tallied rather than having duplicate entries.
+     * @return BelongsToMany
+     */
+    public function bonusMalus()
+    {
+        return $this->belongsToMany(BonusMalus::class,
+            'bonusMalus_trait',
+            'trait_name',
+            'bonusMalus_name',
+            'name',
+            'name'
+        )->withPivot('occurrence');
     }
 }

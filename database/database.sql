@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS "infos"
 );
 CREATE TABLE IF NOT EXISTS "morphs"
 (
-    id           integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name         varchar(100)                      NOT NULL UNIQUE,
-    description  text                              NOT NULL,
-    type         varchar(20)                       NOT NULL,
-    maxApptitude smallint(6)                       NOT NULL,
-    durablility  smallint(6)                       NOT NULL,
-    cpCost       smallint(6)                       NOT NULL,
-    creditCost   smallint(6)                       NOT NULL
+    id          integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name        varchar(100)                      NOT NULL UNIQUE,
+    description text                              NOT NULL,
+    type        varchar(20)                       NOT NULL,
+    maxAptitude smallint(6)                       NOT NULL,
+    durability  smallint(6)                       NOT NULL,
+    cpCost      smallint(6)                       NOT NULL,
+    creditCost  smallint(6)                       NOT NULL
 );
 CREATE TABLE IF NOT EXISTS "psySleights"
 (
@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS "psySleights"
     action      varchar(50)                       NOT NULL,
     level       varchar(3)                        NOT NULL,
     strainMod   varchar(100)                      NOT NULL,
-    skillNeeded varchar(60),
-    FOREIGN KEY (skillNeeded) REFERENCES skills (name)
+    skill_name  varchar(60),
+    FOREIGN KEY (skill_name) REFERENCES skills (name)
 );
 CREATE TABLE IF NOT EXISTS "reputations"
 (
@@ -105,25 +105,27 @@ CREATE TABLE IF NOT EXISTS "reputations"
 );
 CREATE TABLE IF NOT EXISTS "skillPrefixes"
 (
-    id             integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name           varchar(100)                      NOT NULL UNIQUE,
-    linkedAptitude varchar(3)                        NOT NULL,
-    isActive       boolean                           NOT NULL,
-    description    text                              NOT NULL,
-    FOREIGN KEY (linkedAptitude) REFERENCES aptitudes (abbreviation)
+    id                    integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name                  varchar(100)                      NOT NULL UNIQUE,
+    aptitude_abbreviation varchar(3)                        NOT NULL,
+    isActive              boolean                           NOT NULL,
+    description           text                              NOT NULL,
+    FOREIGN KEY (aptitude_abbreviation) REFERENCES aptitudes (abbreviation)
 );
 CREATE TABLE IF NOT EXISTS "skills"
 (
-    id             integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name           varchar(60)                       NOT NULL UNIQUE,
-    description    text                              NOT NULL,
-    linkedAptitude varchar(3)                        NOT NULL,
-    prefix         varchar(100),
-    isActive       boolean                           NOT NULL,
-    isDefaultable  boolean                           NOT NULL,
-    FOREIGN KEY (linkedAptitude) REFERENCES aptitudes (abbreviation),
-    FOREIGN KEY (prefix) REFERENCES skillPrefixes (name)
+    id                    integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name                  varchar(60)                       NOT NULL UNIQUE,
+    description           text                              NOT NULL,
+    aptitude_abbreviation varchar(3)                        NOT NULL,
+    prefix_name           varchar(100),
+    isActive              boolean                           NOT NULL,
+    isDefaultable         boolean                           NOT NULL,
+    UNIQUE (name, prefix_name),
+    FOREIGN KEY (aptitude_abbreviation) REFERENCES aptitudes (abbreviation),
+    FOREIGN KEY (prefix_name) REFERENCES skillPrefixes (name)
 );
+CREATE UNIQUE INDEX skills_full_name ON skills (name, prefix_name);
 CREATE TABLE IF NOT EXISTS "stats"
 (
     id           integer PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -137,7 +139,7 @@ CREATE TABLE IF NOT EXISTS "traits"
     name        varchar(60)                       NOT NULL UNIQUE,
     description text                              NOT NULL,
     isForMorph  boolean,
-    cpCost      smallint(6) DEFAULT NULL,
+    cpCost      smallint(6),
     level       smallint(6)                       NOT NULL,
     JustFor     varchar(30) DEFAULT 'EVERY' NOT NULL
 );
@@ -145,116 +147,118 @@ CREATE TABLE IF NOT EXISTS "traits"
 -- Pivot Tables
 CREATE TABLE IF NOT EXISTS "background_bonusMalus"
 (
-    background varchar(100) NOT NULL,
-    bonusMalus varchar(100) NOT NULL,
-    occurrence smallint(6)  NOT NULL,
-    PRIMARY KEY (background, bonusMalus),
-    FOREIGN KEY (background) REFERENCES backgrounds (name),
-    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
+    background_name varchar(100) NOT NULL,
+    bonusMalus_name varchar(100) NOT NULL,
+    occurrence      smallint(6)  NOT NULL,
+    PRIMARY KEY (background_name, bonusMalus_name),
+    FOREIGN KEY (background_name) REFERENCES backgrounds (name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "BackgroundLimitations"
 (
 -- TODO:  Figure out if this is the proper reference for limitationGroup
-    background      varchar(100) NOT NULL,
+    background_name varchar(100) NOT NULL,
     limitationGroup varchar(100) NOT NULL,
-    PRIMARY KEY (background, limitationGroup),
-    FOREIGN KEY (background) REFERENCES backgrounds (name)
+    PRIMARY KEY (background_name, limitationGroup),
+    FOREIGN KEY (background_name) REFERENCES backgrounds (name)
 --   FOREIGN KEY (limitationGroup) REFERENCES groups(name)
 );
 CREATE TABLE IF NOT EXISTS "background_trait"
 (
-    background varchar(100) NOT NULL,
-    trait      varchar(100) NOT NULL,
-    PRIMARY KEY (background, trait),
-    FOREIGN KEY (background) REFERENCES backgrounds (name),
-    FOREIGN KEY (trait) REFERENCES traits (name)
+    background_name varchar(100) NOT NULL,
+    trait_name      varchar(100) NOT NULL,
+    PRIMARY KEY (background_name, trait_name),
+    FOREIGN KEY (background_name) REFERENCES backgrounds (name),
+    FOREIGN KEY (trait_name) REFERENCES traits (name)
 );
 CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
 (
 -- TODO:  Check if addictions work properly
-    bmNameMain varchar(60) NOT NULL,
-    bmChoices  varchar(60) NOT NULL,
-    PRIMARY KEY (bmNameMain, bmChoices),
+    bmNameMain            varchar(60) NOT NULL,
+    bonusMalusChoice_name varchar(60) NOT NULL,
+    PRIMARY KEY (bmNameMain, bonusMalusChoice_name),
 --     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
-    FOREIGN KEY (bmChoices) REFERENCES bonusMalus (name)
+    FOREIGN KEY (bonusMalusChoice_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_gear"
 (
-    gear       varchar(100) NOT NULL,
-    bonusMalus varchar(100) NOT NULL,
-    occur      smallint(6)  NOT NULL,
-    PRIMARY KEY (gear, bonusMalus),
-    FOREIGN KEY (gear) REFERENCES gear (name),
-    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
+    gear_name       varchar(100) NOT NULL,
+    bonusMalus_name varchar(100) NOT NULL,
+    occurrence      smallint(6)  NOT NULL,
+    PRIMARY KEY (gear_name, bonusMalus_name),
+    FOREIGN KEY (gear_name) REFERENCES gear (name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "GroupNames"
 (
+    --TODO:  Figure out how this works, and what it does
     groupName  varchar(100) NOT NULL,
     targetName varchar(100) NOT NULL,
     PRIMARY KEY (groupName, targetName)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_morph"
 (
-    morph      varchar(100) NOT NULL,
-    bonusMalus varchar(100) NOT NULL,
-    occur      smallint(6)  NOT NULL,
-    PRIMARY KEY (morph, bonusMalus),
-    FOREIGN KEY (morph) REFERENCES morphs (name),
-    FOREIGN KEY (bonusMalus) REFERENCES bonusMalus (name)
+    morph_name      varchar(100) NOT NULL,
+    bonusMalus_name varchar(100) NOT NULL,
+    occurrence      smallint(6)  NOT NULL,
+    PRIMARY KEY (morph_name, bonusMalus_name),
+    FOREIGN KEY (morph_name) REFERENCES morphs (name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "gear_morph"
 (
-    morph varchar(100) NOT NULL,
-    gear  varchar(100) NOT NULL,
-    occur smallint(6)  NOT NULL,
-    PRIMARY KEY (morph, gear),
-    FOREIGN KEY (morph) REFERENCES morphs (name),
-    FOREIGN KEY (gear) REFERENCES gear (name)
+    morph_name varchar(100) NOT NULL,
+    gear_name  varchar(100) NOT NULL,
+    occurrence smallint(6)  NOT NULL,
+    PRIMARY KEY (morph_name, gear_name),
+    FOREIGN KEY (morph_name) REFERENCES morphs (name),
+    FOREIGN KEY (gear_name) REFERENCES gear (name)
 );
 CREATE TABLE IF NOT EXISTS "morph_trait"
 (
-    morph varchar(100) NOT NULL,
-    trait varchar(100) NOT NULL,
-    PRIMARY KEY (morph, trait),
-    FOREIGN KEY (morph) REFERENCES morphs (name),
-    FOREIGN KEY (trait) REFERENCES traits (name)
+    morph_name varchar(100) NOT NULL,
+    trait_name varchar(100) NOT NULL,
+    PRIMARY KEY (morph_name, trait_name),
+    FOREIGN KEY (morph_name) REFERENCES morphs (name),
+    FOREIGN KEY (trait_name) REFERENCES traits (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_psySleight"
 (
-    psy        varchar(100) NOT NULL,
-    bonusmalus varchar(100) NOT NULL,
-    occur      smallint(6)  NOT NULL,
-    PRIMARY KEY (psy, bonusmalus),
-    FOREIGN KEY (psy) REFERENCES psySleights (name),
-    FOREIGN KEY (bonusmalus) REFERENCES bonusMalus (name)
+    psySleight_name varchar(100) NOT NULL,
+    bonusMalus_name varchar(100) NOT NULL,
+    occurrence      smallint(6)  NOT NULL,
+    PRIMARY KEY (psySleight_name, bonusMalus_name),
+    FOREIGN KEY (psySleight_name) REFERENCES psySleights (name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_trait"
 (
-    traitName      varchar(60)  NOT NULL,
-    bonusMalusName varchar(100) NOT NULL,
-    occur          smallint(6)  NOT NULL,
-    PRIMARY KEY (traitName, bonusMalusName),
-    FOREIGN KEY (traitName) REFERENCES traits (name),
-    FOREIGN KEY (bonusMalusName) REFERENCES bonusMalus (name)
+    trait_name      varchar(60)  NOT NULL,
+    bonusMalus_name varchar(100) NOT NULL,
+    occurrence      smallint(6)  NOT NULL,
+    PRIMARY KEY (trait_name, bonusMalus_name),
+    FOREIGN KEY (trait_name) REFERENCES traits (name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "aptitude_muse"
 (
-    aptitude varchar(100) NOT NULL,
-    muse     varchar(100) NOT NULL,
-    value    smallint(6)  NOT NULL,
-    PRIMARY KEY (muse, aptitude),
-    FOREIGN KEY (aptitude) REFERENCES aptitudes (name),
-    FOREIGN KEY (muse) REFERENCES muses (name)
+    -- TODO:  Convert this to aptitude_abbreviation (Requires shift from EPListProvider)
+    aptitude_name varchar(100) NOT NULL,
+    muse_name     varchar(100) NOT NULL,
+    value         smallint(6)  NOT NULL,
+    PRIMARY KEY (muse_name, aptitude_name),
+    FOREIGN KEY (aptitude_name) REFERENCES aptitudes (name),
+    FOREIGN KEY (muse_name) REFERENCES muses (name)
 );
 CREATE TABLE IF NOT EXISTS "muse_skill"
 (
-    muse        varchar(100) NOT NULL,
-    skillName   varchar(100) NOT NULL,
-    skillPrefix varchar(100),
-    value       smallint(6)  NOT NULL,
-    PRIMARY KEY (muse, skillName, skillPrefix),
-    FOREIGN KEY (muse) REFERENCES muses (name),
-    FOREIGN KEY (skillName, skillPrefix) REFERENCES skills (name, prefix)
+    muse_name    varchar(100) NOT NULL,
+    skill_name   varchar(100) NOT NULL,
+    skill_prefix varchar(100),
+    value        smallint(6)  NOT NULL,
+    PRIMARY KEY (muse_name, skill_name, skill_prefix),
+    FOREIGN KEY (muse_name) REFERENCES muses (name),
+    FOREIGN KEY (skill_name, skill_prefix) REFERENCES skills (name, prefix_name)
 );
 
 INSERT INTO muses VALUES(1,'Animal Keeper Ai','Like a muse for smart animals, this AI overwatches a critters activities, directs it as needed, and alerts the owners to any emergencies or other problems. If the animal is equipped with a puppet sock, it can also jam it like a biodrone.\nCOO 20. Skills: Animal Handling (Animal Type) 40, Interests: [Animal Type] 80, Interfacing 20, Perception 30, Research 20. [Moderate]',1000);
@@ -5857,7 +5861,6 @@ INSERT INTO skillPrefixes VALUES(9,'Networking','SAV','true','<h2>What it is</h2
 INSERT INTO skillPrefixes VALUES(10,'Pilot','REF','true','<h2>What it is</h2>\n<p> Pilot is your skill at driving/flying a vehicle of a particular type.\nWhen you use it: You use Pilot skill whenever you need to maneuver, control, or avoid crashing a vehicle, whether you are in the pilot seat, remote controlling a robot, or directly jamming a vehicle with VR. Each vehicle has a Handling modifier that applies to this test, along with other situational modifiers (see Bots, Synthmorphs, and Vehicles, p. 195).</p>\n<h2>Sample Fields</h2>\n<p> Aircraft, Anthroform (walkers), Exotic\nVehicle, Groundcraft (wheeled or tracked), Spacecraft, Watercraft</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 INSERT INTO skillPrefixes VALUES(11,'Profession','COG','false','<h2>What it is</h2>\n<p> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indi- cate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.</p>\n<h2>When you use it</h2>\n<p> Use Profession to perform work- related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to refer- ence specialized knowledge that someone trained in that profession might have.</p>\n<h2>Sample Fields</h2>\n<p> Accounting, Appraisal, Asteroid Pros- pecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>');
 
-CREATE UNIQUE INDEX skills_full_name ON skills (name, prefix);
 INSERT INTO skills VALUES(1,'Accounting','<h2>What it is</h2>\n<p> Profession skills indicate training in a profession practiced in Eclipse Phase. This can indi- cate either formal training or informal, on-the-job type training and includes both legal and extralegal trades.</p>\n<h2>When you use it</h2>\n<p> Use Profession to perform work- related tasks for a specific trade (i.e. mining, balancing accounts, designing a security system, etc.) or to refer- ence specialized knowledge that someone trained in that profession might have.</p>\n<h2>Sample Fields</h2>\n<p> Accounting, Appraisal, Asteroid Pros- pecting, Banking, Cool Hunting, Con Schemes, Distribution, Forensics, Lab Technician, Mining, Police Procedures, Psychotherapy, Security Ops, Smuggling Tricks, Social Engineering, Squad Tactics, Viral Marketing, XP Production</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>','COG','Profession','false','true');
 INSERT INTO skills VALUES(2,'Aircraft','<h2>What it is</h2>\n<p> Pilot is your skill at driving/flying a vehicle of a particular type.\nWhen you use it: You use Pilot skill whenever you need to maneuver, control, or avoid crashing a vehicle, whether you are in the pilot seat, remote controlling a robot, or directly jamming a vehicle with VR. Each vehicle has a Handling modifier that applies to this test, along with other situational modifiers (see Bots, Synthmorphs, and Vehicles, p. 195).</p>\n<h2>Sample Fields</h2>\n<p> Aircraft, Anthroform (walkers), Exotic\nVehicle, Groundcraft (wheeled or tracked), Spacecraft, Watercraft</p>\n<h2>Specializations</h2>\n<p> As appropriate to the field</p>','REF','Pilot','true','false');
 INSERT INTO skills VALUES(3,'Animal Handling','<h2>What it is</h2><p>Skilled animal handlers are able to train and control a wide variety of natural and transgenic animals, including partial uplifts. Though many animal species went extinct during the Fall, a few "ark" and zoo habitats keep some species alive, and many others can be resurrected from genetic samples. Exotic animals are considered a sign of prestige among the hypercorp elites, and guard animals are occasionally used to protect high-security installations. Likewise, many habitats and settlements employ small armies of partially uplifted, genetically modified, and behavior-controlled creatures for sanitation or other purposes. Many new and strange breeds of animal are created daily to serve a variety of roles.</p>\n<h2>When you use it</h2> <p>Animal Handling is used whenever you are trying to manipulate an animal, whether your intent is to calm it down, keep it from attacking, intimidate it, acquire its trust, or goad it into attacking. Your Margin of Success determines how effective you are at convincing the creature. At the gamemaster''s discretion, modifiers may be applied to the test. Likewise, winning an animal over may sometimes take time, and so could be handled as a Task Action with a timeframe of five minutes or more.</p>\n<h2>Specializations</h2>\n<p>Per animal species (dogs, horses, smart rats, etc.)</p>\n<h3>Training Animals</h3>\n<p>Training animals is a time-consuming task requiring repeated efforts and rewards to reinforce the trained behavior. Treat this as a Task Action with a timeframe of one day to one month, depending on the complexity of the action. Apply modifiers to this test based on the relative intelligence of the animal being trained, how domestic it is, and the complexity of the task. Once an animal has been trained, commanding it is treated as a Simple Success Test except for unusual or stressful situations, in which case the trainer receives a +30 modifier on their Animal Handling Tests when convincing the animal to complete the trained action.</p>','SAV',NULL,'true','false');

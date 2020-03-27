@@ -75,10 +75,10 @@ class EPListProvider {
 
     function getBonusMalusTypes($bmName){
         $bmTypeArray = array();
-        $res = self::$database->query("SELECT `bmChoices` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';");
+        $res = self::$database->query("SELECT `bonusMalusChoice_name` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         while ($row = $res->fetch()) {
-            $assocBm = $this->getBonusMalusByName($row['bmChoices']);
+            $assocBm = $this->getBonusMalusByName($row['bonusMalusChoice_name']);
             array_push($bmTypeArray, $assocBm);
         }
         return $bmTypeArray;
@@ -105,17 +105,17 @@ class EPListProvider {
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($traitRow = $traitRes->fetch()) {
             $bonusMalusTraitList = array();
-            $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `bonusMalus_trait` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `trait_name`, `bonusMalus_name`,`occurrence` FROM `bonusMalus_trait` WHERE `trait_name` = '".$this->adjustForSQL($traitRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']);
+                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
                 if($epBonMal == null){
-                    $this->addError("Get Trait getBonusByName function call failed: (" . $bmRow['bonusMalusName'] . ")");
+                    $this->addError("Get Trait getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                     return null;
                 }
                 else{
-                    for($i = 0; $i < $bmRow['occur']; $i++ ){
-                        //$bonusMalusTraitList[$bmRow['bonusMalusName']] = $epBonMal;
+                    for($i = 0; $i < $bmRow['occurrence']; $i++ ){
+                        //$bonusMalusTraitList[$bmRow['bonusMalus_name']] = $epBonMal;
                         array_push($bonusMalusTraitList, $epBonMal);
                     }
                 }
@@ -138,17 +138,17 @@ class EPListProvider {
         $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
         $traitRow = $traitRes->fetch();
 
-        $bonusMalus = self::$database->query("SELECT `traitName`, `bonusMalusName`,`occur` FROM `bonusMalus_trait` WHERE `traitName` = '".$this->adjustForSQL($traitRow['name'])."';");
+        $bonusMalus = self::$database->query("SELECT `trait_name`, `bonusMalus_name`,`occurrence` FROM `bonusMalus_trait` WHERE `trait_name` = '".$this->adjustForSQL($traitRow['name'])."';");
         $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
         while ($bmRow = $bonusMalus->fetch()) {
-            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalusName']);
+            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
             if($epBonMal == null){
-                $this->addError("Get Trait by name getBonusByName function call failed: (" . $bmRow['bonusMalusName'] . ")");
+                $this->addError("Get Trait by name getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                 return null;
             }
             else{
-                for($i = 0; $i < $bmRow['occur']; $i++ ){
-                    //$bonusMalusTraitList[$bmRow['bonusMalusName']] = $epBonMal;
+                for($i = 0; $i < $bmRow['occurrence']; $i++ ){
+                    //$bonusMalusTraitList[$bmRow['bonusMalus_name']] = $epBonMal;
                     array_push($bonusMalusTraitList, $epBonMal);
                 }
             }
@@ -244,11 +244,11 @@ class EPListProvider {
 
 
     function getAptForPrefix($prefixName){
-        $res = self::$database->query("SELECT `linkedAptitude` FROM `skillPrefixes` WHERE `name` = '".$prefixName."';");
+        $res = self::$database->query("SELECT `aptitude_abbreviation` FROM `skillPrefixes` WHERE `name` = '".$prefixName."';");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
-        return $row['linkedAptitude'];
+        return $row['aptitude_abbreviation'];
     }
 
     function isPrefixActive(string $prefixName){
@@ -288,13 +288,13 @@ class EPListProvider {
     function getListSkills($listApt): array
     {
         $skills = array();
-        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `isActive`, `isDefaultable`  FROM skills");
+        $res = self::$database->query("SELECT `name`, `description`, `aptitude_abbreviation`, `prefix_name`, `isActive`, `isDefaultable`  FROM skills");
         $res->setFetchMode(\PDO::FETCH_ASSOC);
 
         while ($row = $res->fetch()) {
             $groups = $this->getListGroups($row['name']);
             $epSkills = new EPSkill($row['name'], $row['description'], filter_var($row['isActive'], FILTER_VALIDATE_BOOLEAN), filter_var($row['isDefaultable'], FILTER_VALIDATE_BOOLEAN),
-                $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
+                $this->getAptByAbreviation($listApt, $row['aptitude_abbreviation']), $row['prefix_name'], $groups);
             array_push($skills, $epSkills);
         }
         return $skills;
@@ -308,16 +308,16 @@ class EPListProvider {
      */
     function getSkillByNamePrefix(string $name, string $prefix, $listApt): EPSkill
     {
-        $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` ='".$this->adjustForSQL($prefix)."';");
+        $res = self::$database->query("SELECT `name`, `description`, `aptitude_abbreviation`, `prefix_name`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix_name` ='".$this->adjustForSQL($prefix)."';");
         if (empty($prefix)) {
-            $res = self::$database->query("SELECT `name`, `description`, `linkedAptitude`, `prefix`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix` IS NULL;");
+            $res = self::$database->query("SELECT `name`, `description`, `aptitude_abbreviation`, `prefix_name`, `isActive`, `isDefaultable`  FROM skills WHERE `name` = '".$this->adjustForSQL($name)."' AND `prefix_name` IS NULL;");
         }
         $res->setFetchMode(\PDO::FETCH_ASSOC);
         $row = $res->fetch();
 
         $groups = $this->getListGroups($row['name']);
         $epSkills = new EPSkill($row['name'], $row['description'], filter_var($row['isActive'], FILTER_VALIDATE_BOOLEAN), filter_var($row['isDefaultable'], FILTER_VALIDATE_BOOLEAN),
-            $this->getAptByAbreviation($listApt, $row['linkedAptitude']), $row['prefix'], $groups);
+            $this->getAptByAbreviation($listApt, $row['aptitude_abbreviation']), $row['prefix_name'], $groups);
         return $epSkills;
     }
 
@@ -389,13 +389,13 @@ class EPListProvider {
         while ($bckRow = $bckRes->fetch()) {
             //Bonus Malus
             $backgroundBonusMalusList = array();
-            $bonusMalus = self::$database->query("SELECT `background`, `bonusMalus`, `occurrence` FROM `background_bonusMalus` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `background_name`, `bonusMalus_name`, `occurrence` FROM `background_bonusMalus` WHERE `background_name` = '".$this->adjustForSQL($bckRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
                 for($i = 0; $i < $bmRow['occurrence']; $i++ ){
-                    $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
+                    $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
                     if($epBonMal == null){
-                        $this->addError("Get Background getBonusByName function call failed: (" . $bmRow['bonusMalus'] . ")");
+                        $this->addError("Get Background getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                         return null;
                     }
                     array_push($backgroundBonusMalusList, $epBonMal);
@@ -404,13 +404,13 @@ class EPListProvider {
             }
             //Traits
             $backgroundTraitList = array();
-            $traits = self::$database->query("SELECT `background`, `trait` FROM `background_trait` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $traits = self::$database->query("SELECT `background_name`, `trait_name` FROM `background_trait` WHERE `background_name` = '".$this->adjustForSQL($bckRow['name'])."';");
             $traits->setFetchMode(\PDO::FETCH_ASSOC);
 
             while ($traitRow = $traits->fetch()) {
-                $epTraits = $this->getTraitByName($traitRow['trait']);
+                $epTraits = $this->getTraitByName($traitRow['trait_name']);
                 if($epTraits == null){
-                    $this->addError("Get Background getTraitByName function call failed: (" . $traitRow['trait'] . ")");
+                    $this->addError("Get Background getTraitByName function call failed: (" . $traitRow['trait_name'] . ")");
                     return null;
                 }
                 else{
@@ -419,7 +419,7 @@ class EPListProvider {
             }
             //limitations
             $bckLimitation = array();
-            $limit = self::$database->query("SELECT `background`, `limitationGroup` FROM `BackgroundLimitations` WHERE `background` = '".$this->adjustForSQL($bckRow['name'])."';");
+            $limit = self::$database->query("SELECT `background_name`, `limitationGroup` FROM `BackgroundLimitations` WHERE `background_name` = '".$this->adjustForSQL($bckRow['name'])."';");
             $limit->setFetchMode(\PDO::FETCH_ASSOC);
 
             while ($limitRow = $limit->fetch()) {
@@ -446,13 +446,13 @@ class EPListProvider {
         while ($aiRow = $aiRes->fetch()) {
             //aptitudes
             $aptitudeList = array();
-            $aptRes = self::$database->query("SELECT `muse`, `aptitude`, `value` FROM `aptitude_muse` WHERE `muse` = '" .$this->adjustForSQL($aiRow['name'])."';");
+            $aptRes = self::$database->query("SELECT `muse_name`, `aptitude_name`, `value` FROM `aptitude_muse` WHERE `muse_name` = '" .$this->adjustForSQL($aiRow['name'])."';");
             $aptRes->setFetchMode(\PDO::FETCH_ASSOC);
             while ($aptRow = $aptRes->fetch()) {
-                $epApt = $this->getAptitudeByName($aptRow['aptitude']);
+                $epApt = $this->getAptitudeByName($aptRow['aptitude_name']);
                 $epApt->value = $aptRow['value'];
                 if($epApt == null){
-                    $this->addError("Get Ai getAptitudeByName function call failed: (" . $aptRow['aptitude'] . ")");
+                    $this->addError("Get Ai getAptitudeByName function call failed: (" . $aptRow['aptitude_name'] . ")");
                     return null;
                 }
                 else{
@@ -463,13 +463,13 @@ class EPListProvider {
 
             //skills
             $skillList = array();
-            $skillRes = self::$database->query("SELECT `muse`, `skillName`, `skillPrefix`, `value` FROM `muse_skill` WHERE `muse` = '".$this->adjustForSQL($aiRow['name'])."';");
+            $skillRes = self::$database->query("SELECT `muse_name`, `skill_name`, `skill_prefix`, `value` FROM `muse_skill` WHERE `muse_name` = '".$this->adjustForSQL($aiRow['name'])."';");
             $skillRes->setFetchMode(\PDO::FETCH_ASSOC);
             while ($skillRow = $skillRes->fetch()) {
-                $epSkill = $this->getSkillByNamePrefix($skillRow['skillName'],$skillRow['skillPrefix']?? "",$aptitudeList);
+                $epSkill = $this->getSkillByNamePrefix($skillRow['skill_name'],$skillRow['skill_prefix']?? "",$aptitudeList);
                 $epSkill->baseValue = $skillRow['value'];
                 if($epSkill == null){
-                    $this->addError("Get Ai getSkillByNamePrefix function call failed: (" . $skillRow['skillName'].", ".$skillRow['skillPrefix'].", ".$aptitudeList . ")");
+                    $this->addError("Get Ai getSkillByNamePrefix function call failed: (" . $skillRow['skill_name'].", ".$skillRow['skill_prefix'].", ".$aptitudeList . ")");
                     return null;
                 }
                 else{
@@ -498,16 +498,16 @@ class EPListProvider {
         $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($gearRow = $gearRes->fetch()) {
             $bonusMalusGearList = array();
-             $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `bonusMalus_gear` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
+             $bonusMalus = self::$database->query("SELECT `gear_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_gear` WHERE `gear_name` = '".$this->adjustForSQL($gearRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
+                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
                 if($epBonMal == null){
-                    $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus'] . ")");
+                    $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                     return null;
                 }
                 else{
-                    for($i = 0; $i < $bmRow['occur']; $i++ ){
+                    for($i = 0; $i < $bmRow['occurrence']; $i++ ){
                         array_push($bonusMalusGearList, $epBonMal);
                     }
                 }
@@ -535,16 +535,16 @@ class EPListProvider {
         $gRes->setFetchMode(\PDO::FETCH_ASSOC);
         $gearRow = $gRes->fetch();
 
-        $bonusMalus = self::$database->query("SELECT `gear`, `bonusMalus`, `occur` FROM `bonusMalus_gear` WHERE `gear` = '".$this->adjustForSQL($gearRow['name'])."';");
+        $bonusMalus = self::$database->query("SELECT `gear_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_gear` WHERE `gear_name` = '".$this->adjustForSQL($gearRow['name'])."';");
         $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
         while ($bmRow = $bonusMalus->fetch()) {
-            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
+            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
             if($epBonMal == null){
-                $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus'] . ")");
+                $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                 return null;
             }
             else{
-                for($i = 0; $i < $bmRow['occur']; $i++ ){
+                for($i = 0; $i < $bmRow['occurrence']; $i++ ){
                     array_push($bonusMalusGearList, $epBonMal);
                 }
             }
@@ -564,18 +564,18 @@ class EPListProvider {
     function getListMorph(): array
     {
         $morphList = array();
-        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `maxApptitude`, `durablility`, `cpCost`, `creditCost` FROM `morphs`");
+        $morphRes = self::$database->query("SELECT `name`, `description`, `type`, `maxAptitude`, `durability`, `cpCost`, `creditCost` FROM `morphs`");
         $morphRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($morphRow = $morphRes->fetch()) {
             //Bonus Malus
             $morphBonusMalusList = array();
-            $bonusMalus = self::$database->query("SELECT `morph`, `bonusMalus`, `occur` FROM `bonusMalus_morph` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `morph_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_morph` WHERE `morph_name` = '".$this->adjustForSQL($morphRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch()) {
-                for($i = 0; $i < $bmRow['occur']; $i++ ){
-                    $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus']);
+                for($i = 0; $i < $bmRow['occurrence']; $i++ ){
+                    $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
                     if($epBonMal == null){
-                        $this->addError("Get Morph getBonusByName function call failed: (" . $bmRow['bonusMalus'] . ")");
+                        $this->addError("Get Morph getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                         return null;
                     }
                     array_push($morphBonusMalusList, $epBonMal);
@@ -583,36 +583,36 @@ class EPListProvider {
             }
             //Gear
             $morphGearsList = array();
-            $gears = self::$database->query("SELECT `morph`, `gear`, `occur` FROM `gear_morph` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $gears = self::$database->query("SELECT `morph_name`, `gear_name`, `occurrence` FROM `gear_morph` WHERE `morph_name` = '".$this->adjustForSQL($morphRow['name'])."';");
             $gears->setFetchMode(\PDO::FETCH_ASSOC);
             while ($gRow = $gears->fetch()) {
-                $epGear = $this->getGearByName($gRow['gear']);
+                $epGear = $this->getGearByName($gRow['gear_name']);
                 if($epGear == null){
-                    $this->addError("Get Morph getGearByName function call failed: (" . $gRow['gear'] . ")");
+                    $this->addError("Get Morph getGearByName function call failed: (" . $gRow['gear_name'] . ")");
                     return null;
                 }
                 else{
-                    for($i = 0; $i < $gRow['occur']; $i++ ){
+                    for($i = 0; $i < $gRow['occurrence']; $i++ ){
                         array_push($morphGearsList, $epGear);
                     }
                 }
             }
             //Traits
             $morphTraitList = array();
-            $traits = self::$database->query("SELECT `morph`, `trait` FROM `morph_trait` WHERE `morph` = '".$this->adjustForSQL($morphRow['name'])."';");
+            $traits = self::$database->query("SELECT `morph_name`, `trait_name` FROM `morph_trait` WHERE `morph_name` = '".$this->adjustForSQL($morphRow['name'])."';");
             $traits->setFetchMode(\PDO::FETCH_ASSOC);
             while ($traitRow = $traits->fetch()) {
-                $epTraits = $this->getTraitByName($traitRow['trait']);
+                $epTraits = $this->getTraitByName($traitRow['trait_name']);
                 if($epTraits == null){
-                    $this->addError("Get Background getTraitByName function call failed: (" . $traitRow['trait'] . ")");
+                    $this->addError("Get Background getTraitByName function call failed: (" . $traitRow['trait_name'] . ")");
                     return null;
                 }
                 else{
                     array_push($morphTraitList, $epTraits);
                 }
             }
-            $morph = new EPMorph($morphRow['name'], $morphRow['type'], intval($morphRow['maxApptitude']),
-                intval($morphRow['durablility']), intval($morphRow['cpCost']), $morphTraitList, $morphGearsList, $morphBonusMalusList,
+            $morph = new EPMorph($morphRow['name'], $morphRow['type'], intval($morphRow['maxAptitude']),
+                intval($morphRow['durability']), intval($morphRow['cpCost']), $morphTraitList, $morphGearsList, $morphBonusMalusList,
                 $morphRow['description'], intval($morphRow['creditCost']));
             array_push($morphList, $morph);
             //$morphList[$morphRow['name']] = $morph;
@@ -629,29 +629,29 @@ class EPListProvider {
     function getListPsySleights(): array
      {
         $psyList = array();
-        $psyRes = self::$database->query("SELECT `name`, `description`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skillNeeded` FROM `psySleights`");
+        $psyRes = self::$database->query("SELECT `name`, `description`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skill_name` FROM `psySleights`");
         $psyRes->setFetchMode(\PDO::FETCH_ASSOC);
         while ($psyRow = $psyRes->fetch())
         {
             $bonusMalusPsyList = array();
-            $bonusMalus = self::$database->query("SELECT `psy`, `bonusmalus`, `occur` FROM `bonusMalus_psySleight` WHERE `psy` = '".$this->adjustForSQL($psyRow['name'])."';");
+            $bonusMalus = self::$database->query("SELECT `psySleight_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_psySleight` WHERE `psySleight_name` = '".$this->adjustForSQL($psyRow['name'])."';");
             $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
             while ($bmRow = $bonusMalus->fetch())
             {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusmalus']);
+                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
                 if($epBonMal == null)
                 {
-                    $this->addError("Get Psy getBonusByName function call failed: (" . $bmRow['bonusmalus'] . ")");
+                    $this->addError("Get Psy getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
                     return null;
                 }
                 else{
-                    for($i = 0; $i < $bmRow['occur']; $i++ )
+                    for($i = 0; $i < $bmRow['occurrence']; $i++ )
                     {
                         array_push($bonusMalusPsyList, $epBonMal);
                     }
                 }
             }
-            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skillNeeded']?? "");
+            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skill_name']?? "");
             array_push($psyList, $psy);
             }
         return $psyList;
