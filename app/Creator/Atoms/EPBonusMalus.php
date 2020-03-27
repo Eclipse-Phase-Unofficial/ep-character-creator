@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
-use InvalidArgumentException;
+use App\Models\BonusMalus;
 
 /**
  * All the plus and minuses, buffs and debuffs applied to many different things.
@@ -60,39 +60,23 @@ class EPBonusMalus extends EPAtom{
     static $FROM_PSY = 'PSY';
 
     /**
-     * An enum for about half the $ON_... static/const values
-     * @var string
+     * @var BonusMalus
      */
-    public $bonusMalusType;
+    protected $model;
+
     /**
      * Target of the bonus malus, can be set by user
      * TODO: This should be pointing to some sort of ID, not just a name
      * @var string
      */
-    public $forTargetNamed;
-    /**
-     * Value of the bonus or malus
-     * @var int
-     */
-    public $value;
+    private $forTargetNamed;
 
-    /**
-     * An enum for the other half the $ON_... static/const values
-     * $ON_SKILL, $ON_ARMOR, etc.
-     * @var string
-     */
-    public $targetForChoice;
     /**
      * A skill's Prefix
      * Used in combination with $forTargetNamed since ID's aren't being used anywhere
      * @var string
      */
-    public $typeTarget;
-    /**
-     * If this modifies the target's cost instead of it's attribute.
-     * @var bool
-     */
-    public $isCostModifier;
+    private $targetSkillPrefix;
 
     /**
      * Recursive structure holding an array of EPBonusMalus
@@ -100,28 +84,19 @@ class EPBonusMalus extends EPAtom{
      * @var EPBonusMalus[]
      */
     public $bonusMalusTypes;
-    /**
-     * How many $bonusMalusTypes the user must select
-     * @var int
-     */
-    public $requiredSelections;
+
     /**
      * If this is part of a $bonusMalusTypes collection, this determines if the user has selected this one or not.
      * @var bool
      */
-    public $selected;
+    private $selected;
 
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
 
-        $savePack['bonusMalusType']  =  $this->bonusMalusType;
         $savePack['forTargetNamed']  =  $this->forTargetNamed;
-        $savePack['value']           =  $this->value;
-        $savePack['targetForChoice'] =  $this->targetForChoice;
-        $savePack['typeTarget']      =  $this->typeTarget;
-        $savePack['isCostModifier']  =  $this->isCostModifier;
-        $savePack['multi_occurence'] =  $this->requiredSelections;
+        $savePack['typeTarget']      =  $this->targetSkillPrefix;
         $savePack['selected']        =  $this->selected;
         $bmSavePacks = array();
         foreach($this->bonusMalusTypes as $m){
@@ -138,30 +113,14 @@ class EPBonusMalus extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '', 0);
+        $object = new self(BonusMalus::whereName((string)$an_array['name']), [], []);
         parent::set_state_helper($object, $an_array);
 
-        $object->bonusMalusType     = (string)$an_array['bonusMalusType'];
-        $object->forTargetNamed     = (string)$an_array['forTargetNamed'];
-        $object->value              = (float)$an_array['value'];
-        $object->targetForChoice    = (string)$an_array['targetForChoice'];
-        $object->typeTarget         = (string)$an_array['typeTarget'];
-        $object->requiredSelections = (int)$an_array['multi_occurence'];
-        $object->selected           = (bool)$an_array['selected'];
+        $object->forTargetNamed    = (string)$an_array['forTargetNamed'];
+        $object->targetSkillPrefix = (string)$an_array['typeTarget'];
+        $object->selected          = (bool)$an_array['selected'];
         foreach ($an_array['bonusMalusTypes'] as $m) {
             array_push($object->bonusMalusTypes, EPBonusMalus::__set_state($m));
-        }
-
-        //Backwards compatibility with older (pre 1.53) save files
-        if(isset($an_array['onCost'])) {
-            $object->isCostModifier = filter_var($an_array['onCost'], FILTER_VALIDATE_BOOLEAN);
-        } else {
-            $object->isCostModifier = (bool)$an_array['isCostModifier'];
-        }
-
-        //Sanity Checks
-        if ($object->targetForChoice == EPBonusMalus::$MULTIPLE && $object->requiredSelections <= 0) {
-            throw new InvalidArgumentException("Object Should not ask for user choice when there are no selections allowed!");
         }
 
         return $object;
@@ -169,46 +128,22 @@ class EPBonusMalus extends EPAtom{
 
     /**
      * EPBonusMalus constructor.
-     * @param string         $name
-     * @param string         $type
-     * @param int            $value
-     * @param string         $targetName
-     * @param string         $description
+     * @param BonusMalus     $model
      * @param string[]       $groups
-     * @param bool           $isCostModifier
-     * @param string         $targetForChoice
-     * @param string         $typeTarget
-     * @param EPBonusMalus[] $bonusMalusTypes
-     * @param int            $requiredSelections
+     * @param EPBonusMalus[] $bmTypes
      */
-    function __construct(
-        string $name,
-        string $type,
-        int $value,
-        string $targetName = "",
-        string $description = "",
-        array $groups = array(),
-        bool $isCostModifier = false,
-        string $targetForChoice = "",
-        string $typeTarget = "",
-        array $bonusMalusTypes = array(),
-        int $requiredSelections = 0
-    ) {
-        parent::__construct($name, $description);
-        $this->bonusMalusType = $type;
-        $this->forTargetNamed = $targetName;
-        $this->value = $value;
-        $this->groups = $groups ;
-        $this->isCostModifier = $isCostModifier;
-        $this->targetForChoice = $targetForChoice;
-        $this->typeTarget = $typeTarget;
-        $this->bonusMalusTypes = $bonusMalusTypes; //array() bonus malus
-        $this->requiredSelections = $requiredSelections;
+    function __construct(BonusMalus $model, array $groups, array $bmTypes)
+    {
+        parent::__construct("Unused", "");
+        $this->model = $model;
+
+        $this->forTargetNamed = $this->model->target;
+        $this->targetSkillPrefix = $this->model->typeTarget;
         $this->selected = false;
 
-        if ($this->targetForChoice == EPBonusMalus::$MULTIPLE && $this->requiredSelections <= 0) {
-            throw new InvalidArgumentException("Object Should not ask for user choice when there are no selections allowed!");
-        }
+        //TODO:  These should be retrieved here
+        $this->groups = $groups;
+        $this->bonusMalusTypes = $bmTypes;
     }
 
     /**
@@ -217,10 +152,10 @@ class EPBonusMalus extends EPAtom{
      */
     function isGranted(): bool
     {
-        if($this->targetForChoice == ""){
-            return True;
+        if (empty($this->getTargetForChoice())) {
+            return true;
         }
-        return False;
+        return false;
     }
 
     /**
@@ -229,15 +164,15 @@ class EPBonusMalus extends EPAtom{
      */
     function isChoice(): bool
     {
-        if($this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE ||
-           $this->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
-           $this->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
-           $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE ||
-           $this->targetForChoice == EPBonusMalus::$ON_REPUTATION ||
-           $this->targetForChoice == EPBonusMalus::$ON_APTITUDE){
-            return True;
+        if ($this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_ACTIVE ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_REPUTATION ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_APTITUDE) {
+            return true;
         }
-        return False;
+        return false;
     }
 
     /**
@@ -246,7 +181,7 @@ class EPBonusMalus extends EPAtom{
      */
     function isMultipleChoice(): bool
     {
-        if ($this->targetForChoice == EPBonusMalus::$MULTIPLE) {
+        if ($this->getTargetForChoice() == EPBonusMalus::$MULTIPLE) {
             return true;
         }
         return false;
@@ -260,12 +195,128 @@ class EPBonusMalus extends EPAtom{
      */
     function isSkill()
     {
-        if ($this->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
-            $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE ||
-            $this->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
-            $this->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE) {
+        if ($this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_WITH_PREFIX ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_ACTIVE ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_KNOWLEDGE ||
+            $this->getTargetForChoice() == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get an objects name.
+     *
+     * May never be empty.
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->model->name;
+    }
+
+    /**
+     * Get a raw HTML string describing the object.
+     *
+     * May be empty.
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->model->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBonusMalusType(): string
+    {
+        return $this->model->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue(): int
+    {
+        return $this->model->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetForChoice(): string
+    {
+        return $this->model->targetForChoice;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCostModifier(): bool
+    {
+        return $this->model->isCostModifier;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRequiredSelections(): int
+    {
+        return $this->model->requiredSelections;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetSkillPrefix(): string
+    {
+        return $this->targetSkillPrefix;
+    }
+
+    /**
+     * @param string $targetSkillPrefix
+     * @return EPBonusMalus
+     */
+    public function setTargetSkillPrefix(string $targetSkillPrefix): EPBonusMalus
+    {
+        $this->targetSkillPrefix = $targetSkillPrefix;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSelected(): bool
+    {
+        return $this->selected;
+    }
+
+    /**
+     * @param bool $selected
+     * @return EPBonusMalus
+     */
+    public function setSelected(bool $selected): EPBonusMalus
+    {
+        $this->selected = $selected;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetName(): string
+    {
+        return $this->forTargetNamed;
+    }
+
+    /**
+     * @param string $targetName
+     * @return EPBonusMalus
+     */
+    public function setTargetName(string $targetName): EPBonusMalus
+    {
+        $this->forTargetNamed = $targetName;
+        return $this;
     }
 }

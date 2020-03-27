@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Creator;
 
+use App\Models\BonusMalus;
 use \Illuminate\Support\Facades\DB;
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPAptitude;
@@ -63,14 +64,10 @@ class EPListProvider {
 
     function getBonusMalusByName(string $name): EPBonusMalus
     {
-        $res = self::$database->query("SELECT `name`, `description`, `type`, `target`, `value`, `targetForChoice`, `typeTarget`, `isCostModifier`, `requiredSelections` FROM `bonusMalus` WHERE `name` = '" .$this->adjustForSQL($name)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        $groups = $this->getListGroups($row['name']);
-        $bmTypes = $this->getBonusMalusTypes($row['name']);
-        $epBonMal = new EPBonusMalus($row['name'], $row['type'], intval($row['value']), $row['target'], $row['description'],
-            $groups, filter_var($row['isCostModifier'], FILTER_VALIDATE_BOOLEAN), $row['targetForChoice'], $row['typeTarget'], $bmTypes, intval($row['requiredSelections']));
-        return $epBonMal;
+        $bmModel = BonusMalus::whereName($name)->first();
+        $groups = $this->getListGroups($name);
+        $bmTypes = $this->getBonusMalusTypes($name);
+        return new EPBonusMalus($bmModel, $groups, $bmTypes);
     }
 
     function getBonusMalusTypes($bmName){

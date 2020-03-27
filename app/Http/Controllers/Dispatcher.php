@@ -803,19 +803,19 @@ if(isset($_POST['addTargetTo'])){
         if(!isset($candidat)){
 			return static::treatCreatorErrors(new EPCreatorErrors("Can not add Bonus Malus: Could not find Bonus Malus",EPCreatorErrors::$SYSTEM_ERROR));
 		}
-		if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
+		if($candidat->getBonusMalusType() == EPBonusMalus::$ON_SKILL){
 			$skill = creator()->getSkillByAtomUid($_POST['targetVal']);
             // Database skills (non user selectable) use name/prefix instead of Uid
             if(!isset($skill)){
-                $skill = EPSkill::getSkill(creator()->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+                $skill = EPSkill::getSkill(creator()->character->ego->skills,$candidat->getTargetName(),$candidat->getTargetSkillPrefix());
             }
             if(!isset($skill)){
 				return static::treatCreatorErrors(new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
 			}
-			$candidat->typeTarget = $skill->getPrefixName();
+			$candidat->setTargetSkillPrefix($skill->getPrefixName());
 		}
-		$candidat->forTargetNamed = $_POST['targetVal'];
-		$candidat->selected = true;
+		$candidat->setTargetName($_POST['targetVal']);
+		$candidat->setSelected(true);
 	}
 	else{
         $candidat = EPAtom::getAtomByUid($bonusMalusArray,$_POST['bmId']);
@@ -824,17 +824,17 @@ if(isset($_POST['addTargetTo'])){
             return static::treatCreatorErrors(new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
         }
 
-        $candidat->forTargetNamed = $_POST['targetVal'];
-        if($candidat->bonusMalusType == EPBonusMalus::$ON_SKILL){
+        $candidat->setTargetName($_POST['targetVal']);
+        if($candidat->getBonusMalusType() == EPBonusMalus::$ON_SKILL){
             $skill = creator()->getSkillByAtomUid($_POST['targetVal']);
             // Database skills (non user selectable) use name/prefix instead of Uid
             if(!isset($skill)){
-                $skill = EPSkill::getSkill(creator()->character->ego->skills,$candidat->forTargetNamed,$candidat->typeTarget);
+                $skill = EPSkill::getSkill(creator()->character->ego->skills,$candidat->getTargetName(),$candidat->getTargetSkillPrefix());
             }
             if(!isset($skill)){
                 return static::treatCreatorErrors(new EPCreatorErrors("Bonus Malus Unknown skill",EPCreatorErrors::$SYSTEM_ERROR));
             }
-            $candidat->typeTarget = $skill->getPrefixName();
+            $candidat->setTargetSkillPrefix($skill->getPrefixName());
         }
     }
     creator()->adjustAll();
@@ -905,17 +905,17 @@ if(isset($_POST['removeTargetFrom'])){
         if(!isset($candidat)){
             return static::treatCreatorErrors(new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentBmId: ".$_POST['parentBmId'],EPCreatorErrors::$SYSTEM_ERROR));
         }
-        if(!empty($candidat->targetForChoice)){
-            $candidat->forTargetNamed = "";
+        if(!empty($candidat->getTargetForChoice())){
+            $candidat->setTargetName("");
         }
-        $candidat->selected = false;
+        $candidat->setSelected(false);
 	}
 	else{
 		$candidat = EPAtom::getAtomByUid($bonusMalusArray,$_POST['bmId']);
         if(!isset($candidat)){
             return static::treatCreatorErrors(new EPCreatorErrors("Could not find bmId: ".$_POST['bmId']." for parentType: ".$_POST['parentType'],EPCreatorErrors::$SYSTEM_ERROR));
         }
-        $candidat->forTargetNamed = "";
+        $candidat->setTargetName("");
 	}
     creator()->adjustAll();
 }

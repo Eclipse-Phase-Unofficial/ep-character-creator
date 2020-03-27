@@ -5,6 +5,8 @@ namespace App\Creator\Atoms;
 
 use App\Creator\Savable;
 
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * EPAtom is the generic object class of the character creator, almost everything is subclassed from it.
  *
@@ -16,7 +18,7 @@ use App\Creator\Savable;
  * @author reinhardt
  * @author EmperorArthur
  */
-class EPAtom implements Savable
+abstract class EPAtom implements Savable
 {
     /**
      * @var string
@@ -37,6 +39,12 @@ class EPAtom implements Savable
      * @var string[]
      */
     public $groups;
+
+    /*
+     * The Eloquent model, pointing to a database entry
+     * @var Model
+     */
+    protected $model;
 
     /**
      * @var int
@@ -114,13 +122,7 @@ class EPAtom implements Savable
      * @param array $an_array
      * @return EPAtom
      */
-    public static function __set_state(array $an_array)
-    {
-        //Name is set here purely for the if check in the __construct function
-        $object = new self((string)$an_array['name'], '');
-        self::set_state_helper($object, $an_array);
-        return $object;
-    }
+    abstract public static function __set_state(array $an_array);
 
     /**
      * This is used for setting the object variables for __set_state and equivalents.
@@ -131,8 +133,6 @@ class EPAtom implements Savable
      */
     protected static function set_state_helper(object $instance, array $properties)
     {
-        $instance->name                   = (string)$properties['name'];
-        $instance->description            = (string)$properties['description'];
         $instance->groups                 = (array)$properties['groups'];
         $instance->cost                   = (int)$properties['cost'];
         $instance->ratioCostMorphMod      = (float)$properties['ratioCostMorphMod'];

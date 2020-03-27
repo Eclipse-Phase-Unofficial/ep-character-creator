@@ -251,7 +251,7 @@ class Helpers
                 if ($bm->isGranted()) {
                     $output .= "<li class='bmDesc'>";
                     $output .= $bm->getName();
-                    if ($bm->bonusMalusType == EPBonusMalus::$DESCRIPTIVE_ONLY) {
+                    if ($bm->getBonusMalusType() == EPBonusMalus::$DESCRIPTIVE_ONLY) {
                         $output .= "<label class='bmGrantedDesc'>" . $bm->getDescription() . "</label>";
                     }
                     $output .= "</li>";
@@ -278,29 +278,27 @@ class Helpers
         foreach ($bonusMalusArray as $bm) {
             if ($bm->isMultipleChoice()) {
                 $output .= "<li class='listSection'>";
-                $output .= "Choose <span class='betweenPlusMinus'>" . static::getSelectedOnMulti($bm) . " / " . $bm->requiredSelections . "</span>";
+                $output .= "Choose <span class='betweenPlusMinus'>" . static::getSelectedOnMulti($bm) . " / " . $bm->getRequiredSelections() . "</span>";
                 $output .= "</li>";
                 // If all the selections are made, only print out the selected BMs
-                if (static::getSelectedOnMulti($bm) >= $bm->requiredSelections) {
+                if (static::getSelectedOnMulti($bm) >= $bm->getRequiredSelections()) {
                     foreach ($bm->bonusMalusTypes as $bmMulti) {
-                        if ($bmMulti->selected) {
+                        if ($bmMulti->isSelected()) {
                             $output .= "<li><label class='bmChoiceInput'>";
-                            if ($bmMulti->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX) {
-                                $activeSkills    = $creator->character->ego->getActiveSkills();
-                                $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
-                                $skill           = EPAtom::getAtomByUid(array_merge($activeSkills, $knowledgeSkills),
-                                    $bmMulti->forTargetNamed);
-                                $output          .= "+" . $bmMulti->value . " " . $skill->getPrintableName();
-                            } else {
-                                if ($bmMulti->targetForChoice == EPBonusMalus::$ON_APTITUDE) {
-                                    $output .= "+" . $bmMulti->value . " on " . $bmMulti->forTargetNamed;
-                                } else {
-                                    if ($bmMulti->targetForChoice == EPBonusMalus::$ON_REPUTATION) {
-                                        $output .= "+" . $bmMulti->value . " on " . $bmMulti->forTargetNamed;
-                                    } else {
-                                        $output .= $bmMulti->getName();
-                                    }
-                                }
+                            switch ($$bmMulti->getTargetForChoice()) {
+                                case EPBonusMalus::$ON_SKILL_WITH_PREFIX:
+                                    $activeSkills    = $creator->character->ego->getActiveSkills();
+                                    $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
+                                    $skill           = EPAtom::getAtomByUid(array_merge($activeSkills, $knowledgeSkills),
+                                        $bmMulti->getTargetName());
+                                    $output          .= "+" . $bmMulti->getValue() . " " . $skill->getPrintableName();
+                                    break;
+                                case EPBonusMalus::$ON_APTITUDE:
+                                case EPBonusMalus::$ON_REPUTATION:
+                                    $output .= "+" . $bmMulti->getValue() . " on " . $bmMulti->getTargetName();
+                                    break;
+                                default:
+                                    $output .= $bmMulti->getName();
                             }
                             $output .= "<span class='iconPlusMinus iconebmRemChoice' id='" . $bmMulti->getUid() . "' data-icon='&#x39;'></span>";
                             $output .= "</label>";
@@ -315,12 +313,12 @@ class Helpers
                         $output .= "<li>";
                         if (!$bmMulti->isChoice()) {
                             $output .= "<label class='bmGranted'>" . $bmMulti->getName() . "</label>";
-                            if ($bmMulti->selected) {
+                            if ($bmMulti->isSelected()) {
                                 $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='" . $bmMulti->getUid() . "' data-icon='&#x39;'></span>";
                             } else {
                                 $output .= "<span class='iconPlusMinus iconebmChoice'  id='" . $bmMulti->getUid() . "' data-icon='&#x3a;'></span>";
                             }
-                            $output .= "<input id='" . $bmMulti->getUid() . "Sel' type='hidden' value='" . $bmMulti->forTargetNamed . "'>";
+                            $output .= "<input id='" . $bmMulti->getUid() . "Sel' type='hidden' value='" . $bmMulti->getTargetName() . "'>";
                         } else {
                             $output .= "<label class='bmChoiceInput'>";
                             $output .= static::choosePrintOption($creator, $bmMulti, $morph, $parentType);
@@ -355,31 +353,22 @@ class Helpers
     {
         $activeSkills    = $creator->character->ego->getActiveSkills();
         $knowledgeSkills = $creator->character->ego->getKnowledgeSkills();
-        if ($bm->targetForChoice == EPBonusMalus::$ON_SKILL_WITH_PREFIX) {
-            return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills), true);
-        } else {
-            if ($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE) {
+        switch ($bm->getTargetForChoice()) {
+            case EPBonusMalus::$ON_SKILL_WITH_PREFIX:
+                return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills), true);
+            case EPBonusMalus::$ON_SKILL_ACTIVE:
                 return static::getSkillOptions($bm, $activeSkills);
-            } else {
-                if ($bm->targetForChoice == EPBonusMalus::$ON_SKILL_KNOWLEDGE) {
-                    return static::getSkillOptions($bm, $knowledgeSkills);
-                } else {
-                    if ($bm->targetForChoice == EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE) {
-                        return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills));
-                    } else {
-                        if ($bm->targetForChoice == EPBonusMalus::$ON_APTITUDE) {
-                            return static::getAptitudeOptions($creator, $bm, $morph, $parentType);
-                        } else {
-                            if ($bm->targetForChoice == EPBonusMalus::$ON_REPUTATION) {
-                                return static::getReputationOptions($creator, $bm);
-                            }
-                        }
-                    }
-                }
-            }
+            case EPBonusMalus::$ON_SKILL_KNOWLEDGE:
+                return static::getSkillOptions($bm, $knowledgeSkills);
+            case EPBonusMalus::$ON_SKILL_ACTIVE_AND_KNOWLEDGE:
+                return static::getSkillOptions($bm, array_merge($activeSkills, $knowledgeSkills));
+            case EPBonusMalus::$ON_APTITUDE:
+                return static::getAptitudeOptions($creator, $bm, $morph, $parentType);
+            case EPBonusMalus::$ON_REPUTATION:
+                return static::getReputationOptions($creator, $bm);
         }
-        error_log("choosePrintOption:  $bm->targetForChoice (" . $bm->targetForChoice . ") is unkown!");
-        return "choosePrintOption:  $bm->targetForChoice (" . $bm->targetForChoice . ") is unkown!";
+        error_log("choosePrintOption:  " .$bm->getTargetForChoice() ." (" . $bm->getTargetForChoice() . ") is unkown!");
+        return "choosePrintOption:  " . $bm->getTargetForChoice() . " (" . $bm->getTargetForChoice() . ") is unkown!";
     }
 
     /**
@@ -392,13 +381,13 @@ class Helpers
     static function getSkillOptions(EPBonusMalus $bm, array $skill_list, bool $prefix_skill = false)
     {
         //Handle Prefix only skill selection
-        if ($prefix_skill == true && !empty($bm->typeTarget)) {
-            $skill_list = static::skillsWithPrefix($skill_list, $bm->typeTarget);
+        if ($prefix_skill == true && !empty($bm->getTargetSkillPrefix())) {
+            $skill_list = static::skillsWithPrefix($skill_list, $bm->getTargetSkillPrefix());
         }
 
         $output = "";
 
-        if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
+        if (empty($bm->getTargetName())) {
             $output .= $bm->getName();
             if (!empty($skill_list)) {
                 $output .= "<select class='bmChoiceSelect' id='" . $bm->getUid() . "Sel'>";
@@ -412,8 +401,8 @@ class Helpers
             }
         } else {
             //If a skill has already been selected, display the deselect option
-            $skill  = EPAtom::getAtomByUid($skill_list, $bm->forTargetNamed);
-            $output .= "+" . $bm->value . " " . $skill->getPrintableName();
+            $skill  = EPAtom::getAtomByUid($skill_list, $bm->getTargetName());
+            $output .= "+" . $bm->getValue() . " " . $skill->getPrintableName();
             $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='" . $bm->getUid() . "' data-icon='&#x39;'></span>";
 
         }
@@ -433,7 +422,7 @@ class Helpers
     {
         $output = "";
 
-        if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
+        if (empty($bm->getTargetName())) {
             $output .= $bm->getName();
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             if ($parentType == 'morph' && !empty($morph)) {
@@ -452,7 +441,7 @@ class Helpers
             $output .= "<span class='iconPlusMinus iconebmChoice'  id='" . $bm->getUid() . "' data-icon='&#x3a;'></span>";
         } else {
             //If an aptitude has already been selected, display the deselect option
-            $output .= "+" . $bm->value . " on " . $bm->forTargetNamed;
+            $output .= "+" . $bm->getValue() . " on " . $bm->getTargetName();
             $output .= "<span class='iconPlusMinus iconebmRemChoice'  id='" . $bm->getUid() . "' data-icon='&#x39;'></span>";
 
         }
@@ -470,7 +459,7 @@ class Helpers
     {
         $output = "";
 
-        if ($bm->forTargetNamed == null || $bm->forTargetNamed == "") {
+        if (empty($bm->getTargetName())) {
             $output .= $bm->getName();
             $output .= "<select id='" . $bm->getUid() . "Sel'>";
             foreach ($creator->getReputations() as $apt) {
@@ -480,7 +469,7 @@ class Helpers
             $output .= "<span class='iconPlusMinus iconebmChoice'  id='" . $bm->getUid() . "' data-icon='&#x3a;'></span>";
         } else {
             //If a reputation has already been selected, display the deselect option
-            $output .= "+" . $bm->value . " on " . $bm->forTargetNamed;
+            $output .= "+" . $bm->getValue() . " on " . $bm->getTargetName();
             $output .= "<span class='iconebmRemChoice'  id='" . $bm->getUid() . "' data-icon='&#x39;'></span>";
         }
         $output .= "<input id='" . $bm->getUid() . "Case' type='hidden' value='" . EPBonusMalus::$ON_REPUTATION . "'>";
@@ -555,7 +544,7 @@ class Helpers
     {
         $count = 0;
         foreach ($bmMulti->bonusMalusTypes as $bm) {
-            if ($bm->selected) {
+            if ($bm->isSelected()) {
                 $count++;
             }
         }
