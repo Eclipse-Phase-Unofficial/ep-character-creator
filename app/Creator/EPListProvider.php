@@ -65,20 +65,7 @@ class EPListProvider {
     function getBonusMalusByName(string $name): EPBonusMalus
     {
         $bmModel = BonusMalus::whereName($name)->first();
-        $groups = $this->getListGroups($name);
-        $bmTypes = $this->getBonusMalusTypes($name);
-        return new EPBonusMalus($bmModel, $groups, $bmTypes);
-    }
-
-    function getBonusMalusTypes($bmName){
-        $bmTypeArray = array();
-        $res = self::$database->query("SELECT `bonusMalusChoice_name` FROM `BonusMalusTypes` WHERE `bmNameMain` = '".$this->adjustForSQL($bmName)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $assocBm = $this->getBonusMalusByName($row['bonusMalusChoice_name']);
-            array_push($bmTypeArray, $assocBm);
-        }
-        return $bmTypeArray;
+        return new EPBonusMalus($bmModel);
     }
 
     // ===== INFOS ======

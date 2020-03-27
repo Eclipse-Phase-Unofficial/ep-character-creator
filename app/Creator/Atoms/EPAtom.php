@@ -36,6 +36,7 @@ abstract class EPAtom implements Savable
     private $description;
 
     /**
+     * TODO:  This should be private with accessors & setters
      * @var string[]
      */
     public $groups;

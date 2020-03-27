@@ -5,6 +5,7 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\BonusMalus
@@ -69,5 +70,41 @@ class BonusMalus extends Model
         if ($this->targetForChoice == 'MUL' && $this->requiredSelections <= 0) {
             throw new Exception("Object Should not ask for user choice when there are no selections allowed!");
         }
+    }
+
+    /**
+     * Some BMs require choices or have Sub BMs.  This is the link to those.
+     * @return BelongsToMany
+     */
+    public function bonusMalusTypes()
+    {
+        return $this->belongsToMany(BonusMalus::class,
+            'bonusMalus_bonusMalus',
+            'bonusMalus_name',
+            'bonusMalusChoice_name',
+            'name',
+            'name'
+        );
+    }
+
+    /**
+     * Hack to support functionality that doesn't even work correctly.
+     *
+     * Specifically, this should be used so that the Infolife background is restricted from taking the Psi Traits!
+     *
+     * TODO:  This might be better served using the "BackgroundLimitations" table directly!
+     *
+     * @return string[]
+     */
+    public function groups(): array
+    {
+        if( $this->name == "Psi trait prohibited" ) {
+            return [
+                "Psi I",
+                "Psi II",
+                "Psi II (Lost)",
+            ];
+        }
+        return [];
     }
 }

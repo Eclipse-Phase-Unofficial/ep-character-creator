@@ -113,7 +113,7 @@ class EPBonusMalus extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self(BonusMalus::whereName((string)$an_array['name']), [], []);
+        $object = new self(BonusMalus::whereName((string)$an_array['name']));
         parent::set_state_helper($object, $an_array);
 
         $object->forTargetNamed    = (string)$an_array['forTargetNamed'];
@@ -129,10 +129,8 @@ class EPBonusMalus extends EPAtom{
     /**
      * EPBonusMalus constructor.
      * @param BonusMalus     $model
-     * @param string[]       $groups
-     * @param EPBonusMalus[] $bmTypes
      */
-    function __construct(BonusMalus $model, array $groups, array $bmTypes)
+    function __construct(BonusMalus $model)
     {
         parent::__construct("Unused", "");
         $this->model = $model;
@@ -141,9 +139,13 @@ class EPBonusMalus extends EPAtom{
         $this->targetSkillPrefix = $this->model->typeTarget;
         $this->selected = false;
 
-        //TODO:  These should be retrieved here
-        $this->groups = $groups;
-        $this->bonusMalusTypes = $bmTypes;
+        $this->bonusMalusTypes = array();
+        foreach($this->model->bonusMalusTypes()->get() as $choice) {
+            $this->bonusMalusTypes [] = new EPBonusMalus($choice);
+        }
+
+        //TODO:  This should be replaced by a subclassed getter when $this->groups is made private!
+        $this->groups = $this->model->groups();
     }
 
     /**

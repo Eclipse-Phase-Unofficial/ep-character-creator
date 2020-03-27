@@ -171,13 +171,12 @@ CREATE TABLE IF NOT EXISTS "background_trait"
     FOREIGN KEY (background_name) REFERENCES backgrounds (name),
     FOREIGN KEY (trait_name) REFERENCES traits (name)
 );
-CREATE TABLE IF NOT EXISTS "BonusMalusTypes"
+CREATE TABLE IF NOT EXISTS "bonusMalus_bonusMalus"
 (
--- TODO:  Check if addictions work properly
-    bmNameMain            varchar(60) NOT NULL,
+    bonusMalus_name       varchar(60) NOT NULL,
     bonusMalusChoice_name varchar(60) NOT NULL,
-    PRIMARY KEY (bmNameMain, bonusMalusChoice_name),
---     FOREIGN KEY (bmNameMain) REFERENCES bonusMalus (name),
+    PRIMARY KEY (bonusMalus_name, bonusMalusChoice_name),
+    FOREIGN KEY (bonusMalus_name) REFERENCES bonusMalus (name),
     FOREIGN KEY (bonusMalusChoice_name) REFERENCES bonusMalus (name)
 );
 CREATE TABLE IF NOT EXISTS "bonusMalus_gear"
@@ -3252,52 +3251,53 @@ INSERT INTO bonusMalus VALUES(420,'You are that guy','Receives a one-time sessio
 INSERT INTO bonusMalus VALUES(421,'Zero-g Nausea','Suffers a -10 modifier in any microgravity climate.','DO','',0.0,'','','false',0);
 INSERT INTO bonusMalus VALUES(422,'Zoosemiotics','You do not suffer a modifier when using psi sleights on non- sapient or partly sapient animal species.','DO','',0.0,'','','false',0);
 
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10  Academics [Field]');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Infosec skill');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 on Interfacing skill');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 on navigation skill');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Profession [Field]');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Programming skill');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Psychosurgery skill');
-INSERT INTO BonusMalusTypes VALUES('+10 to Tech / Aca / Pro Skill','+10 Research skill');
-INSERT INTO BonusMalusTypes VALUES('+10 spacecraft / freefall','+10 Free Fall skill');
-INSERT INTO BonusMalusTypes VALUES('+10 spacecraft / freefall','+10 Pilot: Spacecraft skill');
-INSERT INTO BonusMalusTypes VALUES('+10 Persuasion / Deception','+10 Deception skill');
-INSERT INTO BonusMalusTypes VALUES('+10 Persuasion / Deception','+10 Persuasion skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Beam Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Blades skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Clubs skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Gunnery skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Kinetic Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Seeker Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Spray Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Throwing Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 weapon skill','+10 Unarmed Combat skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10  Academics [Field]');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 Infosec skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 on Interfacing skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 on navigation skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 Programming skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 Psychosurgery skill');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Technical / Academic ','+10 Research skill');
-INSERT INTO BonusMalusTypes VALUES('Choose an Addiction','Major Addiction');
-INSERT INTO BonusMalusTypes VALUES('Choose an Addiction','Minor Addiction');
-INSERT INTO BonusMalusTypes VALUES('Choose an Addiction','Moderate Addiction');
-INSERT INTO BonusMalusTypes VALUES('Enlarged Size','+10 Durability');
-INSERT INTO BonusMalusTypes VALUES('Enlarged Size','+5 Durability');
-INSERT INTO BonusMalusTypes VALUES('Botched Merge','Max 4/10 on [Aptitude]');
-INSERT INTO BonusMalusTypes VALUES('+10 2 Networking Skill','+10 Networking: [Field] skill ');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Beam Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Blades skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Clubs skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Gunnery skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Kinetic Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Seeker Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Spray Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Throwing Weapons skill');
-INSERT INTO BonusMalusTypes VALUES('+20 one Combat Skill','+20 Unarmed Combat');
-INSERT INTO BonusMalusTypes VALUES('+20 on one Exotic Skill','+20 Exotic Melee [Field]');
-INSERT INTO BonusMalusTypes VALUES('+20 on one Exotic Skill','+20 Exotic Ranged [Field]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10  Academics [Field]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 Infosec skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 on Interfacing skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 on navigation skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 Profession [Field]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 Programming skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 Psychosurgery skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 to Tech / Aca / Pro Skill','+10 Research skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 spacecraft / freefall','+10 Free Fall skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 spacecraft / freefall','+10 Pilot: Spacecraft skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 Persuasion / Deception','+10 Deception skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 Persuasion / Deception','+10 Persuasion skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Beam Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Blades skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Clubs skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Gunnery skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Kinetic Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Seeker Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Spray Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Throwing Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 weapon skill','+10 Unarmed Combat skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10  Academics [Field]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 Infosec skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 on Interfacing skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 on navigation skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 Programming skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 Psychosurgery skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Technical / Academic ','+10 Research skill');
+--TODO:  Figure out what these were / are for
+-- INSERT INTO bonusMalus_bonusMalus VALUES('Choose an Addiction','Major Addiction');
+-- INSERT INTO bonusMalus_bonusMalus VALUES('Choose an Addiction','Minor Addiction');
+-- INSERT INTO bonusMalus_bonusMalus VALUES('Choose an Addiction','Moderate Addiction');
+INSERT INTO bonusMalus_bonusMalus VALUES('Enlarged Size','+10 Durability');
+INSERT INTO bonusMalus_bonusMalus VALUES('Enlarged Size','+5 Durability');
+INSERT INTO bonusMalus_bonusMalus VALUES('Botched Merge','Max 4/10 on [Aptitude]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+10 2 Networking Skill','+10 Networking: [Field] skill ');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Beam Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Blades skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Clubs skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Gunnery skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Kinetic Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Seeker Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Spray Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Throwing Weapons skill');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 one Combat Skill','+20 Unarmed Combat');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 on one Exotic Skill','+20 Exotic Melee [Field]');
+INSERT INTO bonusMalus_bonusMalus VALUES('+20 on one Exotic Skill','+20 Exotic Ranged [Field]');
 
 INSERT INTO gear VALUES(1,'"Blue Box" PGCU','"blue box" portable gate control unit <br><br>\nNamed for the distinct cobalt blue color they were originally manufactured in, blue boxes are portable gate control units (see The Gate Interface, GC p. 142). These are specifically designed for interfacing with extrasolar gates and are the most common gate interface found on extrasolar colonies. They are rarely allowed on first-in missions or any missions where signs of sapient life have been detected, in order to keep these devices out of the hands of aliens. Because these devices only allow a pared-down version of the full gate interface, they are more challenging to use than complete stationary models; <b>apply a -10 modifier to all gate operation actions conducted via blue box Like standard interfaces, blue boxes come as open source or proprietary models.</b><br><br>\nBlue boxes must be physically attached to a gate in order to control it. <b>This process is time-consuming and difficult; it requires a Hardware: Electronics Test as a Task Action with a -10 modifier and a timeframe of 1 hour. </b>','STD',20000,0,0,NULL,NULL,'EVERY','false');
 INSERT INTO gear VALUES(2,'360 degree vision','The shell''s or morph visual sensors are situated for a 360-degree field of vision. ','IMG',250,0,0,NULL,NULL,'SYNTH','true');
