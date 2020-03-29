@@ -140,7 +140,7 @@ class EPBonusMalus extends EPAtom{
         $this->selected = false;
 
         $this->bonusMalusTypes = array();
-        foreach($this->model->bonusMalusTypes()->get() as $choice) {
+        foreach($this->model->bonusMalusTypes as $choice) {
             $this->bonusMalusTypes [] = new EPBonusMalus($choice);
         }
 
