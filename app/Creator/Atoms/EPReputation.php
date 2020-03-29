@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use App\Models\Reputation;
+
 /**
  * The players reputation with a single faction
  *
@@ -13,6 +15,11 @@ namespace App\Creator\Atoms;
 class EPReputation extends EPAtom{
 
     /**
+     * @var Reputation
+     */
+    protected $model;
+
+    /**
      * @var int
      */
     public $value;
@@ -21,6 +28,7 @@ class EPReputation extends EPAtom{
      * @var int
      */
     public $morphMod;
+
     /**
      * @var int
      */
@@ -52,16 +60,16 @@ class EPReputation extends EPAtom{
     public $maxValueFactionMod;
     public $maxValueSoftgearMod;
     public $maxValuePsyMod;
-    
+
     public $absoluteValueMorphMod;
     public $absoluteValueTraitMod;
     public $absoluteValueBackgroundMod;
     public $absoluteValueFactionMod;
     public $absoluteValueSoftgearMod;
     public $absoluteValuePsyMod;
-    
+
     function getMaxValue(){
-        return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod + 
+        return  $this->maxValue + $this->maxValueMorphMod + $this->maxValueTraitMod +
                 $this->maxValueBackgroundMod + $this->maxValueFactionMod +
                 $this->maxValueSoftgearMod + $this->maxValuePsyMod;
     }
@@ -77,7 +85,7 @@ class EPReputation extends EPAtom{
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-	    
+
         $savePack['value'] =  $this->value;
         $savePack['morphMod'] =  $this->morphMod;
         $savePack['traitMod'] =  $this->traitMod;
@@ -86,7 +94,7 @@ class EPReputation extends EPAtom{
         $savePack['softgearMod'] =  $this->softgearMod;
         $savePack['psyMod'] =  $this->psyMod;
         $savePack['maxValue'] =  $this->maxValue;
-        
+
         return $savePack;
     }
 
@@ -96,7 +104,7 @@ class EPReputation extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '');
+        $object = new self(Reputation::whereName((string)$an_array['name']));
         parent::set_state_helper($object, $an_array);
 
         $object->value         = (int)$an_array['value'];
@@ -113,25 +121,33 @@ class EPReputation extends EPAtom{
 
     /**
      * EPReputation constructor.
-     * @param string   $name
-     * @param string   $description
-     * @param string[] $groups
+     * @param Reputation $model
      */
-    function __construct(string $name, string $description, array $groups = array())
+    function __construct(Reputation $model)
     {
-        parent::__construct($name, $description);
+        parent::__construct("Unused", "");
+        $this->model = $model;
+
         $this->value = 0;
         $this->morphMod = 0;
-        $this->traitMod = 0;             
+        $this->traitMod = 0;
         $this->backgroundMod = 0;
         $this->factionMod = 0;
         $this->softgearMod = 0;
         $this->psyMod = 0;
-        $this->groups = $groups;
         $this->maxValue = config('epcc.RepMaxPoint');
     }
     function getValue(){
         return $this->value + $this->morphMod + $this->traitMod + $this->backgroundMod + $this->factionMod + $this->softgearMod + $this->psyMod;
-        
+    }
+
+    public function getName(): string
+    {
+        return $this->model->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->model->description;
     }
 }

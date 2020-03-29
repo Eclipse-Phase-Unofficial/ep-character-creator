@@ -253,7 +253,7 @@ class Database
     function getStatByAbbreviation($abbr): Atoms\EPStat
     {
         foreach ($this->stats as $s) {
-            if (strcmp($s->abbreviation, $abbr) == 0) {
+            if (strcmp($s->getAbbreviation(), $abbr) == 0) {
                 return $s;
             }
         }

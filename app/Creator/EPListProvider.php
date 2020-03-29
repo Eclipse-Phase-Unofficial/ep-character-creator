@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Creator;
 
 use App\Models\BonusMalus;
+use App\Models\Reputation;
+use App\Models\Stat;
 use App\Models\Traits;
 use \Illuminate\Support\Facades\DB;
 use App\Creator\Atoms\EPAi;
@@ -152,19 +154,16 @@ class EPListProvider {
     function getListStats(?EPCharacterCreator &$cc=null): array
     {
         $stats = array();
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `stats`");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $groups = $this->getListGroups($row['name']);
-            $epStats = new EPStat($row['name'], $row['description'], $row['abbreviation'], $groups,$cc);
-            if (strcmp($epStats->abbreviation,EPStat::$MOXIE) == 0){
-                $epStats->value = config('epcc.MoxieStartValue');
+        foreach (Stat::all() as $statModel) {
+            $stat = new EPStat($statModel, $cc);
+            if (strcmp($stat->getAbbreviation(),EPStat::$MOXIE) == 0){
+                $stat->value = config('epcc.MoxieStartValue');
             }
-            if (strcmp($epStats->abbreviation,EPStat::$SPEED) == 0){
-                $epStats->value = config('epcc.SpeedStartValue');
+            if (strcmp($stat->getAbbreviation(),EPStat::$SPEED) == 0){
+                $stat->value = config('epcc.SpeedStartValue');
             }
-            //$stats[$row['abbreviation']] = $epStats;
-            array_push($stats, $epStats);
+
+            $stats [] = $stat;
         }
         return $stats;
     }
@@ -304,14 +303,8 @@ class EPListProvider {
     function getListReputation(): array
     {
         $reputations = array();
-        $res = self::$database->query("SELECT `name`, `description` FROM `reputations`");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-
-        while ($row = $res->fetch()) {
-            $groups = $this->getListGroups($row['name']);
-            $epReputation = new EPReputation($row['name'], $row['description'], $groups);
-            //$reputations[$row['name']] = $epReputation;
-            array_push($reputations, $epReputation);
+        foreach(Reputation::all() as $reputation) {
+            $reputations [] = new EPReputation($reputation);
         }
         return $reputations;
     }

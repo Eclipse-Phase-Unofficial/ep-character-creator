@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Creator\Atoms;
 
 use App\Creator\EPCharacterCreator;
+use App\Models\Stat;
 
 /**
  * Calculated Stats & Moxie.
@@ -11,7 +12,7 @@ use App\Creator\EPCharacterCreator;
  * @author reinhardt
  */
 class EPStat extends EPAtom{
-    
+
     static $MOXIE = 'MOX';
     static $TRAUMATHRESHOLD = 'TT';
     static $INSANITYRATING = 'IR';
@@ -24,10 +25,10 @@ class EPStat extends EPAtom{
     static $DAMAGEBONUS = 'DB';
 
     /**
-     * An enum of all the static/const values
-     * @var string
+     * @var Stat
      */
-    public $abbreviation;
+    protected $model;
+
     /**
      * @var int
      */
@@ -95,13 +96,12 @@ class EPStat extends EPAtom{
     /**
      * @var int
      */
-    public $multiPsyMod;    
-    
+    public $multiPsyMod;
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-	    
-        $savePack['abbreviation'] = $this->abbreviation;
+
         $savePack['value'] = $this->value;
 
         $savePack['morphMod'] = $this->morphMod;
@@ -119,7 +119,7 @@ class EPStat extends EPAtom{
         $savePack['multiSoftgearMod'] = $this->multiSoftgearMod;
         $savePack['multiGearMod'] = $this->multiGearMod;
         $savePack['multiPsyMod'] = $this->multiPsyMod;
-        
+
         return $savePack;
     }
 
@@ -129,10 +129,9 @@ class EPStat extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '', '');
+        $object = new self(Stat::whereName((string)$an_array['name']));
         parent::set_state_helper($object, $an_array);
 
-        $object->abbreviation = (string)$an_array['abbreviation'];
         $object->value        = (int)$an_array['value'];
 
         $object->morphMod      = (int)$an_array['morphMod'];
@@ -156,24 +155,16 @@ class EPStat extends EPAtom{
 
     /**
      * EPStat constructor.
-     * @param string                  $name
-     * @param string                  $description
-     * @param string                  $abbreviation
-     * @param string[]                $groups
+     * @param Stat                    $model
      * @param EPCharacterCreator|null $characterCreator
      */
-    function __construct(
-        string $name,
-        string $description,
-        string $abbreviation,
-        array $groups = array(),
-        ?EPCharacterCreator &$characterCreator = null
+    function __construct(Stat $model, ?EPCharacterCreator &$characterCreator = null
     ) {
-        parent::__construct($name, $description);
-        $this->abbreviation = $abbreviation;
-        $this->value = 0;
-        $this->groups = $groups;
+        parent::__construct("Unused", "");
+        $this->model = $model;
         $this->cc = $characterCreator;
+
+        $this->value = 0;
         $this->morphMod = 0;
         $this->traitMod = 0;
         $this->factionMod = 0;
@@ -181,7 +172,7 @@ class EPStat extends EPAtom{
         $this->softgearMod = 0;
         $this->gearMod = 0;
         $this->psyMod = 0;
-        
+
         $this->multiMorphMod = 1;
         $this->multiTraitMod = 1;
         $this->multiFactionMod = 1;
@@ -191,13 +182,28 @@ class EPStat extends EPAtom{
         $this->multiPsyMod = 1;
     }
 
+    public function getName(): string
+    {
+        return $this->model->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->model->description;
+    }
+
+    public function getAbbreviation(): string
+    {
+        return $this->model->abbreviation;
+    }
+
     function getValue(){
         if (!isset($this->cc)){
             return 0;
         }
         $morph = $this->cc->getCurrentMorph();
         $multi = $this->multiMorphMod * $this->multiTraitMod * $this->multiFactionMod * $this->multiBackgroundMod * $this->multiSoftgearMod * $this->multiGearMod * $this->multiPsyMod;
-        switch ($this->abbreviation) {
+        switch ($this->getAbbreviation()) {
             case EPStat::$MOXIE:
                 return round(($this->value + $this->morphMod + $this->traitMod + $this->factionMod + $this->backgroundMod + $this->softgearMod + $this->gearMod + $this->psyMod) * $multi) ;
                 break;
@@ -255,5 +261,5 @@ class EPStat extends EPAtom{
                 break;
         }
     }
-    
+
 }

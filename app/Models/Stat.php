@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int    $id
  * @property string $name
  * @property string $description
- * @property string $abbreviation
+ * @property string $abbreviation An enum of all the static/const values in EPStat
  * @method static Builder|Stat newModelQuery()
  * @method static Builder|Stat newQuery()
  * @method static Builder|Stat query()

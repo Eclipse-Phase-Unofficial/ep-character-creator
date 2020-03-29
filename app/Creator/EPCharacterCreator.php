@@ -132,7 +132,7 @@ class EPCharacterCreator implements Savable
     function getStatByAbbreviation($abbr): EPStat
     {
         foreach ($this->character->ego->stats as $s){
-            if (strcmp($s->abbreviation,$abbr) == 0){
+            if (strcmp($s->getAbbreviation(),$abbr) == 0){
                 return $s;
             }
         }
@@ -1598,8 +1598,8 @@ class EPCharacterCreator implements Savable
     function setStat($name,$newValue){
         if ($this->creationMode){
             foreach ($this->character->ego->stats as $stat){
-                if (strcmp($stat->abbreviation,$name) == 0){
-                    if (strcmp($stat->abbreviation,EPStat::$MOXIE) != 0){
+                if (strcmp($stat->getAbbreviation(),$name) == 0){
+                    if (strcmp($stat->getAbbreviation(),EPStat::$MOXIE) != 0){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
@@ -1624,8 +1624,8 @@ class EPCharacterCreator implements Savable
             return false;
         }else{
             foreach ($this->character->ego->stats as $stat){
-                if (strcmp($stat->abbreviation,$name) == 0){
-                    if (strcmp($stat->abbreviation,EPStat::$MOXIE) != 0){
+                if (strcmp($stat->getAbbreviation(),$name) == 0){
+                    if (strcmp($stat->getAbbreviation(),EPStat::$MOXIE) != 0){
                         array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (Stat not be changed !)', EPCreatorErrors::$RULE_ERROR));
                         return false;
                     }
