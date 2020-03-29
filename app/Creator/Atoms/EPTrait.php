@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use App\Models\Traits;
+
 /**
  * Traits are a primary way that players customize their characters.
  * They can provide both numeric and non-numeric advantages.
@@ -10,6 +12,7 @@ namespace App\Creator\Atoms;
  * In addition, there are Neutral, 0 Cost traits.
  * Within this system, BonusMaluses are used to describe all effects.  So, traits are BonusMalus containers.
  *
+ * @aurthor Arthur Moore
  * @author reinhardt
  */
 class EPTrait extends EPAtom
@@ -22,30 +25,11 @@ class EPTrait extends EPAtom
     static $CAN_USE_BIO = 'BIO';
     static $CAN_USE_SYNTH = 'SYNTH';
     static $CAN_USE_POD = 'POD';
-    /*
-     * An enum value of [$CAN_USE_EVERYBODY, $CAN_USE_BIO, $CAN_USE_SYNTH, $CAN_USE_POD]
-     * @var string
-     */
-    public $canUse;
-
-    /*
-     * Determines if this is for an Ego, Morph or both.
-     * Traits for both are null!
-     * @var bool|null
-     */
-    private $isForMorph;
-    /*
-     * How much the trait is worth.
-     * Also stores negative traits as negative, and neutral traits as 0 internally.
-     * @var int
-     */
-    private $cpCost;
 
     /**
-     * TODO: Convert this to a private variable with a getter
-     * @var int
+     * @var Traits
      */
-    public $level;
+    protected $model;
 
     /**
      * @var EPBonusMalus[]
@@ -57,21 +41,11 @@ class EPTrait extends EPAtom
     {
         $savePack = parent::getSavePack();
 
-        $savePack['canUse'] = $this->canUse;
-
-        $savePack['isForMorph'] =  $this->isForMorph;
-        $savePack['cpCost'] =  $this->cpCost;
-
-        $savePack['level'] =  $this->level;
-
         $bmSavePacks = array();
         foreach($this->bonusMalus as $m){
             array_push($bmSavePacks	, $m->getSavePack());
         }
         $savePack['bmSavePacks'] = $bmSavePacks;
-
-        //Included for backwards compatibility
-        $savePack['mandatory'] = null;
 
         return $savePack;
     }
@@ -82,33 +56,16 @@ class EPTrait extends EPAtom
      */
     public static function __set_state(array $an_array)
     {
-        //Backwards compatibility with older (pre 1.53) save files
-        if(isset($an_array['traitEgoMorph'])) {
-            $isForMorph = ($an_array['traitEgoMorph'] == 'MOR');
-        } else {
-            $isForMorph = $an_array['isForMorph'];
-        }
         //Fix a Trait being mis-named in 1.53 and below!
         $an_array['name'] = str_replace("Improved Imm. Sys. Morph I", "Improved Immune System Morph I", (string)$an_array['name']);
         $an_array['name'] = str_replace("Improved Imm. Sys. Morph II", "Improved Immune System Morph II", (string)$an_array['name']);
         //TODO:  Add a warning on load that "Pain Tolerance morph I" did not have its effect (bonusMalus) added!
 
-        $object = new self((string)$an_array['name'], $isForMorph, 0);
+        $object = new self(Traits::whereName((string)$an_array['name']));
         parent::set_state_helper($object, $an_array);
 
-        $object->canUse = (string)$an_array['canUse'];
-        $object->cpCost = (int)$an_array['cpCost'];
-        $object->level  = (int)$an_array['level'];
         foreach ($an_array['bmSavePacks'] as $m) {
             array_push($object->bonusMalus, EPBonusMalus::__set_state($m));
-        }
-
-        //Backwards compatibility with older (pre 1.53) save files
-        if (isset($an_array['traitPosNeg'])) {
-            $isNegative = filter_var($an_array['traitPosNeg'], FILTER_VALIDATE_BOOLEAN);
-            if ($isNegative) {
-                $object->cpCost = -$object->cpCost;
-            }
         }
 
         return $object;
@@ -116,49 +73,36 @@ class EPTrait extends EPAtom
 
     /**
      * EPTrait constructor.
-     * @param string         $name
-     * @param string         $description
-     * @param bool|null      $isForMorph     Traits can be for Egos, Morphs, or both.  Both is represented by null.
-     * @param int            $cpCost
-     * @param EPBonusMalus[] $bonusMalusArray
-     * @param int            $level
-     * @param string         $canUse          An enum value of [$CAN_USE_EVERYBODY, $CAN_USE_BIO, $CAN_USE_SYNTH, $CAN_USE_POD]
+     * @param Traits $model
      */
-    function __construct(
-        string $name,
-        ?bool $isForMorph,
-        int $cpCost,
-        string $description = '',
-        array $bonusMalusArray = array(),
-        int $level = 1,
-        string $canUse = 'EVERY'
-    ) {
-        parent::__construct($name, $description);
-        $this->isForMorph = $isForMorph;
-        $this->cpCost     = $cpCost;
-        $this->bonusMalus = $bonusMalusArray;
-        $this->level = $level;
-        $this->canUse = $canUse;
+    function __construct(Traits $model) {
+        parent::__construct("Unused", "");
+        $this->model = $model;
+
+        $this->bonusMalus = array();
+        foreach($this->model->bonusMalus as $bonusMalus) {
+            $this->bonusMalus [] = new EPBonusMalus($bonusMalus);
+        }
+    }
+
+    public function getName(): string
+    {
+        return $this->model->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->model->description;
     }
 
     /**
      * Match identical traits, even if atom Uids differ
-     *
-     * Check if *all* trait values match.
-     * This is more expensive than EPAtom's version, but catches duplicate traits with different Uids.
      * @param EPTrait $trait
      * @return bool
      */
     public function match($trait): bool
     {
-        if (strcasecmp($trait->getName(),$this->getName()) == 0 &&
-            $trait->isForMorph===$this->isForMorph &&
-            $trait->cpCost===$this->cpCost &&
-            $trait->level===$this->level &&
-            $trait->canUse===$this->canUse){
-                return true;
-        }
-        return false;
+        return $this->model->getKey() === $trait->model->getKey();
     }
 
     /**
@@ -167,7 +111,7 @@ class EPTrait extends EPAtom
      */
     function isPositive(): bool
     {
-        return $this->cpCost > 0;
+        return $this->model->cpCost > 0;
     }
 
     /**
@@ -176,7 +120,7 @@ class EPTrait extends EPAtom
      */
     function isNegative(): bool
     {
-        return $this->cpCost < 0;
+        return $this->model->cpCost < 0;
     }
 
     /**
@@ -185,7 +129,7 @@ class EPTrait extends EPAtom
      */
     function isNeutral(): bool
     {
-        return $this->cpCost == 0;
+        return $this->model->cpCost == 0;
     }
 
     /**
@@ -194,10 +138,10 @@ class EPTrait extends EPAtom
      */
     function isEgo(): bool
     {
-        if (is_null($this->isForMorph)) {
+        if (is_null($this->model->isForMorph)) {
             return true;
         }
-        return !$this->isForMorph;
+        return !$this->model->isForMorph;
     }
 
     /**
@@ -206,10 +150,10 @@ class EPTrait extends EPAtom
      */
     function isMorph(): bool
     {
-        if (is_null($this->isForMorph)) {
+        if (is_null($this->model->isForMorph)) {
             return true;
         }
-        return (bool)$this->isForMorph;
+        return (bool)$this->model->isForMorph;
     }
 
     /**
@@ -218,6 +162,7 @@ class EPTrait extends EPAtom
      */
     public function isPsyTrait(): bool
     {
+        //TODO:  Deal with Lost Psy Trait!
         if ($this->getName() === EPTrait::PSY_CHI_TRAIT_NAME || $this->getName() === EPTrait::PSY_GAMMA_TRAIT_NAME) {
             return true;
         }
@@ -230,6 +175,7 @@ class EPTrait extends EPAtom
      */
     public function isPsy2Trait(): bool
     {
+        //TODO:  Deal with Lost Psy Trait!
         if ($this->getName() === EPTrait::PSY_GAMMA_TRAIT_NAME) {
             return true;
         }
@@ -243,10 +189,67 @@ class EPTrait extends EPAtom
     public function getCpCost(): int
     {
         if ($this->isNegative()) {
-            return -$this->cpCost;
+            return -$this->model->cpCost;
         }
-        return $this->cpCost;
+        return $this->model->cpCost;
     }
+
+    public function getLevel(): int
+    {
+        return $this->model->level;
+    }
+
+
+    /**
+     * Please note, Infomorphs can't use traits!
+     *
+     * @return bool
+     */
+    public function canUseAllMorphs(): bool
+    {
+        //Don't use the isEgo check because that's not the opposite.
+        if (!$this->isMorph()) {
+            return false;
+        }
+        return $this->model->JustFor === EPTrait::$CAN_USE_EVERYBODY;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canUseSynthmorph(): bool
+    {
+        //Don't use the isEgo check because that's not the opposite.
+        if (!$this->isMorph()) {
+            return false;
+        }
+        return ($this->model->JustFor === EPTrait::$CAN_USE_EVERYBODY) || ($this->model->JustFor === EPTrait::$CAN_USE_SYNTH);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canUseBiomorph(): bool
+    {
+        //Don't use the isEgo check because that's not the opposite.
+        if (!$this->isMorph()) {
+            return false;
+        }
+        return ($this->model->JustFor === EPTrait::$CAN_USE_EVERYBODY) || ($this->model->JustFor === EPTrait::$CAN_USE_BIO);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canUsePodmorph(): bool
+    {
+        //Don't use the isEgo check because that's not the opposite.
+        if (!$this->isMorph()) {
+            return false;
+        }
+        return ($this->model->JustFor === EPTrait::$CAN_USE_EVERYBODY) || ($this->model->JustFor === EPTrait::$CAN_USE_POD);
+    }
+
 
     /**
      * Get all positive traits from an array

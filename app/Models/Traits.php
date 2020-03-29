@@ -15,10 +15,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int                          $id
  * @property string                       $name
  * @property string                       $description
- * @property bool                         $isForMorph
- * @property int|null                     $cpCost      null cpCost means the player can not add it.
+ * @property bool                         $isForMorph Determines if this is for an Ego, Morph or both. Traits for both are null!
+ * @property int|null                     $cpCost      null cpCost means the player can not add it. Negative means it gives points (negative traits). 0 means Neutral. Positive means positive trait.
  * @property int                          $level
- * @property string                       $JustFor     Some traits have Morph restrictions, those are set here.
+ * @property string                       $JustFor     Some traits have Morph restrictions, those are set here. An enum value of EPTrait::[$CAN_USE_EVERYBODY, $CAN_USE_BIO, $CAN_USE_SYNTH, $CAN_USE_POD]
  * @property-read Collection|BonusMalus[] $bonusMalus
  * @method static Builder|Traits newModelQuery()
  * @method static Builder|Traits newQuery()
@@ -53,6 +53,19 @@ class Traits extends Model
             return null;
         }
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * This is because a trait may have a NULL cost, which indicates that it is built in and may never be user purchased.
+     * @param $value
+     * @return int|null
+     */
+    public function getCpCostAttribute($value)
+    {
+        if (is_null($value)) {
+            return null;
+        }
+        return intval($value);
     }
 
     /**

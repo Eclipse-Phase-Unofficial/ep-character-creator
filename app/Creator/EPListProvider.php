@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Creator;
 
 use App\Models\BonusMalus;
+use App\Models\Traits;
 use \Illuminate\Support\Facades\DB;
 use App\Creator\Atoms\EPAi;
 use App\Creator\Atoms\EPAptitude;
@@ -84,66 +85,21 @@ class EPListProvider {
      */
     function getListTraits(): array
     {
-        $traitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `description`, `isForMorph`, `cpCost` , `level` , `JustFor` FROM `traits`");
-        $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($traitRow = $traitRes->fetch()) {
-            $bonusMalusTraitList = array();
-            $bonusMalus = self::$database->query("SELECT `trait_name`, `bonusMalus_name`,`occurrence` FROM `bonusMalus_trait` WHERE `trait_name` = '".$this->adjustForSQL($traitRow['name'])."';");
-            $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
-            while ($bmRow = $bonusMalus->fetch()) {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
-                if($epBonMal == null){
-                    $this->addError("Get Trait getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
-                    return null;
-                }
-                else{
-                    for($i = 0; $i < $bmRow['occurrence']; $i++ ){
-                        //$bonusMalusTraitList[$bmRow['bonusMalus_name']] = $epBonMal;
-                        array_push($bonusMalusTraitList, $epBonMal);
-                    }
-                }
-            }
-            $isForMorph = null;
-            if (!is_null($traitRow['isForMorph'])) {
-                $isForMorph = filter_var($traitRow['isForMorph'], FILTER_VALIDATE_BOOLEAN);
-            }
-            $trait = new EPTrait($traitRow['name'], $isForMorph, intval($traitRow['cpCost']),
-                $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
-            array_push($traitList, $trait);
+        $traits = array();
+        foreach(Traits::all() as $trait) {
+            $traits [] = new EPTrait($trait);
         }
-        return $traitList;
+        return $traits;
     }
 
+    /**
+     * @param string $traitName
+     * @return EPTrait
+     */
     function getTraitByName(string $traitName): EPTrait
     {
-        $bonusMalusTraitList = array();
-        $traitRes = self::$database->query("SELECT `name`, `description`, `isForMorph`, `cpCost`, `level`, `JustFor` FROM `traits` WHERE `name` = '".$this->adjustForSQL($traitName)."';");
-        $traitRes->setFetchMode(\PDO::FETCH_ASSOC);
-        $traitRow = $traitRes->fetch();
-
-        $bonusMalus = self::$database->query("SELECT `trait_name`, `bonusMalus_name`,`occurrence` FROM `bonusMalus_trait` WHERE `trait_name` = '".$this->adjustForSQL($traitRow['name'])."';");
-        $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($bmRow = $bonusMalus->fetch()) {
-            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
-            if($epBonMal == null){
-                $this->addError("Get Trait by name getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
-                return null;
-            }
-            else{
-                for($i = 0; $i < $bmRow['occurrence']; $i++ ){
-                    //$bonusMalusTraitList[$bmRow['bonusMalus_name']] = $epBonMal;
-                    array_push($bonusMalusTraitList, $epBonMal);
-                }
-            }
-        }
-        $isForMorph = null;
-        if (!is_null($traitRow['isForMorph'])) {
-            $isForMorph = filter_var($traitRow['isForMorph'], FILTER_VALIDATE_BOOLEAN);
-        }
-        $trait = new EPTrait($traitRow['name'], $isForMorph, intval($traitRow['cpCost']),
-            $traitRow['description'], $bonusMalusTraitList, intval($traitRow['level']), $traitRow['JustFor']);
-        return $trait;
+        $trait = Traits::whereName($traitName)->first();
+        return new EPTrait($trait);
     }
 
     // ==== APTITUDE ======

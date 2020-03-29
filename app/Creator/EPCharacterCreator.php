@@ -920,7 +920,7 @@ class EPCharacterCreator implements Savable
 	$traitName = $this->removeLastWord($trait->getName());
         foreach ($currentTraits as $t){
             if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-                    $trait->level > $t->level){
+                    $trait->getLevel() > $t->getLevel()){
                 return true;
             }
         }
@@ -938,7 +938,7 @@ class EPCharacterCreator implements Savable
 	    $traitName = $this->removeLastWord($trait->getName());
 	    foreach ($currentTraits as $t){
 	        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-	        	$trait->level < $t->level){
+	        	$trait->getLevel() < $t->getLevel()){
 	            return true;
 	        }
 	    }
@@ -952,7 +952,7 @@ class EPCharacterCreator implements Savable
     		$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($morph->additionalTraits as $t){
 		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-		        	$t->level < $trait->level){
+		        	$t->getLevel() < $trait->getLevel()){
 		            	$this->removeTrait($t,$morph);
 		            	break;
 		        }
@@ -962,7 +962,7 @@ class EPCharacterCreator implements Savable
 	    	$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($this->character->ego->additionalTraits as $t){
 		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-		        	$t->level < $trait->level){
+		        	$t->getLevel() < $trait->getLevel()){
 		            	$this->removeTrait($t,null);
 		            	break;
 		        }
@@ -977,7 +977,7 @@ class EPCharacterCreator implements Savable
     		$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($morph->additionalTraits as $t){
 		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-		        	$t->level > $trait->level){
+		        	$t->getLevel() > $trait->getLevel()){
 		            	$this->removeTrait($t,$morph);
 		            	break;
 		        }
@@ -987,7 +987,7 @@ class EPCharacterCreator implements Savable
 	    	$traitName = $this->removeLastWord($trait->getName());
 		    foreach ($this->character->ego->additionalTraits as $t){
 		        if (strcmp($this->removeLastWord($t->getName()), $traitName) == 0 &&
-		        	$t->level > $trait->level){
+		        	$t->getLevel() > $trait->getLevel()){
 		            	$this->removeTrait($t,null);
 		            	break;
 		        }

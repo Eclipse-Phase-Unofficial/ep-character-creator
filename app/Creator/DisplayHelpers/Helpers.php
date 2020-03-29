@@ -190,38 +190,25 @@ class Helpers
     }
 
     /**
+     * If the morph can use that trait
+     *
      * @param EPMorph $morph
      * @param EPTrait $trait
      * @return bool
      */
     static function isTraitLegal(EPMorph $morph, EPTrait $trait)
     {
-        if ($morph->morphType == EPMorph::$INFOMORPH) {
-            return false;
+        switch ($morph->morphType) {
+            case EPMorph::$BIOMORPH:
+                return $trait->canUseBiomorph();
+            case EPMorph::$SYNTHMORPH:
+                return $trait->canUseSynthmorph();
+            case EPMorph::$PODMORPH:
+                return $trait->canUsePodmorph();
+            case EPMorph::$INFOMORPH:
+                return false;
         }
-
-        if ($trait->canUse == EPTrait::$CAN_USE_EVERYBODY) {
-            return true;
-        } else {
-            if ($trait->canUse == EPTrait::$CAN_USE_BIO) {
-                if ($morph->morphType == EPMorph::$BIOMORPH) {
-                    return true;
-                }
-            } else {
-                if ($trait->canUse == EPTrait::$CAN_USE_SYNTH) {
-                    if ($morph->morphType == EPMorph::$SYNTHMORPH) {
-                        return true;
-                    }
-                } else {
-                    if ($trait->canUse == EPTrait::$CAN_USE_POD) {
-                        if ($morph->morphType == EPMorph::$PODMORPH) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
+        return $trait->canUseAllMorphs();
     }
 
 
