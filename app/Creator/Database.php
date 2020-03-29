@@ -12,6 +12,8 @@ namespace App\Creator;
 use App\Creator\Atoms\EPAptitude;
 use App\Creator\Atoms\EPAtom;
 use App\Creator\Atoms\EPSkill;
+use InvalidArgumentException;
+use RuntimeException;
 
 class Database
 {
@@ -223,7 +225,14 @@ class Database
 
     function getTraitByName(string $name): Atoms\EPTrait
     {
-        return EPAtom::getAtomByName($this->traits, $name);
+        if(empty($name)) {
+            throw new InvalidArgumentException("$name may never be empty.");
+        }
+        $result = EPAtom::getAtomByName($this->traits, $name);
+        if (is_null($result)) {
+            throw new RuntimeException("Trait (" . $name . ") Does not exist!");
+        }
+        return $result;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
