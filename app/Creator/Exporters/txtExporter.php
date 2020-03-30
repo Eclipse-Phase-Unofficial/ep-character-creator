@@ -6,7 +6,6 @@ use App\Creator\EPBook;
 use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPMorph;
 use App\Creator\Atoms\EPPsySleight;
-use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPTrait;
 
 if(null !== creator()) {
@@ -174,10 +173,12 @@ if(null !== creator()) {
 
     //PSI SLEIGHTS
     ."Psi Sleights<br><br>");
-
+    /**
+     * @var EPPsySleight $sleight
+     */
     foreach($psySleights as $sleight){
          $type = "(P)";
-         if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) {
+         if($sleight->isActive()) {
              $type = "(A)";
          }
          output(formatResult($type." ".$sleight->getName())

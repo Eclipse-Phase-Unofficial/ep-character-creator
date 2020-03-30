@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Creator;
 
 use App\Models\BonusMalus;
+use App\Models\PsySleight;
 use App\Models\Reputation;
 use App\Models\Stat;
 use App\Models\Traits;
@@ -553,7 +554,6 @@ class EPListProvider {
         return $morphList;
     }
 
-
     //PSY SLEIGHT
 
     /**
@@ -562,31 +562,9 @@ class EPListProvider {
     function getListPsySleights(): array
      {
         $psyList = array();
-        $psyRes = self::$database->query("SELECT `name`, `description`, `type`, `range`, `duration`, `action`, `strainMod`, `level`,`skill_name` FROM `psySleights`");
-        $psyRes->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($psyRow = $psyRes->fetch())
-        {
-            $bonusMalusPsyList = array();
-            $bonusMalus = self::$database->query("SELECT `psySleight_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_psySleight` WHERE `psySleight_name` = '".$this->adjustForSQL($psyRow['name'])."';");
-            $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
-            while ($bmRow = $bonusMalus->fetch())
-            {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
-                if($epBonMal == null)
-                {
-                    $this->addError("Get Psy getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
-                    return null;
-                }
-                else{
-                    for($i = 0; $i < $bmRow['occurrence']; $i++ )
-                    {
-                        array_push($bonusMalusPsyList, $epBonMal);
-                    }
-                }
-            }
-            $psy = new EPPsySleight($psyRow['name'],$psyRow['description'],$psyRow['type'],$psyRow['range'],$psyRow['duration'],$psyRow['action'],$psyRow['strainMod'],$psyRow['level'],$bonusMalusPsyList,$psyRow['skill_name']?? "");
-            array_push($psyList, $psy);
-            }
+        foreach (PsySleight::all() as $sleight) {
+            $psyList [] = new EPPsySleight($sleight);
+        }
         return $psyList;
     }
 

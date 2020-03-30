@@ -9,7 +9,7 @@ use App\Creator\DisplayHelpers\Li;
 	<?php
 		 $currentPsyS = creator()->getCurrentPsySleights();
 		 $listPsyS = EpDatabase()->getPsySleights();
-		 
+
 		 //CHI SECTION
  		echo "<li class='foldingListSection' id='chi'>";
  		echo "Chi Sleight";
@@ -17,7 +17,7 @@ use App\Creator\DisplayHelpers\Li;
  		if(creator()->character->ego->canUsePsyTraits()){
 	 		$lishtChi = array();
 	 		foreach($listPsyS as $m){
-	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_CHI_PSY){
+	 		 	if(!$m->isPsyGamma()){
 	     		 	array_push($lishtChi, $m);
 	 		 	}
 	 		}
@@ -31,7 +31,7 @@ use App\Creator\DisplayHelpers\Li;
 		 	echo "		<label>You must take the trait [Psi I or II] for using psi chi </label>";
 		 	echo "</li>";
 	 	}
- 		
+
  		//GAMMA SECTION
  		echo "<li class='foldingListSection' id='gamma'>";
  		echo "Gamma Sleight";
@@ -39,7 +39,7 @@ use App\Creator\DisplayHelpers\Li;
  		if(creator()->character->ego->canUsePsy2Traits()){
  			$listGamma = array();
 	 		foreach($listPsyS as $m){
-	 		 	if($m->psyLevel == EPPsySleight::$LEVEL_GAMMA_PSY){
+	 		 	if($m->isPsyGamma()){
 	     		 	array_push($listGamma, $m);
 	 		 	}
 	 		}

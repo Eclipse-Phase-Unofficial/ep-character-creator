@@ -154,12 +154,15 @@ class pdfExporterV2_fpdf {
 
         //PSI SLEIGHTS
         $formattedPsi = array();
+        /**
+         * @var EPPsySleight $sleight
+         */
         foreach($psySleights as $sleight)
         {
             $book = new EPBook($sleight->getName());
             $item = array();
             //set the slight token to active or passive
-            if($sleight->psyType == EPPsySleight::$ACTIVE_PSY) {
+            if($sleight->isActive()) {
                 $type = "(A) ";
             } else {
                 $type = "(P) ";

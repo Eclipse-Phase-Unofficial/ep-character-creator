@@ -1012,7 +1012,7 @@ class EPCharacterCreator implements Savable
                 array_push($this->errorList, new EPCreatorErrors('EPCharacterCreator:'.__LINE__.' (This character ego own already this psySleight !)', EPCreatorErrors::$SYSTEM_ERROR));
                 return false;
             }
-            $psySleight->buyInCreationMode = false;
+            $psySleight->purchasedInCreationMode = false;
             array_push($this->character->ego->psySleights,$psySleight);
             $this->evoRezPoint -= config('epcc.PsyCpCost');
             return true;
@@ -1037,7 +1037,7 @@ class EPCharacterCreator implements Savable
             return false;
         }
         $psySleight->removeFromArray($this->character->ego->psySleights);
-        if (!$psySleight->buyInCreationMode){
+        if (!$psySleight->purchasedInCreationMode){
             $this->evoRezPoint += config('epcc.PsyCpCost');
         }
         return true;
@@ -2303,7 +2303,7 @@ class EPCharacterCreator implements Savable
             $s->multiPsyMod = 1;
         }
         foreach ($this->character->ego->psySleights as $ps){
-            if ($ps->isActif === true || $ps->action === EPPsySleight::$ACTION_AUTOMATIC)
+            if (!$ps->isActive() || $ps->getAction() === EPPsySleight::$ACTION_AUTOMATIC)
             foreach ($ps->bonusMalus as $bm){
                 $this->applyBonusMalus($bm,EPBonusMalus::$FROM_PSY);
             }
@@ -2477,16 +2477,6 @@ class EPCharacterCreator implements Savable
             $res += $r->getValue();
         }
         return $res;
-    }
-    function activePsySleights(){
-        foreach ($this->character->ego->psySleights as $p){
-            $p->isActif = true;
-        }
-    }
-    function unactivePsySleights(){
-        foreach ($this->character->ego->psySleights as $p){
-            $p->isActif = false;
-        }
     }
 
     /**
