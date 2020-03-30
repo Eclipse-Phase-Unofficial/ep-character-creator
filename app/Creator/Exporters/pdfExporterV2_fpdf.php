@@ -448,7 +448,7 @@ class pdfExporterV2_fpdf {
         foreach($skillList as $skill)
         {
             $item = array();
-            if($skill->baseValue > 0 || $skill->isDefaultable == EPSkill::$DEFAULTABLE)
+            if($skill->baseValue > 0 || $skill->isDefaultable)
             {
                 //set the active or knowledge skill token
                 if($skill->isKnowledge())
