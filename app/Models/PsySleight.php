@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -104,17 +103,5 @@ class PsySleight extends Model
             'name',
             'name'
         )->withPivot('occurrence');
-    }
-
-    /**
-     * Make sure the data isn't doing something stupid.
-     * @throws Exception
-     */
-    public function sanityCheck()
-    {
-        //'MUL' is EPBonusMalus::$MULTIPLE
-        if ($this->isActive && is_null($this->skill)) {
-            throw new Exception("Active Psy Sleights must have an associated skill!");
-        }
     }
 }
