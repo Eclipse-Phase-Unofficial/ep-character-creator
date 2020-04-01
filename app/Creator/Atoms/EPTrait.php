@@ -61,7 +61,7 @@ class EPTrait extends EPAtom
         $an_array['name'] = str_replace("Improved Imm. Sys. Morph II", "Improved Immune System Morph II", (string)$an_array['name']);
         //TODO:  Add a warning on load that "Pain Tolerance morph I" did not have its effect (bonusMalus) added!
 
-        $object = new self(Traits::whereName((string)$an_array['name']));
+        $object = new self(Traits::whereName((string)$an_array['name'])->first());
         parent::set_state_helper($object, $an_array);
 
         foreach ($an_array['bmSavePacks'] as $m) {

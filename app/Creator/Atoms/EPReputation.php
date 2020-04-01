@@ -104,7 +104,7 @@ class EPReputation extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self(Reputation::whereName((string)$an_array['name']));
+        $object = new self(Reputation::whereName((string)$an_array['name'])->first());
         parent::set_state_helper($object, $an_array);
 
         $object->value         = (int)$an_array['value'];
