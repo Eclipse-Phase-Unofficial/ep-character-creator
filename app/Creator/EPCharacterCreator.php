@@ -1193,9 +1193,10 @@ class EPCharacterCreator implements Savable
         }
         return null;
     }
-    function getAptitudeByAbbreviation($abbrev){
+    function getAptitudeByAbbreviation($abbrev): ?EPAptitude
+    {
         foreach ($this->character->ego->aptitudes as $a){
-            if (strcmp($a->abbreviation,$abbrev) == 0){
+            if (strcmp($a->getAbbreviation(),$abbrev) == 0){
                 return $a;
             }
         }
@@ -1351,7 +1352,7 @@ class EPCharacterCreator implements Savable
                 return false;
             }
 
-            $oldApt = $this->back->getAptitudeByAbbreviation($apt->abbreviation);
+            $oldApt = $this->back->getAptitudeByAbbreviation($apt->getAbbreviation());
             $diff = $newValue - $apt->value;
             if ($newValue < $oldApt->value){
                 $this->evoRezPoint += max(0,$apt->value - $oldApt->value) * config('epcc.AptitudePointCost');
@@ -1367,19 +1368,19 @@ class EPCharacterCreator implements Savable
             }
         }
     }
-    function checkSkillsForChangeAptitudeValue($apt,$diff){
+    function checkSkillsForChangeAptitudeValue(EPAptitude $apt,$diff){
         if ($diff == 0) return;
 
         if ($diff > 0){
             foreach ($this->character->ego->skills as $sk) {
-                if (strcmp($sk->linkedAptitude->abbreviation,$apt->abbreviation) == 0){
+                if (strcmp($sk->linkedAptitude->getAbbreviation(),$apt->getAbbreviation()) == 0){
                     $up = ($sk->baseValue + $sk->getBonusForCost()) - config('epcc.SkillLimitForImprove');
                     $this->evoRezPoint -= max(0,min($up,$diff));
                 }
             }
         }else{
             foreach ($this->character->ego->skills as $sk) {
-                if (strcmp($sk->linkedAptitude->abbreviation,$apt->abbreviation) == 0){
+                if (strcmp($sk->linkedAptitude->getAbbreviation(),$apt->getAbbreviation()) == 0){
                     $t = max(0,config('epcc.SkillLimitForImprove') - ($sk->baseValue + $sk->getBonusForCost()));
                     $t = max(0,-$diff - $t);
                     $this->evoRezPoint += $t;
@@ -1812,7 +1813,7 @@ class EPCharacterCreator implements Savable
                 $newValue = min($newValue,$max);
                 $newValue = max($newValue,$min);
             }
-            $this->setAptitudeValue($aptitude->abbreviation, $newValue);
+            $this->setAptitudeValue($aptitude->getAbbreviation(), $newValue);
         }
         foreach ($this->character->ego->reputations as $reputation){
             $newValue = $reputation->value;
@@ -1834,7 +1835,7 @@ class EPCharacterCreator implements Savable
                 $min = $aiAptitude->getMinEgoValue();
                 $newValue = min($newValue,$max);
                 $newValue = max($newValue,$min);
-                $this->setAiAptitudeValue($ai,$aiAptitude->abbreviation, $newValue);
+                $this->setAiAptitudeValue($ai,$aiAptitude->getAbbreviation(), $newValue);
             }
             foreach ($ai->skills as $aiSkill){
               $maxValue = $aiSkill->getMaxValue() - $aiSkill->getBonusForCost();

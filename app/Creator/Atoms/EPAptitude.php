@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use App\Models\Aptitude;
+
 /**
  * A character's Aptitude
  *
@@ -21,15 +23,15 @@ class EPAptitude extends EPAtom{
     static $WILLPOWER  = 'WIL';
 
     /**
-     * Enum of [$COGNITION, $COORDINATION, $INTUITION, $REFLEXS, $SAVVY, $SOMATICS, $WILLPOWER]
-     * @var string
+     * @var Aptitude
      */
-    public $abbreviation;
+    protected $model;
+
     /**
      * @var int
      */
     public $value;
-    
+
     public $maxEgoValue;
     public $maxEgoValueMorphMod;
     public $maxEgoValueTraitMod;
@@ -37,7 +39,7 @@ class EPAptitude extends EPAtom{
     public $maxEgoValueFactionMod;
     public $maxEgoValueSoftgearMod;
     public $maxEgoValuePsyMod;
-    
+
     public $minEgoValue;
     public $minEgoValueMorphMod;
     public $minEgoValueTraitMod;
@@ -45,7 +47,7 @@ class EPAptitude extends EPAtom{
     public $minEgoValueFactionMod;
     public $minEgoValueSoftgearMod;
     public $minEgoValuePsyMod;
-    
+
     public $maxMorphValue;
     public $maxMorphValueMorphMod;
     public $maxMorphValueTraitMod;
@@ -53,7 +55,7 @@ class EPAptitude extends EPAtom{
     public $maxMorphValueFactionMod;
     public $maxMorphValueSoftgearMod;
     public $maxMorphValuePsyMod;
-    
+
     public $minMorphValue;
     public $minMorphValueMorphMod;
     public $minMorphValueTraitMod;
@@ -61,7 +63,7 @@ class EPAptitude extends EPAtom{
     public $minMorphValueFactionMod;
     public $minMorphValueSoftgearMod;
     public $minMorphValuePsyMod;
-        
+
     //Special for feeble negative trait
     public $feebleMax;
 
@@ -109,65 +111,64 @@ class EPAptitude extends EPAtom{
     public $minValue;
 
     function getMaxEgoValue(){
-        $res =  $this->maxEgoValue + $this->maxEgoValueMorphMod + $this->maxEgoValueTraitMod + 
+        $res =  $this->maxEgoValue + $this->maxEgoValueMorphMod + $this->maxEgoValueTraitMod +
                 $this->maxEgoValueBackgroundMod + $this->maxEgoValueFactionMod +
                 $this->maxEgoValueSoftgearMod + $this->maxEgoValuePsyMod;
         // Special case Feeble negative trait
         if ($this->feebleMax){
             $res = min(4,$res);
-        } 
+        }
         return min($res,$this->absoluteMaxValue);
     }
     function getMinEgoValue(){
-        return  $this->minEgoValue + $this->minEgoValueMorphMod + $this->minEgoValueTraitMod + 
+        return  $this->minEgoValue + $this->minEgoValueMorphMod + $this->minEgoValueTraitMod +
                 $this->minEgoValueBackgroundMod + $this->minEgoValueFactionMod +
                 $this->minEgoValueSoftgearMod + $this->minEgoValuePsyMod;
     }
     function getMaxMorphValue(){
-        $res =  $this->maxMorphValue + $this->maxMorphValueMorphMod + $this->maxMorphValueTraitMod + 
+        $res =  $this->maxMorphValue + $this->maxMorphValueMorphMod + $this->maxMorphValueTraitMod +
                 $this->maxMorphValueBackgroundMod + $this->maxMorphValueFactionMod +
                 $this->maxMorphValueSoftgearMod + $this->maxMorphValuePsyMod;
         // Special case Feeble negative trait
         if ($this->feebleMax){
             $res = min(10,$res);
-        } 
-        return min($res,$this->absoluteMaxValue);        
+        }
+        return min($res,$this->absoluteMaxValue);
     }
     function getMinMorphValue(){
-        return  $this->minMorphValue + $this->minMorphValueMorphMod + $this->minMorphValueTraitMod + 
+        return  $this->minMorphValue + $this->minMorphValueMorphMod + $this->minMorphValueTraitMod +
                 $this->minMorphValueBackgroundMod + $this->minMorphValueFactionMod +
                 $this->minMorphValueSoftgearMod + $this->minMorphValuePsyMod;
-    }  
+    }
     function getValue(){
         $res = $this->value + $this->backgroundMod + $this->factionMod;
-        $res = min($res,$this->getMaxEgoValue());       
+        $res = min($res,$this->getMaxEgoValue());
         $res += $this->traitMod + $this->softgearMod + $this->psyMod;
-        
+
         if ($this->activMorph){
             $res += $this->morphMod;
-            $res = min($res,$this->getMaxMorphValue());          
-        }         
+            $res = min($res,$this->getMaxMorphValue());
+        }
 
-        return min($res,$this->absoluteMaxValue);            
+        return min($res,$this->absoluteMaxValue);
     }
     function getValueForCpCost(){
         $res = $this->value + $this->backgroundMod + $this->factionMod;
         $res = min($res,$this->getMaxEgoValue());
 
-        return $res;            
+        return $res;
     }
     function getEgoValue(){
         $res = $this->value + $this->backgroundMod + $this->factionMod;
         $res = min($res,$this->getMaxEgoValue());
         $res += $this->softgearMod + $this->psyMod;
 
-        return min($res,$this->absoluteMaxValue);            
+        return min($res,$this->absoluteMaxValue);
     }
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
-  
-        $savePack['abbreviation'] =  $this->abbreviation;
+
         $savePack['value'] =  $this->value;
         $savePack['maxValue'] =  $this->maxValue;
         $savePack['minValue'] =  $this->minValue;
@@ -178,10 +179,6 @@ class EPAptitude extends EPAtom{
         $savePack['softgearMod'] =  $this->softgearMod;
         $savePack['psyMod'] =  $this->psyMod;
 
-        //Only stored for backwards compatibility
-        $savePack['activMorph'] =  null;
-        $savePack['absoluteMaxValue'] =  $this->absoluteMaxValue;
-
         return $savePack;
     }
 
@@ -191,10 +188,9 @@ class EPAptitude extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self((string)$an_array['name'], '');
+        $object = new self(Aptitude::whereName((string)$an_array['name'])->first());
         parent::set_state_helper($object, $an_array);
 
-        $object->abbreviation  = (string)$an_array['abbreviation'];
         $object->value         = (int)$an_array['value'];
         $object->maxValue      = (int)$an_array['maxValue'];
         $object->minValue      = (int)$an_array['minValue'];
@@ -210,22 +206,19 @@ class EPAptitude extends EPAtom{
 
     /**
      * EPAptitude constructor.
-     * @param string   $name
-     * @param string   $abbreviation
-     * @param string   $description
-     * @param string[] $groups
+     * @param Aptitude $model
      */
-    function __construct(string $name, string $abbreviation, string $description = '', array $groups = array()) {
-        parent::__construct($name, $description);
-        $this->abbreviation = $abbreviation;
+    function __construct(Aptitude $model) {
+        parent::__construct("Unused", "");
+        $this->model = $model;
+
         $this->value            = config('epcc.AptitudesMinValue');
         $this->morphMod = 0;
-        $this->traitMod = 0;             
+        $this->traitMod = 0;
         $this->backgroundMod = 0;
         $this->factionMod = 0;
         $this->softgearMod = 0;
         $this->psyMod = 0;
-        $this->groups = $groups;
         $this->maxValue         = config('epcc.AptitudesMaxValue');
         $this->minValue         = config('epcc.AptitudesMinValue');
         $this->minEgoValue      = config('epcc.AptitudesMinValue');
@@ -237,17 +230,30 @@ class EPAptitude extends EPAtom{
         $this->absoluteMaxValue = config('epcc.AbsoluteAptitudesMaxValue');
     }
 
+    public function getName(): string
+    {
+        return $this->model->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->model->description;
+    }
+
+    public function getAbbreviation(): string
+    {
+        return $this->model->abbreviation;
+    }
+
     /**
-     * See if two Aptitudes are the same, regardless if their uids differ
+     * Match identical Aptitudes, even if atom Uids differ
      *
+     * This is more expensive than EPAtom's version, but catches duplicate Psy with different Uids.
      * @param EPAptitude $atom
      * @return bool
      */
-    function match($atom): bool
+    public function match($atom): bool
     {
-        if (strcmp($atom->abbreviation, $this->abbreviation) == 0) {
-            return true;
-        }
-        return false;
+        return $this->model->getKey() === $atom->model->getKey();
     }
 }

@@ -131,7 +131,7 @@ if(null !== creator()) {
 
         output(formatResult($skillType." ".$skillCompleteName)
         ."<tab>"
-        .$skill->linkedAptitude->abbreviation
+        .$skill->linkedAptitude->getAbbreviation()
         ."<tab><tab>");
 
         if(!empty($skill->specialization)){
@@ -217,7 +217,7 @@ if(null !== creator()) {
 
         $skillAptNonformated = "";
         foreach($ai->aptitudes as $aiApt){
-            $skillAptNonformated .= $aiApt->abbreviation."[";
+            $skillAptNonformated .= $aiApt->getAbbreviation()."[";
             $skillAptNonformated .= $aiApt->value."]   <br>";
         }
         foreach($ai->skills as $aiSkill){
@@ -368,7 +368,7 @@ if(null !== creator()) {
 
             output(formatResult($skillType." ".$skillCompleteName)
             ."<tab>"
-            .$skill->linkedAptitude->abbreviation
+            .$skill->linkedAptitude->getAbbreviation()
             ."<tab>"
             .$skill->getEgoValue()
             ."<tab>");

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Creator;
 
+use App\Models\Aptitude;
 use App\Models\BonusMalus;
 use App\Models\PsySleight;
 use App\Models\Reputation;
@@ -112,37 +113,16 @@ class EPListProvider {
      */
     function getListAptitudes(): array
     {
-        $apt = array();
-
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes`");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($row = $res->fetch()) {
-            $groups = $this->getListGroups($row['name']);
-            $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
-            //$apt[$epAppt->abbreviation] = $epAppt;
-            array_push($apt, $epAppt);
+        $aptitudes = array();
+        foreach (Aptitude::all() as $aptitude) {
+            $aptitudes [] = new EPAptitude($aptitude);
         }
-        return $apt;
+        return $aptitudes;
     }
 
     function getAptitudeByName(string $aptName): EPAptitude
     {
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `name` = '".$this->adjustForSQL($aptName)."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        $groups = $this->getListGroups($row['name']);
-        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
-        return $epAppt;
-    }
-
-    function getAptitudeByAbbreviation(string $abbrev): EPAptitude
-    {
-        $res = self::$database->query("SELECT `name`, `description`, `abbreviation` FROM `aptitudes` WHERE `abbreviation` = '".$abbrev."';");
-        $res->setFetchMode(\PDO::FETCH_ASSOC);
-        $row = $res->fetch();
-        $groups = $this->getListGroups($row['name']);
-        $epAppt = new EPAptitude($row['name'], $row['abbreviation'], $row['description'], $groups);
-        return $epAppt;
+        return new EPAptitude(Aptitude::whereName($aptName)->first());
     }
 
     //=== STATS ====
@@ -207,12 +187,19 @@ class EPListProvider {
     }
 
     // ===== Services ====
-    function getAptByAbreviation($listApts, ?string $abbreviation){
+
+    /**
+     * @param EPAptitude[] $listApts
+     * @param string|null  $abbreviation
+     * @return EPAptitude|null
+     */
+    function getAptByAbreviation(array $listApts, ?string $abbreviation): ?EPAptitude
+    {
         if (empty($abbreviation)) {
             return null;
         }
         foreach ($listApts as $ap){
-            if (strcmp($ap->abbreviation, $abbreviation) == 0){
+            if (strcmp($ap->getAbbreviation(), $abbreviation) == 0){
                 return $ap;
             }
         }

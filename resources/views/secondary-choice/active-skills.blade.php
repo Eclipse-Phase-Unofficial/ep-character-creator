@@ -62,7 +62,7 @@ use App\Creator\Atoms\EPSkill;
 		        	}
 
 					echo "		<td><input class='actskillbase' type='number' atomic='".$m->getUid()."' min=0 step=5 value='".$m->baseValue."'/></td>\n";
-		        	echo "		<td>".$m->linkedAptitude->abbreviation."</td>\n";
+		        	echo "		<td>".$m->linkedAptitude->getAbbreviation()."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
 		        	echo "		<td class='skillTotal'>".$m->getValue()."</td>\n";

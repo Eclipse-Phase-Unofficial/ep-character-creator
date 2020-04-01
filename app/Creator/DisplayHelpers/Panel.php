@@ -111,7 +111,7 @@ class Panel{
         }
         foreach($ai->aptitudes as $apt){
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>".$apt->abbreviation." <b>".$apt->value."</b></span>";
+            $output .= "<span class='bmGranted'>".$apt->getAbbreviation()." <b>".$apt->value."</b></span>";
             $output .= "</li>";
         }
 

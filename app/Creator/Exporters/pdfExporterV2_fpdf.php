@@ -192,7 +192,7 @@ class pdfExporterV2_fpdf {
 
             $skillAptNonformated = "";
             foreach($ai->aptitudes as $aiApt) {
-                $skillAptNonformated .= $aiApt->abbreviation . "[";
+                $skillAptNonformated .= $aiApt->getAbbreviation() . "[";
                 $skillAptNonformated .= $aiApt->value . "]\n";
             }
 

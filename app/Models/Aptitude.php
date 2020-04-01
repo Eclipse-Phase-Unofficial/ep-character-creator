@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int    $id
  * @property string $name
  * @property string $description
- * @property string $abbreviation
+ * @property string $abbreviation Enum of EPAPtitude::[$COGNITION, $COORDINATION, $INTUITION, $REFLEXS, $SAVVY, $SOMATICS, $WILLPOWER]
  * @method static Builder|Aptitude newModelQuery()
  * @method static Builder|Aptitude newQuery()
  * @method static Builder|Aptitude query()
