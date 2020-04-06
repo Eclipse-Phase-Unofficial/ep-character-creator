@@ -40,13 +40,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class PsySleight extends Model
 {
-    const RANGE_SELF = 'SELF';
+    const RANGE_SELF  = 'SELF';
     const RANGE_TOUCH = 'TOUCH';
     const RANGE_CLOSE = 'CLOSE';
-    const RANGE_PSY = 'PSY';
+    const RANGE_PSY   = 'PSY';
 
-    const DURATION_CONSTANT = 'constant';
-    const DURATION_INSTANT = 'instant';
+    const DURATION_CONSTANT  = 'constant';
+    const DURATION_INSTANT   = 'instant';
     const DURATION_TEMPORARY = 'temporary';
     const DURATION_SUSTAINED = 'sustained';
 

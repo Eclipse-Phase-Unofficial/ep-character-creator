@@ -38,9 +38,9 @@ class Morph extends Model
 {
     protected $casts = [
         'maxAptitude' => 'integer',
-        'durability'   => 'integer',
-        'cpCost'       => 'integer',
-        'creditCost'   => 'integer',
+        'durability'  => 'integer',
+        'cpCost'      => 'integer',
+        'creditCost'  => 'integer',
     ];
 
     /**

@@ -46,8 +46,7 @@ class Gear extends Model
         'cost'         => 'integer',
         'armorKinetic' => 'integer',
         'armorEnergy'  => 'integer',
-//        'damage' => 'integer', //This can also be null
-//        'armorPenetration' => 'integer', //This can also be null
+        'armorPenetration' => 'integer', //Can also be null
 //        'isUnique' => 'boolean', //Disabled since this does not work with "false"
     ];
 
