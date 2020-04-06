@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Models\BonusMalus
+ * TODO:  Move all the Enums to Here instead of leaving them in EPBonusMalus
+ * TODO:  Replace all the enums possible in the code with "is..." checks instead.
  *
  * @property int                          $id
  * @property string                       $name
@@ -51,6 +54,22 @@ class BonusMalus extends Model
     ];
 
     /**
+     * Set sanity check to run every time a model is retrieved from the database.
+     */
+    public static function boot()
+    {
+        parent::boot();
+        self::retrieved( function (self $model) {
+            try {
+                $model->sanityCheck();
+            }
+            catch (Exception $exception) {
+                Log::error($exception->getMessage());
+            }
+        });
+    }
+
+    /**
      * Fix for SQLite note supporting booleans properly.
      * WARNING:  This does not affect json_encode!
      * @param $value
@@ -62,7 +81,7 @@ class BonusMalus extends Model
     }
 
     /**
-     * Make sure the data isn't doing something stupid.
+     * Make sure the underlying data meets certain criteria.
      * @throws Exception
      */
     public function sanityCheck()
