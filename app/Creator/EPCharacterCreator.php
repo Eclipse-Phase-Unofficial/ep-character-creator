@@ -2491,6 +2491,16 @@ class EPCharacterCreator implements Savable
      * Thousand plus line function for applying bonusMalus to everything!
      * TODO:  This is somewhat black magic & needs refactoring!
      *
+     * Basics of Operation
+     * * Takes a single BonusMalus and Source.
+     * * For each BonusMalusType (hard coded as a switch statement)
+     *   * It iterates over everything in that category until it finds a match.
+     *     * It then applies the appropriate modifier to that object based on the source.
+     * Since objects do NOT have consistent naming schemes it all has to be hand coded.
+     *
+     * Potential Fix:  Have sub objects that hold modifiers, following a consistent naming scheme.
+     *                 It may at least allow the inner switch statement to be factored into a separate function call.
+     *
      * @param $bm EPBonusMalus        - The bonusMalus in question.
      * @param $source string    - Where the bonusMalus is coming from.
      *                      Acceptable values are:
