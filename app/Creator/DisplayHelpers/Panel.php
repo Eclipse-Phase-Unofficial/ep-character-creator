@@ -133,30 +133,30 @@ class Panel{
      * Add Armor and Offensive sections if they exist.
      * @param EPGear $gear
      */
-    function addArmor(EPGear $gear){
+    function addArmor(EPGear $gear)
+    {
         $output = "";
-        if($gear->armorEnergy != 0 || $gear->armorKinetic != 0){
+        if ($gear->getArmorEnergy() || $gear->getArmorKinetic()) {
             $output .= "<li class='listSection'>";
             $output .= "Provided armor";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Kinetic <b>".$gear->armorKinetic."</b></span>";
+            $output .= "<span class='bmGranted'>Kinetic <b>" . $gear->getArmorKinetic() . "</b></span>";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Energy <b>".$gear->armorEnergy."</b></span>";
+            $output .= "<span class='bmGranted'>Energy <b>" . $gear->getArmorEnergy() . "</b></span>";
             $output .= "</li>";
         }
         //Armor Penetration is always present if damage is, but is never present when damage is not.
-        if($gear->getDamage()){
-            $ap = $gear->armorPenetration?? "0";  //Better Safe than sorry
+        if ($gear->getDamage()) {
             $output .= "<li class='listSection'>";
             $output .= "Offensive capacity";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Damage: <b>". $gear->getDamage() ."</b></span>";
+            $output .= "<span class='bmGranted'>Damage: <b>" . $gear->getDamage() . "</b></span>";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Armor penetration: <b>". $ap ."</b></span>";
+            $output .= "<span class='bmGranted'>Armor penetration: <b>" . $gear->getArmorPenetration() . "</b></span>";
             $output .= "</li>";
         }
         $this->html .= $output;

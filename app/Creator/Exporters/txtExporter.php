@@ -401,9 +401,7 @@ if(null !== creator()) {
             if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
             else $occ = "";
 
-            $damage = $w->getDamage()?? "0";
-            $ap = $w->armorPenetration?? "0";
-            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $damage ."  "."AP : ". $ap)//Weapon type
+            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $w->getDamage() ."  "."AP : ". $w->getArmorPenetration())//Weapon type
             ."<tab>"
             .setBookLink($w->getName())
             ."<br>");
@@ -422,14 +420,13 @@ if(null !== creator()) {
             if($a->getOccurrence() > 1) $occ = "(".$a->getOccurrence().") ";
             else $occ = "";
             $protec = "";
-            if($a->armorKinetic == 0 && $a->armorEnergy==0){
-                $protec = "see memo";//No protec, see memeo
-            }
-            else{
-                $protec = "Kin: ". formatNumber($a->armorKinetic) . "  Ene: " . formatNumber($a->armorEnergy);
+            if (!$a->getArmorEnergy() && !$a->getArmorKinetic()) {
+                $protec = "see memo";  //No normal protection, see memo
+            } else {
+                $protec = "Kin: " . formatNumber($a->getArmorKinetic()) . "  Ene: " . formatNumber($a->getArmorEnergy());
 
-                $protectionKinetic += $a->armorKinetic;
-                $protectionEnergy += $a->armorEnergy;
+                $protectionKinetic += $a->getArmorKinetic();
+                $protectionEnergy  += $a->getArmorEnergy();
             }
             output(formatResult($occ.$a->getName() . ($a->isImplant() ? " (Implant)" : ""))//armor
             ."<tab>"

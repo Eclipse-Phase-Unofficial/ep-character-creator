@@ -352,10 +352,8 @@ class pdfExporterV2_fpdf {
                 $pdf->SetFont('Lato-Lig', '', $fontsize);
                 $pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
                 $pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
-                $damage = $w->getDamage()?? "0";
-                $ap = $w->armorPenetration?? "0";
-                $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $damage));//Weapon damage
-                $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $ap));//Weapon Armor penetration
+                $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->getDamage()));//Weapon damage
+                $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->getArmorPenetration()));//Weapon Armor penetration
 
                 $pdf->SetFont('Lato-LigIta', '', 6);
                 $this->writeBookLink($w->getName(), ($apt_x + 108), $apt_y, $pdf);//Weapon bookLink
@@ -390,14 +388,11 @@ class pdfExporterV2_fpdf {
                 $pdf->SetFont('Lato-Lig', '', $fontsize);
                 $pdf->Text( $apt_x, $apt_y, toUpper($occ . $a->getName()));//Armor name
 
-                if($a->armorKinetic == 0 && $a->armorEnergy == 0)
-                {
-                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("see memo"));//No protec, see memeo
-                }
-                else
-                {
-                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("Kin: " . $a->armorKinetic));//Armor Kinetic
-                    $pdf->Text(($apt_x + 68), $apt_y, toUpper("Ene: " . $a->armorEnergy));//Armor Energy
+                if (!$a->getArmorEnergy() && !$a->getArmorKinetic()) {
+                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("see memo")); //No normal protection, see memo
+                } else {
+                    $pdf->Text(($apt_x + 58), $apt_y, toUpper("Kin: " . $a->getArmorKinetic())); //Armor Kinetic
+                    $pdf->Text(($apt_x + 68), $apt_y, toUpper("Ene: " . $a->getArmorEnergy())); //Armor Energy
                 }
 
                 $pdf->SetFont('Lato-LigIta', '', 6);

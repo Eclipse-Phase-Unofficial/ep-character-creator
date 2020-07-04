@@ -39,8 +39,8 @@ class EPGear extends EPAtom{
     //not used on the database
     static $FREE_GEAR = "FRE";
 
-    public $armorEnergy;
-    public $armorKinetic;
+    private $armorEnergy;
+    private $armorKinetic;
 
     /**
      * The amount of damage a weapon/ammo does.
@@ -53,11 +53,9 @@ class EPGear extends EPAtom{
      * How much armor the weapon/ammo can go through.
      * May be negative.
      * If $damage is null, then this should always be null!  Otherwise it should be an int.
-     * TODO:  Use a getter so null is automatically replaced with '0'
-     *        That getter should also log a warning any time the replacement functionality is triggered.
      * @var int|null
      */
-    public $armorPenetration;
+    private $armorPenetration;
 
     /**
      * An Enum of most static/const values, except the $CAN_USE ones
@@ -325,7 +323,8 @@ class EPGear extends EPAtom{
     }
     function getArmorPenetration(): int
     {
-        return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
+        $armorPenetration = $this->armorPenetration ?? 0;
+        return $armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
     }
 
     /**
