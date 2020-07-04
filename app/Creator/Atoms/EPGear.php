@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Creator\Atoms;
 
+use App\Models\Gear;
+
 /**
  * The character's gear.
  *
@@ -37,15 +39,6 @@ class EPGear extends EPAtom{
     //not used on the database
     static $FREE_GEAR = "FRE";
 
-    //GUI use for filtering the listes
-    static $CAN_USE_EVERYBODY = 'EVERY';
-    static $CAN_USE_BIO = 'BIO';
-    static $CAN_USE_BIO_POD = 'BIOPOD';
-    static $CAN_USE_SYNTH_POD = 'SYNTHPOD';
-    static $CAN_USE_SYNTH = 'SYNTH';
-    static $CAN_USE_POD = 'POD';
-    static $CAN_USE_CREATE_ONLY = 'CREATION';//useful for hiding gear
-
     public $armorEnergy;
     public $armorKinetic;
 
@@ -73,10 +66,10 @@ class EPGear extends EPAtom{
     public $gearType;
 
     /**
-     * An Enum of the $CAN_USE static/const values
+     * An Enum of the Gear::ALLOWED_ static/const values
      * @var string
      */
-    public $gearRestriction;
+    private $gearRestriction;
 
     public $armorPenetrationMorphMod;
     public $degatMorphMod;
@@ -341,6 +334,39 @@ class EPGear extends EPAtom{
     public function getDamage(): ?string
     {
         return $this->damage;
+    }
+
+    /**
+     * If a Biomorph can purchase / use this gear
+     * @return bool
+     */
+    public function isAllowedBiomorph(): bool
+    {
+        return ($this->gearRestriction === Gear::ALLOWED_EVERYBODY ||
+            $this->gearRestriction === Gear::ALLOWED_BIOMORPH ||
+            $this->gearRestriction === Gear::ALLOWED_BIOMORPH_AND_PODMORPH);
+    }
+
+    /**
+     * If a Podmorph can purchase / use this gear
+     * @return bool
+     */
+    public function isAllowedPodmorph(): bool
+    {
+        return ($this->gearRestriction === Gear::ALLOWED_EVERYBODY ||
+            $this->gearRestriction === Gear::ALLOWED_PODMORPH ||
+            $this->gearRestriction === Gear::ALLOWED_BIOMORPH_AND_PODMORPH);
+    }
+
+    /**
+     * If a Synthmorph can purchase / use this gear
+     * @return bool
+     */
+    public function isAllowedSynthmorph(): bool
+    {
+        return ($this->gearRestriction === Gear::ALLOWED_EVERYBODY ||
+            $this->gearRestriction === Gear::ALLOWED_SYNTHMORPH ||
+            $this->gearRestriction === Gear::ALLOWED_SYNTHMORPH_AND_PODMORPH);
     }
 
     /**

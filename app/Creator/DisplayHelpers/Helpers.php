@@ -115,6 +115,9 @@ class Helpers
     }
 
     /**
+     * If the morph can purchase that piece of gear.
+     *
+     * NOTE:  As designed, Infomorphs can buy all unrestricted gear.  They obviously can't use it, but could store it or give it to someone!
      * @param EPMorph $morph
      * @param EPGear  $gear
      * @return bool
@@ -124,45 +127,15 @@ class Helpers
         //Removed so infomorphs can buy gear
         //if($morph->morphType == EPMorph::$INFOMORPH)
         //    return false;
-        if ($gear->gearRestriction == EPGear::$CAN_USE_EVERYBODY) {
-            return true;
-        } //this check hides gear that you want to exist, but not render on the list
-        else {
-            if ($gear->gearRestriction == EPGear::$CAN_USE_CREATE_ONLY) {
-                return false;
-            } else {
-                if ($gear->gearRestriction == EPGear::$CAN_USE_BIO) {
-                    if ($morph->morphType == EPMorph::$BIOMORPH) {
-                        return true;
-                    }
-                } else {
-                    if ($gear->gearRestriction == EPGear::$CAN_USE_SYNTH) {
-                        if ($morph->morphType == EPMorph::$SYNTHMORPH) {
-                            return true;
-                        }
-                    } else {
-                        if ($gear->gearRestriction == EPGear::$CAN_USE_POD) {
-                            if ($morph->morphType == EPMorph::$PODMORPH) {
-                                return true;
-                            }
-                        } else {
-                            if ($gear->gearRestriction == EPGear::$CAN_USE_BIO_POD) {
-                                if ($morph->morphType == EPMorph::$BIOMORPH || $morph->morphType == EPMorph::$PODMORPH) {
-                                    return true;
-                                }
-                            } else {
-                                if ($gear->gearRestriction == EPGear::$CAN_USE_SYNTH_POD) {
-                                    if ($morph->morphType == EPMorph::$SYNTHMORPH || $morph->morphType == EPMorph::$PODMORPH) {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        switch($morph->morphType) {
+            case EPMorph::$BIOMORPH:
+                return $gear->isAllowedBiomorph();
+            case EPMorph::$PODMORPH:
+                return $gear->isAllowedPodmorph();
+            case EPMorph::$SYNTHMORPH:
+                return $gear->isAllowedSynthmorph();
         }
-        return false;
+        return true;
     }
 
     /**
