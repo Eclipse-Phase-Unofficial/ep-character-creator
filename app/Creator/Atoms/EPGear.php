@@ -325,12 +325,6 @@ class EPGear extends EPAtom{
     function getArmorKinetic(){
         return $this->armorKinetic + $this->armorKineticMorphMod + $this->armorKineticTraitMod + $this->armorKineticBackgroundMod + $this->armorKineticFactionMod + $this->armorKineticSoftgearMod + $this->armorKineticPsyMod;
     }
-    /*
-     * TODO:  Remove this.  It's almost certainly not used.
-     */
-    function getDegat(){
-        return $this->damage + $this->degatMorphMod + $this->degatTraitMod + $this->degatBackgroundMod + $this->degatFactionMod + $this->degatSoftgearMod + $this->degatPsyMod;
-    }
     function getArmorPenetration(){
         return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
     }
