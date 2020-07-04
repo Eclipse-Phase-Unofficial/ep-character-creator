@@ -147,13 +147,13 @@ class Panel{
             $output .= "</li>";
         }
         //Armor Penetration is always present if damage is, but is never present when damage is not.
-        if($gear->damage){
+        if($gear->getDamage()){
             $ap = $gear->armorPenetration?? "0";  //Better Safe than sorry
             $output .= "<li class='listSection'>";
             $output .= "Offensive capacity";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Damage: <b>". $gear->damage ."</b></span>";
+            $output .= "<span class='bmGranted'>Damage: <b>". $gear->getDamage() ."</b></span>";
             $output .= "</li>";
             $output .= "<li>";
             $output .= "<span class='bmGranted'>Armor penetration: <b>". $ap ."</b></span>";

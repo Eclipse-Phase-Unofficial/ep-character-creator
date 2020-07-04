@@ -401,7 +401,7 @@ if(null !== creator()) {
             if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
             else $occ = "";
 
-            $damage = $w->damage?? "0";
+            $damage = $w->getDamage()?? "0";
             $ap = $w->armorPenetration?? "0";
             output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $damage ."  "."AP : ". $ap)//Weapon type
             ."<tab>"
