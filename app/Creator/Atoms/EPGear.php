@@ -117,11 +117,16 @@ class EPGear extends EPAtom{
     private $unique;
 
     /**
-     * @var int The number of this item the player owns
+     * @var int The number of this item the player owns.
+     * This is used instead of creating multiple copies of the same gear (per morph).
+     * So, if a single morph owns 2 bullets, then this would be 2.
+     * However, if two morphs each own one bullet, then there would be two instances of the "bullet" EPGear.  One per morph.
      */
     private $occurrence = 1;
 
-    //array
+    /**
+     * @var EPBonusMalus[]
+     */
     public $bonusMalus;
 
     function getSavePack(): array
@@ -286,7 +291,7 @@ class EPGear extends EPAtom{
      * If the player can purchase more than one copy of the gear
      * @return bool
      */
-    public function isUnique()
+    public function isUnique(): bool
     {
         return $this->unique;
     }
@@ -319,13 +324,16 @@ class EPGear extends EPAtom{
         return $this->gearType === EPGear::$IMPLANT_GEAR;
     }
 
-    function getArmorEnergy(){
+    function getArmorEnergy(): int
+    {
         return $this->armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod;
     }
-    function getArmorKinetic(){
+    function getArmorKinetic(): int
+    {
         return $this->armorKinetic + $this->armorKineticMorphMod + $this->armorKineticTraitMod + $this->armorKineticBackgroundMod + $this->armorKineticFactionMod + $this->armorKineticSoftgearMod + $this->armorKineticPsyMod;
     }
-    function getArmorPenetration(){
+    function getArmorPenetration(): int
+    {
         return $this->armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
     }
 
