@@ -5,6 +5,7 @@ namespace App\Creator;
 
 use App\Models\Aptitude;
 use App\Models\BonusMalus;
+use App\Models\Gear;
 use App\Models\PsySleight;
 use App\Models\Reputation;
 use App\Models\Stat;
@@ -414,32 +415,11 @@ class EPListProvider {
      */
     function getListGears(): array
     {
-        $gearList = array();
-        $gearRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`allowedMorphType`, `isUnique` FROM `gear`");
-        $gearRes->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($gearRow = $gearRes->fetch()) {
-            $bonusMalusGearList = array();
-             $bonusMalus = self::$database->query("SELECT `gear_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_gear` WHERE `gear_name` = '".$this->adjustForSQL($gearRow['name'])."';");
-            $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
-            while ($bmRow = $bonusMalus->fetch()) {
-                $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
-                if($epBonMal == null){
-                    $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
-                    return null;
-                }
-                else{
-                    for($i = 0; $i < $bmRow['occurrence']; $i++ ){
-                        array_push($bonusMalusGearList, $epBonMal);
-                    }
-                }
-            }
-            $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
-                intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'], intval($gearRow['armorPenetration']),
-                $bonusMalusGearList, $gearRow['allowedMorphType'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
-            //$gearList[$gearRow['name']] = $gear;
-            array_push($gearList, $gear);
+        $epGears = array();
+        foreach(Gear::all() as $gear) {
+            $epGears [] = new EPGear($gear);
         }
-        return $gearList;
+        return $epGears;
     }
 
     /**
@@ -450,31 +430,7 @@ class EPListProvider {
      */
     function getGearByName(string $name): EPGear
     {
-        $bonusMalusGearList = array();
-
-        $gRes = self::$database->query("SELECT `name`, `description`, `type`, `cost`, `armorKinetic`, `armorEnergy`, `damage`, `armorPenetration`,`allowedMorphType`, `isUnique` FROM `gear` WHERE `name` = '".$this->adjustForSQL($name)."';");
-        $gRes->setFetchMode(\PDO::FETCH_ASSOC);
-        $gearRow = $gRes->fetch();
-
-        $bonusMalus = self::$database->query("SELECT `gear_name`, `bonusMalus_name`, `occurrence` FROM `bonusMalus_gear` WHERE `gear_name` = '".$this->adjustForSQL($gearRow['name'])."';");
-        $bonusMalus->setFetchMode(\PDO::FETCH_ASSOC);
-        while ($bmRow = $bonusMalus->fetch()) {
-            $epBonMal = $this->getBonusMalusByName($bmRow['bonusMalus_name']);
-            if($epBonMal == null){
-                $this->addError("Get Gear getBonusByName function call failed: (" . $bmRow['bonusMalus_name'] . ")");
-                return null;
-            }
-            else{
-                for($i = 0; $i < $bmRow['occurrence']; $i++ ){
-                    array_push($bonusMalusGearList, $epBonMal);
-                }
-            }
-        }
-
-        $gear = new EPGear($gearRow['name'], $gearRow['description'], $gearRow['type'], intval($gearRow['cost']),
-            intval($gearRow['armorKinetic']), intval($gearRow['armorEnergy']), $gearRow['damage'],
-            intval($gearRow['armorPenetration']), $bonusMalusGearList, $gearRow['allowedMorphType'], filter_var($gearRow['isUnique'], FILTER_VALIDATE_BOOLEAN));
-        return $gear;
+        return new EPGear(Gear::whereName($name)->first());
     }
 
     //==== MORPH =====

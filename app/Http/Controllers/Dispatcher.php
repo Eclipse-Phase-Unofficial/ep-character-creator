@@ -573,7 +573,7 @@ if(isset($_POST['morphFreeGear'])){
     //In case someone hits enter/clicks the '+' icon without putting a gear name in
     if(!empty($_POST['morphFreeGear'])){
         $morph = creator()->getCurrentMorphsByName(session('currentMorph'));
-        $gear = new EPGear($_POST['morphFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['morphFreePrice']));
+        $gear = new EPGear(null, $_POST['morphFreeGear'], intval($_POST['morphFreePrice']));
 
         if (!isset($morph)){
             return static::treatCreatorErrors("Morph does not exist (".session('currentMorph').")");
@@ -603,7 +603,7 @@ if(isset($_POST['morphFreeGear'])){
 if(isset($_POST['egoFreeGear'])){
     //In case someone hits enter/clicks the '+' icon without putting a gear name in
     if(!empty($_POST['egoFreeGear'])){
-        $soft = new EPGear($_POST['egoFreeGear'],'Added by the player',EPGear::$FREE_GEAR,intval($_POST['egoFreePrice']));
+        $soft = new EPGear(null, $_POST['egoFreeGear'], intval($_POST['egoFreePrice']));
 
         if (!isset($soft)){
             return static::treatCreatorErrors("Gear does not exist (".$_POST['egoFreeGear'].")");
