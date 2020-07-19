@@ -336,12 +336,12 @@ class pdfExporterV2_fpdf {
             foreach($weapons as $w)
             {
 
-                if($w->gearType == EPGear::$WEAPON_ENERGY_GEAR) $type = "energy";
-                else if($w->gearType == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type = "explos.";
-                else if($w->gearType == EPGear::$WEAPON_SPRAY_GEAR) $type = "spray";
-                else if($w->gearType == EPGear::$WEAPON_SEEKER_GEAR) $type = "seeker";
-                else if($w->gearType == EPGear::$WEAPON_AMMUNITION) $type = "ammo";
-                else if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
+                if($w->getType() == EPGear::$WEAPON_ENERGY_GEAR) $type = "energy";
+                else if($w->getType() == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type = "explos.";
+                else if($w->getType() == EPGear::$WEAPON_SPRAY_GEAR) $type = "spray";
+                else if($w->getType() == EPGear::$WEAPON_SEEKER_GEAR) $type = "seeker";
+                else if($w->getType() == EPGear::$WEAPON_AMMUNITION) $type = "ammo";
+                else if($w->getType() == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
                 else $type = "kinetic";
 
                 if($w->getOccurrence() > 1)

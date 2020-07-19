@@ -61,7 +61,7 @@ class EPGear extends EPAtom{
      * An Enum of most static/const values, except the $CAN_USE ones
      * @var string
      */
-    public $gearType;
+    private $gearType;
 
     /**
      * An Enum of the Gear::ALLOWED_ static/const values
@@ -126,7 +126,7 @@ class EPGear extends EPAtom{
         $savePack['armorKinetic'] =  $this->armorKinetic;
         $savePack['degat'] =  $this->damage;
         $savePack['armorPenetration'] =  $this->armorPenetration;
-        $savePack['gearType'] =  $this->gearType;
+        $savePack['gearType'] =  $this->getType();
         $savePack['gearRestriction'] =  $this->gearRestriction;
         $savePack['armorPenetrationMorphMod'] =  $this->armorPenetrationMorphMod;
         $savePack['degatMorphMod'] =  $this->degatMorphMod;
@@ -310,7 +310,7 @@ class EPGear extends EPAtom{
      */
     public function isImplant(): bool
     {
-        return $this->gearType === EPGear::$IMPLANT_GEAR;
+        return $this->getType() === EPGear::$IMPLANT_GEAR;
     }
 
     function getArmorEnergy(): int
@@ -335,6 +335,16 @@ class EPGear extends EPAtom{
         return $this->damage;
     }
 
+    /**
+     * Please avoid using this function.  Use one of the `is...()` function calls instead if possible
+     * @return string One of the Gear::TYPE_... enums
+     */
+    public function getType(): string
+    {
+        return $this->gearType;
+    }
+
+    /********** Determine Morph Restrictions ****************/
     /**
      * If a Biomorph can purchase / use this gear
      * @return bool
@@ -367,6 +377,7 @@ class EPGear extends EPAtom{
             $this->gearRestriction === Gear::ALLOWED_SYNTHMORPH ||
             $this->gearRestriction === Gear::ALLOWED_SYNTHMORPH_AND_PODMORPH);
     }
+    /********** END Determine Morph Restrictions ****************/
 
     /**
      * Match identical gear, even if atom Uids differ
@@ -378,7 +389,7 @@ class EPGear extends EPAtom{
      */
     public function match($gear): bool{
         if (strcasecmp($gear->getName(),$this->getName()) == 0 &&
-            $gear->gearType===$this->gearType &&
+            $gear->getType()===$this->getType() &&
             $gear->gearRestriction===$this->gearRestriction){
                 return true;
         }

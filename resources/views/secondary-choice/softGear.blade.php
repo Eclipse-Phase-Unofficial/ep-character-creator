@@ -10,7 +10,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
 ?>
 <ul class="mainlist" id="soft">
 	<?php
-		 
+
 		 //AI GEAR
 		 $currentAis = creator()->getEgoAi();
 		 $defaultAi = creator()->getDefaultEgoAi();
@@ -33,7 +33,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($gears as $m){
-            if($m->gearType == EPGear::$SOFT_GEAR){
+            if($m->getType() == EPGear::$SOFT_GEAR){
                 $li = new Li($m->getName(),'softG');
                 $li->addCost($m->getCost());
                 $li->addBookIcon($m->getName());

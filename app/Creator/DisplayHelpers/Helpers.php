@@ -71,7 +71,7 @@ class Helpers
         $output .= "            <span class='addOrSelectedIcon' id='addFree" . $ego_or_morph . "Gear' data-icon='&#x3a;'></span>";
         $output .= "    </li>";
         foreach ($currentGear as $m) {
-            if ($m->gearType == EPGear::$FREE_GEAR) {
+            if ($m->getType() == EPGear::$FREE_GEAR) {
                 $li = new Li($m->getName());
                 $li->addCost($m->getCost(), false, 'Credits');
                 $li->addPlusX("remFree" . $ego_or_morph . "Gear", false);
@@ -98,7 +98,7 @@ class Helpers
 
         $listFiltered = array();
         foreach ($gears as $m) {
-            if ($m->gearType == $gearType) {
+            if ($m->getType() == $gearType) {
                 array_push($listFiltered, $m);
             }
         }

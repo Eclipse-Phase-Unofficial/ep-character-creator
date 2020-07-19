@@ -392,12 +392,12 @@ if(null !== creator()) {
 
         foreach($weapons as $w){
             $type = "kinetic";
-            if($w->gearType == EPGear::$WEAPON_ENERGY_GEAR) $type="energy";
-            if($w->gearType == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type="explos.";
-            if($w->gearType == EPGear::$WEAPON_SPRAY_GEAR) $type="spray";
-            if($w->gearType == EPGear::$WEAPON_SEEKER_GEAR) $type="seeker";
-            if($w->gearType == EPGear::$WEAPON_AMMUNITION) $type="ammo";
-            if($w->gearType == EPGear::$WEAPON_MELEE_GEAR) $type="melee";
+            if($w->getType() == EPGear::$WEAPON_ENERGY_GEAR) $type="energy";
+            if($w->getType() == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type="explos.";
+            if($w->getType() == EPGear::$WEAPON_SPRAY_GEAR) $type="spray";
+            if($w->getType() == EPGear::$WEAPON_SEEKER_GEAR) $type="seeker";
+            if($w->getType() == EPGear::$WEAPON_AMMUNITION) $type="ammo";
+            if($w->getType() == EPGear::$WEAPON_MELEE_GEAR) $type="melee";
             if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
             else $occ = "";
 
