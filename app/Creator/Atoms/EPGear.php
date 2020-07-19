@@ -10,8 +10,6 @@ use App\Models\Gear;
  *
  * This includes morph implants, soft-gear used by the ego, and any additional item on anything.
  *
- * TODO: Handle user created gear by creating a temporary Gear Model.
- *
  * @author reinhardt
  * @author EmperorArthur
  */
@@ -40,8 +38,8 @@ class EPGear extends EPAtom{
     static $FREE_GEAR = "FRE";
 
     /*
-     * If this was created by a user, then this is null, and Name and Cost are set.
-     * @var Gear|null
+     * If this was created by a user, then a temporary model is created and used.
+     * @var Gear
      */
     protected $model;
 
@@ -88,6 +86,31 @@ class EPGear extends EPAtom{
      */
     public $bonusMalus;
 
+    /**
+     * Internal function to create a temporary Gear Model that represents something player created.
+     * @param string $name
+     * @param int    $cost
+     * @return Gear
+     */
+    private static function createUserGearModel(string $name, int $cost): Gear
+    {
+        if (empty($name)) {
+            throw new \InvalidArgumentException("Name may not be empty");
+        }
+        $gear                   = new Gear();
+        $gear->name             = $name;
+        $gear->description      = "Added by the player";
+        $gear->type             = Gear::TYPE_USER_CREATED;
+        $gear->cost             = $cost;
+        $gear->armorKinetic     = 0;
+        $gear->armorEnergy      = 0;
+        $gear->allowedMorphType = Gear::ALLOWED_EVERYBODY;
+        $gear->isUnique         = false;
+        //Hack to allow getKey() to work
+        $gear->id = -crc32($name) - $cost;
+        return $gear;
+    }
+
     function getSavePack(): array
     {
         $savePack = parent::getSavePack();
@@ -133,10 +156,11 @@ class EPGear extends EPAtom{
      */
     public static function __set_state(array $an_array)
     {
-        $object = new self(null, (string)$an_array['name'], (int)$an_array['cost']);
+        $model = null;
         if ((string)$an_array['gearType'] != Gear::TYPE_USER_CREATED) {
-            $object = Gear::whereName((string)$an_array['name'])->first();
+            $model = Gear::whereName((string)$an_array['name'])->first();
         }
+        $object = new self($model, (string)$an_array['name'], (int)$an_array['cost']);
         parent::set_state_helper($object, $an_array);
 
         $object->armorPenetrationMorphMod      = $an_array['armorPenetrationMorphMod'];
@@ -186,12 +210,11 @@ class EPGear extends EPAtom{
     ) {
         //If this is a user created gear
         if (is_null($model)) {
-            parent::__construct($name, "");
+            $this->model = self::createUserGearModel($name, $cost);
         } else {
-            parent::__construct("Unused", "");
+            $this->model = $model;
         }
-        $this->model = $model;
-        $this->cost = $cost;
+        parent::__construct("Unused", "");
         $this->bonusMalus = array();
 
         $this->armorPenetrationMorphMod = 0;
@@ -219,10 +242,8 @@ class EPGear extends EPAtom{
         $this->armorEnergyPsyMod = 0;
         $this->armorKineticPsyMod = 0;
 
-        if (!is_null($model)) {
-            foreach($this->model->bonusMalus as $bonusMalus) {
-                $this->bonusMalus [] = new EPBonusMalus($bonusMalus);
-            }
+        foreach ($this->model->bonusMalus as $bonusMalus) {
+            $this->bonusMalus [] = new EPBonusMalus($bonusMalus);
         }
     }
 
@@ -256,26 +277,17 @@ class EPGear extends EPAtom{
 
     function getArmorEnergy(): int
     {
-        $armorEnergy = 0;
-        if (!is_null( $this->model)){
-            $armorEnergy = $this->model->armorEnergy ?? 0;
-        }
+        $armorEnergy = $this->model->armorEnergy ?? 0;
         return $armorEnergy + $this->armorEnergyMorphMod + $this->armorEnergyTraitMod + $this->armorEnergyBackgroundMod + $this->armorEnergyFactionMod + $this->armorEnergySoftgearMod + $this->armorEnergyPsyMod;
     }
     function getArmorKinetic(): int
     {
-        $armorKinetic = 0;
-        if (!is_null( $this->model)){
-            $armorKinetic = $this->model->armorKinetic ?? 0;
-        }
+        $armorKinetic = $this->model->armorKinetic ?? 0;
         return $armorKinetic + $this->armorKineticMorphMod + $this->armorKineticTraitMod + $this->armorKineticBackgroundMod + $this->armorKineticFactionMod + $this->armorKineticSoftgearMod + $this->armorKineticPsyMod;
     }
     function getArmorPenetration(): int
     {
-        $armorPenetration = 0;
-        if (!is_null( $this->model)){
-            $armorPenetration = $this->model->armorPenetration ?? 0;
-        }
+        $armorPenetration = $this->model->armorPenetration ?? 0;
         return $armorPenetration + $this->armorPenetrationMorphMod + $this->armorPenetrationTraitMod + $this->armorPenetrationBackgroundMod + $this->armorPenetrationFactionMod + $this->armorPenetrationSoftgearMod + $this->armorPenetrationPsyMod;
     }
 
@@ -284,10 +296,7 @@ class EPGear extends EPAtom{
      */
     public function getName(): string
     {
-        if (!is_null( $this->model)){
-            return $this->model->name;
-        }
-        return parent::getName();
+        return $this->model->name;
     }
 
     /**
@@ -295,10 +304,7 @@ class EPGear extends EPAtom{
      */
     public function getDescription(): string
     {
-        if (!is_null( $this->model)){
-            return $this->model->description;
-        }
-        return "Added by the player";
+        return $this->model->description;
     }
 
     /**
@@ -306,10 +312,7 @@ class EPGear extends EPAtom{
      */
     public function getCost(): int
     {
-        if (!is_null( $this->model)){
-            return $this->model->cost;
-        }
-        return parent::getCost();
+        return $this->model->cost;
     }
 
     /**
@@ -318,10 +321,7 @@ class EPGear extends EPAtom{
      */
     public function isUnique(): bool
     {
-        if (!is_null( $this->model)){
-            return $this->model->isUnique;
-        }
-        return false;
+        return $this->model->isUnique;
     }
 
     /**
@@ -329,10 +329,7 @@ class EPGear extends EPAtom{
      */
     public function getDamage(): ?string
     {
-        if (!is_null( $this->model)){
-            return $this->model->damage;
-        }
-        return null;
+        return $this->model->damage;
     }
 
     /********** Type Checks ****************/
@@ -342,10 +339,7 @@ class EPGear extends EPAtom{
      */
     public function getType(): string
     {
-        if (!is_null( $this->model)){
-            return $this->model->type;
-        }
-        return Gear::TYPE_USER_CREATED;
+        return $this->model->type;
     }
     /********** END Type Checks ****************/
 
@@ -356,10 +350,7 @@ class EPGear extends EPAtom{
      */
     public function isAllowedBiomorph(): bool
     {
-        if (!is_null( $this->model)){
-            return $this->model->isAllowedBiomorph();
-        }
-        return true;
+        return $this->model->isAllowedBiomorph();
     }
 
     /**
@@ -368,10 +359,7 @@ class EPGear extends EPAtom{
      */
     public function isAllowedPodmorph(): bool
     {
-        if (!is_null( $this->model)){
-            return $this->model->isAllowedPodmorph();
-        }
-        return true;
+        return $this->model->isAllowedPodmorph();
     }
 
     /**
@@ -380,35 +368,19 @@ class EPGear extends EPAtom{
      */
     public function isAllowedSynthmorph(): bool
     {
-        if (!is_null( $this->model)){
-            return $this->model->isAllowedSynthmorph();
-        }
-        return true;
+        return $this->model->isAllowedSynthmorph();
     }
     /********** END Determine Morph Restrictions ****************/
 
     /**
      * Match identical gear, even if atom Uids differ
      *
-     * Gear is unique by name, and cost for user created gear.  Otherwise match by model keys
-     * This is more expensive than EPAtom's version, but catches duplicate gear with different Uids.
+     * Match by model keys.
      * @param EPGear $gear
      * @return bool
      */
-    public function match($gear): bool{
-        //Make sure that if one is null, then both are null and the opposite
-        if ((is_null($gear->model) && !is_null($this->model)) || (!is_null($gear->model) && is_null($this->model))) {
-            return false;
-        }
-        if (!is_null( $this->model)){
-            return $this->model->getKey() === $gear->model->getKey();
-        }
-        if (strcasecmp($gear->getName(),$this->getName()) == 0 &&
-            $gear->getType()===$this->getType() &&
-            $gear->getCost()===$this->getCost()){
-                return true;
-        }
-
-        return false;
+    public function match($gear): bool
+    {
+        return $this->model->getKey() === $gear->model->getKey();
     }
 }
