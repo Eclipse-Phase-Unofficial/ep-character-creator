@@ -1185,9 +1185,10 @@ class EPCharacterCreator implements Savable
         return max(0,$need);
     }
 
-    function getAiAptitudeByAbbreviation($ai,$abbrev){
+    function getAiAptitudeByAbbreviation(EPAi $ai,string $abbrev): ?EPAptitude
+    {
         foreach ($ai->aptitudes as $a){
-            if (strcmp($a->abbreviation,$abbrev) == 0){
+            if (strcmp($a->getAbbreviation(),$abbrev) == 0){
                 return $a;
             }
         }
