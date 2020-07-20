@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Creator\Atoms\EPGear;
 use App\Creator\DisplayHelpers\Helpers;
 use App\Creator\DisplayHelpers\Li;
 
@@ -33,7 +32,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
  		 echo "</li>";
  		 echo "<ul class='mainlist foldingList softLst'>";
          foreach($gears as $m){
-            if($m->getType() == EPGear::$SOFT_GEAR){
+            if($m->getModel()->isSoftware()){
                 $li = new Li($m->getName(),'softG');
                 $li->addCost($m->getCost());
                 $li->addBookIcon($m->getName());

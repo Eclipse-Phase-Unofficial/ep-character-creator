@@ -14,29 +14,6 @@ use App\Models\Gear;
  * @author EmperorArthur
  */
 class EPGear extends EPAtom{
-
-    static $SOFT_GEAR = "SOF";
-    static $STANDARD_GEAR = "STD";
-    static $WEAPON_MELEE_GEAR = "WMG";
-    static $WEAPON_ENERGY_GEAR = "WEG";
-    static $WEAPON_KINETIC_GEAR = "WKG";
-    static $WEAPON_SPRAY_GEAR = "WSG";
-    static $WEAPON_EXPLOSIVE_GEAR = "WXG";
-    static $WEAPON_SEEKER_GEAR = "WSE";
-    static $WEAPON_AMMUNITION = "WAM";
-    static $WEAPON_ACCESSORY = "WAC";
-    static $ARMOR_GEAR = "ARM";
-    static $IMPLANT_GEAR = "IMG";
-    static $DRUG_GEAR = "DRG";
-    static $CHEMICALS_GEAR = "CHG";
-    static $POISON_GEAR = "POG";
-    static $PET_GEAR = "PEG";
-    static $VEHICLES_GEAR = "VEG";
-    static $ROBOT_GEAR = "ROG";
-
-    //not used on the database
-    static $FREE_GEAR = "FRE";
-
     /*
      * If this was created by a user, then a temporary model is created and used.
      * @var Gear
@@ -115,7 +92,7 @@ class EPGear extends EPAtom{
     {
         $savePack = parent::getSavePack();
 
-        $savePack['gearType'] =  $this->getType();
+        $savePack['gearType'] =  $this->getModel()->type;
         $savePack['armorPenetrationMorphMod'] =  $this->armorPenetrationMorphMod;
         $savePack['degatMorphMod'] =  $this->degatMorphMod;
         $savePack['armorEnergyMorphMod'] =  $this->armorEnergyMorphMod;
@@ -312,17 +289,6 @@ class EPGear extends EPAtom{
     {
         return $this->model->cost;
     }
-
-    /********** Type Checks ****************/
-    /**
-     * Please avoid using this function.  Use one of the `is...()` function calls instead if possible
-     * @return string One of the Gear::TYPE_... enums
-     */
-    public function getType(): string
-    {
-        return $this->model->type;
-    }
-    /********** END Type Checks ****************/
 
     /**
      * Match identical gear, even if atom Uids differ

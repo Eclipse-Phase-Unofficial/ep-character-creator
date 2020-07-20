@@ -88,7 +88,10 @@ function getMorphMemoBM(array $bonusMalus): array
 }
 
 /**
- * @param array $gears
+ * Used to populate the exporters.
+ *
+ * TODO:  Consider switching to the new definition of a Weapon (Includes Implants that do damage, Poisons, etc...)
+ * @param EPGear[] $gears
  * @return EPGear[]
  */
 function filterWeaponOnly(array $gears): array
@@ -96,27 +99,18 @@ function filterWeaponOnly(array $gears): array
     $result = array();
     foreach($gears as $g)
     {
-        if( $g->gearType == EPGear::$WEAPON_MELEE_GEAR ||
-            $g->gearType == EPGear::$WEAPON_ENERGY_GEAR ||
-            $g->gearType == EPGear::$WEAPON_KINETIC_GEAR ||
-            $g->gearType == EPGear::$WEAPON_AMMUNITION ||
-            $g->gearType == EPGear::$WEAPON_SEEKER_GEAR ||
-            $g->gearType == EPGear::$WEAPON_SPRAY_GEAR)
-        {
+        if ($g->getModel()->isWeaponType()) {
             array_push($result, $g);
-        }
-
-        if ($g->isImplant()) {
-            if ($g->degat != "0") {
-                array_push($result, $g);
-            }
         }
     }
     return $result;
 }
 
 /**
- * @param array $gears
+ * Used to populate the exporters.
+ *
+ * TODO:  Consider switching to the new definition of Armor (Includes Implants that protect from damage)
+ * @param EPGear[] $gears
  * @return EPGear[]
  */
 function filterArmorOnly(array $gears): array
@@ -124,21 +118,22 @@ function filterArmorOnly(array $gears): array
     $result = array();
     foreach($gears as $g)
     {
-        if( $g->gearType == EPGear::$ARMOR_GEAR)
+        if( $g->getModel()->isArmorType())
             array_push($result, $g);
     }
     return $result;
 }
 
 /**
- * @param array $gears
+ * Used to populate the exporters.
+ * @param EPGear[] $gears
  * @return EPGear[]
  */
 function filterImplantOnly(array $gears): array
 {
     $result = array();
     foreach ($gears as $g) {
-        if ($g->isImplant()) {
+        if ($g->getModel()->isImplant()) {
             array_push($result, $g);
         }
     }
@@ -147,7 +142,10 @@ function filterImplantOnly(array $gears): array
 
 
 /**
- * @param array $gears
+ * This is everything that is not a weapon, armor, or implant.
+ *
+ * Used to populate the exporters.
+ * @param EPGear[] $gears
  * @return EPGear[]
  */
 function filterGeneralOnly(array $gears): array
@@ -155,14 +153,9 @@ function filterGeneralOnly(array $gears): array
     $result = array();
     foreach($gears as $g)
     {
-        if( $g->gearType == EPGear::$STANDARD_GEAR ||
-            $g->gearType == EPGear::$DRUG_GEAR ||
-            $g->gearType == EPGear::$CHEMICALS_GEAR ||
-            $g->gearType == EPGear::$POISON_GEAR ||
-            $g->gearType == EPGear::$PET_GEAR ||
-            $g->gearType == EPGear::$VEHICLES_GEAR ||
-            $g->gearType == EPGear::$ROBOT_GEAR ||
-            $g->gearType == EPGear::$FREE_GEAR )
+        if( !$g->getModel()->isWeaponType() &&
+            !$g->getModel()->isArmorType() &&
+            !$g->getModel()->isImplant())
         {
             array_push($result, $g);
         }

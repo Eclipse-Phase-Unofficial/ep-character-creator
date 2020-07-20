@@ -3,10 +3,10 @@
 
 use App\Creator\EPFileUtility;
 use App\Creator\EPBook;
-use App\Creator\Atoms\EPGear;
 use App\Creator\Atoms\EPMorph;
 use App\Creator\Atoms\EPPsySleight;
 use App\Creator\Atoms\EPTrait;
+use App\Models\Gear;
 
 if(null !== creator()) {
     $file_util = new EPFileUtility(creator()->character);
@@ -391,15 +391,36 @@ if(null !== creator()) {
         ."Weapons<br><br>");
 
         foreach($weapons as $w){
-            $type = "kinetic";
-            if($w->getType() == EPGear::$WEAPON_ENERGY_GEAR) $type="energy";
-            if($w->getType() == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type="explos.";
-            if($w->getType() == EPGear::$WEAPON_SPRAY_GEAR) $type="spray";
-            if($w->getType() == EPGear::$WEAPON_SEEKER_GEAR) $type="seeker";
-            if($w->getType() == EPGear::$WEAPON_AMMUNITION) $type="ammo";
-            if($w->getType() == EPGear::$WEAPON_MELEE_GEAR) $type="melee";
-            if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
-            else $occ = "";
+            $type = "unknown";
+            switch ($w->getModel()->type) {
+                case Gear::TYPE_WEAPON_ENERGY:
+                    $type = "energy";
+                    break;
+                case Gear::TYPE_WEAPON_EXPLOSIVE:
+                    $type = "explos.";
+                    break;
+                case Gear::TYPE_WEAPON_SPRAY:
+                    $type = "spray";
+                    break;
+                case Gear::TYPE_WEAPON_SEEKER:
+                    $type = "seeker";
+                    break;
+                case Gear::TYPE_WEAPON_AMMUNITION:
+                    $type = "ammo";
+                    break;
+                case Gear::TYPE_WEAPON_MELEE:
+                    $type = "melee";
+                    break;
+                case Gear::TYPE_WEAPON_KINETIC:
+                    $type = "kinetic";
+                    break;
+            }
+
+            if ($w->getOccurrence() > 1) {
+                $occ = "(" . $w->getOccurrence() . ") ";
+            } else {
+                $occ = "";
+            }
 
             output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $w->getModel()->damage ."  "."AP : ". $w->getArmorPenetration())//Weapon type
             ."<tab>"
@@ -417,8 +438,11 @@ if(null !== creator()) {
         $protectionEnergy = 0;
 
         foreach($armor as $a){
-            if($a->getOccurrence() > 1) $occ = "(".$a->getOccurrence().") ";
-            else $occ = "";
+            if ($a->getOccurrence() > 1) {
+                $occ = "(" . $a->getOccurrence() . ") ";
+            } else {
+                $occ = "";
+            }
             $protec = "";
             if (!$a->getArmorEnergy() && !$a->getArmorKinetic()) {
                 $protec = "see memo";  //No normal protection, see memo

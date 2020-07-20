@@ -13,6 +13,7 @@ use App\Creator\Atoms\EPPsySleight;
 use App\Creator\Atoms\EPSkill;
 use App\Creator\Atoms\EPTrait;
 use App\Creator\DisplayHelpers\FpdfCustomFonts;
+use App\Models\Gear;
 use Error;
 
 /*
@@ -335,19 +336,36 @@ class pdfExporterV2_fpdf {
 
             foreach($weapons as $w)
             {
+                $type = "unknown";
+                switch ($w->getModel()->type) {
+                    case Gear::TYPE_WEAPON_ENERGY:
+                        $type = "energy";
+                        break;
+                    case Gear::TYPE_WEAPON_EXPLOSIVE:
+                        $type = "explos.";
+                        break;
+                    case Gear::TYPE_WEAPON_SPRAY:
+                        $type = "spray";
+                        break;
+                    case Gear::TYPE_WEAPON_SEEKER:
+                        $type = "seeker";
+                        break;
+                    case Gear::TYPE_WEAPON_AMMUNITION:
+                        $type = "ammo";
+                        break;
+                    case Gear::TYPE_WEAPON_MELEE:
+                        $type = "melee";
+                        break;
+                    case Gear::TYPE_WEAPON_KINETIC:
+                        $type = "kinetic";
+                        break;
+                }
 
-                if($w->getType() == EPGear::$WEAPON_ENERGY_GEAR) $type = "energy";
-                else if($w->getType() == EPGear::$WEAPON_EXPLOSIVE_GEAR) $type = "explos.";
-                else if($w->getType() == EPGear::$WEAPON_SPRAY_GEAR) $type = "spray";
-                else if($w->getType() == EPGear::$WEAPON_SEEKER_GEAR) $type = "seeker";
-                else if($w->getType() == EPGear::$WEAPON_AMMUNITION) $type = "ammo";
-                else if($w->getType() == EPGear::$WEAPON_MELEE_GEAR) $type = "melee";
-                else $type = "kinetic";
-
-                if($w->getOccurrence() > 1)
+                if ($w->getOccurrence() > 1) {
                     $occ = "(" . $w->getOccurrence() . ") ";
-                else
+                } else {
                     $occ = "";
+                }
 
                 $pdf->SetFont('Lato-Lig', '', $fontsize);
                 $pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
@@ -380,10 +398,11 @@ class pdfExporterV2_fpdf {
 
             foreach($armor as $a)
             {
-                if($a->getOccurrence() > 1)
+                if ($a->getOccurrence() > 1) {
                     $occ = "(" . $a->getOccurrence() . ") ";
-                else
+                } else {
                     $occ = "";
+                }
 
                 $pdf->SetFont('Lato-Lig', '', $fontsize);
                 $pdf->Text( $apt_x, $apt_y, toUpper($occ . $a->getName()));//Armor name

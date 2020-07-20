@@ -2891,7 +2891,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -2903,7 +2903,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -2915,7 +2915,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -2927,7 +2927,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -2939,7 +2939,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                     }else{
@@ -2951,7 +2951,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -2970,7 +2970,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -2981,7 +2981,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -2992,7 +2992,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -3003,7 +3003,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -3014,7 +3014,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -3025,7 +3025,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -3043,7 +3043,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -3054,7 +3054,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -3065,7 +3065,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -3076,7 +3076,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -3087,7 +3087,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                     }else{
@@ -3098,7 +3098,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
+                                if ($g->getModel()->isArmor()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -3116,7 +3116,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -3127,7 +3127,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -3138,7 +3138,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -3149,7 +3149,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -3160,7 +3160,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                     }else{
@@ -3171,7 +3171,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_ENERGY_GEAR) == 0){
+                                if ($g->getModel()->isWeaponEnergy()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -3189,7 +3189,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -3200,7 +3200,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -3211,7 +3211,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -3222,7 +3222,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -3233,7 +3233,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                     }else{
@@ -3244,7 +3244,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_MELEE_GEAR) == 0){
+                                if ($g->getModel()->isWeaponMelee()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
@@ -3262,7 +3262,7 @@ class EPCharacterCreator implements Savable
                     switch ($source) {
                         case EPBonusMalus::$FROM_MORPH:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostMorphMod($bm->getValue());
                                     }else{
@@ -3273,7 +3273,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_TRAIT:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostTraitMod($bm->getValue());
                                     }else{
@@ -3284,7 +3284,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_BACKGROUND:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                     }else{
@@ -3295,7 +3295,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_FACTION:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostFactionMod($bm->getValue());
                                     }else{
@@ -3306,7 +3306,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_SOFTGEAR:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                     }else{
@@ -3317,7 +3317,7 @@ class EPCharacterCreator implements Savable
                         break;
                         case EPBonusMalus::$FROM_PSY:
                             foreach ($m->gears as $g){
-                                if (strcmp($g->getType(),EPGear::$WEAPON_KINETIC_GEAR) == 0){
+                                if ($g->getModel()->isWeaponKinetic()){
                                     if ($bm->isCostModifier()){
                                         $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
