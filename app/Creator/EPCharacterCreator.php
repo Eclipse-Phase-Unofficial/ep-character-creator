@@ -3016,7 +3016,7 @@ class EPCharacterCreator implements Savable
                             foreach ($m->gears as $g){
                                 if (strcmp($g->getType(),EPGear::$ARMOR_GEAR) == 0){
                                     if ($bm->isCostModifier()){
-                                        $g->ratioSoftgearPsyMod *= $bm->getValue();
+                                        $g->multiplyRatioCostPsyMod($bm->getValue());
                                     }else{
                                         $g->armorEnergySoftgearMod += $bm->getValue();
                                     }
