@@ -11,7 +11,7 @@ $currentMorph = creator()->getCurrentMorphsByName((string) session('currentMorph
     <?php
         $listFiltered = array();
         foreach(EpDatabase()->getGears() as $m){
-            if ($m->isImplant()) {
+            if ($m->getModel()->isImplant()) {
                 array_push($listFiltered, $m);
             }
         }

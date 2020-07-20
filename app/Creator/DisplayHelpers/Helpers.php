@@ -129,11 +129,11 @@ class Helpers
         //    return false;
         switch($morph->morphType) {
             case EPMorph::$BIOMORPH:
-                return $gear->isAllowedBiomorph();
+                return $gear->getModel()->isAllowedBiomorph();
             case EPMorph::$PODMORPH:
-                return $gear->isAllowedPodmorph();
+                return $gear->getModel()->isAllowedPodmorph();
             case EPMorph::$SYNTHMORPH:
-                return $gear->isAllowedSynthmorph();
+                return $gear->getModel()->isAllowedSynthmorph();
         }
         return true;
     }

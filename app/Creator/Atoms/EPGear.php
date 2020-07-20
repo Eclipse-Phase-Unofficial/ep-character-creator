@@ -248,6 +248,16 @@ class EPGear extends EPAtom{
     }
 
     /**
+     * Get the a actual model used for everything.
+     * That should be treated as read-only, even if the properties can be written to!
+     * @return Gear
+     */
+    public function getModel(): Gear
+    {
+        return $this->model;
+    }
+
+    /**
      * @return int
      */
     public function getOccurrence(): int
@@ -261,18 +271,6 @@ class EPGear extends EPAtom{
     public function setOccurrence(int $occurrence): void
     {
         $this->occurrence = $occurrence;
-    }
-
-    /**
-     * If the gear is something implanted in a morph
-     *
-     * That means it's been surgically added in the case of biomorphs/podmorphs, or bolted on in the case of synthmorphs.
-     * It can't be easily added or removed without a specialist.
-     * @return bool
-     */
-    public function isImplant(): bool
-    {
-        return $this->getType() === EPGear::$IMPLANT_GEAR;
     }
 
     function getArmorEnergy(): int
@@ -315,23 +313,6 @@ class EPGear extends EPAtom{
         return $this->model->cost;
     }
 
-    /**
-     * If the player can purchase more than one copy of the gear
-     * @return bool
-     */
-    public function isUnique(): bool
-    {
-        return $this->model->isUnique;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDamage(): ?string
-    {
-        return $this->model->damage;
-    }
-
     /********** Type Checks ****************/
     /**
      * Please avoid using this function.  Use one of the `is...()` function calls instead if possible
@@ -342,35 +323,6 @@ class EPGear extends EPAtom{
         return $this->model->type;
     }
     /********** END Type Checks ****************/
-
-    /********** Determine Morph Restrictions ****************/
-    /**
-     * If a Biomorph can purchase / use this gear
-     * @return bool
-     */
-    public function isAllowedBiomorph(): bool
-    {
-        return $this->model->isAllowedBiomorph();
-    }
-
-    /**
-     * If a Podmorph can purchase / use this gear
-     * @return bool
-     */
-    public function isAllowedPodmorph(): bool
-    {
-        return $this->model->isAllowedPodmorph();
-    }
-
-    /**
-     * If a Synthmorph can purchase / use this gear
-     * @return bool
-     */
-    public function isAllowedSynthmorph(): bool
-    {
-        return $this->model->isAllowedSynthmorph();
-    }
-    /********** END Determine Morph Restrictions ****************/
 
     /**
      * Match identical gear, even if atom Uids differ

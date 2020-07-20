@@ -401,7 +401,7 @@ if(null !== creator()) {
             if($w->getOccurrence() > 1) $occ = "(".$w->getOccurrence().") ";
             else $occ = "";
 
-            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $w->getDamage() ."  "."AP : ". $w->getArmorPenetration())//Weapon type
+            output(formatResultXL("[".$type."] ".$occ.$w->getName()."  "."DV: ". $w->getModel()->damage ."  "."AP : ". $w->getArmorPenetration())//Weapon type
             ."<tab>"
             .setBookLink($w->getName())
             ."<br>");
@@ -428,7 +428,7 @@ if(null !== creator()) {
                 $protectionKinetic += $a->getArmorKinetic();
                 $protectionEnergy  += $a->getArmorEnergy();
             }
-            output(formatResult($occ.$a->getName() . ($a->isImplant() ? " (Implant)" : ""))//armor
+            output(formatResult($occ.$a->getName() . ($a->getModel()->isImplant() ? " (Implant)" : ""))//armor
             ."<tab>"
             .$protec
             ."<tab>"

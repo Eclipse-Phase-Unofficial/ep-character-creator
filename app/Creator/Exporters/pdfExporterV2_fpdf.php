@@ -352,7 +352,7 @@ class pdfExporterV2_fpdf {
                 $pdf->SetFont('Lato-Lig', '', $fontsize);
                 $pdf->Text($apt_x, $apt_y, toUpper("[" . $type . "]"));//Weapon type
                 $pdf->Text(($apt_x + 13), $apt_y, toUpper($occ . $w->getName()));//Weapon name
-                $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->getDamage()));//Weapon damage
+                $pdf->Text(($apt_x + 57), $apt_y, toUpper("DV: " . $w->getModel()->damage));//Weapon damage
                 $pdf->Text(($apt_x + 97), $apt_y, toUpper("AP : " . $w->getArmorPenetration()));//Weapon Armor penetration
 
                 $pdf->SetFont('Lato-LigIta', '', 6);

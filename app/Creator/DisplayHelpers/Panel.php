@@ -65,7 +65,7 @@ class Panel{
      */
     function addBuySell(EPGear $gear,string $type){
         $output = "";
-        if(!$gear->isUnique()){
+        if(!$gear->getModel()->isUnique){
             $output .= "<li class='listSection'>";
             $output .= "Buy more of this";
             $output .= "</li>";
@@ -148,12 +148,12 @@ class Panel{
             $output .= "</li>";
         }
         //Armor Penetration is always present if damage is, but is never present when damage is not.
-        if ($gear->getDamage()) {
+        if ($gear->getModel()->damage) {
             $output .= "<li class='listSection'>";
             $output .= "Offensive capacity";
             $output .= "</li>";
             $output .= "<li>";
-            $output .= "<span class='bmGranted'>Damage: <b>" . $gear->getDamage() . "</b></span>";
+            $output .= "<span class='bmGranted'>Damage: <b>" . $gear->getModel()->damage . "</b></span>";
             $output .= "</li>";
             $output .= "<li>";
             $output .= "<span class='bmGranted'>Armor penetration: <b>" . $gear->getArmorPenetration() . "</b></span>";

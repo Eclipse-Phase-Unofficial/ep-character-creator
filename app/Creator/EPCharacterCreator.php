@@ -508,7 +508,7 @@ class EPCharacterCreator implements Savable
     function addGear(EPGear $gear, EPMorph &$morph)
     {
         //If the morph can't take implants (Because it has the Implant Rejection Level II trait)
-        if ($morph->implantReject && $gear->isImplant()) {
+        if ($morph->implantReject && $gear->getModel()->isImplant()) {
             array_push($this->errorList,
                 new EPCreatorErrors('EPCharacterCreator:' . __LINE__ . ' (Implant Rejection Level II !)',
                     EPCreatorErrors::$RULE_ERROR));
@@ -2530,7 +2530,7 @@ class EPCharacterCreator implements Savable
                             case EPBonusMalus::$FROM_MORPH:
                                 $m->implantReject = true;
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         $this->removeGear($g, $m);
                                     }
                                 }
@@ -3625,7 +3625,7 @@ class EPCharacterCreator implements Savable
                         switch ($source) {
                             case EPBonusMalus::$FROM_MORPH:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostMorphMod($bm->getValue());
                                         }
@@ -3634,7 +3634,7 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_TRAIT:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostTraitMod($bm->getValue());
                                         }
@@ -3643,7 +3643,7 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_FACTION:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostFactionMod($bm->getValue());
                                         }
@@ -3652,7 +3652,7 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_BACKGROUND:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostBackgroundMod($bm->getValue());
                                         }
@@ -3661,7 +3661,7 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_SOFTGEAR:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostSoftgearMod($bm->getValue());
                                         }
@@ -3670,7 +3670,7 @@ class EPCharacterCreator implements Savable
                             break;
                             case EPBonusMalus::$FROM_PSY:
                                 foreach ($m->additionalGears as $g) {
-                                    if ($g->isImplant()){
+                                    if ($g->getModel()->isImplant()){
                                         if ($bm->isCostModifier()){
                                             $g->multiplyRatioCostPsyMod($bm->getValue());
                                         }
