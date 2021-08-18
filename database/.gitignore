@@ -2,3 +2,4 @@
 #This prevents multiple copies of the database from becoming unsynced
 *.sqlite
 *.sqlite-journal
+tmp.sql
