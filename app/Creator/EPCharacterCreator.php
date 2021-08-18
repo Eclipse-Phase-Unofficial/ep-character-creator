@@ -2200,7 +2200,7 @@ class EPCharacterCreator implements Savable
         foreach ($this->character->ego->skills as $s){
             $s->softgearMod = 0;
             $s->resetRatioCostSoftgearMod();
-            $s->maxValueSofgearMod = 0;
+            $s->maxValueSoftgearMod = 0;
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
@@ -2230,7 +2230,7 @@ class EPCharacterCreator implements Savable
             foreach ($ia->skills as $s){
                 $s->softgearMod = 0;
                 $s->resetRatioCostSoftgearMod();
-                $s->maxValueSofgearMod = 0;
+                $s->maxValueSoftgearMod = 0;
             }
         }
         foreach ($this->character->ego->stats as $s){
