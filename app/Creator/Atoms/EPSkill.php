@@ -139,9 +139,11 @@ class EPSkill extends EPAtom{
      * @return int
      */
     function getValue(){
+        // Apply morphMod of linked aptitude (APT MM doesn't flow down to skills anywhere else)
+        $lnkMM = isset($this->linkedApt)? $this->linkedApt->morphMod: 0;
         // Only defaultable skills and skills that the user has put at least a point into are usable
         if (strcmp($this->defaultable,  EPSkill::$DEFAULTABLE) == 0 || $this->baseValue > 0){
-            return $this->morphMod + $this->getEgoValue();
+            return $this->morphMod + $this->getEgoValue() + $lnkMM;
         }
         return 0;
     }
