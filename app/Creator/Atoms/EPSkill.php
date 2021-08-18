@@ -184,7 +184,7 @@ class EPSkill extends EPAtom{
 
         //Since the skill is over 60, and the new limit is positive, this works
         $underLimitCost = $newLimit * config('epcc.SkillPointUnderCost');
-        $overLimitCost = $baseValue - $newLimit * config('epcc.SkillPointUpperCost');
+        $overLimitCost = ($baseValue - $newLimit) * config('epcc.SkillPointUpperCost');
         return $underLimitCost + $overLimitCost;
     }
 
