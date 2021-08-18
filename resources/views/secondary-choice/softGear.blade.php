@@ -20,7 +20,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
  		 echo "<ul class='mainlist foldingList ai'>";
          foreach(EpDatabase()->getAis() as $m){
             $li = new Li($m->getName(),'ai');
-            $li->addCost($m->getCost(),$m->isInArray($defaultAi));
+            $li->addCost($m->getCost(),$m->isInArray($defaultAi),'CR');
             $li->addBookIcon($m->getName());
             $li->addPlusChecked('addSelAiIcon',$m->isInArray($defaultAi) || $m->isInArray($currentAis));
             echo $li->getHtml();
@@ -35,7 +35,7 @@ $currentSoftGear = creator()->getEgoSoftGears();
          foreach($gears as $m){
             if($m->gearType == EPGear::$SOFT_GEAR){
                 $li = new Li($m->getName(),'softG');
-                $li->addCost($m->getCost());
+                $li->addCost($m->getCost(),False,'CR');
                 $li->addBookIcon($m->getName());
                 $li->addPlusChecked('addSelSoftGearIcon',$m->isInArray($currentSoftGear));
                 echo $li->getHtml();
