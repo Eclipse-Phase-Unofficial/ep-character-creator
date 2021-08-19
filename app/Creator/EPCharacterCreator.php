@@ -257,6 +257,7 @@ class EPCharacterCreator implements Savable
     }
 
     function __construct(int $amountCP = -1){
+        app('session')->forget('db');
         $this->creationMode = true;
         $this->validation = new EPValidation();
         $this->evoRezPoint = 0;
