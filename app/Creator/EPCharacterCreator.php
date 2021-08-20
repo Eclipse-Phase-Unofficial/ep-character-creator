@@ -155,7 +155,7 @@ class EPCharacterCreator implements Savable
         return $res;
     }
 
-    function getSkillByAtomUid($id): EPSkill
+    function getSkillByAtomUid($id): ?EPSkill
     {
         $ret = EPAtom::getAtomByUid($this->character->ego->skills,$id);
         if($ret == null){
