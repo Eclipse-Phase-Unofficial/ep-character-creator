@@ -20,15 +20,15 @@
                         </div>
                     </div>
                     <div v-if="!creationMode">
-                        <label class="uk-form-label" for="reputationPoints">Reputation points earned</label>
+                        <label class="uk-form-label" for="reputationPoints">Reputation points earned/lost</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input uk-form-width-xsmall" id="reputationPoints" type="number" min="0" v-model="reputationPoints">
+                            <input class="uk-input uk-form-width-xsmall" id="reputationPoints" type="number" v-model="reputationPoints">
                         </div>
                     </div>
                     <div v-if="!creationMode">
-                        <label class="uk-form-label" for="creditsEarned">Credits earned</label>
+                        <label class="uk-form-label" for="creditsEarned">Credits earned/lost</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input uk-form-width-xsmall" id="creditsEarned" type="number" min="0" v-model="creditsEarned">
+                            <input class="uk-input uk-form-width-xsmall" id="creditsEarned" type="number" v-model="creditsEarned">
                         </div>
                     </div>
                     <br>

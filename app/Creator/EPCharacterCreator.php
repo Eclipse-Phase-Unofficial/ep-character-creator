@@ -206,10 +206,11 @@ class EPCharacterCreator implements Savable
         $savePack['creationMode'] = $this->creationMode;
         $savePack['evoRezPoint'] = $this->evoRezPoint;
         $savePack['evoRepPoint'] = $this->evoRepPoint;
-        $savePack['evoCrePoint'] = $this->evoCrePoint;
-        $savePack['evoCrePointPurchased'] = $this->evoCrePointPurchased;
+        $savePack['evoCrePoint'] = 0;
+        $savePack['evoCrePointPurchased'] = 0;
                 		
 		$savePack['charSavePack'] = $this->character->getSavePack();
+        $savePack['charSavePack']['egoSavePack']['credit'] += $this->evoCrePoint + $this->evoCrePointPurchased;
 		
 		return $savePack;
 		
@@ -1126,7 +1127,8 @@ class EPCharacterCreator implements Savable
             $this->adjustCredit();
             return $this->character->ego->creditInstant;
         }else{
-            return $this->evoCrePoint + $this->evoCrePointPurchased;
+            $this->adjustCredit();
+            return $this->character->ego->creditInstant + $this->evoCrePoint + $this->evoCrePointPurchased;
         }
     }
 
