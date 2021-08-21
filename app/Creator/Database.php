@@ -329,6 +329,12 @@ class Database
     function getAptitudeForPrefix(string $skillPrefix) {
         $provider = new EPListProvider();
         $provider->connect();
-        return $provider->getAptForPrefix($skillPrefix);
+        $prefix = $provider->getAptForPrefix($skillPrefix) ?? '';
+        foreach ($this->aptitudes as $aptitude) {
+            if (strcmp($aptitude->abbreviation, $prefix) == 0) {
+                return $aptitude;
+            }
+        }
+        return null;
     }
 }
