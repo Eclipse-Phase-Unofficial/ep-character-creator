@@ -430,7 +430,7 @@ class EPCharacterCreator implements Savable
         return $m->getGear();
     }
 
-    function getCurrentMorphsByName($name): EPMorph
+    function getCurrentMorphsByName($name): ?EPMorph
     {
         return EPAtom::getAtomByName($this->character->morphs,$name);
     }

@@ -528,7 +528,7 @@ $(document).ready(function(){
         });
         
         //morph settings changes
-         $(document).on('change', '#mNicknamem,#mLocation,#mAge,#mGender' ,function () {
+         $(document).on('change', '#mNickname,#mLocation,#mAge,#mGender' ,function () {
           do_ajax( {
                             morphSettingsChange : $("#morphName").attr('value'),
 							morphNickname : $("#mNickname").val(),
