@@ -334,7 +334,7 @@ if( isset($_POST['newNatLanguageSkill']) && !empty($_POST['newNatLanguageSkill']
 									  EPSkill::$KNOWLEDGE_SKILL_TYPE,
 									  EPSkill::$DEFAULTABLE,
 									  "Language",
-									  null,
+									  [],
 									  true)){
 										  return static::treatCreatorErrors(creator()->getLastError());
 									  }
