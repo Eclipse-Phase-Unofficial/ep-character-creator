@@ -45,7 +45,7 @@ RUN touch $DB_DATABASE && \
 RUN composer install --no-interaction --no-dev --optimize-autoloader && npm run production
 
 #Set default mode to standalone
-RUN mv standalone.env .env
+RUN mv standalone.env .env && php artisan key:generate
 
 #Needed for nginx to run
 USER root
