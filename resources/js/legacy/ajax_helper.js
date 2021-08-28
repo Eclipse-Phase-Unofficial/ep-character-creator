@@ -118,8 +118,8 @@ function loadPanel(id,url){
     });
     $(id).attr('src',url);
     //Tell Google analytics about the change
-    ga('set', 'page', url);
-    ga('send', 'pageview');
+    // ga('set', 'page', url);
+    // ga('send', 'pageview');
 }
 
 /**
