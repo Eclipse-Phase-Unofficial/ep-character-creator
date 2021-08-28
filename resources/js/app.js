@@ -63,7 +63,7 @@ const router = new VueRouter({
 
 Vue.use(VueAnalytics, {
     //If the variable isn't set dynamically, try the compiled in version.  If that fails, then fall back to a safe default.
-    id: window.env.MIX_GOOGLE_ANALYTICS_ID || process.env.MIX_GOOGLE_ANALYTICS_ID || 'UA-463340-1',
+    id: window.env.MIX_GOOGLE_ANALYTICS_ID || process.env.MIX_GOOGLE_ANALYTICS_ID,
     // debug: {
     //     enabled: true,
     //     sendHitTask: false,

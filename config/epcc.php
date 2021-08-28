@@ -10,7 +10,7 @@ return [
     'releaseDate' => Carbon::parse("December 2018"),
     'versionNumber' => 1.52,
     'versionNumberMin' => 0.91,
-    'googleAnalyticsId' => env('MIX_GOOGLE_ANALYTICS_ID', 'UA-463340-1'),
+    'googleAnalyticsId' => env('MIX_GOOGLE_ANALYTICS_ID', ''),
     //RulesValues
     'AptitudesPoint' => 105,
     'AptitudesMinValue' => 5,
