@@ -287,7 +287,7 @@ $(document).ready(function(){
 		//ACTIVE SKILLS
 		//before active skill change get the focused html element
         $(document).on('focusin', '.actskillbase' ,function (e) {
-        		focusOnSkill = "[id='"+$(this).attr('id')+"']";
+        		focusOnSkill = "[atomic='"+$(this).attr('atomic')+"']";
 				//console.log("focin"+focusOn);
         });
 		
@@ -351,7 +351,7 @@ $(document).ready(function(){
 
 		//before knowlege skill change get the focused html element
         $(document).on('focusin', '.knoskillbase' ,function (e) {
-        		focusOnSkill = "[id='"+$(this).attr('id')+"']";
+        		focusOnSkill = "[atomic='"+$(this).attr('atomic')+"']";
 				//console.log("focin"+focusOn);
         });
 		
@@ -1128,7 +1128,7 @@ function changeSkill(node, after) {
                 $("[id="+skId+"]").css("background-color", "#FEFEFE");
                 $("#secondary").attr('src',after);
                 $("#secondary").load(after, function(){
-                    $(focusOnSkill).focus();
+                    $(focusOnSkill).select();
                 });
                 setRemainingPoint(response);
         });
