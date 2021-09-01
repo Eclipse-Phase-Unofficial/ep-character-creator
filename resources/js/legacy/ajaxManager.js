@@ -102,40 +102,30 @@ $(document).ready(function(){
 
     	//apt value change
         $(document).on('change ', '#COG,#COO,#INT,#REF,#SAV,#SOM,#WIL' ,function (e) {
-                ajax_helper( {
-                            cog : $('#COG').val(),
-                            coo : $('#COO').val(),
-                            int : $('#INT').val(),
-                            ref : $('#REF').val(),
-                            sav : $('#SAV').val(),
-                            som : $('#SOM').val(),
-                            wil : $('#WIL').val(),
-                            getCrePoint : 'get'
-                    },
-                    function(response){
-                    		$('#COG').css("background-color", "#FEFEFE");
-                			$('#COO').css("background-color", "#FEFEFE");
-                			$('#INT').css("background-color", "#FEFEFE");
-                			$('#REF').css("background-color", "#FEFEFE");
-                			$('#SAV').css("background-color", "#FEFEFE");
-                			$('#SOM').css("background-color", "#FEFEFE");
-                			$('#WIL').css("background-color", "#FEFEFE");
-                    		if(response.error){
-                    			 treatMessageError(response);
-                    			 $("#"+response.aptError).css("background-color", "#BA0050");
-                    		}
-                    		else {
-                    			setRemainingPoint(response);
-                                $("#secondary").attr('src',"secondary-choice/aptitudes");
-                    			$("#secondary").load("secondary-choice/aptitudes" , function(){
-                    				//console.log("change"+focusOn);
-	                    			$(focusOn).focus();
-                    			});
-                    		}
-                            
-                    });
-				return false;
-        
+            var returnArray = {
+                getCrePoint: 'get'
+            };
+            returnArray[e.target.id.toLowerCase()] = $(e.target).val();
+            ajax_helper(
+                returnArray,
+                function (response) {
+                    $(e.target).css("background-color", "#FEFEFE");
+                    if (response.error) {
+                        treatMessageError(response);
+                        $("#" + response.aptError).css("background-color", "#BA0050");
+                        $("#" + response.aptError).select();
+                    }
+                    else {
+                        setRemainingPoint(response);
+                        $("#secondary").attr('src', "secondary-choice/aptitudes");
+                        $("#secondary").load("secondary-choice/aptitudes", function () {
+                            //console.log("change"+focusOn);
+                            $(focusOn).select();
+                        });
+                    }
+                }
+            );
+            return false;
         });
 
          //click on a morph for apts
@@ -161,38 +151,53 @@ $(document).ready(function(){
         });
 		
 		//Rep value change
-	    $(document).on('change', '#\\@-Rep,#G-Rep,#C-Rep,#I-Rep,#E-Rep,#R-Rep,#F-Rep',function() {
-	        ajax_helper({
-	                    atrep : $('#\\@-Rep').val(),
-	                    grep : $('#G-Rep').val(),
-	                    crep : $('#C-Rep').val(),
-	                    irep : $('#I-Rep').val(),
-	                    erep : $('#E-Rep').val(),
-	                    rrep : $('#R-Rep').val(),
-	                    frep : $('#F-Rep').val(),
-	                    getCrePoint : 'get'
-	            },
-	            function(response){
-	            		$('#\\@-Rep').css("background-color", "#FEFEFE");
-                		$('#G-Rep').css("background-color", "#FEFEFE");
-                		$('#C-Rep').css("background-color", "#FEFEFE");
-                		$('#I-Rep').css("background-color", "#FEFEFE");
-                		$('#E-Rep').css("background-color", "#FEFEFE");
-                		$('#R-Rep').css("background-color", "#FEFEFE");
-                	    $('#F-Rep').css("background-color", "#FEFEFE");
-	                   if(response.error){
-                			 treatMessageError(response);
-                			 $("#"+response.repError).css("background-color", "#BA0050");                		
-						}
-                		else {
-							setRemainingPoint(response);
-                            $("#secondary").attr('src',"secondary-choice/reputations");
-							$("#secondary").load("secondary-choice/reputations", function(){
-	                    			$(focusOn).focus();
-                    		});
-                		}
-	            });
-			return false;
+	    $(document).on('change', '#\\@-Rep,#G-Rep,#C-Rep,#I-Rep,#E-Rep,#R-Rep,#F-Rep',function(e) {
+            switch (e.target.id) {
+                case '@-Rep':
+                    var shortRep = 'atrep';
+                    break;
+                case 'G-Rep':
+                    var shortRep = 'grep';
+                    break;
+                case 'C-Rep':
+                    var shortRep = 'crep';
+                    break;
+                case 'I-Rep':
+                    var shortRep = 'irep';
+                    break;
+                case 'E-Rep':
+                    var shortRep = 'erep';
+                    break;
+                case 'R-Rep':
+                    var shortRep = 'rrep';
+                    break;
+                case 'F-Rep':
+                    var shortRep = 'frep';
+                    break;
+            }
+            var returnArray = {
+                getCrePoint: 'get'
+            };
+            returnArray[shortRep] = $(e.target).val();
+            ajax_helper(
+                returnArray,
+                function (response) {
+                    $(e.target).css("background-color", "#FEFEFE");
+                    if (response.error) {
+                        treatMessageError(response);
+                        $("#" + response.repError).css("background-color", "#BA0050");
+                        $("#" + response.repError).select();
+                    }
+                    else {
+                        setRemainingPoint(response);
+                        $("#secondary").attr('src', "secondary-choice/reputations");
+                        $("#secondary").load("secondary-choice/reputations", function () {
+                            $(focusOn).select();
+                        });
+                    }
+                }
+            );
+            return false;
 		});
 
     	//POSITIVE TRAITS
@@ -431,7 +436,7 @@ $(document).ready(function(){
             var id_spez = '#spezBox'+$(this).attr('atomic');
 
             if($(id_spez).css('visibility') == 'hidden'){
-                $(id_spez).css('visibility', 'visible').find(".spezInt").focus();
+                $(id_spez).css('visibility', 'visible').find(".spezInt").select();
             }
             else{
                 $(id_spez).css('visibility', 'hidden');

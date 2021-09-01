@@ -206,81 +206,41 @@ if(isset($_POST['remMot'])){
 }
 
 //SET APTITUDES
-if(isset($_POST['cog']) && isset($_POST['coo']) && isset($_POST['int']) &&
-   isset($_POST['ref']) && isset($_POST['sav']) && isset($_POST['som']) &&
-   isset($_POST['wil'])){
-   $errorOnApt = false;
-    if(!creator()->setAptitudeValue("COG", intval($_POST['cog']))){
-	   $errorOnApt = true;
-	   $return['aptError'] = 'COG';
-    }
-    if(!creator()->setAptitudeValue("COO", intval($_POST['coo']))){
-	    $errorOnApt = true;
-	    $return['aptError'] = 'COO';
-    }
-    if(!creator()->setAptitudeValue("INT", intval($_POST['int']))){
-	    $errorOnApt = true;
-	    $return['aptError'] = 'INT';
-    }
-    if(!creator()->setAptitudeValue("REF", intval($_POST['ref']))){
-	    $errorOnApt = true;
-	    $return['aptError'] = 'REF';
-    }
-    if(!creator()->setAptitudeValue("SAV", intval($_POST['sav']))){
-	    $errorOnApt = true;
-	    $return['aptError'] = 'SAV';
-    }
-    if(!creator()->setAptitudeValue("SOM", intval($_POST['som']))){
-	    $errorOnApt = true;
-	    $return['aptError'] = 'SOM';
-    }
-    if(!creator()->setAptitudeValue("WIL", intval($_POST['wil']))){
-		$errorOnApt = true;
-		$return['aptError'] = 'WIL';
-    }
-
-    if($errorOnApt) {
-        //error_log('ERROR :'.creator()->getLastError()->typeError);
-         return static::treatCreatorErrors(creator()->getLastError());
+$aptShorts = ['cog', 'coo', 'int', 'ref', 'sav', 'som', 'wil'];
+foreach ($aptShorts as $aptShort) {
+    if (isset($_POST[$aptShort])) {
+        $errorOnApt = false;
+        if (!creator()->setAptitudeValue(strtoupper($aptShort), intval($_POST[$aptShort]))) {
+            $errorOnApt = true;
+            $return['aptError'] = strtoupper($aptShort);
+        }
+        if ($errorOnApt) {
+            //error_log('ERROR :'.creator()->getLastError()->typeError);
+            $return = array_merge($return, static::treatCreatorErrors(creator()->getLastError()));
+        }
     }
 }
 
 //SET REPUTATION
-if(isset($_POST['atrep']) && isset($_POST['grep']) && isset($_POST['crep']) &&
-   isset($_POST['irep']) && isset($_POST['erep']) && isset($_POST['rrep']) &&
-   isset($_POST['frep'])){
-    $errorOnRep = false;
-
-    if(!creator()->setReputation("@-Rep", intval($_POST['atrep']))){
-	    $errorOnRep = true;
-	    $return['repError'] = '@-Rep';
-    }
-    if(!creator()->setReputation("G-Rep", intval($_POST['grep']))){
-	    $errorOnRep = true;
-	    $return['repError'] = 'G-Rep';
-    }
-    if(!creator()->setReputation("C-Rep", intval($_POST['crep']))){
-	   $errorOnRep = true;
-	    $return['repError'] = 'C-Rep';
-    }
-    if(!creator()->setReputation("I-Rep", intval($_POST['irep']))){
-	    $errorOnRep = true;
-	    $return['repError'] = 'I-Rep';
-    }
-    if(!creator()->setReputation("E-Rep", intval($_POST['erep']))){
-	    $errorOnRep = true;
-	    $return['repError'] = 'E-Rep';
-    }
-    if(!creator()->setReputation("R-Rep", intval($_POST['rrep']))){
-	    $errorOnRep = true;
-	    $return['repError'] = 'R-Rep';
-    }
-    if(!creator()->setReputation("F-Rep", intval($_POST['frep']))){
-		$errorOnRep = true;
-	    $return['repError'] = 'F-Rep';
-    }
-    if($errorOnRep) {
-         return static::treatCreatorErrors(creator()->getLastError());
+$repShorts = [
+    ['atrep', '@-Rep'],
+    ['grep',  'G-Rep'],
+    ['crep',  'C-Rep'],
+    ['irep',  'I-Rep'],
+    ['erep',  'E-Rep'],
+    ['rrep',  'R-Rep'],
+    ['frep',  'F-Rep']
+];
+foreach ($repShorts as $repShort) {
+    if (isset($_POST[$repShort[0]])) {
+        $errorOnRep = false;
+        if (!creator()->setReputation($repShort[1], intval($_POST[$repShort[0]]))) {
+            $errorOnRep = true;
+            $return['repError'] = addcslashes($repShort[1], '@');
+        }
+        if ($errorOnRep) {
+            $return = array_merge($return, static::treatCreatorErrors(creator()->getLastError()));
+        }
     }
 }
 
