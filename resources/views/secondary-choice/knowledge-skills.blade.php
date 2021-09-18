@@ -74,7 +74,7 @@ use App\Creator\Atoms\EPSkill;
 		        	echo "		<td>".$m->linkedApt->abbreviation."</td>\n";
 /* 		        	echo "		<td>".$m->morphMod."</td>"; */
 /* 		        	echo "		<td>".$other."</td>"; */
-		        	echo "		<td class='skillTotal'>".$m->getValue()."</td>\n";
+		        	echo "		<td class='skillTotal'>".$m->getEgoValue()."</td>\n";
 		        	if($m->tempSkill){
 						echo "		<td><span class='remKnowSkill' atomic='".$m->getUid()."' data-icon='&#x39;'></span></td>\n";
 		        	}

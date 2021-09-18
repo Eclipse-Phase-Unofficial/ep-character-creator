@@ -139,9 +139,11 @@ class EPSkill extends EPAtom{
      * @return int
      */
     function getValue(){
+        // Apply morphMod of linked aptitude (APT MM doesn't flow down to skills anywhere else)
+        $lnkMM = isset($this->linkedApt)? $this->linkedApt->morphMod: 0;
         // Only defaultable skills and skills that the user has put at least a point into are usable
         if (strcmp($this->defaultable,  EPSkill::$DEFAULTABLE) == 0 || $this->baseValue > 0){
-            return $this->morphMod + $this->getEgoValue();
+            return $this->morphMod + $this->getEgoValue() + $lnkMM;
         }
         return 0;
     }
@@ -165,25 +167,27 @@ class EPSkill extends EPAtom{
         {
             return $baseValue * config('epcc.SkillPointUnderCost');
         }
-        //If the skill is under 60, then things are easy
+
         if($totalCostValue < config('epcc.SkillLimitForImprove'))
         {
-            return $baseValue * config('epcc.SkillPointUnderCost');
-        }
-
-        //If just the bonus is greater than or equal to 60, then we can say everything costs double
-        if($bonusValue >= config('epcc.SkillLimitForImprove'))
+            //If the skill is under 60, then things are easy
+            $totalCost = $baseValue * config('epcc.SkillPointUnderCost');
+        } else if($bonusValue >= config('epcc.SkillLimitForImprove'))
         {
-            return $this->baseValue * config('epcc.SkillPointUpperCost');
+            //If just the bonus is greater than or equal to 60, then we can say everything costs double
+            $totalCost = $this->baseValue * config('epcc.SkillPointUpperCost');
+        } else 
+        {
+            //Re-phrase the limit in relation to the bonus (thanks to the if statement, we know it will always be positive)
+            $newLimit =  config('epcc.SkillLimitForImprove') - $bonusValue;
+
+            //Since the skill is over 60, and the new limit is positive, this works
+            $underLimitCost = $newLimit * config('epcc.SkillPointUnderCost');
+            $overLimitCost = ($baseValue - $newLimit) * config('epcc.SkillPointUpperCost');
+            $totalCost = $underLimitCost + $overLimitCost;
         }
 
-        //Re-phrase the limit in relation to the bonus (thanks to the if statement, we know it will always be positive)
-        $newLimit =  config('epcc.SkillLimitForImprove') - $bonusValue;
-
-        //Since the skill is over 60, and the new limit is positive, this works
-        $underLimitCost = $newLimit * config('epcc.SkillPointUnderCost');
-        $overLimitCost = $baseValue - $newLimit * config('epcc.SkillPointUpperCost');
-        return $underLimitCost + $overLimitCost;
+        return (int)round($totalCost * $this->ratioCostMorphMod * $this->ratioCostTraitMod * $this->ratioCostBackgroundMod * $this->ratioCostFactionMod * $this->ratioCostSoftgearMod * $this->ratioCostPsyMod);
     }
 
     /**

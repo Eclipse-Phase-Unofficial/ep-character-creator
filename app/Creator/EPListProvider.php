@@ -69,7 +69,7 @@ class EPListProvider {
         $row = $res->fetch();
         $groups = $this->getListGroups($row['name']);
         $bmTypes = $this->getBonusMalusTypes($row['name']);
-        $epBonMal = new EPBonusMalus($row['name'], $row['type'], intval($row['value']), $row['target'], $row['desc'],
+        $epBonMal = new EPBonusMalus($row['name'], $row['type'], floatval($row['value']), $row['target'], $row['desc'],
             $groups, $row['onCost'], $row['tragetForCh'], $row['typeTarget'], $bmTypes, intval($row['multiOccur']));
         return $epBonMal;
     }

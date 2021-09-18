@@ -85,7 +85,7 @@ input[type=number]::-webkit-outer-spin-button {
 section.panel {
 	position: relative;
 	float: left;
-	height: 100%;
+	height: 100vh;
 	margin-left: 1px;
 	width: 20em;
 	/*background-color: rgba(242, 242, 242, .2);*/

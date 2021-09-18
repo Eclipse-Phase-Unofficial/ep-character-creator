@@ -495,7 +495,7 @@ if(null !== creator()) {
 
         foreach($morphBonusMalus as $bm){
 
-            output(formatResult($bm->getName())
+            output(formatResult($bm->getName().($bm->isChoice()? (': '.$bm->forTargetNamed): ''))
             ."<br>"
             .formatResult($bm->getDescription())
             ."<br><br>");

@@ -38,17 +38,17 @@
   ],
   "readme": "README.md",
   "require": {
-    "php": "^7.2",
+    "php": ">=7.2",
     "ext-json": "*",
     "ext-pdo": "*",
     "ext-curl": "*",
     "ext-fileinfo": "*",
     "doctrine/dbal": "^2.9",
     "fideloper/proxy": "^4.1",
-    "laravel/framework": "5.8.*",
+    "laravel/framework": "6.20.*",
     "laravel/tinker": "^1.0",
-    "sentry/sentry-laravel": "^1.0",
-    "setasign/fpdf": "^1.8"
+    "sentry/sentry-laravel": "^2.8",
+    "setasign/fpdf": "1.8.2"
   },
   "autoload": {
     "classmap": [

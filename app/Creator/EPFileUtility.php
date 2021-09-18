@@ -38,7 +38,7 @@ class EPFileUtility
      */
     public function buildExportFilename(string $defaultName, string $extension): string
     {
-        $character_name = trim($this->character->charName);
+        $character_name = trim($this->character->charName?? '');
         if ('' !== $character_name) {
             $filename = $character_name;
         } else {

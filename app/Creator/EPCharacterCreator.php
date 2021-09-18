@@ -155,7 +155,7 @@ class EPCharacterCreator implements Savable
         return $res;
     }
 
-    function getSkillByAtomUid($id): EPSkill
+    function getSkillByAtomUid($id): ?EPSkill
     {
         $ret = EPAtom::getAtomByUid($this->character->ego->skills,$id);
         if($ret == null){
@@ -206,10 +206,11 @@ class EPCharacterCreator implements Savable
         $savePack['creationMode'] = $this->creationMode;
         $savePack['evoRezPoint'] = $this->evoRezPoint;
         $savePack['evoRepPoint'] = $this->evoRepPoint;
-        $savePack['evoCrePoint'] = $this->evoCrePoint;
-        $savePack['evoCrePointPurchased'] = $this->evoCrePointPurchased;
+        $savePack['evoCrePoint'] = 0;
+        $savePack['evoCrePointPurchased'] = 0;
                 		
 		$savePack['charSavePack'] = $this->character->getSavePack();
+        $savePack['charSavePack']['egoSavePack']['credit'] += $this->evoCrePoint + $this->evoCrePointPurchased;
 		
 		return $savePack;
 		
@@ -257,6 +258,7 @@ class EPCharacterCreator implements Savable
     }
 
     function __construct(int $amountCP = -1){
+        app('session')->forget('db');
         $this->creationMode = true;
         $this->validation = new EPValidation();
         $this->evoRezPoint = 0;
@@ -428,7 +430,7 @@ class EPCharacterCreator implements Savable
         return $m->getGear();
     }
 
-    function getCurrentMorphsByName($name): EPMorph
+    function getCurrentMorphsByName($name): ?EPMorph
     {
         return EPAtom::getAtomByName($this->character->morphs,$name);
     }
@@ -1125,7 +1127,8 @@ class EPCharacterCreator implements Savable
             $this->adjustCredit();
             return $this->character->ego->creditInstant;
         }else{
-            return $this->evoCrePoint + $this->evoCrePointPurchased;
+            $this->adjustCredit();
+            return $this->character->ego->creditInstant + $this->evoCrePoint + $this->evoCrePointPurchased;
         }
     }
 
@@ -2200,7 +2203,7 @@ class EPCharacterCreator implements Savable
         foreach ($this->character->ego->skills as $s){
             $s->softgearMod = 0;
             $s->resetRatioCostSoftgearMod();
-            $s->maxValueSofgearMod = 0;
+            $s->maxValueSoftgearMod = 0;
         }
         foreach ($this->character->morphs as $m) {
             foreach ($m->gears as $g){
@@ -2230,7 +2233,7 @@ class EPCharacterCreator implements Savable
             foreach ($ia->skills as $s){
                 $s->softgearMod = 0;
                 $s->resetRatioCostSoftgearMod();
-                $s->maxValueSofgearMod = 0;
+                $s->maxValueSoftgearMod = 0;
             }
         }
         foreach ($this->character->ego->stats as $s){

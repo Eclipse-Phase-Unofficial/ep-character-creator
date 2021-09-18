@@ -530,7 +530,7 @@ class pdfExporterV2_fpdf {
         foreach($filteredBM as $bm)
         {
             $item = array();
-            $item[0] = toUpper($bm->getName());
+            $item[0] = toUpper($bm->getName().($bm->isChoice()? (': '.$bm->forTargetNamed): ''));
             $item[2] = $bm->getDescription();
             array_push($data,$item);
         }

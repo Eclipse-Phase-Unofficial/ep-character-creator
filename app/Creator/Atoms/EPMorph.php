@@ -107,7 +107,7 @@ class EPMorph extends EPAtom {
         $savePack['nickname'] = $this->nickname;
         $savePack['location'] = $this->location;
         $savePack['cpCost'] = $this->cpCost;
-        $savePack{'buyInCreationMode'} = $this->buyInCreationMode;
+        $savePack['buyInCreationMode'] = $this->buyInCreationMode;
 
         $traitsSavePacks = array();
         foreach($this->traits as $m){
